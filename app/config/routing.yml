@@ -1,0 +1,3 @@
+AcmeHelloWorldBundle:
+    resource: "@AcmeHelloWorldBundle/Resources/config/routing.yml"
+    prefix:   /
