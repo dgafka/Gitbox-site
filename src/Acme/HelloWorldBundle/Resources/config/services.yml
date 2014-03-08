@@ -1,0 +1,7 @@
+parameters:
+#    acme_hello_world.example.class: Acme\HelloWorldBundle\Example
+
+services:
+#    acme_hello_world.example:
+#        class: %acme_hello_world.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
