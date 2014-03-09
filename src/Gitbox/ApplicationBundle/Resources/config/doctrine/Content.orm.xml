@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Gitbox\ApplicationBundle\Entity\Content" table="content">
+    <indexes>
+      <index name="IDX_FEC530A9F6252691" columns="id_menu"/>
+      <index name="IDX_FEC530A95697F554" columns="id_category"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="idUser" type="integer" column="id_user" nullable="false"/>
+    <field name="status" type="string" column="status" length="1" nullable="false"/>
+    <field name="title" type="string" column="title" length="255" nullable="false"/>
+    <field name="header" type="string" column="header" length="255" nullable="false"/>
+    <field name="description" type="text" column="description" nullable="false"/>
+    <field name="createDate" type="date" column="create_date" nullable="false"/>
+    <field name="hit" type="integer" column="hit" nullable="false"/>
+    <field name="expire" type="date" column="expire" nullable="true"/>
+    <field name="lastModificationDate" type="date" column="last_modification_date" nullable="false"/>
+    <field name="rate" type="float" column="rate" precision="10" scale="0" nullable="true"/>
+    <field name="type" type="string" column="type" length="1" nullable="false"/>
+    <many-to-one field="idCategory" target-entity="Category">
+      <join-columns>
+        <join-column name="id_category" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idMenu" target-entity="Menu">
+      <join-columns>
+        <join-column name="id_menu" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>
