@@ -15,4 +15,4 @@ ALTER TABLE content
 ALTER TABLE content
 	ADD CONSTRAINT content_fk_id_category FOREIGN KEY (id_category)
       REFERENCES category (id) MATCH SIMPLE
-      ON UPD --wATE NO ACTION ON DELETE SET NULL;
+      ON UPDATE NO ACTION ON DELETE SET NULL;
