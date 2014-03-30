@@ -2,6 +2,12 @@ gitbox_application:
     resource: "@GitboxApplicationBundle/Resources/config/routing.yml"
     prefix:   /
 
+gitbox_application_register:
+    prefix: /register
+    defaults: { _controller: GitboxApplicationBundle:Register:register }
+    requirements:
+            _method:  GET
+
 AcmeHelloWorldBundle:
     resource: "@AcmeHelloWorldBundle/Resources/config/routing.yml"
     prefix:   /
