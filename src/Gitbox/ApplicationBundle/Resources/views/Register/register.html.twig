@@ -1,4 +1,4 @@
-{% extends 'GitboxApplicationBundle::Layout\layout.html.twig' %}
+{% extends 'GitboxApplicationBundle::Layout/layout.html.twig' %}
 
 {% block title %}Rejestracja{% endblock%}
 
@@ -9,10 +9,10 @@
 
     <p>Zakładasz konto?</p>
 
-    <form action="{{ path('GitboxApplicationBundle_register') }}" method="post" {{ form_enctype(form) }} class="blogger">
+    <form action="{{ path('gitbox_application_register') }}" method="post" {{ form_enctype(form) }} class="blogger">
         {{ form_errors(form) }}
 
-        {{ form_row(form.name) }}
+        {{ form_row(form.login) }}
         {{ form_row(form.password) }}
         {{ form_row(form.email) }}
 

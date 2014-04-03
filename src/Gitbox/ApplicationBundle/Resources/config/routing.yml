@@ -1,3 +1,9 @@
 gitbox_application_homepage:
     pattern:  /hello/{name}
     defaults: { _controller: GitboxApplicationBundle:Default:index }
+
+gitbox_application_register:
+    pattern:  /register
+    defaults: { _controller: GitboxApplicationBundle:Register:register }
+    requirements:
+        _method:  GET|POST
