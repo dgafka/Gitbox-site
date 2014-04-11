@@ -1,3 +1,0 @@
-hello:
-    path:     /hellobundle/{name}
-    defaults: { _controller: AcmeHelloWorldBundle:Hello:index }
