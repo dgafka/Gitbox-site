@@ -23,8 +23,4 @@ class DefaultController extends Controller
 
         return array('name' => $name);
     }
-
-	public function index($name) {
-		return $name;
-	}
 }

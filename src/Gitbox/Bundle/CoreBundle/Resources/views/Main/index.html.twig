@@ -2,7 +2,7 @@
 
 {% block title %}GitboxCoreBundle:Main:index{% endblock %}
 
-{% render "GitboxCoreBundle:DefaultController:index with { 'name' : 'name'}" %}
+{% render controller("GitboxCoreBundle:Default:index", { 'name': 'name'}) %}
 
 {% block body %}
     {#{{ response }}#}
