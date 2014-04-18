@@ -48,3 +48,12 @@ INSERT INTO content(
             hit, expire, last_modification_date, rate, type, id_category)
     VALUES (2, 2, 'A', 'Jestę testowy content', 'Header', 'Testowy content dla strony glownej pobrany z bazy', '2014-04-17',
             5, null, '2014-04-17', 4, 'A', 1);
+INSERT INTO user_modules(
+    id_user, id_module)
+VALUES (2, 1);
+INSERT INTO user_modules(
+    id_user, id_module)
+VALUES (2, 2);
+INSERT INTO user_modules(
+    id_user, id_module)
+VALUES (2, 3);
