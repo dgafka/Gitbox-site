@@ -45,9 +45,11 @@ assetic:
         bootstrap_css:
             inputs:
                 - %kernel.root_dir%/../vendor/twbs/bootstrap/dist/css/bootstrap.min.css
+            output: css/bootstrap.css
         bootstrap_js:
             inputs:
                 - %kernel.root_dir%/../vendor/twbs/bootstrap/dist/js/bootstrap.min.js
+            output: js/bootstrap.js
 
 # Doctrine Configuration
 doctrine:
