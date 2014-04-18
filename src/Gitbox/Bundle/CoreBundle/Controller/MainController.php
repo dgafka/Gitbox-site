@@ -30,7 +30,7 @@ class MainController extends Controller
 	    $response = $this->forward('GitboxCoreBundle:Default:index', array(
 		    'name'  => "bla",
 	    ));
-	    var_dump($response);
+	    var_dump($response->getContent());
 	    return array('response' => $response);
     }
 

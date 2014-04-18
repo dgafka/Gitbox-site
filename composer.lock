@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "2c0295f7b959d7cc894ee1a78d4f3b41",
+    "hash": "b2bf413b5b9126ab9a69dfe0a962c8cf",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1454,6 +1454,54 @@
             "time": "2014-04-04 10:27:02"
         },
         {
+            "name": "twbs/bootstrap",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/twbs/bootstrap.git",
+                "reference": "573ad10a9dba52e4a6f059e63b667f4034ad2b39"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/573ad10a9dba52e4a6f059e63b667f4034ad2b39",
+                "reference": "573ad10a9dba52e4a6f059e63b667f4034ad2b39",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0.x-dev"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jacob Thornton",
+                    "email": "jacobthornton@gmail.com"
+                },
+                {
+                    "name": "Mark Otto",
+                    "email": "markdotto@gmail.com"
+                }
+            ],
+            "description": "The most popular front-end framework for developing responsive, mobile first projects on the web.",
+            "homepage": "http://getbootstrap.com",
+            "keywords": [
+                "JS",
+                "css",
+                "framework",
+                "front-end",
+                "less",
+                "mobile-first",
+                "responsive",
+                "web"
+            ],
+            "time": "2014-04-18 02:08:46"
+        },
+        {
             "name": "twig/extensions",
             "version": "v1.0.1",
             "source": {
@@ -1567,9 +1615,9 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": [
-
-    ],
+    "stability-flags": {
+        "twbs/bootstrap": 20
+    },
     "platform": {
         "php": ">=5.3.3"
     },
