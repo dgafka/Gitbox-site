@@ -1,5 +1,0 @@
-_assetic:
-    resource: .
-    type: assetic
-_app:
-    resource: /home/daris/www/apache/house/projects/Gitbox-site/app/config/routing_dev.yml
