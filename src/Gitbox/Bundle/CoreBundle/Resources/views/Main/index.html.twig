@@ -2,6 +2,8 @@
 
 {% block title %}GitboxCoreBundle:Main:index{% endblock %}
 
+{% render "GitboxCoreBundle:DefaultController:indexAction with { 'name' : 'name'}" %}
+
 {% block body %}
     {#{{ response }}#}
 <h1>Welcome to the Main:index page</h1>
