@@ -136,8 +136,22 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
         }
 
         // gitbox_core_default_index
-        if (preg_match('#^/(?P<name>[^/]++)$#s', $pathinfo, $matches)) {
+        if (0 === strpos($pathinfo, '/2') && preg_match('#^/2/(?P<name>[^/]++)$#s', $pathinfo, $matches)) {
             return $this->mergeDefaults(array_replace($matches, array('_route' => 'gitbox_core_default_index')), array (  '_controller' => 'Gitbox\\Bundle\\CoreBundle\\Controller\\DefaultController::indexAction',));
+        }
+
+        // gitbox_core_main_index
+        if (rtrim($pathinfo, '/') === '') {
+            if (substr($pathinfo, -1) !== '/') {
+                return $this->redirect($pathinfo.'/', 'gitbox_core_main_index');
+            }
+
+            return array (  '_controller' => 'Gitbox\\Bundle\\CoreBundle\\Controller\\MainController::indexAction',  '_route' => 'gitbox_core_main_index',);
+        }
+
+        // gitbox_core_main_search
+        if ($pathinfo === '/search') {
+            return array (  '_controller' => 'Gitbox\\Bundle\\CoreBundle\\Controller\\MainController::searchAction',  '_route' => 'gitbox_core_main_search',);
         }
 
         throw 0 < count($allow) ? new MethodNotAllowedException(array_unique($allow)) : new ResourceNotFoundException();

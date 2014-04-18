@@ -1,11 +1,11 @@
 # This file is auto-generated during the composer install
 parameters:
-    database_driver: pdo_mysql
-    database_host: 127.0.0.1
-    database_port: null
-    database_name: symfony
-    database_user: root
-    database_password: null
+    database_driver: pdo_pgsql
+    database_host: 192.168.0.11
+    database_port: 5432
+    database_name: gitbox
+    database_user: gitbox
+    database_password: gitbox
     mailer_transport: smtp
     mailer_host: 127.0.0.1
     mailer_user: null
