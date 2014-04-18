@@ -20,11 +20,8 @@ class DefaultController extends Controller
 	     * @var $queryBuilder \Doctrine\ORM\QueryBuilder
 	     */
 	    $queryBuilder = $em->getManager()->createQueryBuilder();
-
+		$name .= $name . ' dupa blada';
         return array('name' => $name);
     }
 
-	public function index($name) {
-		return $name;
-	}
 }
