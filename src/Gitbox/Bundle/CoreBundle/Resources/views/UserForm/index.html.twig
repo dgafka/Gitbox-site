@@ -1,0 +1,24 @@
+{% block login_form %}
+<ul class="nav navbar-right">
+    {# Before login #}
+    {# SOMETHING TO ADD HERE #}
+
+    {# After login #}
+    <li class="settings">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="glyphicon glyphicon-cog" style="font-size: 14pt;"></b></a>
+        <ul class="dropdown-menu">
+            <li><a href="#"><b class="glyphicon glyphicon-user" style="color: dimgray;"></b> Profil</a></li>
+            <li><a href="#"><b class="glyphicon glyphicon-tasks" style="color: dimgray;"></b> Moduły</a></li>
+            <li class="divider"></li>
+            <li><a href="#"><b class="glyphicon glyphicon-wrench" style="color: dimgray;"></b> Ustawienia</a></li>
+            <li class="divider"></li>
+            <li><a href="#"><b class="glyphicon glyphicon-off" style="color: dimgray;"></b> Wyloguj</a></li>
+        </ul>
+    </li>
+</ul>
+
+{# After login #}
+{#<ul class="nav navbar-right">#}
+{#<li><label class="navbar-text">Zalogowano jako <a>admin</a></label></li>#}
+{#</ul>#}
+{% endblock %}
