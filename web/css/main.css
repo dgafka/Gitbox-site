@@ -57,16 +57,25 @@ a.badge-button:focus {
 }
 
 /* ------------------------------------- */
-#search-engine {
+#main_logo {
+    position: relative;
+    bottom: 5px;
+}
+
+.search-engine {
     margin-top: 8px;
     margin-left: 50px;
 }
 
-#search-engine-input {
+.search-engine-input {
     width: 200px;
     max-width: 200px;
+    padding: 3px;
 }
 
+.settings {
+    top: 3px;
+}
 
 /* ------------------------------------- */
 .jumbojumba {
