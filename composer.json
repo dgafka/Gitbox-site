@@ -19,6 +19,7 @@
         "sensio/framework-extra-bundle": "~3.0",
         "sensio/generator-bundle": "~2.3",
         "incenteev/composer-parameter-handler": "~2.0",
+        "yiisoft/jquery": "2.1.0",
         "twbs/bootstrap": "3.0.*@dev"
     },
     "scripts": {

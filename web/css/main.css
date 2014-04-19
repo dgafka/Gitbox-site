@@ -1,0 +1,133 @@
+body {
+    background-color: lightblue;
+}
+
+.main-window {
+    /*height: 500px;*/
+}
+
+.tab-content-main {
+    /*height: 300px;*/
+    /*overflow: auto;*/
+}
+
+.tab-content-about {
+    height: 400px;
+    overflow: auto;
+}
+
+.whitened {
+    background-color: white;
+}
+
+.page-header {
+    margin-top: 20px;
+}
+
+.tab-pane {
+    margin-top: 10px;
+}
+
+/* BADGE PROPERTIES & COLORS */
+
+.badge-pusher {
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+a.badge-button {
+    color: #428bca;
+}
+
+a.badge-button:hover,
+a.badge-button:focus {
+    color: #2a6496;
+}
+
+.badge-lightblue {
+    background-color: lightblue;
+}
+
+.badge-lightpink {
+    background-color: lightcoral;
+}
+
+.badge-lightgreen {
+    background-color: lightgreen;
+}
+
+/* ------------------------------------- */
+#search-engine {
+    margin-top: 8px;
+    margin-left: 50px;
+}
+
+#search-engine-input {
+    width: 200px;
+    max-width: 200px;
+}
+
+
+/* ------------------------------------- */
+.jumbojumba {
+    padding: 10px;
+    margin-bottom: 30px;
+    font-size: 12px;
+    font-weight: 200;
+    line-height: 2.1428571435;
+    color: inherit;
+    background-color: #eeeeee;
+}
+
+.container .jumbojumba {
+    border-radius: 6px;
+}
+
+@media screen and (min-width: 768px) {
+    .jumbojumba {
+        padding-top: 24px;
+        padding-bottom: 24px;
+    }
+    .container .jumbojumba {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+    .jumbojumba h1 {
+        font-size: 36px;
+    }
+}
+
+/* ------------------------------------- */
+.masthead {
+    position: static; /* fixed */
+    top: 0;
+}
+.mastfoot {
+    position: static; /* fixed */
+    bottom: 0;
+    text-align: center;
+    /*margin: 0 auto;*/
+    /*left: 0;*/
+    /*right: 0;*/
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    /*border-width: 1px;*/
+    /*border-style: solid;*/
+    /*border-color: #31b0d5;*/
+}
+/* Handle the widths */
+.masthead,
+.mastfoot {
+    width: 70%; /* Must be percentage or pixels for horizontal alignment */
+}
+
+@media (max-width: 640px) {
+    /* Pull out the header and footer */
+    .masthead,
+    .mastfoot {
+        font-size: 10px;
+    }
+}
