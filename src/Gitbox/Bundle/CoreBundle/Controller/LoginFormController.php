@@ -6,12 +6,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-class UserFormController extends Controller
+class LoginFormController extends Controller
 {
     /**
      * @Template()
      */
-    public function indexAction()
+    public function renderAction()
     {
         // tests
         $userSession = true;

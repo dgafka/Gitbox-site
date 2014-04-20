@@ -4,9 +4,9 @@ namespace Gitbox\Bundle\CoreBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class UserFormControllerTest extends WebTestCase
+class LoginFormControllerTest extends WebTestCase
 {
-    public function testIndex()
+    public function testRender()
     {
         $client = static::createClient();
 

@@ -44,6 +44,7 @@
                     <ul class="nav navbar-nav">
                         <li class="{% if app.request.attributes.get('_route') == 'features_url' %}active{% endif %}"><a href="{{ path('features_url') }}"><b class="glyphicon glyphicon-eye-open"></b> Odkrywaj możliwości</a></li>
                         <li class="{% if app.request.attributes.get('_route') == 'help_url' %}active{% endif %}"><a href="{{ path('help_url') }}"><b class="glyphicon glyphicon-question-sign"></b> Pomoc</a></li>
+                        <li class="{% if app.request.attributes.get('_route') == 'about_url' %}active{% endif %}"><a href="{{ path('about_url') }}"><b class="glyphicon glyphicon-fire"></b> O aplikacji</a></li>
                         <li class="search-engine">
                             <form role="search" class="navbar-form">
                                 <div class="form-group">
@@ -55,11 +56,7 @@
                     </ul>
 
                     {# LOGIN FORM #}
-                    {% render controller("GitboxCoreBundle:UserForm:index") %}
-
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="{% if app.request.attributes.get('_route') == 'about_url' %}active{% endif %}" style="margin-right: 50px;"><a href="{{ path('about_url') }}"><b class="glyphicon glyphicon-fire"></b> O aplikacji</a></li>
-                    </ul>
+                    {% render controller("GitboxCoreBundle:LoginForm:render") %}
                 </div>
             </div>
         </nav>
