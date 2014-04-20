@@ -1,5 +1,6 @@
 body {
     background-color: lightblue;
+    color: #333333;
 }
 
 .main-window {
@@ -78,6 +79,10 @@ a.badge-button:focus {
 }
 
 /* ------------------------------------- */
+.container {
+    margin-top: 50px;
+}
+
 .jumbojumba {
     padding: 10px;
     margin-bottom: 30px;
@@ -85,11 +90,11 @@ a.badge-button:focus {
     font-weight: 200;
     line-height: 2.1428571435;
     color: inherit;
-    background-color: #eeeeee;
+    /*background-color: #eeeeee;*/
 }
 
 .container .jumbojumba {
-    border-radius: 6px;
+    /*border-radius: 6px;*/
 }
 
 @media screen and (min-width: 768px) {
@@ -104,6 +109,11 @@ a.badge-button:focus {
     .jumbojumba h1 {
         font-size: 36px;
     }
+}
+
+/* ------------------------------------- */
+.catch-phrase {
+    font-size: 30pt;
 }
 
 /* ------------------------------------- */

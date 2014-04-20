@@ -10,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class MainController extends Controller
 {
     /**
-     * @Route("/")
+     * @Route("/", name="home_url")
      * @Template()
      */
     public function indexAction()
@@ -37,11 +37,12 @@ class MainController extends Controller
     }
 
     /**
-     * @Route("/search")
+     * @Route("/search", name="search_url")
      * @Template()
      */
     public function searchAction()
     {
+        return array();
     }
 
 }
