@@ -6,10 +6,13 @@
         <div class="dropdown-menu login-dropdown">
             <form method="post">
                 <div class="input-group" style="margin-bottom: 10px; width: 200px;">
-                    <input id="user_login" class="form-control" type="text" name="user[username]" placeholder="Login" size="30" />
+                    <input id="user_login" class="form-control" type="text" name="user[username]" placeholder="Login" size="30" required/>
                 </div>
                 <div class="input-group" style="margin-bottom: 10px; width: 200px;">
-                    <input id="user_password" class="form-control" type="password" name="user[password]" placeholder="Hasło" size="30" />
+                    <input id="user_password" class="form-control password-input" type="password" name="user[password]" placeholder="Hasło" size="30" required/>
+                    <span class="input-group-btn">
+                        <button class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                    </span>
                 </div>
                 <div class="input-group" style="float: left; margin-bottom: 10px;">
                     <input id="user_remember" style="margin-right: 10px;" type="checkbox" name="user[remember]" value="1" />

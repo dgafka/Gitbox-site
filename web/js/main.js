@@ -1,4 +1,16 @@
 $(document).ready(function(){
+    // reveal password
+    $(".reveal").mousedown(function() {
+        $(".password-input").replaceWith($('.password-input').clone().attr('type', 'text'));
+    })
+    .mouseup(function() {
+        $(".password-input").replaceWith($('.password-input').clone().attr('type', 'password'));
+    })
+    .mouseout(function() {
+        $(".password-input").replaceWith($('.password-input').clone().attr('type', 'password'));
+    });
+
+    // scroll to top
     $(window).scroll(function () {
         if ($(this).scrollTop() > 50) {
             $('#back-to-top').fadeIn();
