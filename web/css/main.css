@@ -61,10 +61,10 @@ a.badge-button:focus {
 #main_logo {
     position: relative;
     bottom: 5px;
+    height: 27px; /* width: 109px; */
 }
 
 .search-engine {
-    margin-top: 8px;
     margin-left: 50px;
 }
 
@@ -79,6 +79,20 @@ a.badge-button:focus {
 }
 
 /* ------------------------------------- */
+.home-page-container {
+    position: relative;
+}
+
+.module-logo-outer {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.module-logo {
+    height: 40px;
+}
+
 .container {
     margin-top: 50px;
 }

@@ -36,7 +36,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="{{ path('home_url') }}"><img id="main_logo" src="{{ asset('images/GitBox_logo.png') }}" style="width: 109px; height: 27px;"></a>
+                    <a class="navbar-brand" href="{{ path('home_url') }}"><img id="main_logo" src="{{ asset('images/logo/GitBox_logo.png') }}"></a>
                 </div>
 
                 {# Collect the nav links, forms, and other content for toggling #}
@@ -45,8 +45,12 @@
                         <li class="{% if app.request.attributes.get('_route') == 'features_url' %}active{% endif %}"><a href="{{ path('features_url') }}"><b class="glyphicon glyphicon-eye-open"></b> Odkrywaj możliwości</a></li>
                         <li class="{% if app.request.attributes.get('_route') == 'help_url' %}active{% endif %}"><a href="{{ path('help_url') }}"><b class="glyphicon glyphicon-question-sign"></b> Pomoc</a></li>
                         <li class="search-engine">
-                            <input class="search-engine-input" type="text" placeholder="Wyszukaj globalnie na stronie">
-                            <button class="btn"><span class="glyphicon glyphicon-search"></span></button>
+                            <form role="search" class="navbar-form">
+                                <div class="form-group">
+                                    <input class="search-engine-input" type="text" placeholder="Wyszukaj globalnie na stronie">
+                                    <button class="btn"><span class="glyphicon glyphicon-search"></span></button>
+                                </div>
+                            </form>
                         </li>
                     </ul>
 
@@ -59,6 +63,10 @@
                 </div>
             </div>
         </nav>
+
+        {# OUTER #}
+        {% block outer %}
+        {% endblock %}
 
         {# CONTENT #}
         {% block content %}
