@@ -74,8 +74,8 @@ a.badge-button:focus {
     padding: 3px;
 }
 
-.settings {
-    top: 3px;
+.login-dropdown {
+    padding: 15px;
 }
 
 /* ------------------------------------- */
@@ -126,8 +126,10 @@ a.badge-button:focus {
 }
 
 /* ------------------------------------- */
-.catch-phrase {
-    font-size: 30pt;
+.catch-phrase-logo {
+    height: 30px;
+    margin-left: 5px;
+    margin-right: 3px;
 }
 
 /* ------------------------------------- */
