@@ -137,6 +137,15 @@ a.badge-button:focus {
     position: static; /* fixed */
     top: 0;
 }
+
+.back-to-top {
+    cursor: pointer;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: none;
+}
+
 .mastfoot {
     position: static; /* fixed */
     bottom: 0;

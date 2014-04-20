@@ -6,13 +6,13 @@
         <title>{% block title %}GitBox{% endblock %}</title>
         {% block stylesheets %}
             {# Bootstrap styles #}
-            <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
+            <link rel="stylesheet" href="{{ asset('css/bootstrap/bootstrap.min.css') }}" />
 
             {# Additionals #}
             <link rel="stylesheet" href="{{ asset('css/additionals/animate.css') }}" />
             <link rel="stylesheet" href="{{ asset('css/additionals/font-awesome.css') }}" />
 
-            {# Main page style #}
+            {# Global style #}
             <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
@@ -76,17 +76,25 @@
         </div>
         {% endblock %}
 
+        <a id="back-to-top" href="#" class="btn btn-primary btn-lg back-to-top" role="button"
+           title="Powrót do początku strony" data-toggle="tooltip" data-placement="left">
+            <span class="glyphicon glyphicon-chevron-up"></span>
+        </a>
+
         {# FOOTER #}
-        <div class="mastfoot">
+        {#<div class="mastfoot">#}
             {#<p class="inner">Stopka | <a href="#">GitBox INC</a></p>#}
-        </div>
+        {#</div>#}
 
         {% block javascripts %}
             {# jQuery #}
-            <script type="text/javascript" src="{{ asset('js/jquery.min.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('js/jquery/jquery.min.js') }}"></script>
 
             {# Bootstrap scripts #}
-            <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
+
+            {# Global scripts #}
+            <script type="text/javascript" src="{{ asset('js/main.js') }}"></script>
         {% endblock %}
     </body>
 </html>
