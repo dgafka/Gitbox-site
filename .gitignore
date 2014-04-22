@@ -6,7 +6,7 @@
 /app/cache/doctrine/*
 /app/cache/profiler/*
 /app/cache/twig/*
-/app/config/parameters.yml
+/app/config/~yml
 /app/logs/*
 /build/
 /vendor/*

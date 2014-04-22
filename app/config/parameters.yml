@@ -6,9 +6,9 @@ parameters:
     database_name: gitbox
     database_user: gitbox
     database_password: gitbox
-    mailer_transport: smtp
-    mailer_host: 127.0.0.1
-    mailer_user: null
-    mailer_password: null
+    mailer_transport: gmail
+    mailer_host: ~
+    mailer_user: gitboxswiftmailer@gmail.com
+    mailer_password: gitbox123
     locale: en
     secret: ThisTokenIsNotSoSecretChangeIt
