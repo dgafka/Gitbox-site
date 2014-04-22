@@ -1,5 +1,6 @@
 body {
     background-color: lightblue;
+    color: #333333;
 }
 
 .main-window {
@@ -57,18 +58,45 @@ a.badge-button:focus {
 }
 
 /* ------------------------------------- */
-#search-engine {
-    margin-top: 8px;
+#main_logo {
+    position: relative;
+    bottom: 5px;
+    height: 27px; /* width: 109px; */
+}
+
+.search-engine {
     margin-left: 50px;
 }
 
-#search-engine-input {
+.search-engine-input {
     width: 200px;
     max-width: 200px;
+    padding: 3px;
 }
 
+.login-dropdown {
+    padding: 15px;
+}
 
 /* ------------------------------------- */
+.home-page-container {
+    position: relative;
+}
+
+.module-logo-outer {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.module-logo {
+    height: 40px;
+}
+
+.container {
+    margin-top: 50px;
+}
+
 .jumbojumba {
     padding: 10px;
     margin-bottom: 30px;
@@ -76,11 +104,11 @@ a.badge-button:focus {
     font-weight: 200;
     line-height: 2.1428571435;
     color: inherit;
-    background-color: #eeeeee;
+    /*background-color: #eeeeee;*/
 }
 
 .container .jumbojumba {
-    border-radius: 6px;
+    /*border-radius: 6px;*/
 }
 
 @media screen and (min-width: 768px) {
@@ -98,10 +126,26 @@ a.badge-button:focus {
 }
 
 /* ------------------------------------- */
+.catch-phrase-logo {
+    height: 30px;
+    margin-left: 5px;
+    margin-right: 3px;
+}
+
+/* ------------------------------------- */
 .masthead {
     position: static; /* fixed */
     top: 0;
 }
+
+.back-to-top {
+    cursor: pointer;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: none;
+}
+
 .mastfoot {
     position: static; /* fixed */
     bottom: 0;

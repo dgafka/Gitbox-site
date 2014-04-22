@@ -6,13 +6,13 @@
         <title>{% block title %}GitBox{% endblock %}</title>
         {% block stylesheets %}
             {# Bootstrap styles #}
-            <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
+            <link rel="stylesheet" href="{{ asset('css/bootstrap/bootstrap.min.css') }}" />
 
             {# Additionals #}
             <link rel="stylesheet" href="{{ asset('css/additionals/animate.css') }}" />
             <link rel="stylesheet" href="{{ asset('css/additionals/font-awesome.css') }}" />
 
-            {# Main page style #}
+            {# Global style #}
             <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
@@ -26,7 +26,7 @@
     </head>
     <body>
         {# MENU #}
-        <nav class="navbar navbar-default" role="navigation">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="container-fluid">
                 {# Brand and toggle get grouped for better mobile display #}
                 <div class="navbar-header">
@@ -36,80 +36,62 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/"><img src="{{ asset('images/GitBox_logo.png') }}" style="width: 109px; height: 27px;"></a>
+                    <a class="navbar-brand" href="{{ path('home_url') }}"><img id="main_logo" src="{{ asset('images/logo/GitBox_logo.png') }}"></a>
                 </div>
 
                 {# Collect the nav links, forms, and other content for toggling #}
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="#"><b class="glyphicon glyphicon-eye-open"></b> Odkrywaj możliwości</a></li>
-                        <li><a href="#"><b class="glyphicon glyphicon-question-sign"></b> Pomoc</a></li>
-                        <li class="more-options">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Inne <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Pierdy raz</a></li>
-                                <li><a href="#">Pierdy dwa</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#">Cośtam #1</a></li>
-                            </ul>
-                        </li>
-                        <li id="search-engine">
-                            <input id="search-engine-input" type="text" style="margin: auto;">
-                            <button class="btn"><span class="glyphicon glyphicon-search"></span></button>
+                        <li class="{% if app.request.attributes.get('_route') == 'features_url' %}active{% endif %}"><a href="{{ path('features_url') }}"><b class="glyphicon glyphicon-eye-open"></b> Odkrywaj możliwości</a></li>
+                        <li class="{% if app.request.attributes.get('_route') == 'help_url' %}active{% endif %}"><a href="{{ path('help_url') }}"><b class="glyphicon glyphicon-question-sign"></b> Pomoc</a></li>
+                        <li class="{% if app.request.attributes.get('_route') == 'about_url' %}active{% endif %}"><a href="{{ path('about_url') }}"><b class="glyphicon glyphicon-fire"></b> O aplikacji</a></li>
+                        <li class="search-engine">
+                            <form role="search" class="navbar-form">
+                                <div class="form-group">
+                                    <input class="search-engine-input" type="text" placeholder="Wyszukaj globalnie na stronie">
+                                    <button class="btn"><span class="glyphicon glyphicon-search"></span></button>
+                                </div>
+                            </form>
                         </li>
                     </ul>
 
-                    <ul class="nav navbar-right">
-                        <li class="settings">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="glyphicon glyphicon-cog" style="font-size: 14pt;"></b></a>
-                            <ul class="dropdown-menu">
-                                {# Before login #}
-
-
-                                {# After login #}
-                                {#<li><a href="#"><b class="glyphicon glyphicon-user" style="color: dimgray;"></b> Profil</a></li>#}
-                                {#<li><a href="#"><b class="glyphicon glyphicon-tasks" style="color: dimgray;"></b> Moduły</a></li>#}
-                                {#<li class="divider"></li>#}
-                                {#<li><a href="#"><b class="glyphicon glyphicon-wrench" style="color: dimgray;"></b> Ustawienia</a></li>#}
-                                {#<li class="divider"></li>#}
-                                {#<li><a href="#"><b class="glyphicon glyphicon-off" style="color: dimgray;"></b> Wyloguj</a></li>#}
-                            </ul>
-                        </li>
-                    </ul>
-
-                    {# After login #}
-                    {#<ul class="nav navbar-right">#}
-                        {#<li><label class="navbar-text">Zalogowano jako <a>admin</a></label></li>#}
-                    {#</ul>#}
-
-                    <ul class="nav navbar-nav navbar-right">
-                        <li style="margin-right: 50px;"><a href="#"><b class="glyphicon glyphicon-fire"></b> O twórcach</a></li>
-                    </ul>
+                    {# LOGIN FORM #}
+                    {% render controller("GitboxCoreBundle:LoginForm:render") %}
                 </div>
             </div>
         </nav>
 
-        {# CONTENT #}
-        <div class="container whitened main-window">
-            {% block content %}
-            {% endblock %}
-        </div>
-
-        {# BODY #}
-        {% block body %}
+        {# OUTER #}
+        {% block outer %}
         {% endblock %}
 
-        {# FOOTER #}
-        <div class="mastfoot">
-            {#<p class="inner">Stopka | <a href="#">GitBox INC</a></p>#}
+        {# CONTENT #}
+        {% block content %}
+        <div class="container whitened main-window">
+            {% block content_inner %}
+            {% endblock %}
         </div>
+        {% endblock %}
+
+        <a id="back-to-top" href="#" class="btn btn-primary btn-lg back-to-top" role="button"
+           title="Powrót do początku strony" data-toggle="tooltip" data-placement="left">
+            <span class="glyphicon glyphicon-chevron-up"></span>
+        </a>
+
+        {# FOOTER #}
+        {#<div class="mastfoot">#}
+            {#<p class="inner">Stopka | <a href="#">GitBox INC</a></p>#}
+        {#</div>#}
 
         {% block javascripts %}
             {# jQuery #}
-            <script type="text/javascript" src="{{ asset('js/jquery.min.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('js/jquery/jquery.min.js') }}"></script>
 
             {# Bootstrap scripts #}
-            <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
+
+            {# Global scripts #}
+            <script type="text/javascript" src="{{ asset('js/main.js') }}"></script>
         {% endblock %}
     </body>
 </html>
