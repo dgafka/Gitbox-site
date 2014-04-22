@@ -45,4 +45,15 @@ class MainController extends Controller
         return array();
     }
 
+	/** Method generates urls for views.
+    * @Template()
+	 * @param $controller String
+	 * @param $action String
+	 * @return string|void
+	 */
+	public function generateUrlAction() {
+
+		return array();
+	}
+
 }

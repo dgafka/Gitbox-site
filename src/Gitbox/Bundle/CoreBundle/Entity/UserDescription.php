@@ -40,6 +40,13 @@ class UserDescription
      */
     private $hit;
 
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="token", type="string", length=30, nullable=true)
+	 */
+    private $token;
+
     /**
      * @var integer
      *
@@ -153,4 +160,22 @@ class UserDescription
     {
         return $this->id;
     }
+
+	/**
+	 * @param string $token
+	 */
+	public function setToken($token)
+	{
+		$this->token = $token;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getToken()
+	{
+		return $this->token;
+	}
+
+
 }

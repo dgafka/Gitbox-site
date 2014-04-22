@@ -4,6 +4,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}GitBox{% endblock %}</title>
+
+        {# @TODO - Darek zrobić porządek z assetami(te w dziale head również), bo zacznie robić się śmietnik #}
+        {# @TODO Wyłączyć ja jako osobna templatka i zaincludować w head. Sprawdzić czy śmiga. #}
+
         {% block stylesheets %}
             {# Bootstrap styles #}
             <link rel="stylesheet" href="{{ asset('css/bootstrap/bootstrap.min.css') }}" />
@@ -14,6 +18,19 @@
 
             {# Global style #}
             <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
+        {% endblock %}
+        {% block javascripts %}
+            {# jQuery #}
+            <script type="text/javascript" src="{{ asset('js/jquery/jquery.min.js') }}"></script>
+
+            {# Bootstrap scripts #}
+            <script type="text/javascript" src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
+
+            {# Global scripts #}
+            <script type="text/javascript" src="{{ asset('js/main.js') }}"></script>
+
+            {# User account helpers #}
+            <script type="text/javascript" src="{{ asset('js/UserAccount/UserAccount.js') }}"></script>
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 
@@ -55,8 +72,10 @@
                         </li>
                     </ul>
 
+                    {# @TODO - Darek jeśli nie-zalogowany wyświetl UserAccount -> index #}
+                    {# @TODO Jeśli zalogowany wyświetl UserAccount -> logged (czyli napisac akcje + widok) #}
                     {# LOGIN FORM #}
-                    {% render controller("GitboxCoreBundle:LoginForm:render") %}
+                    {% render controller("GitboxCoreBundle:UserAccount:index") %}
                 </div>
             </div>
         </nav>
@@ -82,16 +101,5 @@
         {#<div class="mastfoot">#}
             {#<p class="inner">Stopka | <a href="#">GitBox INC</a></p>#}
         {#</div>#}
-
-        {% block javascripts %}
-            {# jQuery #}
-            <script type="text/javascript" src="{{ asset('js/jquery/jquery.min.js') }}"></script>
-
-            {# Bootstrap scripts #}
-            <script type="text/javascript" src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
-
-            {# Global scripts #}
-            <script type="text/javascript" src="{{ asset('js/main.js') }}"></script>
-        {% endblock %}
     </body>
 </html>
