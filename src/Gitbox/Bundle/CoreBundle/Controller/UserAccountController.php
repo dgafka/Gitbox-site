@@ -89,10 +89,9 @@ class UserAccountController extends Controller
      * @Template()
      */
     public function showAction($login) {
-        // test user
-        $login = 'test';
+        $user['login'] = $login;
 
-        return array();
+        return array('user' => $user);
     }
 
 }

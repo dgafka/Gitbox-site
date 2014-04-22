@@ -1,6 +1,6 @@
 {% extends "::base.html.twig" %}
 
-{% block title %}{{ parent() }} | Profil użytkownika {#{ user.login }#}{% endblock %}
+{% block title %}{{ parent() }} | Profil użytkownika `{{ user.login }}`{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -20,7 +20,7 @@
     <div class="col-md-10">
         <div class="avatar-box">
             <img class="pic img-circle" src="http://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/twDq00QDud4/s120-c/photo.jpg" alt="avatar">
-            <div class="name"><small>Test test</small></div>
+            <div class="name"><small>{{ user.login }}</small></div>
         </div>
 
         <br><br><br>
