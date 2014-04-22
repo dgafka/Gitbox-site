@@ -84,4 +84,15 @@ class UserAccountController extends Controller
     {
     }
 
+    /**
+     * @Route("user/{login}")
+     * @Template()
+     */
+    public function showAction($login) {
+        // test user
+        $login = 'test';
+
+        return array();
+    }
+
 }
