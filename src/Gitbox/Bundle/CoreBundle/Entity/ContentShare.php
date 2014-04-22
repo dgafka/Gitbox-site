@@ -15,7 +15,7 @@ class ContentShare
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="content_share_id_seq", allocationSize=1, initialValue=1)
@@ -23,24 +23,24 @@ class ContentShare
     private $id;
 
     /**
-     * @var \Gitbox\Bundle\CoreBundle\Entity\Content
+     * @var \UserAccount
      *
-     * @ORM\ManyToOne(targetEntity="Gitbox\Bundle\CoreBundle\Entity\Content")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_content", referencedColumnName="id")
-     * })
-     */
-    private $idContent;
-
-    /**
-     * @var \Gitbox\Bundle\CoreBundle\Entity\UserAccount
-     *
-     * @ORM\ManyToOne(targetEntity="Gitbox\Bundle\CoreBundle\Entity\UserAccount")
+     * @ORM\ManyToOne(targetEntity="UserAccount")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_user", referencedColumnName="id")
      * })
      */
     private $idUser;
+
+    /**
+     * @var \Content
+     *
+     * @ORM\ManyToOne(targetEntity="Content")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_content", referencedColumnName="id")
+     * })
+     */
+    private $idContent;
 
 
 

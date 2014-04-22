@@ -3,6 +3,7 @@
   <entity name="Gitbox\Bundle\CoreBundle\Entity\Menu" table="menu">
     <indexes>
       <index name="IDX_7D053A932A1393C5" columns="id_module"/>
+      <index name="IDX_7D053A936B3CA4B" columns="id_user"/>
     </indexes>
     <id name="id" type="integer" column="id">
       <generator strategy="SEQUENCE"/>
@@ -13,6 +14,11 @@
     <field name="status" type="string" column="status" length="1" nullable="false"/>
     <field name="sort" type="integer" column="sort" nullable="true"/>
     <field name="expire" type="date" column="expire" nullable="true"/>
+    <many-to-one field="idUser" target-entity="UserAccount">
+      <join-columns>
+        <join-column name="id_user" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
     <many-to-one field="idModule" target-entity="Module">
       <join-columns>
         <join-column name="id_module" referenced-column-name="id"/>

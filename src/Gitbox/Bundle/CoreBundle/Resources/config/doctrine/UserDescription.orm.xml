@@ -8,5 +8,6 @@
     <field name="banDate" type="date" column="ban_date" nullable="true"/>
     <field name="ip" type="string" column="ip" length="15" nullable="true"/>
     <field name="hit" type="integer" column="hit" nullable="false"/>
+    <field name="token" type="string" column="token" length="32" nullable="true"/>
   </entity>
 </doctrine-mapping>

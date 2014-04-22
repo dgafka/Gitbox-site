@@ -1,0 +1,6 @@
+ALTER TABLE menu
+	ADD COLUMN id_user INT;
+ALTER TABLE menu
+  ADD CONSTRAINT menu_fk_id_user FOREIGN KEY (id_user)
+      REFERENCES user_account (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE CASCADE;

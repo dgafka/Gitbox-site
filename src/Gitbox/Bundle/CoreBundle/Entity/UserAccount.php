@@ -7,11 +7,21 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * UserAccount
  *
- * @ORM\Table(name="user_account", uniqueConstraints={@ORM\UniqueConstraint(name="user_unique_login", columns={"login"}), @ORM\UniqueConstraint(name="email_unique", columns={"email"})}, indexes={@ORM\Index(name="IDX_253B48AE834505F5", columns={"id_group"}), @ORM\Index(name="IDX_253B48AE75F68DD1", columns={"id_description"})})
+ * @ORM\Table(name="user_account", uniqueConstraints={@ORM\UniqueConstraint(name="login_unique", columns={"login"}), @ORM\UniqueConstraint(name="email_unique", columns={"email"})}, indexes={@ORM\Index(name="IDX_253B48AE834505F5", columns={"id_group"}), @ORM\Index(name="IDX_253B48AE75F68DD1", columns={"id_description"})})
  * @ORM\Entity
  */
 class UserAccount
 {
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="user_account_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $id;
+
     /**
      * @var string
      *
@@ -41,19 +51,9 @@ class UserAccount
     private $email;
 
     /**
-     * @var integer
+     * @var \UserGroup
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="user_account_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
-
-    /**
-     * @var \Gitbox\Bundle\CoreBundle\Entity\UserGroup
-     *
-     * @ORM\ManyToOne(targetEntity="Gitbox\Bundle\CoreBundle\Entity\UserGroup")
+     * @ORM\ManyToOne(targetEntity="UserGroup")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_group", referencedColumnName="id")
      * })
@@ -61,9 +61,9 @@ class UserAccount
     private $idGroup;
 
     /**
-     * @var \Gitbox\Bundle\CoreBundle\Entity\UserDescription
+     * @var \UserDescription
      *
-     * @ORM\ManyToOne(targetEntity="Gitbox\Bundle\CoreBundle\Entity\UserDescription")
+     * @ORM\ManyToOne(targetEntity="UserDescription")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_description", referencedColumnName="id")
      * })
@@ -73,7 +73,7 @@ class UserAccount
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Gitbox\Bundle\CoreBundle\Entity\Module", inversedBy="idUser")
+     * @ORM\ManyToMany(targetEntity="Module", inversedBy="idUser")
      * @ORM\JoinTable(name="user_modules",
      *   joinColumns={
      *     @ORM\JoinColumn(name="id_user", referencedColumnName="id")
