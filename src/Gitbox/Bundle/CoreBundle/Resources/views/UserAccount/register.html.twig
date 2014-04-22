@@ -3,7 +3,6 @@
 {% block title %}Register{% endblock %}
 
 {% block content_inner %}
-<div class="jumbojumba">
     {{ form_start(form) }}
         {{ form_errors(form) }}
         <div class="form-group">
@@ -13,11 +12,9 @@
             {{ form_label(form.email) }}
             {{ form_widget(form.email) }}
 
-            {{ form_label(form.password) }}
             {{ form_widget(form.password) }}
         </div>
 
     {{ form_end(form) }}
-</div>
 {% endblock %}
 

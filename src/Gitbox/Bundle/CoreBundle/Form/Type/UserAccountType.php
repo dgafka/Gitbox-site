@@ -55,7 +55,7 @@ class UserAccountType extends AbstractType
                 'second_options' => array(
                     'label' => 'Powtórz hasło',
                     'attr' => array('placeholder' => 'Powtórz swoje hasło', 'class' => 'form-control')
-                ),
+                )
             ))
             ->add('save', 'submit', array(
                 'label'  => 'Utwórz konto',
