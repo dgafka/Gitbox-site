@@ -39,7 +39,6 @@ class UserAccountType extends AbstractType
 			))
 
 			->add('password', 'repeated', array(
-                'label' => '',
                 'type' => 'password',
                 'options' => array(
                     'label_attr'    => array(
