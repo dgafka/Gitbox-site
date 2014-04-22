@@ -22,7 +22,7 @@ class UserAccountController extends Controller
     }
 
     /** Tworzy widok z formularzem do zajerestrownia użytkownika.
-     * @Route("User/Register")
+     * @Route("user/register")
      * @Template()
      */
     public function registerAction(Request $request)
@@ -69,7 +69,7 @@ class UserAccountController extends Controller
     }
 
     /**
-     * @Route("User/Login")
+     * @Route("user/login")
      * @Template()
      */
     public function loginAction()
@@ -77,7 +77,7 @@ class UserAccountController extends Controller
     }
 
     /**
-     * @Route("User/LoginSubmit")
+     * @Route("user/login/submit")
      * @Template()
      */
     public function loginSubmitAction()

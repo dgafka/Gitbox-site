@@ -87,8 +87,10 @@
         {# CONTENT #}
         {% block content %}
         <div class="container whitened main-window">
-            {% block content_inner %}
-            {% endblock %}
+            <div class="jumbojumba">
+                {% block content_inner %}
+                {% endblock %}
+            </div>
         </div>
         {% endblock %}
 

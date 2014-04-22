@@ -10,11 +10,12 @@ class UserAccountType extends AbstractType
 	{
 		$builder
 			->add('login', 'text', array(
+                'label'  => 'Nazwa użytkownika',
 				'attr'=> array (
 					'class'       => 'form-control',
-					'placeholder' => 'Put login here...'
+					'placeholder' => 'Nazwa użytkownika nowego konta',
 				),
-				'label_attr'   => array(
+				'label_attr'    => array(
 					'class'     => 'col-sm-2 control-label'
 				),
 				'required'     => true,
@@ -24,11 +25,12 @@ class UserAccountType extends AbstractType
 			))
 
 			->add('email', 'text', array(
+                'label'  => 'E-mail',
 				'attr'=> array (
 					'class'       => 'form-control',
-					'placeholder' => 'Put email here...'
+					'placeholder' => 'Twój e-mail'
 				),
-				'label_attr'   => array(
+				'label_attr'    => array(
 					'class'     => 'col-sm-2 control-label'
 				),
 				'required'     => true,
@@ -36,19 +38,28 @@ class UserAccountType extends AbstractType
 				'trim'         => true,
 			))
 
-			->add('password', 'password', array(
-				'attr'=> array (
-					'class'       => 'form-control',
-					'placeholder' => 'Put password here...'
-				),
-				'label_attr'   => array(
-					'class'     => 'col-sm-2 control-label'
-				),
-				'required'     => true,
-				'max_length'   => 50,
-				'trim'         => true,
+			->add('password', 'repeated', array(
+                'label' => '',
+                'type' => 'password',
+                'options' => array(
+                    'label_attr'    => array(
+                        'class'     => 'col-sm-2 control-label'
+                    ),
+                    'required'     => true,
+                    'max_length'   => 50,
+                    'trim'         => true
+                ),
+                'first_options'  => array(
+                    'label' => 'Hasło',
+                    'attr' => array('placeholder' => 'Twoje hasło', 'class' => 'form-control')
+                ),
+                'second_options' => array(
+                    'label' => 'Powtórz hasło',
+                    'attr' => array('placeholder' => 'Powtórz swoje hasło', 'class' => 'form-control')
+                ),
 			))
 			->add('save', 'submit', array(
+                'label'  => 'Utwórz konto',
 				'attr'=> array (
 					'class' => 'btn btn-default'
 				)
