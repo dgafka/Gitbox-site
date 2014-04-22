@@ -42,14 +42,18 @@ assetic:
         #yui_css:
         #    jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
     assets:
+        jquery:
+            inputs:
+                - %kernel.root_dir%/../vendor/yiisoft/jquery/jquery.js
         bootstrap_css:
             inputs:
                 - %kernel.root_dir%/../vendor/twbs/bootstrap/dist/css/bootstrap.min.css
-            output: css/bootstrap.css
         bootstrap_js:
             inputs:
                 - %kernel.root_dir%/../vendor/twbs/bootstrap/dist/js/bootstrap.min.js
-            output: js/bootstrap.js
+        bootstrap_icons:
+            inputs:
+                - %kernel.root_dir%/../vendor/twbs/bootstrap/dist/fonts/*
 
 # Doctrine Configuration
 doctrine:

@@ -22,6 +22,7 @@ class UserAccountController extends Controller
      */
     public function RegisterAction()
     {
+	    return array();
     }
 
     /**
