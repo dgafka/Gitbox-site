@@ -10,27 +10,68 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 
 class UserAccountController extends Controller
 {
-    /**
+    /** Klasa odpowiadająca za formularz do logowania, gdy użytkownik niezalogowany
      * @Template()
      */
     public function indexAction(Request $request)
     {
+	    $session = $request->getSession();
+		if(is_null($session)) {
+			$session = new Session();
+			$session->start();
+			$request->setSession($session);
+		}
 	    $userAccount = new UserAccount();
+	    //Pobranie zmiennych z $_POST i $_GET, zwazywszy na to, ze gubilo parametry
+	    $request = Request::createFromGlobals();
 
 	    $form = $this->createForm(new UserAccountLoginType(), $userAccount);
-
 	    $form->handleRequest($request);
 
+	    if(!is_null($session->get('userId'))) {
+		    return $this->render('GitboxCoreBundle:UserAccount:index.html.twig', array(
+			    'session' => true,
+		    ));
+	    }
+
 	    if($form->isValid()) {
-			var_dump($userAccount);
+		    $em = $this->getDoctrine()->getManager();
+		    /**
+		     * @param $userGroup \Gitbox\Bundle\CoreBundle\Entity\UserGroup
+		     */
+		    $userAccount = $em->getRepository('\Gitbox\Bundle\CoreBundle\Entity\UserAccount')->findOneBy(array('email' => $userAccount->getEmail(), 'password' => $userAccount->getPassword(), 'status' => 'A'));
+
+		    if($userAccount instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount) {
+
+				$session->set('username', $userAccount->getLogin());
+			    $session->set('userId', $userAccount->getId());
+
+			    $ip = null;
+			    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+				    $ip = $_SERVER['HTTP_CLIENT_IP'];
+			    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+				    $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+			    } else {
+				    $ip = $_SERVER['REMOTE_ADDR'];
+			    }
+			    $userAccount->getIdDescription()->setIp($ip);
+				$em->persist($userAccount);
+			    $em->flush();
+
+			    return $this->render('GitboxCoreBundle:UserAccount:index.html.twig', array(
+				    'session' => true,
+			    ));
+		    }
 	    }
 
 	    return $this->render('GitboxCoreBundle:UserAccount:index.html.twig', array(
 		    'form' => $form->createView(),
+		    'session' => false,
 	    ));
     }
 
@@ -84,36 +125,25 @@ class UserAccountController extends Controller
         ));
     }
 
+	/** Akcja odpwiedzialna za wylogowanie użytkownika
+	 * @Template()
+	 * @Route("user/logout")
+	 */
+	public function logoutAction(Request $request) {
+		$session = $request->getSession();
+		if(!is_null($session)) {
+			$session->clear();
+		}
+
+		$this->redirect($this->generateUrl('home_url'));
+	}
+
     /**
      * @Template()
      */
     public function registerSubmitAction($userName)
     {
 	    return array('name' => $userName);
-    }
-
-    /**
-     * @Route("user/login")
-     * @Template()
-     */
-    public function loginAction()
-    {
-	    $userAccount = new UserAccount();
-
-	    $form = $this->createForm(new UserAccountType(), $userAccount);
-
-	    return $this->render('GitboxCoreBundle:UserAccount:login.html.twig', array(
-		    'form' => $form->createView(),
-	    ));
-    }
-
-    /**
-     * @Route("user/login/submit")
-     * @Template()
-     */
-    public function loginSubmitAction()
-    {
-	    return array();
     }
 
 	/**

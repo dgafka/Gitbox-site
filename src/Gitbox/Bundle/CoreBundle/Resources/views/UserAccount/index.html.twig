@@ -1,5 +1,14 @@
 {% block user_menu_items %}
     <ul class="nav navbar-nav navbar-right">
+
+        {% if session == true %}
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Moje Konto</a>
+                <div class="dropdown-menu login-dropdown">
+                    <p><a href="{{ path('gitbox_core_useraccount_logout') }}">Wyloguj</a></p>
+                </div>
+            </li>
+        {% else %}
         {# Before login #}
         <li class="{% if app.request.attributes.get('_route') == 'gitbox_core_useraccount_register' %}active{% endif %}"><a href="{{ path('gitbox_core_useraccount_register') }}"><b class="glyphicon glyphicon-fire"></b>Zarejestruj się</a></li>
         <li class="dropdown">
@@ -18,5 +27,6 @@
                 {{ form_end(form) }}
             </div>
         </li>
+        {% endif %}
     </ul>
 {% endblock %}
