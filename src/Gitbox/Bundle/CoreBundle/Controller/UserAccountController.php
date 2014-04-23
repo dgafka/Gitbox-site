@@ -10,7 +10,6 @@ use Gitbox\Bundle\CoreBundle\Form\Type\UserAccountType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-//use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -20,7 +19,6 @@ class UserAccountController extends Controller
     /** Klasa odpowiadająca za formularz do logowania, gdy użytkownik niezalogowany
      * @Template()
      */
-    // @Method("POST")
     public function indexAction(Request $request)
     {
 	    $session = $request->getSession();
@@ -43,39 +41,36 @@ class UserAccountController extends Controller
 		    ));
 	    }
 
-//        if ($this->get('request_stack')->getCurrentRequest()->isMethod('POST')) {
-//            $form->bindRequest($this->$this->get('request_stack')->getCurrentRequest());
-            if($form->isValid()) {
-                $em = $this->getDoctrine()->getManager();
-                /**
-                 * @param $userGroup \Gitbox\Bundle\CoreBundle\Entity\UserGroup
-                 */
-                $userAccount = $em->getRepository('\Gitbox\Bundle\CoreBundle\Entity\UserAccount')->findOneBy(array('email' => $userAccount->getEmail(), 'password' => $userAccount->getPassword(), 'status' => 'A'));
+	    if($form->isValid()) {
+		    $em = $this->getDoctrine()->getManager();
+		    /**
+		     * @param $userGroup \Gitbox\Bundle\CoreBundle\Entity\UserGroup
+		     */
+		    $userAccount = $em->getRepository('\Gitbox\Bundle\CoreBundle\Entity\UserAccount')->findOneBy(array('email' => $userAccount->getEmail(), 'password' => $userAccount->getPassword(), 'status' => 'A'));
 
-                if($userAccount instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount) {
+		    if($userAccount instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount) {
 
-                    $session->set('username', $userAccount->getLogin());
-                    $session->set('userId', $userAccount->getId());
+				$session->set('username', $userAccount->getLogin());
+			    $session->set('userId', $userAccount->getId());
 
-                    $ip = null;
-                    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-                        $ip = $_SERVER['HTTP_CLIENT_IP'];
-                    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-                        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-                    } else {
-                        $ip = $_SERVER['REMOTE_ADDR'];
-                    }
-                    $userAccount->getIdDescription()->setIp($ip);
-                    $em->persist($userAccount);
-                    $em->flush();
+			    $ip = null;
+			    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+				    $ip = $_SERVER['HTTP_CLIENT_IP'];
+			    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+				    $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+			    } else {
+				    $ip = $_SERVER['REMOTE_ADDR'];
+			    }
+			    $userAccount->getIdDescription()->setIp($ip);
+				$em->persist($userAccount);
+			    $em->flush();
 
-                    return $this->render('GitboxCoreBundle:UserAccount:index.html.twig', array(
-                        'session' => true,
-                        'username'  => $session->get('username'),
-                    ));
-                }
-            }
-//        }
+			    return $this->render('GitboxCoreBundle:UserAccount:index.html.twig', array(
+				    'session' => true,
+				    'username'  => $session->get('username'),
+			    ));
+		    }
+	    }
 
 	    return $this->render('GitboxCoreBundle:UserAccount:index.html.twig', array(
 		    'form' => $form->createView(),

@@ -3,7 +3,6 @@ namespace Gitbox\Bundle\CoreBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-//use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class UserAccountType extends AbstractType
 {
@@ -71,11 +70,5 @@ class UserAccountType extends AbstractType
 	{
 		return 'userAccount';
 	}
-
-//    public function setDefaultOptions(OptionsResolverInterface $resolver) {
-//        $resolver->setDefaults(array(
-//            'csrf_protection' => false
-//        ));
-//    }
 
 }
