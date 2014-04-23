@@ -1,26 +1,6 @@
 body {
     background-color: lightblue;
-	
     color: #333333;
-}
-
-.form-group {
-
-    text-align: left;
-}
-
-.register{
-    min-width: 400px;
-    background: lightgray;
-    border-radius: 10px;
-    float: right;
-    text-align: right;
-    padding: 15px;
-    margin: 0;
-}
-
-.jumbojumba {
-    
 }
 
 .main-window {
@@ -118,6 +98,11 @@ a.badge-button:focus {
     }
 }
 
+.register-form {
+    margin: 0px auto;
+    max-width: 500px;
+}
+
 /* ------------------------------------- */
 .home-page-container {
     position: relative;
@@ -134,12 +119,10 @@ a.badge-button:focus {
 }
 
 .container {
-    margin-top: 60px;
-    padding-top: 15px;
+    margin-top: 50px;
 }
 
 .jumbojumba {
-    
     padding: 10px;
     margin-bottom: 30px;
     font-size: 12px;
@@ -159,8 +142,8 @@ a.badge-button:focus {
         padding-bottom: 24px;
     }
     .container .jumbojumba {
-        padding-left: 24px;
-        padding-right: 24px;
+        padding-left: 40px;
+        padding-right: 40px;
     }
     .jumbojumba h1 {
         font-size: 36px;
@@ -222,6 +205,4 @@ a.badge-button:focus {
     .mastfoot {
         font-size: 10px;
     }
-
-	
 }
