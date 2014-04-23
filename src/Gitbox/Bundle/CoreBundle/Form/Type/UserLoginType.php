@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 
-class UserAccountLoginType extends AbstractType {
+class UserLoginType extends AbstractType {
 
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
@@ -48,6 +48,6 @@ class UserAccountLoginType extends AbstractType {
 
 	public function getName()
 	{
-		return 'userAccountLogin';
+		return 'userLogin';
 	}
 } 

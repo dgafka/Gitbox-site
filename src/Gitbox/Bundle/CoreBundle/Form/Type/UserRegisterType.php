@@ -4,7 +4,7 @@ namespace Gitbox\Bundle\CoreBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class UserAccountType extends AbstractType
+class UserRegisterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -68,7 +68,7 @@ class UserAccountType extends AbstractType
 
 	public function getName()
 	{
-		return 'userAccount';
+		return 'userRegister';
 	}
 
 }
