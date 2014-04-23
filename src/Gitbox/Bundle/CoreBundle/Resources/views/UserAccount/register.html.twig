@@ -3,8 +3,11 @@
 {% block title %}Register{% endblock %}
 
 {% block content_inner %}
+    <div class="register">
     {{ form_start(form) }}
         {{ form_errors(form) }}
+        
+        <h1>Rejestracja</h1>
         <div class="form-group">
             {{ form_label(form.email) }}
             {{ form_widget(form.email) }}
@@ -15,6 +18,8 @@
             {{ form_widget(form.password) }}
         </div>
 
+
     {{ form_end(form) }}
+    </div>
 {% endblock %}
 
