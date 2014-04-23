@@ -1,6 +1,20 @@
 body {
     background-color: lightblue;
+	
     color: #333333;
+}
+
+.form-group {
+
+    text-align: left;
+}
+
+.jumbojumba {
+    min-width: 400px;
+    background: lightgray;
+    border-radius: 15px;
+    float: right;
+    text-align: right;
 }
 
 .main-window {
@@ -114,10 +128,12 @@ a.badge-button:focus {
 }
 
 .container {
-    margin-top: 50px;
+    margin-top: 60px;
+    padding-top: 15px;
 }
 
 .jumbojumba {
+    
     padding: 10px;
     margin-bottom: 30px;
     font-size: 12px;
@@ -200,4 +216,6 @@ a.badge-button:focus {
     .mastfoot {
         font-size: 10px;
     }
+
+	
 }
