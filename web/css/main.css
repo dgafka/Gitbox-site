@@ -9,12 +9,18 @@ body {
     text-align: left;
 }
 
-.jumbojumba {
+.register{
     min-width: 400px;
     background: lightgray;
-    border-radius: 15px;
+    border-radius: 10px;
     float: right;
     text-align: right;
+    padding: 15px;
+    margin: 0;
+}
+
+.jumbojumba {
+    
 }
 
 .main-window {
@@ -153,8 +159,8 @@ a.badge-button:focus {
         padding-bottom: 24px;
     }
     .container .jumbojumba {
-        padding-left: 40px;
-        padding-right: 40px;
+        padding-left: 24px;
+        padding-right: 24px;
     }
     .jumbojumba h1 {
         font-size: 36px;

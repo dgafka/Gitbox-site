@@ -16,7 +16,7 @@ class UserAccountType extends AbstractType
                     'placeholder' => 'Twój e-mail'
                 ),
                 'label_attr'    => array(
-                    'class'     => 'col-sm-2 control-label'
+                    'class'     => ' control-label'
                 ),
                 'required'     => true,
                 'max_length'   => 50,
@@ -30,7 +30,7 @@ class UserAccountType extends AbstractType
                     'placeholder' => 'Nazwa użytkownika nowego konta',
                 ),
                 'label_attr'    => array(
-                    'class'     => 'col-sm-2 control-label'
+                    'class'     => ' control-label'
                 ),
                 'required'     => true,
                 'max_length'   => 25,
@@ -42,7 +42,7 @@ class UserAccountType extends AbstractType
                 'type' => 'password',
                 'options' => array(
                     'label_attr'    => array(
-                        'class'     => 'col-sm-2 control-label'
+                        'class'     => ' control-label'
                     ),
                     'required'     => true,
                     'max_length'   => 50,
