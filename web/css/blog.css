@@ -1,0 +1,37 @@
+.post-in-the-box {
+    padding: 10px;
+}
+
+.post-in-the-box:hover,
+.post-in-the-box:focus {
+    border: 2px solid lightskyblue;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.divider {
+    height: 2px;
+    border-width: 0;
+    color: lightgray;
+    background-color: lightgray;
+}
+
+.avatar-box {
+    color: gray;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.no-decoration,
+.no-decoration:hover {
+    text-decoration: none;
+}
+
+.keep-color,
+.keep-color:hover {
+    color: inherit;
+}
+
+.comments-link-container {
+    margin-top: 30px;
+}

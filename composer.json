@@ -21,7 +21,7 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "yiisoft/jquery": "2.1.0",
         "twbs/bootstrap": "3.0.*@dev",
-        "excelwebzone/recaptcha-bundle": "*"
+        "excelwebzone/recaptcha-bundle": "v1.0.0"
     },
     "scripts": {
         "post-install-cmd": [
