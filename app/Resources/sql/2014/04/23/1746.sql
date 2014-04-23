@@ -1,0 +1,2 @@
+ALTER TABLE content
+  ALTER COLUMN id_menu DROP NOT NULL;

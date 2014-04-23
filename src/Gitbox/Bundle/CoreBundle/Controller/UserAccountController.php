@@ -155,7 +155,7 @@ class UserAccountController extends Controller
 	}
 
     /**
-     * @Route("user/{login}")
+     * @Route("user/{login}", name="user_profile_url")
      * @Template()
      */
     public function showAction($login) {

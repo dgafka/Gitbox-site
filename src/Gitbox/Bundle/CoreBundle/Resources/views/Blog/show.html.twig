@@ -1,0 +1,118 @@
+{% extends "GitboxCoreBundle:Blog:layout.html.twig" %}
+
+{% block title %}{{ parent() }} | „{{ post.title }}”{% endblock %}
+
+{% block content_inner %}
+<div class="row">
+    <div class="col-lg-8">
+
+        {# post #}
+        <div class="post-in-the-box">
+            <h1>{{ post.title }}</h1>
+            <p><span class="glyphicon glyphicon-time"></span> <b>Utworzono</b> {{ post.create_date }}</p>
+            <p><span class="glyphicon glyphicon-time"></span> <b>Ostatnio edytowano</b> {{ post.modification_date }}</p>
+            {# TODO: rating #}
+            <hr>
+
+            <p class="lead">Lubimy placki.</p>
+            <p>{{ post.description }}</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit mi vitae sodales faucibus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Praesent sit amet sapien sagittis, euismod dui at, gravida tortor. Suspendisse vulputate ultrices dui, semper dictum nisl tincidunt nec. Cras ultrices, magna nec mattis gravida, diam diam sagittis leo, vitae eleifend nunc orci et orci. Curabitur pulvinar, justo in ultrices sollicitudin, justo tortor auctor risus, vel sodales turpis massa quis orci. In nec aliquam odio, vestibulum luctus lectus. Cras urna sapien, pellentesque vitae mollis eget, bibendum varius ligula.</p>
+            <p>Aenean elementum scelerisque interdum. Aliquam imperdiet ullamcorper eros vitae pharetra. Sed quis sem a felis porta gravida sit amet et est. Maecenas mollis imperdiet ante. Mauris ut lectus sit amet tortor mollis porta in vel tellus. Nulla facilisi. Fusce velit elit, consequat eu pretium id, aliquet a nunc. Nam id diam dolor. Nullam dui augue, euismod vitae tortor a, feugiat sagittis nisl. Aliquam eu mauris eget nulla vulputate tincidunt a nec arcu. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Pellentesque at tristique nulla.</p>
+            <p>Quisque non mi vitae mauris posuere consectetur nec sed ligula. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nunc volutpat ac mauris sit amet dapibus. Curabitur sit amet sem at odio varius elementum vel sed nibh. Nullam faucibus neque velit, ac gravida mi aliquet vel. Fusce lectus lorem, aliquet ac ultrices gravida, commodo pretium sapien. Nunc sed sem quis velit molestie facilisis.</p>
+        </div>
+        <hr>
+
+        {# komentarze #}
+        <div id="comments-content">
+            <div id="add-comment" class="well">
+                <h4>Napisz komentarz:</h4>
+                <form role="form">
+                    <div class="form-group">
+                        <textarea class="form-control" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+            <hr>
+
+            <div id="comments">
+                <div class="comment">
+                    <h3>
+                        <a class="no-decoration keep-color" href="{{ path('user_post', {'login': user.login, 'id': post.id}) }}">user #1</a>
+                        <small>Wed 23, 04 2014  15:48:48</small>
+                    </h3>
+                    <p>Śmierdź</p>
+                </div>
+                <div class="comment">
+                    <h3>
+                        <a class="no-decoration keep-color" href="{{ path('user_post', {'login': user.login, 'id': post.id}) }}">user #2</a>
+                        <small>Thu 24, 04 2014  14:29:59</small>
+                    </h3>
+                </div>
+            </div>
+            <p>Uff! Zdążyliśmy...</p>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="avatar-box">
+            <a class="no-decoration keep-color" href="{{ path('user_profile_url', {'login': user.login}) }}">
+                <img class="pic img-circle" src="http://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/twDq00QDud4/s120-c/photo.jpg" alt="avatar">
+                <div class="name">{{ user.login }}</div>
+            </a>
+            <div class="profile-info">
+                <h6><b>Dołączył </b>Wed 23, 04 2014  15:48:48</h6>
+                <h6><b>Wejścia </b>123</h6>
+                <h6><b>Średnia ocen </b>4.99</h6>
+                <h6><b>Ilość postów </b>6</h6>
+                {# TODO: ban_date if status == 'B' #}
+            </div>
+        </div>
+
+        <div class="well">
+            <h4>Wyszukaj na blogu użytkownika</h4>
+            <div class="input-group">
+                <input type="text" class="form-control">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                </span>
+            </div>
+        </div>
+
+        <div class="well">
+            <h4>Popularne kategorie</h4>
+            <div class="row">
+                <div class="col-lg-6">
+                    <ul class="list-unstyled">
+                        <li><a href="#mama">Mama</a>
+                        </li>
+                        <li><a href="#tata">Tata</a>
+                        </li>
+                        <li><a href="#placki">Placki</a>
+                        </li>
+                        <li><a href="#kacper">Kacper</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-6">
+                    <ul class="list-unstyled">
+                        <li><a href="#konsole">Konsole</a>
+                        </li>
+                        <li><a href="#gry-komputerowe">Gry komputerowe</a>
+                        </li>
+                        <li><a href="#rozrywka">Rozrywka</a>
+                        </li>
+                        <li><a href="#podróże">Podróże</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+
+</div>
+{% endblock %}
