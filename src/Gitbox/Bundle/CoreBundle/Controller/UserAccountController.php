@@ -79,7 +79,7 @@ class UserAccountController extends Controller
     }
 
     /** Tworzy widok z formularzem do zajerestrownia użytkownika.
-     * @Route("user/register")
+     * @Route("user/register", name="user_register_url")
      * @Template()
      */
     public function registerAction(Request $request)
@@ -137,7 +137,7 @@ class UserAccountController extends Controller
 
 	/** Akcja odpwiedzialna za wylogowanie użytkownika
 	 * @Template()
-	 * @Route("user/logout")
+	 * @Route("user/logout", name="user_logout_url")
 	 */
 	public function logoutAction(Request $request) {
 		$session = $request->getSession();
@@ -157,7 +157,7 @@ class UserAccountController extends Controller
     }
 
 	/** Akcja dla odzyskania hasła
-	 * @Route("user/getMyPasswordBack")
+	 * @Route("user/getMyPasswordBack", name="user_recover_password_url")
 	 * @Template()
 	 */
 	public function forgottenPasswordAction() {
