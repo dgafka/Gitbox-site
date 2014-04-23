@@ -103,6 +103,12 @@ a.badge-button:focus {
     max-width: 500px;
 }
 
+.centered-form {
+    margin: 0px auto;
+    max-width: 80%;
+    text-align: center;
+}
+
 /* ------------------------------------- */
 .home-page-container {
     position: relative;
