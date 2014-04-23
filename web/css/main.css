@@ -175,3 +175,7 @@ a.badge-button:focus {
         font-size: 10px;
     }
 }
+
+.form-group {
+    min-width: 300px;
+}

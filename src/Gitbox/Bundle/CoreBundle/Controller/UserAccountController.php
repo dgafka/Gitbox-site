@@ -4,6 +4,7 @@ namespace Gitbox\Bundle\CoreBundle\Controller;
 
 use Gitbox\Bundle\CoreBundle\Entity\UserAccount;
 use Gitbox\Bundle\CoreBundle\Entity\UserDescription;
+use Gitbox\Bundle\CoreBundle\Form\Type\UserAccountLoginType;
 use Gitbox\Bundle\CoreBundle\Form\Type\UserAccountType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +19,13 @@ class UserAccountController extends Controller
      */
     public function indexAction()
     {
-        return array();
+	    $userAccount = new UserAccount();
+
+	    $form = $this->createForm(new UserAccountLoginType(), $userAccount);
+
+	    return $this->render('GitboxCoreBundle:UserAccount:index.html.twig', array(
+		    'form' => $form->createView(),
+	    ));
     }
 
     /** Tworzy widok z formularzem do zajerestrownia użytkownika.
@@ -85,6 +92,13 @@ class UserAccountController extends Controller
      */
     public function loginAction()
     {
+	    $userAccount = new UserAccount();
+
+	    $form = $this->createForm(new UserAccountType(), $userAccount);
+
+	    return $this->render('GitboxCoreBundle:UserAccount:login.html.twig', array(
+		    'form' => $form->createView(),
+	    ));
     }
 
     /**
@@ -93,7 +107,16 @@ class UserAccountController extends Controller
      */
     public function loginSubmitAction()
     {
+	    return array();
     }
+
+	/**
+	 * @Route("user/getMyPasswordBack")
+	 * @Template()
+	 */
+	public function forgottenPasswordAction() {
+		return array();
+	}
 
     /**
      * @Route("user/{login}")
