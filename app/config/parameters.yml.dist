@@ -1,0 +1,14 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_driver: pdo_pgsql
+    database_host: 192.168.0.11
+    database_port: 5432
+    database_name: gitbox
+    database_user: gitbox
+    database_password: gitbox
+    mailer_transport: gmail
+    mailer_host: ~
+    mailer_user: gitboxswiftmailer@gmail.com
+    mailer_password: gitbox123
+    locale: en
+    secret: ThisTokenIsNotSoSecretChangeIt
