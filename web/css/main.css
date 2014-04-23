@@ -76,6 +76,26 @@ a.badge-button:focus {
 
 .login-dropdown {
     padding: 15px;
+    max-width: 400px;
+    width: 200px;
+}
+
+@media screen and (min-width: 800px) {
+    .login-dropdown {
+        width: 175px;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .login-dropdown {
+        width: 225px;
+    }
+}
+
+@media screen and (min-width: 1367px) {
+    .login-dropdown {
+        width: 300px;
+    }
 }
 
 /* ------------------------------------- */
@@ -122,6 +142,12 @@ a.badge-button:focus {
     }
     .jumbojumba h1 {
         font-size: 36px;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .container {
+        width: 87%;
     }
 }
 
@@ -174,8 +200,4 @@ a.badge-button:focus {
     .mastfoot {
         font-size: 10px;
     }
-}
-
-.form-group {
-    min-width: 300px;
 }

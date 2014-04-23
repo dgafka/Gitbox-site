@@ -11,11 +11,11 @@ class UserAccountLoginType extends AbstractType {
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder
-			->add('email', 'text', array(
-				'label'  => 'Email',
+			->add('email', 'email', array(
+				'label'  => 'E-mail',
 				'attr'=> array (
 					'class'       => 'form-control',
-					'placeholder' => 'Twój e-mail'
+					'placeholder' => 'E-mail'
 				),
 				'label_attr'    => array(
 					'class'     => 'col-sm-2 control-label'
@@ -27,14 +27,16 @@ class UserAccountLoginType extends AbstractType {
 
 			->add('password', 'password', array(
 				'label' => 'Hasło',
+                'attr' => array(
+                    'placeholder' => 'Hasło',
+                    'class' => 'form-control'
+                ),
 				'label_attr'    => array(
 					'class'     => 'col-sm-2 control-label'
 				),
 				'required'     => true,
 				'max_length'   => 50,
-				'trim'         => true,
-				'attr' => array('placeholder' => 'Twoje hasło', 'class' => 'form-control')
-
+				'trim'         => true
 			))
 			->add('save', 'submit', array(
 				'label'  => 'Zaloguj',

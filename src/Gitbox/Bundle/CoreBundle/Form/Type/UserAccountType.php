@@ -9,6 +9,20 @@ class UserAccountType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('email', 'email', array(
+                'label'  => 'E-mail',
+                'attr'=> array (
+                    'class'       => 'form-control',
+                    'placeholder' => 'Twój e-mail'
+                ),
+                'label_attr'    => array(
+                    'class'     => 'col-sm-2 control-label'
+                ),
+                'required'     => true,
+                'max_length'   => 50,
+                'trim'         => true,
+            ))
+
             ->add('login', 'text', array(
                 'label'  => 'Nazwa użytkownika',
                 'attr'=> array (
@@ -22,20 +36,6 @@ class UserAccountType extends AbstractType
                 'max_length'   => 25,
                 'trim'         => true,
 
-            ))
-
-            ->add('email', 'text', array(
-                'label'  => 'E-mail',
-                'attr'=> array (
-                    'class'       => 'form-control',
-                    'placeholder' => 'Twój e-mail'
-                ),
-                'label_attr'    => array(
-                    'class'     => 'col-sm-2 control-label'
-                ),
-                'required'     => true,
-                'max_length'   => 50,
-                'trim'         => true,
             ))
 
             ->add('password', 'repeated', array(
@@ -57,6 +57,7 @@ class UserAccountType extends AbstractType
                     'attr' => array('placeholder' => 'Powtórz swoje hasło', 'class' => 'form-control')
                 )
             ))
+
             ->add('save', 'submit', array(
                 'label'  => 'Utwórz konto',
                 'attr'=> array (
