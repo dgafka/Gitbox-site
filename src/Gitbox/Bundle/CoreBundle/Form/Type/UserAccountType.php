@@ -70,10 +70,4 @@ class UserAccountType extends AbstractType
 		return 'task';
 	}
 
-	public function setDefaultOptions(OptionsResolverInterface $resolver)
-	{
-		$resolver->setDefaults(array(
-			'data_class' => 'Gitbox\Bundle\CoreBundle\Entity\UserAccount',
-		));
-	}
 }
