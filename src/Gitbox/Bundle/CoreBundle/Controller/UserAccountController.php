@@ -31,7 +31,7 @@ class UserAccountController extends Controller
 	    //Pobranie zmiennych z $_POST i $_GET, zwazywszy na to, ze gubilo parametry
 	    $request = Request::createFromGlobals();
 
-	    $form = $this->createForm(new UserAccountLoginType(), $userAccount);
+	    $form = $this->createForm(new UserAccountLoginType(), $userAccount, array('csrf_protection' => false));
 	    $form->handleRequest($request);
 
 	    if(!is_null($session->get('userId'))) {
