@@ -80,3 +80,9 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+services:
+    Gitbox.Gravatar.twig.extension:
+        class: Gitbox\Bundle\CoreBundle\TwigExtension\Gravatar
+        tags:
+            -  { name: twig.extension }
