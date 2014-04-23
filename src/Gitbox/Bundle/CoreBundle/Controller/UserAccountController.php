@@ -35,18 +35,17 @@ class UserAccountController extends Controller
 
 	    if($form->isValid()) {
 		    return $this->forward('GitboxCoreBundle:UserAccount:registerSubmit', array(
-					array(
 						'user'   => $user
-					)
 		    ));
 	    }
 
 	    return $this->render('GitboxCoreBundle:UserAccount:register.html.twig', array(
-		    'form' => $form->createView(),
+		            'form' => $form->createView(),
 	    ));
     }
 
     /**
+     * @Route("/user/registerSubmit/{id}")
      * @Template()
      */
     public function registerSubmitAction(UserAccount $userAccount)

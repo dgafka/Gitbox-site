@@ -3,6 +3,7 @@ namespace Gitbox\Bundle\CoreBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class UserAccountType extends AbstractType
 {
@@ -68,5 +69,12 @@ class UserAccountType extends AbstractType
 	public function getName()
 	{
 		return 'task';
+	}
+
+	public function setDefaultOptions(OptionsResolverInterface $resolver)
+	{
+		$resolver->setDefaults(array(
+			'data_class' => 'Gitbox\Bundle\CoreBundle\Entity\UserAccount',
+		));
 	}
 }
