@@ -166,7 +166,7 @@ class UserAccountController extends Controller
 
 
     /** Akcja dla ukazania profilu usera
-     * @Route("user/{login}")
+     * @Route("user/{login}", name="user_profile_url")
      * @Template()
      */
     public function showAction($login) {
