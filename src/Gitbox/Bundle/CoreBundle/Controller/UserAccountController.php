@@ -18,7 +18,7 @@ class UserAccountController extends Controller
      */
     public function indexAction()
     {
-	    return array();
+        return array();
     }
 
     /** Tworzy widok z formularzem do zajerestrownia użytkownika.
@@ -27,25 +27,25 @@ class UserAccountController extends Controller
      */
     public function registerAction(Request $request)
     {
-	    $user = new UserAccount();
+        $user = new UserAccount();
 
-	    $form = $this->createForm(new UserAccountType(), $user);
+        $form = $this->createForm(new UserAccountType(), $user);
 
-	    $form->handleRequest($request);
+        $form->handleRequest($request);
 
-	    if($form->isValid()) {
-		    return $this->forward('GitboxCoreBundle:UserAccount:registerSubmit', array(
-						'user'   => $user
-		    ));
-	    }
+        if($form->isValid()) {
+            return $this->forward('GitboxCoreBundle:UserAccount:registerSubmit', array(
+                'user' => $user
+            ));
+        }
 
-	    return $this->render('GitboxCoreBundle:UserAccount:register.html.twig', array(
-		            'form' => $form->createView(),
-	    ));
+        return $this->render('GitboxCoreBundle:UserAccount:register.html.twig', array(
+            'form' => $form->createView(),
+        ));
     }
 
     /**
-     * @Route("/user/registerSubmit/{id}")
+     * @Route("user/register/submit")
      * @Template()
      */
     public function registerSubmitAction(UserAccount $userAccount)
@@ -81,6 +81,16 @@ class UserAccountController extends Controller
      */
     public function loginSubmitAction()
     {
+    }
+
+    /**
+     * @Route("user/{login}")
+     * @Template()
+     */
+    public function showAction($login) {
+        $user['login'] = $login;
+
+        return array('user' => $user);
     }
 
 }

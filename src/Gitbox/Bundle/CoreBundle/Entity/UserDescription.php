@@ -13,11 +13,21 @@ use Doctrine\ORM\Mapping as ORM;
 class UserDescription
 {
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="user_description_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $id;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="registration_date", type="date", nullable=false)
      */
-    private $registrationDate;
+    private $registrationDate = '1970-01-01';
 
     /**
      * @var \DateTime
@@ -38,24 +48,14 @@ class UserDescription
      *
      * @ORM\Column(name="hit", type="integer", nullable=false)
      */
-    private $hit;
-
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="token", type="string", length=30, nullable=true)
-	 */
-    private $token;
+    private $hit = '0';
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="user_description_id_seq", allocationSize=1, initialValue=1)
+     * @ORM\Column(name="token", type="string", length=32, nullable=true)
      */
-    private $id;
+    private $token;
 
 
 
@@ -152,6 +152,29 @@ class UserDescription
     }
 
     /**
+     * Set token
+     *
+     * @param string $token
+     * @return UserDescription
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
+
+        return $this;
+    }
+
+    /**
+     * Get token
+     *
+     * @return string 
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
      * Get id
      *
      * @return integer 
@@ -160,22 +183,4 @@ class UserDescription
     {
         return $this->id;
     }
-
-	/**
-	 * @param string $token
-	 */
-	public function setToken($token)
-	{
-		$this->token = $token;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getToken()
-	{
-		return $this->token;
-	}
-
-
 }
