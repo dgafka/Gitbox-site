@@ -15,16 +15,6 @@ class Menu
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="menu_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
-
-    /**
-     * @var integer
-     *
      * @ORM\Column(name="id_category", type="integer", nullable=true)
      */
     private $idCategory;
@@ -65,218 +55,178 @@ class Menu
     private $expire;
 
     /**
-     * @var \Module
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="Module")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_module", referencedColumnName="id")
-     * })
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="menu_id_seq", allocationSize=1, initialValue=1)
      */
-    private $idModule;
+    private $id;
 
     /**
-     * @var \UserAccount
+     * @var \Gitbox\Bundle\CoreBundle\Entity\UserAccount
      *
-     * @ORM\ManyToOne(targetEntity="UserAccount")
+     * @ORM\ManyToOne(targetEntity="Gitbox\Bundle\CoreBundle\Entity\UserAccount")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_user", referencedColumnName="id")
      * })
      */
     private $idUser;
 
-
-
     /**
-     * Set idCategory
+     * @var \Gitbox\Bundle\CoreBundle\Entity\Module
      *
-     * @param integer $idCategory
-     * @return Menu
+     * @ORM\ManyToOne(targetEntity="Gitbox\Bundle\CoreBundle\Entity\Module")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_module", referencedColumnName="id")
+     * })
      */
-    public function setIdCategory($idCategory)
-    {
-        $this->idCategory = $idCategory;
+    private $idModule;
 
-        return $this;
-    }
+	/**
+	 * @param \DateTime $expire
+	 */
+	public function setExpire($expire)
+	{
+		$this->expire = $expire;
+	}
 
-    /**
-     * Get idCategory
-     *
-     * @return integer 
-     */
-    public function getIdCategory()
-    {
-        return $this->idCategory;
-    }
+	/**
+	 * @return \DateTime
+	 */
+	public function getExpire()
+	{
+		return $this->expire;
+	}
 
-    /**
-     * Set parent
-     *
-     * @param integer $parent
-     * @return Menu
-     */
-    public function setParent($parent)
-    {
-        $this->parent = $parent;
+	/**
+	 * @param int $id
+	 */
+	public function setId($id)
+	{
+		$this->id = $id;
+	}
 
-        return $this;
-    }
+	/**
+	 * @return int
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
 
-    /**
-     * Get parent
-     *
-     * @return integer 
-     */
-    public function getParent()
-    {
-        return $this->parent;
-    }
+	/**
+	 * @param int $idCategory
+	 */
+	public function setIdCategory($idCategory)
+	{
+		$this->idCategory = $idCategory;
+	}
 
-    /**
-     * Set title
-     *
-     * @param string $title
-     * @return Menu
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
+	/**
+	 * @return int
+	 */
+	public function getIdCategory()
+	{
+		return $this->idCategory;
+	}
 
-        return $this;
-    }
+	/**
+	 * @param \Gitbox\Bundle\CoreBundle\Entity\Module $idModule
+	 */
+	public function setIdModule($idModule)
+	{
+		$this->idModule = $idModule;
+	}
 
-    /**
-     * Get title
-     *
-     * @return string 
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
+	/**
+	 * @return \Gitbox\Bundle\CoreBundle\Entity\Module
+	 */
+	public function getIdModule()
+	{
+		return $this->idModule;
+	}
 
-    /**
-     * Set status
-     *
-     * @param string $status
-     * @return Menu
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
+	/**
+	 * @param \Gitbox\Bundle\CoreBundle\Entity\UserAccount $idUser
+	 */
+	public function setIdUser($idUser)
+	{
+		$this->idUser = $idUser;
+	}
 
-        return $this;
-    }
+	/**
+	 * @return \Gitbox\Bundle\CoreBundle\Entity\UserAccount
+	 */
+	public function getIdUser()
+	{
+		return $this->idUser;
+	}
 
-    /**
-     * Get status
-     *
-     * @return string 
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
+	/**
+	 * @param int $parent
+	 */
+	public function setParent($parent)
+	{
+		$this->parent = $parent;
+	}
 
-    /**
-     * Set sort
-     *
-     * @param integer $sort
-     * @return Menu
-     */
-    public function setSort($sort)
-    {
-        $this->sort = $sort;
+	/**
+	 * @return int
+	 */
+	public function getParent()
+	{
+		return $this->parent;
+	}
 
-        return $this;
-    }
+	/**
+	 * @param int $sort
+	 */
+	public function setSort($sort)
+	{
+		$this->sort = $sort;
+	}
 
-    /**
-     * Get sort
-     *
-     * @return integer 
-     */
-    public function getSort()
-    {
-        return $this->sort;
-    }
+	/**
+	 * @return int
+	 */
+	public function getSort()
+	{
+		return $this->sort;
+	}
 
-    /**
-     * Set expire
-     *
-     * @param \DateTime $expire
-     * @return Menu
-     */
-    public function setExpire($expire)
-    {
-        $this->expire = $expire;
+	/**
+	 * @param string $status
+	 */
+	public function setStatus($status)
+	{
+		$this->status = $status;
+	}
 
-        return $this;
-    }
+	/**
+	 * @return string
+	 */
+	public function getStatus()
+	{
+		return $this->status;
+	}
 
-    /**
-     * Get expire
-     *
-     * @return \DateTime 
-     */
-    public function getExpire()
-    {
-        return $this->expire;
-    }
+	/**
+	 * @param string $title
+	 */
+	public function setTitle($title)
+	{
+		$this->title = $title;
+	}
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+	/**
+	 * @return string
+	 */
+	public function getTitle()
+	{
+		return $this->title;
+	}
 
-    /**
-     * Set idUser
-     *
-     * @param \Gitbox\Bundle\CoreBundle\Entity\UserAccount $idUser
-     * @return Menu
-     */
-    public function setIdUser(\Gitbox\Bundle\CoreBundle\Entity\UserAccount $idUser = null)
-    {
-        $this->idUser = $idUser;
 
-        return $this;
-    }
-
-    /**
-     * Get idUser
-     *
-     * @return \Gitbox\Bundle\CoreBundle\Entity\UserAccount 
-     */
-    public function getIdUser()
-    {
-        return $this->idUser;
-    }
-
-    /**
-     * Set idModule
-     *
-     * @param \Gitbox\Bundle\CoreBundle\Entity\Module $idModule
-     * @return Menu
-     */
-    public function setIdModule(\Gitbox\Bundle\CoreBundle\Entity\Module $idModule = null)
-    {
-        $this->idModule = $idModule;
-
-        return $this;
-    }
-
-    /**
-     * Get idModule
-     *
-     * @return \Gitbox\Bundle\CoreBundle\Entity\Module 
-     */
-    public function getIdModule()
-    {
-        return $this->idModule;
-    }
 }

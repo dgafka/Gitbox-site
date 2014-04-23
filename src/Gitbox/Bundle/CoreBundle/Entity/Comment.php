@@ -13,16 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Comment
 {
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="comment_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="content", type="text", nullable=false)
@@ -51,172 +41,146 @@ class Comment
     private $createDate;
 
     /**
-     * @var \UserAccount
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="UserAccount")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_user", referencedColumnName="id")
-     * })
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="comment_id_seq", allocationSize=1, initialValue=1)
      */
-    private $idUser;
+    private $id;
 
     /**
-     * @var \Content
+     * @var \Gitbox\Bundle\CoreBundle\Entity\Content
      *
-     * @ORM\ManyToOne(targetEntity="Content")
+     * @ORM\ManyToOne(targetEntity="Gitbox\Bundle\CoreBundle\Entity\Content")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_content", referencedColumnName="id")
      * })
      */
     private $idContent;
 
-
-
     /**
-     * Set content
+     * @var \Gitbox\Bundle\CoreBundle\Entity\UserAccount
      *
-     * @param string $content
-     * @return Comment
+     * @ORM\ManyToOne(targetEntity="Gitbox\Bundle\CoreBundle\Entity\UserAccount")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_user", referencedColumnName="id")
+     * })
      */
-    public function setContent($content)
-    {
-        $this->content = $content;
+    private $idUser;
 
-        return $this;
-    }
+	/**
+	 * @param string $content
+	 */
+	public function setContent($content)
+	{
+		$this->content = $content;
+	}
 
-    /**
-     * Get content
-     *
-     * @return string 
-     */
-    public function getContent()
-    {
-        return $this->content;
-    }
+	/**
+	 * @return string
+	 */
+	public function getContent()
+	{
+		return $this->content;
+	}
 
-    /**
-     * Set status
-     *
-     * @param string $status
-     * @return Comment
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
+	/**
+	 * @param \DateTime $createDate
+	 */
+	public function setCreateDate($createDate)
+	{
+		$this->createDate = $createDate;
+	}
 
-        return $this;
-    }
+	/**
+	 * @return \DateTime
+	 */
+	public function getCreateDate()
+	{
+		return $this->createDate;
+	}
 
-    /**
-     * Get status
-     *
-     * @return string 
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
+	/**
+	 * @param int $id
+	 */
+	public function setId($id)
+	{
+		$this->id = $id;
+	}
 
-    /**
-     * Set lastModificationDate
-     *
-     * @param \DateTime $lastModificationDate
-     * @return Comment
-     */
-    public function setLastModificationDate($lastModificationDate)
-    {
-        $this->lastModificationDate = $lastModificationDate;
+	/**
+	 * @return int
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
 
-        return $this;
-    }
+	/**
+	 * @param \Gitbox\Bundle\CoreBundle\Entity\Content $idContent
+	 */
+	public function setIdContent($idContent)
+	{
+		$this->idContent = $idContent;
+	}
 
-    /**
-     * Get lastModificationDate
-     *
-     * @return \DateTime 
-     */
-    public function getLastModificationDate()
-    {
-        return $this->lastModificationDate;
-    }
+	/**
+	 * @return \Gitbox\Bundle\CoreBundle\Entity\Content
+	 */
+	public function getIdContent()
+	{
+		return $this->idContent;
+	}
 
-    /**
-     * Set createDate
-     *
-     * @param \DateTime $createDate
-     * @return Comment
-     */
-    public function setCreateDate($createDate)
-    {
-        $this->createDate = $createDate;
+	/**
+	 * @param \Gitbox\Bundle\CoreBundle\Entity\UserAccount $idUser
+	 */
+	public function setIdUser($idUser)
+	{
+		$this->idUser = $idUser;
+	}
 
-        return $this;
-    }
+	/**
+	 * @return \Gitbox\Bundle\CoreBundle\Entity\UserAccount
+	 */
+	public function getIdUser()
+	{
+		return $this->idUser;
+	}
 
-    /**
-     * Get createDate
-     *
-     * @return \DateTime 
-     */
-    public function getCreateDate()
-    {
-        return $this->createDate;
-    }
+	/**
+	 * @param \DateTime $lastModificationDate
+	 */
+	public function setLastModificationDate($lastModificationDate)
+	{
+		$this->lastModificationDate = $lastModificationDate;
+	}
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+	/**
+	 * @return \DateTime
+	 */
+	public function getLastModificationDate()
+	{
+		return $this->lastModificationDate;
+	}
 
-    /**
-     * Set idContent
-     *
-     * @param \Gitbox\Bundle\CoreBundle\Entity\Content $idContent
-     * @return Comment
-     */
-    public function setIdContent(\Gitbox\Bundle\CoreBundle\Entity\Content $idContent = null)
-    {
-        $this->idContent = $idContent;
+	/**
+	 * @param string $status
+	 */
+	public function setStatus($status)
+	{
+		$this->status = $status;
+	}
 
-        return $this;
-    }
+	/**
+	 * @return string
+	 */
+	public function getStatus()
+	{
+		return $this->status;
+	}
 
-    /**
-     * Get idContent
-     *
-     * @return \Gitbox\Bundle\CoreBundle\Entity\Content 
-     */
-    public function getIdContent()
-    {
-        return $this->idContent;
-    }
 
-    /**
-     * Set idUser
-     *
-     * @param \Gitbox\Bundle\CoreBundle\Entity\UserAccount $idUser
-     * @return Comment
-     */
-    public function setIdUser(\Gitbox\Bundle\CoreBundle\Entity\UserAccount $idUser = null)
-    {
-        $this->idUser = $idUser;
-
-        return $this;
-    }
-
-    /**
-     * Get idUser
-     *
-     * @return \Gitbox\Bundle\CoreBundle\Entity\UserAccount 
-     */
-    public function getIdUser()
-    {
-        return $this->idUser;
-    }
 }

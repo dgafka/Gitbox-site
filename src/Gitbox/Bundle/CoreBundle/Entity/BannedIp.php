@@ -13,16 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 class BannedIp
 {
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="banned_ip_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="ip", type="string", length=15, nullable=false)
@@ -50,107 +40,95 @@ class BannedIp
      */
     private $description;
 
-
-
     /**
-     * Set ip
+     * @var integer
      *
-     * @param string $ip
-     * @return BannedIp
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="banned_ip_id_seq", allocationSize=1, initialValue=1)
      */
-    public function setIp($ip)
-    {
-        $this->ip = $ip;
+    private $id;
 
-        return $this;
-    }
+	/**
+	 * @param \DateTime $createDate
+	 */
+	public function setCreateDate($createDate)
+	{
+		$this->createDate = $createDate;
+	}
 
-    /**
-     * Get ip
-     *
-     * @return string 
-     */
-    public function getIp()
-    {
-        return $this->ip;
-    }
+	/**
+	 * @return \DateTime
+	 */
+	public function getCreateDate()
+	{
+		return $this->createDate;
+	}
 
-    /**
-     * Set createDate
-     *
-     * @param \DateTime $createDate
-     * @return BannedIp
-     */
-    public function setCreateDate($createDate)
-    {
-        $this->createDate = $createDate;
+	/**
+	 * @param string $description
+	 */
+	public function setDescription($description)
+	{
+		$this->description = $description;
+	}
 
-        return $this;
-    }
+	/**
+	 * @return string
+	 */
+	public function getDescription()
+	{
+		return $this->description;
+	}
 
-    /**
-     * Get createDate
-     *
-     * @return \DateTime 
-     */
-    public function getCreateDate()
-    {
-        return $this->createDate;
-    }
+	/**
+	 * @param \DateTime $expireDate
+	 */
+	public function setExpireDate($expireDate)
+	{
+		$this->expireDate = $expireDate;
+	}
 
-    /**
-     * Set expireDate
-     *
-     * @param \DateTime $expireDate
-     * @return BannedIp
-     */
-    public function setExpireDate($expireDate)
-    {
-        $this->expireDate = $expireDate;
+	/**
+	 * @return \DateTime
+	 */
+	public function getExpireDate()
+	{
+		return $this->expireDate;
+	}
 
-        return $this;
-    }
+	/**
+	 * @param int $id
+	 */
+	public function setId($id)
+	{
+		$this->id = $id;
+	}
 
-    /**
-     * Get expireDate
-     *
-     * @return \DateTime 
-     */
-    public function getExpireDate()
-    {
-        return $this->expireDate;
-    }
+	/**
+	 * @return int
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
 
-    /**
-     * Set description
-     *
-     * @param string $description
-     * @return BannedIp
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
+	/**
+	 * @param string $ip
+	 */
+	public function setIp($ip)
+	{
+		$this->ip = $ip;
+	}
 
-        return $this;
-    }
+	/**
+	 * @return string
+	 */
+	public function getIp()
+	{
+		return $this->ip;
+	}
 
-    /**
-     * Get description
-     *
-     * @return string 
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 }

@@ -15,16 +15,6 @@ class Content
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="content_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
-
-    /**
-     * @var integer
-     *
      * @ORM\Column(name="id_user", type="integer", nullable=false)
      */
     private $idUser;
@@ -62,14 +52,14 @@ class Content
      *
      * @ORM\Column(name="create_date", type="date", nullable=false)
      */
-    private $createDate = '1970-01-01';
+    private $createDate;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="hit", type="integer", nullable=false)
      */
-    private $hit = '0';
+    private $hit;
 
     /**
      * @var \DateTime
@@ -100,333 +90,258 @@ class Content
     private $type;
 
     /**
-     * @var \Menu
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="Menu")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_menu", referencedColumnName="id")
-     * })
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="content_id_seq", allocationSize=1, initialValue=1)
      */
-    private $idMenu;
+    private $id;
 
     /**
-     * @var \Category
+     * @var \Gitbox\Bundle\CoreBundle\Entity\Category
      *
-     * @ORM\ManyToOne(targetEntity="Category")
+     * @ORM\ManyToOne(targetEntity="Gitbox\Bundle\CoreBundle\Entity\Category")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_category", referencedColumnName="id")
      * })
      */
     private $idCategory;
 
-
-
     /**
-     * Set idUser
+     * @var \Gitbox\Bundle\CoreBundle\Entity\Menu
      *
-     * @param integer $idUser
-     * @return Content
+     * @ORM\ManyToOne(targetEntity="Gitbox\Bundle\CoreBundle\Entity\Menu")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_menu", referencedColumnName="id")
+     * })
      */
-    public function setIdUser($idUser)
-    {
-        $this->idUser = $idUser;
+    private $idMenu;
 
-        return $this;
-    }
+	/**
+	 * @param \DateTime $createDate
+	 */
+	public function setCreateDate($createDate)
+	{
+		$this->createDate = $createDate;
+	}
 
-    /**
-     * Get idUser
-     *
-     * @return integer 
-     */
-    public function getIdUser()
-    {
-        return $this->idUser;
-    }
+	/**
+	 * @return \DateTime
+	 */
+	public function getCreateDate()
+	{
+		return $this->createDate;
+	}
 
-    /**
-     * Set status
-     *
-     * @param string $status
-     * @return Content
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
+	/**
+	 * @param string $description
+	 */
+	public function setDescription($description)
+	{
+		$this->description = $description;
+	}
 
-        return $this;
-    }
+	/**
+	 * @return string
+	 */
+	public function getDescription()
+	{
+		return $this->description;
+	}
 
-    /**
-     * Get status
-     *
-     * @return string 
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
+	/**
+	 * @param \DateTime $expire
+	 */
+	public function setExpire($expire)
+	{
+		$this->expire = $expire;
+	}
 
-    /**
-     * Set title
-     *
-     * @param string $title
-     * @return Content
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
+	/**
+	 * @return \DateTime
+	 */
+	public function getExpire()
+	{
+		return $this->expire;
+	}
 
-        return $this;
-    }
+	/**
+	 * @param string $header
+	 */
+	public function setHeader($header)
+	{
+		$this->header = $header;
+	}
 
-    /**
-     * Get title
-     *
-     * @return string 
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
+	/**
+	 * @return string
+	 */
+	public function getHeader()
+	{
+		return $this->header;
+	}
 
-    /**
-     * Set header
-     *
-     * @param string $header
-     * @return Content
-     */
-    public function setHeader($header)
-    {
-        $this->header = $header;
+	/**
+	 * @param int $hit
+	 */
+	public function setHit($hit)
+	{
+		$this->hit = $hit;
+	}
 
-        return $this;
-    }
+	/**
+	 * @return int
+	 */
+	public function getHit()
+	{
+		return $this->hit;
+	}
 
-    /**
-     * Get header
-     *
-     * @return string 
-     */
-    public function getHeader()
-    {
-        return $this->header;
-    }
+	/**
+	 * @param int $id
+	 */
+	public function setId($id)
+	{
+		$this->id = $id;
+	}
 
-    /**
-     * Set description
-     *
-     * @param string $description
-     * @return Content
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
+	/**
+	 * @return int
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
 
-        return $this;
-    }
+	/**
+	 * @param \Gitbox\Bundle\CoreBundle\Entity\Category $idCategory
+	 */
+	public function setIdCategory($idCategory)
+	{
+		$this->idCategory = $idCategory;
+	}
 
-    /**
-     * Get description
-     *
-     * @return string 
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
+	/**
+	 * @return \Gitbox\Bundle\CoreBundle\Entity\Category
+	 */
+	public function getIdCategory()
+	{
+		return $this->idCategory;
+	}
 
-    /**
-     * Set createDate
-     *
-     * @param \DateTime $createDate
-     * @return Content
-     */
-    public function setCreateDate($createDate)
-    {
-        $this->createDate = $createDate;
+	/**
+	 * @param \Gitbox\Bundle\CoreBundle\Entity\Menu $idMenu
+	 */
+	public function setIdMenu($idMenu)
+	{
+		$this->idMenu = $idMenu;
+	}
 
-        return $this;
-    }
+	/**
+	 * @return \Gitbox\Bundle\CoreBundle\Entity\Menu
+	 */
+	public function getIdMenu()
+	{
+		return $this->idMenu;
+	}
 
-    /**
-     * Get createDate
-     *
-     * @return \DateTime 
-     */
-    public function getCreateDate()
-    {
-        return $this->createDate;
-    }
+	/**
+	 * @param int $idUser
+	 */
+	public function setIdUser($idUser)
+	{
+		$this->idUser = $idUser;
+	}
 
-    /**
-     * Set hit
-     *
-     * @param integer $hit
-     * @return Content
-     */
-    public function setHit($hit)
-    {
-        $this->hit = $hit;
+	/**
+	 * @return int
+	 */
+	public function getIdUser()
+	{
+		return $this->idUser;
+	}
 
-        return $this;
-    }
+	/**
+	 * @param \DateTime $lastModificationDate
+	 */
+	public function setLastModificationDate($lastModificationDate)
+	{
+		$this->lastModificationDate = $lastModificationDate;
+	}
 
-    /**
-     * Get hit
-     *
-     * @return integer 
-     */
-    public function getHit()
-    {
-        return $this->hit;
-    }
+	/**
+	 * @return \DateTime
+	 */
+	public function getLastModificationDate()
+	{
+		return $this->lastModificationDate;
+	}
 
-    /**
-     * Set expire
-     *
-     * @param \DateTime $expire
-     * @return Content
-     */
-    public function setExpire($expire)
-    {
-        $this->expire = $expire;
+	/**
+	 * @param float $rate
+	 */
+	public function setRate($rate)
+	{
+		$this->rate = $rate;
+	}
 
-        return $this;
-    }
+	/**
+	 * @return float
+	 */
+	public function getRate()
+	{
+		return $this->rate;
+	}
 
-    /**
-     * Get expire
-     *
-     * @return \DateTime 
-     */
-    public function getExpire()
-    {
-        return $this->expire;
-    }
+	/**
+	 * @param string $status
+	 */
+	public function setStatus($status)
+	{
+		$this->status = $status;
+	}
 
-    /**
-     * Set lastModificationDate
-     *
-     * @param \DateTime $lastModificationDate
-     * @return Content
-     */
-    public function setLastModificationDate($lastModificationDate)
-    {
-        $this->lastModificationDate = $lastModificationDate;
+	/**
+	 * @return string
+	 */
+	public function getStatus()
+	{
+		return $this->status;
+	}
 
-        return $this;
-    }
+	/**
+	 * @param string $title
+	 */
+	public function setTitle($title)
+	{
+		$this->title = $title;
+	}
 
-    /**
-     * Get lastModificationDate
-     *
-     * @return \DateTime 
-     */
-    public function getLastModificationDate()
-    {
-        return $this->lastModificationDate;
-    }
+	/**
+	 * @return string
+	 */
+	public function getTitle()
+	{
+		return $this->title;
+	}
 
-    /**
-     * Set rate
-     *
-     * @param float $rate
-     * @return Content
-     */
-    public function setRate($rate)
-    {
-        $this->rate = $rate;
+	/**
+	 * @param string $type
+	 */
+	public function setType($type)
+	{
+		$this->type = $type;
+	}
 
-        return $this;
-    }
+	/**
+	 * @return string
+	 */
+	public function getType()
+	{
+		return $this->type;
+	}
 
-    /**
-     * Get rate
-     *
-     * @return float 
-     */
-    public function getRate()
-    {
-        return $this->rate;
-    }
 
-    /**
-     * Set type
-     *
-     * @param string $type
-     * @return Content
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * Get type
-     *
-     * @return string 
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set idCategory
-     *
-     * @param \Gitbox\Bundle\CoreBundle\Entity\Category $idCategory
-     * @return Content
-     */
-    public function setIdCategory(\Gitbox\Bundle\CoreBundle\Entity\Category $idCategory = null)
-    {
-        $this->idCategory = $idCategory;
-
-        return $this;
-    }
-
-    /**
-     * Get idCategory
-     *
-     * @return \Gitbox\Bundle\CoreBundle\Entity\Category 
-     */
-    public function getIdCategory()
-    {
-        return $this->idCategory;
-    }
-
-    /**
-     * Set idMenu
-     *
-     * @param \Gitbox\Bundle\CoreBundle\Entity\Menu $idMenu
-     * @return Content
-     */
-    public function setIdMenu(\Gitbox\Bundle\CoreBundle\Entity\Menu $idMenu = null)
-    {
-        $this->idMenu = $idMenu;
-
-        return $this;
-    }
-
-    /**
-     * Get idMenu
-     *
-     * @return \Gitbox\Bundle\CoreBundle\Entity\Menu 
-     */
-    public function getIdMenu()
-    {
-        return $this->idMenu;
-    }
 }

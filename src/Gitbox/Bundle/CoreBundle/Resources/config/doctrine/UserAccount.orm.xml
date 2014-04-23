@@ -6,7 +6,7 @@
       <index name="IDX_253B48AE75F68DD1" columns="id_description"/>
     </indexes>
     <unique-constraints>
-      <unique-constraint name="login_unique" columns="login"/>
+      <unique-constraint name="user_unique_login" columns="login"/>
       <unique-constraint name="email_unique" columns="email"/>
     </unique-constraints>
     <id name="id" type="integer" column="id">

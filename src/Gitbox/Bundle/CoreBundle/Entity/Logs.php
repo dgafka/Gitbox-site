@@ -13,16 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Logs
 {
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="logs_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="description", type="text", nullable=false)
@@ -36,61 +26,63 @@ class Logs
      */
     private $createDate;
 
-
-
     /**
-     * Set description
+     * @var integer
      *
-     * @param string $description
-     * @return Logs
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="logs_id_seq", allocationSize=1, initialValue=1)
      */
-    public function setDescription($description)
-    {
-        $this->description = $description;
+    private $id;
 
-        return $this;
-    }
+	/**
+	 * @param \DateTime $createDate
+	 */
+	public function setCreateDate($createDate)
+	{
+		$this->createDate = $createDate;
+	}
 
-    /**
-     * Get description
-     *
-     * @return string 
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
+	/**
+	 * @return \DateTime
+	 */
+	public function getCreateDate()
+	{
+		return $this->createDate;
+	}
 
-    /**
-     * Set createDate
-     *
-     * @param \DateTime $createDate
-     * @return Logs
-     */
-    public function setCreateDate($createDate)
-    {
-        $this->createDate = $createDate;
+	/**
+	 * @param string $description
+	 */
+	public function setDescription($description)
+	{
+		$this->description = $description;
+	}
 
-        return $this;
-    }
+	/**
+	 * @return string
+	 */
+	public function getDescription()
+	{
+		return $this->description;
+	}
 
-    /**
-     * Get createDate
-     *
-     * @return \DateTime 
-     */
-    public function getCreateDate()
-    {
-        return $this->createDate;
-    }
+	/**
+	 * @param int $id
+	 */
+	public function setId($id)
+	{
+		$this->id = $id;
+	}
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+	/**
+	 * @return int
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
+
+
 }

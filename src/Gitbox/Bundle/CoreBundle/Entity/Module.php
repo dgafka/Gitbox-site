@@ -13,16 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Module
 {
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="module_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=50, nullable=false)
@@ -37,9 +27,19 @@ class Module
     private $description;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="module_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $id;
+
+    /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="UserAccount", mappedBy="idModule")
+     * @ORM\ManyToMany(targetEntity="Gitbox\Bundle\CoreBundle\Entity\UserAccount", mappedBy="idModule")
      */
     private $idUser;
 
@@ -51,93 +51,68 @@ class Module
         $this->idUser = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
+	/**
+	 * @param string $description
+	 */
+	public function setDescription($description)
+	{
+		$this->description = $description;
+	}
 
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return Module
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
+	/**
+	 * @return string
+	 */
+	public function getDescription()
+	{
+		return $this->description;
+	}
 
-        return $this;
-    }
+	/**
+	 * @param int $id
+	 */
+	public function setId($id)
+	{
+		$this->id = $id;
+	}
 
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
+	/**
+	 * @return int
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
 
-    /**
-     * Set description
-     *
-     * @param string $description
-     * @return Module
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
+	/**
+	 * @param \Doctrine\Common\Collections\Collection $idUser
+	 */
+	public function setIdUser($idUser)
+	{
+		$this->idUser = $idUser;
+	}
 
-        return $this;
-    }
+	/**
+	 * @return \Doctrine\Common\Collections\Collection
+	 */
+	public function getIdUser()
+	{
+		return $this->idUser;
+	}
 
-    /**
-     * Get description
-     *
-     * @return string 
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
+	/**
+	 * @param string $name
+	 */
+	public function setName($name)
+	{
+		$this->name = $name;
+	}
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+	/**
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
 
-    /**
-     * Add idUser
-     *
-     * @param \Gitbox\Bundle\CoreBundle\Entity\UserAccount $idUser
-     * @return Module
-     */
-    public function addIdUser(\Gitbox\Bundle\CoreBundle\Entity\UserAccount $idUser)
-    {
-        $this->idUser[] = $idUser;
-
-        return $this;
-    }
-
-    /**
-     * Remove idUser
-     *
-     * @param \Gitbox\Bundle\CoreBundle\Entity\UserAccount $idUser
-     */
-    public function removeIdUser(\Gitbox\Bundle\CoreBundle\Entity\UserAccount $idUser)
-    {
-        $this->idUser->removeElement($idUser);
-    }
-
-    /**
-     * Get idUser
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getIdUser()
-    {
-        return $this->idUser;
-    }
 }

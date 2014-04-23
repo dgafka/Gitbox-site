@@ -27,16 +27,43 @@ class UserAccountController extends Controller
      */
     public function registerAction(Request $request)
     {
-        $user = new UserAccount();
+        $userAccount = new UserAccount();
 
-        $form = $this->createForm(new UserAccountType(), $user);
+        $form = $this->createForm(new UserAccountType(), $userAccount);
 
         $form->handleRequest($request);
 
         if($form->isValid()) {
+
+	        $em = $this->getDoctrine()->getManager();
+	        /**
+	         * @param $userGroup \Gitbox\Bundle\CoreBundle\Entity\UserGroup
+	         */
+	        $userGroup = $em->getRepository('\Gitbox\Bundle\CoreBundle\Entity\UserGroup')->findOneBy(array('permissions' => 1));
+	        $userDescription = new UserDescription();
+	        $userDescription->setHit(1);
+	        $date = new \DateTime('10/22/2013');
+	        $date = $date->format('Y-m-d H:i:s');
+	        $userDescription->setRegistrationDate($date);
+
+	        $userAccount->setStatus('A');
+	        /**
+	         * @TODO email verification, ustawic status na 'D' i dopiero po wpisaniu tokena zmienic status na A
+	         * $userDescription->setToken()
+	         */
+
+	        $em->persist($userDescription);
+
+	        $userAccount->setIdDescription($userDescription);
+	        $userAccount->setIdGroup($userGroup);
+			/** Wystepuje blad nie wiem czemu narazie. */
+	        $em->persist($userAccount);
+	        $em->flush();
+
             return $this->forward('GitboxCoreBundle:UserAccount:registerSubmit', array(
-                'user' => $user
+                'userName' => $userAccount->getLogin()
             ));
+
         }
 
         return $this->render('GitboxCoreBundle:UserAccount:register.html.twig', array(
@@ -45,26 +72,11 @@ class UserAccountController extends Controller
     }
 
     /**
-     * @Route("user/register/submit")
      * @Template()
      */
-    public function registerSubmitAction(UserAccount $userAccount)
+    public function registerSubmitAction($userName)
     {
-	    /**
-	     * @TODO email verification
-	     */
-	    $em = $this->getDoctrine()->getManager();
-	    $userGroup = $em->getRepository('\Gitbox\Bundle\CoreBundle\Entity\UserGroup', 1);
-		 $userDescription = new UserDescription();
-	    $userDescription->setHit(1);
-	    $userDescription->setRegistrationDate(date('Y-m-d H;i:s', strtotime('now')));
-
-	    $userAccount->setIdDescription($userDescription);
-		 $userAccount->setIdGroup($userGroup);
-
-	    $em->persist($userAccount);
-
-	    return array('name' => $userAccount->getLogin());
+	    return array('name' => $userName);
     }
 
     /**
@@ -92,5 +104,6 @@ class UserAccountController extends Controller
 
         return array('user' => $user);
     }
+
 
 }
