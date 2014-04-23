@@ -19,19 +19,6 @@
             {# Global style #}
             <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
         {% endblock %}
-        {% block javascripts %}
-            {# jQuery #}
-            <script type="text/javascript" src="{{ asset('js/jquery/jquery.min.js') }}"></script>
-
-            {# Bootstrap scripts #}
-            <script type="text/javascript" src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
-
-            {# Global scripts #}
-            <script type="text/javascript" src="{{ asset('js/main.js') }}"></script>
-
-            {# User account helpers #}
-            <script type="text/javascript" src="{{ asset('js/UserAccount/UserAccount.js') }}"></script>
-        {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -47,7 +34,7 @@
             <div class="container-fluid">
                 {# Brand and toggle get grouped for better mobile display #}
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar-collapse">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -57,7 +44,7 @@
                 </div>
 
                 {# Collect the nav links, forms, and other content for toggling #}
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <div class="collapse navbar-collapse" id="main-navbar-collapse">
                     <ul class="nav navbar-nav">
                         <li class="{% if app.request.attributes.get('_route') == 'features_url' %}active{% endif %}"><a href="{{ path('features_url') }}"><b class="glyphicon glyphicon-eye-open"></b> Odkrywaj możliwości</a></li>
                         <li class="{% if app.request.attributes.get('_route') == 'help_url' %}active{% endif %}"><a href="{{ path('help_url') }}"><b class="glyphicon glyphicon-question-sign"></b> Pomoc</a></li>
@@ -103,5 +90,19 @@
         {#<div class="mastfoot">#}
             {#<p class="inner">Stopka | <a href="#">GitBox INC</a></p>#}
         {#</div>#}
+
+        {% block javascripts %}
+            {# jQuery #}
+            <script type="text/javascript" src="{{ asset('js/jquery/jquery.min.js') }}"></script>
+
+            {# Bootstrap scripts #}
+            <script type="text/javascript" src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
+
+            {# Global scripts #}
+            <script type="text/javascript" src="{{ asset('js/main.js') }}"></script>
+
+            {# User account helpers #}
+            <script type="text/javascript" src="{{ asset('js/UserAccount/UserAccount.js') }}"></script>
+        {% endblock %}
     </body>
 </html>
