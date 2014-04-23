@@ -1,34 +1,42 @@
 {% block user_menu_items %}
-    <ul class="nav navbar-nav navbar-right">
+    {% if session == true %}
+        {# After login #}
+        <ul class="nav navbar-nav navbar-right">
+            <li class="settings">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="glyphicon glyphicon-cog" style="font-size: 14pt;"></b></a>
+            <ul class="dropdown-menu">
+            <li><a href="{{ path('user_profile_url', {"login": username}) }}"><b class="glyphicon glyphicon-user" style="color: dimgray;"></b> Profil</a></li>
+            <li><a href="#"><b class="glyphicon glyphicon-tasks" style="color: dimgray;"></b> Moduły</a></li>
+            <li class="divider"></li>
+            <li><a href="#"><b class="glyphicon glyphicon-wrench" style="color: dimgray;"></b> Ustawienia</a></li>
+            <li class="divider"></li>
+            <li><a href="{{ path('user_logout_url') }}"><b class="glyphicon glyphicon-off" style="color: dimgray;"></b> Wyloguj</a></li>
+            </ul>
+            </li>
+        </ul>
 
-        {% if session == true %}
+        <ul class="nav navbar-right">
+            <li><label class="navbar-text">Zalogowano jako <a>{{ username }}</a></label></li>
+        </ul>
+    {% else %}
+        {# Before login #}
+        <ul class="nav navbar-nav navbar-right">
+            <li class="{% if app.request.attributes.get('_route') == 'user_register_url' %}active{% endif %}"><a href="{{ path('user_register_url') }}"><b class="glyphicon glyphicon-fire"></b>Zarejestruj się</a></li>
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Moje Konto</a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="glyphicon glyphicon-user" style="font-size: 14pt;"></b> Zaloguj się</a>
                 <div class="dropdown-menu login-dropdown">
-                    <p><a href="{{ path('gitbox_core_useraccount_logout') }}">Wyloguj</a></p>
+                    {{ form_start(form) }}
+                    {{ form_errors(form) }}
+                    <div class="form-group">
+                        {{ form_widget(form.email) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_widget(form.password) }}
+                    </div>
+                    <p><a href="{{ path('user_recover_password_url') }}">Zapomniałeś hasła?</a></p>
+                    {{ form_end(form) }}
                 </div>
             </li>
-            <ul class="nav navbar-right">
-            <li><label class="navbar-text">Zalogowano jako <a href="{{ path('gitbox_core_useraccount_show', {"login": username})  }}">{{ username }}</a></label></li>
-            </ul>
-        {% else %}
-        {# Before login #}
-        <li class="{% if app.request.attributes.get('_route') == 'gitbox_core_useraccount_register' %}active{% endif %}"><a href="{{ path('gitbox_core_useraccount_register') }}"><b class="glyphicon glyphicon-fire"></b>Zarejestruj się</a></li>
-        <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="glyphicon glyphicon-user" style="font-size: 14pt;"></b> Zaloguj się</a>
-            <div class="dropdown-menu login-dropdown">
-                {{ form_start(form) }}
-                {{ form_errors(form) }}
-                <div class="form-group">
-                    {{ form_widget(form.email) }}
-                </div>
-                <div class="form-group">
-                    {{ form_widget(form.password) }}
-                </div>
-                <p><a href="{{ path('gitbox_core_useraccount_forgottenpassword') }}">Zapomniałeś hasła?</a></p>
-                {{ form_end(form) }}
-            </div>
-        </li>
-        {% endif %}
-    </ul>
+        </ul>
+    {% endif %}
 {% endblock %}
