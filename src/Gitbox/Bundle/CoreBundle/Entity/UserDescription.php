@@ -47,6 +47,13 @@ class UserDescription
      */
     private $token;
 
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="content", type="string", nullable=true)
+	 */
+	private $content;
+
     /**
      * @var integer
      *
@@ -151,6 +158,22 @@ class UserDescription
 	public function getToken()
 	{
 		return $this->token;
+	}
+
+	/**
+	 * @param string $content
+	 */
+	public function setContent($content)
+	{
+		$this->content = $content;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getContent()
+	{
+		return $this->content;
 	}
 
 
