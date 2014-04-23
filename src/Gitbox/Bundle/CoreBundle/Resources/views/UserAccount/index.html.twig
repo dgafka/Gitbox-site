@@ -9,7 +9,7 @@
                 </div>
             </li>
             <ul class="nav navbar-right">
-            <li><label class="navbar-text">Zalogowano jako <a>{{ username }}</a></label></li>
+            <li><label class="navbar-text">Zalogowano jako <a href="{{ path('gitbox_core_useraccount_show', {"login": username})  }}">{{ username }}</a></label></li>
             </ul>
         {% else %}
         {# Before login #}
