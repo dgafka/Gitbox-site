@@ -8,6 +8,9 @@
                     <p><a href="{{ path('gitbox_core_useraccount_logout') }}">Wyloguj</a></p>
                 </div>
             </li>
+            <ul class="nav navbar-right">
+            <li><label class="navbar-text">Zalogowano jako <a>{{ username }}</a></label></li>
+            </ul>
         {% else %}
         {# Before login #}
         <li class="{% if app.request.attributes.get('_route') == 'gitbox_core_useraccount_register' %}active{% endif %}"><a href="{{ path('gitbox_core_useraccount_register') }}"><b class="glyphicon glyphicon-fire"></b>Zarejestruj się</a></li>
