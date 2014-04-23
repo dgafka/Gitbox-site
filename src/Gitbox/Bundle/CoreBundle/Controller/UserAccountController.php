@@ -2,6 +2,7 @@
 
 namespace Gitbox\Bundle\CoreBundle\Controller;
 
+use Doctrine\ORM\EntityNotFoundException;
 use Gitbox\Bundle\CoreBundle\Entity\UserAccount;
 use Gitbox\Bundle\CoreBundle\Entity\UserDescription;
 use Gitbox\Bundle\CoreBundle\Form\Type\UserAccountLoginType;
@@ -35,7 +36,8 @@ class UserAccountController extends Controller
 
 	    if(!is_null($session->get('userId'))) {
 		    return $this->render('GitboxCoreBundle:UserAccount:index.html.twig', array(
-			    'session' => true,
+			    'session'   => true,
+			    'username'  => $session->get('username'),
 		    ));
 	    }
 
@@ -65,6 +67,7 @@ class UserAccountController extends Controller
 
 			    return $this->render('GitboxCoreBundle:UserAccount:index.html.twig', array(
 				    'session' => true,
+				    'username'  => $session->get('username'),
 			    ));
 		    }
 	    }
@@ -81,6 +84,13 @@ class UserAccountController extends Controller
      */
     public function registerAction(Request $request)
     {
+	    $session = $request->getSession();
+	    if(is_null($session)) {
+		    if(!is_null($session->get('username'))){
+			    throw $this->createNotFoundException("Nie możesz zarejestrować się bedąc zalogowanym");
+		    }
+	    }
+
         $userAccount = new UserAccount();
 
         $form = $this->createForm(new UserAccountType(), $userAccount);
@@ -138,7 +148,7 @@ class UserAccountController extends Controller
 		$this->redirect($this->generateUrl('home_url'));
 	}
 
-    /**
+    /** Akcja dla okna potwierdzającego rejestrację
      * @Template()
      */
     public function registerSubmitAction($userName)
@@ -146,7 +156,7 @@ class UserAccountController extends Controller
 	    return array('name' => $userName);
     }
 
-	/**
+	/** Akcja dla odzyskania hasła
 	 * @Route("user/getMyPasswordBack")
 	 * @Template()
 	 */
@@ -154,15 +164,20 @@ class UserAccountController extends Controller
 		return array();
 	}
 
-    /**
-     * @Route("user/{login}", name="user_profile_url")
+
+    /** Akcja dla ukazania profilu usera
+     * @Route("user/{login}")
      * @Template()
      */
     public function showAction($login) {
-        $user['login'] = $login;
+
+	    $em = $this->getDoctrine()->getManager();
+	    $user = $em->getRepository('\Gitbox\Bundle\CoreBundle\Entity\UserAccount')->findOneBy(array('login' => $login));
+	    if(!$user instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount) {
+		    throw $this->createNotFoundException("Nie znaleziono podanego użytkownika");
+	    }
 
         return array('user' => $user);
     }
-
 
 }
