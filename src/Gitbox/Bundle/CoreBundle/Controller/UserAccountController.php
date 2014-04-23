@@ -42,9 +42,9 @@ class UserAccountController extends Controller
 	        $userGroup = $em->getRepository('\Gitbox\Bundle\CoreBundle\Entity\UserGroup')->findOneBy(array('permissions' => 1));
 	        $userDescription = new UserDescription();
 	        $userDescription->setHit(1);
-	        $date = new \DateTime('10/22/2013');
-	        $date = $date->format('Y-m-d H:i:s');
+	        $date = new \DateTime();
 	        $userDescription->setRegistrationDate($date);
+			$userDescription->setBanDate(null);
 
 	        $userAccount->setStatus('A');
 	        /**
@@ -56,7 +56,7 @@ class UserAccountController extends Controller
 
 	        $userAccount->setIdDescription($userDescription);
 	        $userAccount->setIdGroup($userGroup);
-			/** Wystepuje blad nie wiem czemu narazie. */
+
 	        $em->persist($userAccount);
 	        $em->flush();
 
