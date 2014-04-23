@@ -67,7 +67,7 @@ class UserAccountType extends AbstractType
 
 	public function getName()
 	{
-		return 'task';
+		return 'userAccount';
 	}
 
 }

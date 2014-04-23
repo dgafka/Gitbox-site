@@ -17,11 +17,17 @@ class UserAccountController extends Controller
     /**
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
 	    $userAccount = new UserAccount();
 
 	    $form = $this->createForm(new UserAccountLoginType(), $userAccount);
+
+	    $form->handleRequest($request);
+
+	    if($form->isValid()) {
+			var_dump($userAccount);
+	    }
 
 	    return $this->render('GitboxCoreBundle:UserAccount:index.html.twig', array(
 		    'form' => $form->createView(),
