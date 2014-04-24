@@ -3,7 +3,6 @@
     padding: 10px;
     background: lightgrey;
     border: 1px solid rgb(241, 241, 241);
-
     border-radius: 3px;
 }
 .options-bar span {
@@ -32,15 +31,6 @@ li.span3{
 }
 .thumbnail{
     width: 145px;
-}
-.left-section{
-    float: left;
-    width: 600px;
-}
-.right-section{
-    float: right;
-    width: 440px;
-    text-align: center;
 }
 
 .thumbnails {
@@ -99,6 +89,22 @@ html {
 div {
     display: block;
 }
-.pagination {
-    margin: 20px 0;
+/*.pagination {*/
+    /*margin: 20px 0;*/
+/*}*/
+
+.avatar-box {
+    color: gray;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.no-decoration,
+.no-decoration:hover {
+    text-decoration: none;
+}
+
+.keep-color,
+.keep-color:hover {
+    color: inherit;
 }

@@ -1,67 +1,50 @@
 {% extends "GitboxCoreBundle:Tube:layout.html.twig" %}
 
-{% block title %}GitboxCoreBundle:Tube:index{% endblock %}
+{% block title %}{{ parent() }}{% endblock %}
 
 {% block content_inner %}
 
-        <!-- Options bar (Left Section) -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="options-bar">
+                <select class="span2 pull-left"><option>Sort By </option>
+                    <option>Date</option>
+                    <option>Popular</option>
+                    <option>Highest Rating</option>
+                    <option>Lowest Rating</option>
+                </select><span><strong>12,487</strong> Titles Found</span>
+            </div>
 
-    <div class="left-section">
-        <div class="options-bar"><select class="span2 pull-left"><option>Sort By </option>
-                <option>Date</option>
-                <option>Popular</option>
-                <option>Highest Rating</option>
-                <option>Lowest Rating</option>
-            </select><span><strong>12,487</strong> Titles Found</span>
-        </div>
-
-        <!-- End Options Bar -->
-
-
-        <!-- Start Left Section -->
-
-        <div class="row-fluid">
-            <ul class="thumbnails">
-
-
-            {% for post in posts %}
-                <li class="span3">
-                    <div class="thumbnail">
-                        <img src="{{ post.header }}" alt="300x200">
-                        <div class="caption">
-                            <h6><a href="">{{ post.title }}</a></h6>
-                            <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
+            <div class="row-fluid">
+                <ul class="thumbnails">
+                {% for post in posts %}
+                    <li class="span3">
+                        <div class="thumbnail">
+                            <img src="{{ post.header }}" alt="300x200">
+                            <div class="caption">
+                                <h6><a href="">{{ post.title }}</a></h6>
+                                <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
+                            </div>
                         </div>
-                    </div>
-                </li>
-            {% endfor %}
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
 
-            </ul>
-        </div>
-
-        <div class="pagination pagination-small pull-right">
-            <ul>
-                <li><a href="#">«</a></li>
+            <ul class="pagination">
+                <li><a href="#">&laquo;</a></li>
                 <li><a href="#">1</a></li>
                 <li><a href="#">2</a></li>
                 <li><a href="#">3</a></li>
                 <li><a href="#">4</a></li>
                 <li><a href="#">5</a></li>
-                <li><a href="#">»</a></li>
+                <li><a href="#">&raquo;</a></li>
             </ul>
         </div>
 
-    </div>
-
-<div class="right-section">
-    <!-- End Left Section -->
-
-
-    {# USER SIDEBAR #}
+        {# USER SIDEBAR #}
         {% include "GitboxCoreBundle:UserSidebar:render.html.twig" %}
     </div>
-
-
 
 {% endblock %}
 
