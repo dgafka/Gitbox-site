@@ -19,6 +19,8 @@
             {# Global style #}
             <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
         {% endblock %}
+        {% block javascripts %}
+        {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -89,7 +91,8 @@
             {#<p class="inner">Stopka | <a href="#">GitBox INC</a></p>#}
         {#</div>#}
 
-        {% block javascripts %}
+        {# Load after DOM document fully loads #}
+        {% block lazy_javascripts %}
             {# jQuery #}
             <script type="text/javascript" src="{{ asset('js/jquery/jquery.min.js') }}"></script>
 
