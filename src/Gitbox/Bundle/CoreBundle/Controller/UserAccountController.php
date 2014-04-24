@@ -164,20 +164,4 @@ class UserAccountController extends Controller
 		return array();
 	}
 
-
-    /** Akcja dla ukazania profilu usera
-     * @Route("user/{login}", name="user_profile_url")
-     * @Template()
-     */
-    public function showAction($login) {
-
-	    $em = $this->getDoctrine()->getManager();
-	    $user = $em->getRepository('\Gitbox\Bundle\CoreBundle\Entity\UserAccount')->findOneBy(array('login' => $login));
-	    if(!$user instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount) {
-		    throw $this->createNotFoundException("Nie znaleziono podanego użytkownika");
-	    }
-
-        return array('user' => $user);
-    }
-
 }
