@@ -5,8 +5,8 @@ namespace Gitbox\Bundle\CoreBundle\Controller;
 use Doctrine\ORM\EntityNotFoundException;
 use Gitbox\Bundle\CoreBundle\Entity\UserAccount;
 use Gitbox\Bundle\CoreBundle\Entity\UserDescription;
-use Gitbox\Bundle\CoreBundle\Form\Type\UserAccountLoginType;
-use Gitbox\Bundle\CoreBundle\Form\Type\UserAccountType;
+use Gitbox\Bundle\CoreBundle\Form\Type\UserLoginType;
+use Gitbox\Bundle\CoreBundle\Form\Type\UserRegisterType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -31,7 +31,7 @@ class UserAccountController extends Controller
 	    //Pobranie zmiennych z $_POST i $_GET, zwazywszy na to, ze gubilo parametry
 	    $request = Request::createFromGlobals();
 
-	    $form = $this->createForm(new UserAccountLoginType(), $userAccount);
+	    $form = $this->createForm(new UserLoginType(), $userAccount, array('csrf_protection' => false));
 	    $form->handleRequest($request);
 
 	    if(!is_null($session->get('userId'))) {
@@ -93,7 +93,7 @@ class UserAccountController extends Controller
 
         $userAccount = new UserAccount();
 
-        $form = $this->createForm(new UserAccountType(), $userAccount);
+        $form = $this->createForm(new UserRegisterType(), $userAccount);
 
         $form->handleRequest($request);
 
