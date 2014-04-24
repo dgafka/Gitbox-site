@@ -11,10 +11,10 @@
     <div class="row well box">
         <div class="col-md-2">
             <ul class="nav nav-pills nav-stacked well">
-                <li class="active"><a href="#"><i class="fa fa-user"></i> Profil</a></li>
-                <li><a href="#"><i class="fa fa-home"></i> Moduły</a></li>
-                <li><a href="#"><i class="fa fa-adn"></i> O mnie</a></li>
-                <li><a href="#tab2" data-toggle="tab"><i class="glyphicon glyphicon-search"></i> Wyszukaj</a></li>
+                <li class="{% if(app.request.attributes.get('_route') == 'user_profile_index') %} active {% endif %}"><a href="{{ path('user_profile_index', {'login' : user.login}) }}"><i class="fa fa-user"></i> Profil</a></li>
+                <li class="{% if(app.request.attributes.get('_route') == 'user_profile_modules') %} active {% endif %}"><a href="{{ path('user_profile_modules', {'login' : user.login}) }}"><i class="fa fa-home"></i> Moduły</a></li>
+                <li class="{% if(app.request.attributes.get('_route') == 'user_profile_about') %} active {% endif %}"><a href="{{ path('user_profile_about', {'login' : user.login}) }}"><i class="fa fa-adn"></i> O mnie</a></li>
+                <li class="{% if(app.request.attributes.get('_route') == 'user_profile_search') %} active {% endif %}"><a href="{{ path('user_profile_search', {'login' : user.login}) }}"><i class="glyphicon glyphicon-search"></i> Wyszukaj</a></li>
             </ul>
         </div>
         <div class="col-md-10">
