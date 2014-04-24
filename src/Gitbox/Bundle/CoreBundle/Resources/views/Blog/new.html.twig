@@ -1,6 +1,6 @@
 {% extends "GitboxCoreBundle:Blog:layout.html.twig" %}
 
-{% block title %}{{ parent() }}{% endblock %}
+{% block title %}{{ parent() }} | Nowy wpis{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -10,15 +10,22 @@
 {% block content_inner %}
     <div class="centered-form">
         {# TODO: obsługa uploadu obrazków http://editor.froala.com/docs/image-upload (nie jest konieczna) #}
-        <h2 style="margin-bottom: 20px;">Tworzenie nowego wpisu</h2>
-        <textarea class="post-editor">
+        <h2 style="margin-bottom: 20px;">Dodawanie nowego wpisu</h2>
+        <form method="post">
+            <div class="form-group" style="margin-bottom: 10px;">
+                <input id="content_title" class="form-control" type="text" name="content[title]" placeholder="Tytuł wpisu" size="30" required/>
+                <textarea class="post-editor">
 
-        </textarea>
+                </textarea>
+            </div>
+            <input class="btn btn-primary" style="margin: 10px auto; max-width: 100px; " type="submit" name="commit" value="Dodaj wpis" />
+        </form>
+        </form>
     </div>
 {% endblock %}
 
-{% block javascripts %}
+{% block lazy_javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('js/froala_editor/froala_editor.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/froala_handler.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/editorHandler.js') }}"></script>
 {% endblock %}
