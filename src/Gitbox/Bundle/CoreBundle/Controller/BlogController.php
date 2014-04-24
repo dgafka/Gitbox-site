@@ -2,6 +2,7 @@
 
 namespace Gitbox\Bundle\CoreBundle\Controller;
 
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -15,7 +16,9 @@ class BlogController extends Controller
     public function indexAction($login)
     {
         // TODO: pobieranie postów z bazy oraz paginacja [https://github.com/KnpLabs/KnpPaginatorBundle] + ilość komentarzy
-        $user['login'] = $login;
+
+        //$user['login'] = $login;
+        $user = $this->getUserByLogin($login);
         $posts = array(
             array(
                 'id' => '1',
@@ -62,6 +65,16 @@ class BlogController extends Controller
         );
 
         return array('user' => $user, 'posts' => $posts);
+    }
+
+    private function getUserByLogin($login) {
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('\Gitbox\Bundle\CoreBundle\Entity\UserAccount')->findOneBy(array('login' => $login));
+        if(!$user instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount) {
+            throw $this->createNotFoundException("Nie znaleziono podanego użytkownika");
+        }
+
+        return $user;
     }
 
     /**

@@ -14,7 +14,7 @@ class TubeController extends Controller
      */
     public function indexAction($login)
     {
-        $user['login'] = $login;
+        $user = $this->getUserByLogin($login);
         $posts = array(
             array(
                 'id' => '1',
@@ -73,6 +73,15 @@ class TubeController extends Controller
             )
         );
         return array('user' => $user, 'posts' => $posts);
+    }
+    private function getUserByLogin($login) {
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('\Gitbox\Bundle\CoreBundle\Entity\UserAccount')->findOneBy(array('login' => $login));
+        if(!$user instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount) {
+            throw $this->createNotFoundException("Nie znaleziono podanego użytkownika");
+        }
+
+        return $user;
     }
 
 }

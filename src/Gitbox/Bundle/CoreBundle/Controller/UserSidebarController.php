@@ -13,6 +13,7 @@ class UserSidebarController extends Controller
      */
     public function renderAction()
     {
+
     }
 
 }
