@@ -18,11 +18,58 @@ class TubeController extends Controller
         $posts = array(
             array(
                 'id' => '1',
-                'title' => 'Template preview'
+                'title' => 'Template preview',
+                'header' => 'http://4.bp.blogspot.com/-zlr_-dVCduI/T9nvwQN3v9I/AAAAAAAAAcc/0BG1BV09XcQ/s640/video_preview.jpg'
             ),
             array(
                 'id' => '2',
-                'title' => 'Template preview'
+                'title' => 'Template preview',
+                'header' => 'http://4.bp.blogspot.com/-zlr_-dVCduI/T9nvwQN3v9I/AAAAAAAAAcc/0BG1BV09XcQ/s640/video_preview.jpg'
+            ),
+            array(
+                'id' => '3',
+                'title' => 'Template preview',
+                'header' => 'http://4.bp.blogspot.com/-zlr_-dVCduI/T9nvwQN3v9I/AAAAAAAAAcc/0BG1BV09XcQ/s640/video_preview.jpg'
+            ),
+            array(
+                'id' => '4',
+                'title' => 'Template preview',
+                'header' => 'http://4.bp.blogspot.com/-zlr_-dVCduI/T9nvwQN3v9I/AAAAAAAAAcc/0BG1BV09XcQ/s640/video_preview.jpg'
+            ),
+            array(
+                'id' => '4',
+                'title' => 'Template preview',
+                'header' => 'http://4.bp.blogspot.com/-zlr_-dVCduI/T9nvwQN3v9I/AAAAAAAAAcc/0BG1BV09XcQ/s640/video_preview.jpg'
+            ),
+            array(
+                'id' => '4',
+                'title' => 'Template preview',
+                'header' => 'http://4.bp.blogspot.com/-zlr_-dVCduI/T9nvwQN3v9I/AAAAAAAAAcc/0BG1BV09XcQ/s640/video_preview.jpg'
+            ),
+            array(
+                'id' => '4',
+                'title' => 'Template preview',
+                'header' => 'http://4.bp.blogspot.com/-zlr_-dVCduI/T9nvwQN3v9I/AAAAAAAAAcc/0BG1BV09XcQ/s640/video_preview.jpg'
+            ),
+            array(
+                'id' => '4',
+                'title' => 'Template preview',
+                'header' => 'http://4.bp.blogspot.com/-zlr_-dVCduI/T9nvwQN3v9I/AAAAAAAAAcc/0BG1BV09XcQ/s640/video_preview.jpg'
+            ),
+            array(
+                'id' => '4',
+                'title' => 'Template preview',
+                'header' => 'http://4.bp.blogspot.com/-zlr_-dVCduI/T9nvwQN3v9I/AAAAAAAAAcc/0BG1BV09XcQ/s640/video_preview.jpg'
+            ),
+            array(
+                'id' => '4',
+                'title' => 'Template preview',
+                'header' => 'http://4.bp.blogspot.com/-zlr_-dVCduI/T9nvwQN3v9I/AAAAAAAAAcc/0BG1BV09XcQ/s640/video_preview.jpg'
+            ),
+            array(
+                'id' => '5',
+                'title' => 'Template preview',
+                'header' => 'http://4.bp.blogspot.com/-zlr_-dVCduI/T9nvwQN3v9I/AAAAAAAAAcc/0BG1BV09XcQ/s640/video_preview.jpg'
             )
         );
         return array('user' => $user, 'posts' => $posts);

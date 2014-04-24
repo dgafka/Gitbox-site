@@ -1,0 +1,24 @@
+{% extends "GitboxCoreBundle:Blog:layout.html.twig" %}
+
+{% block title %}{{ parent() }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/froala_editor/froala_editor.min.css') }}" />
+{% endblock %}
+
+{% block content_inner %}
+    <div class="centered-form">
+        {# TODO: obsługa uploadu obrazków http://editor.froala.com/docs/image-upload (nie jest konieczna) #}
+        <h2 style="margin-bottom: 20px;">Tworzenie nowego wpisu</h2>
+        <textarea class="post-editor">
+
+        </textarea>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/froala_editor/froala_editor.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/froala_handler.js') }}"></script>
+{% endblock %}

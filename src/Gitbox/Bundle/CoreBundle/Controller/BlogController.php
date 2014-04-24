@@ -65,7 +65,26 @@ class BlogController extends Controller
     }
 
     /**
-     * @Route("/user/{login}/blog/{id}", name="user_post")
+     * @Route("/user/{login}/blog/new", name="user_new_post")
+     * @Template()
+     */
+    public function newAction($login)
+    {
+        $user['login'] = $login;
+
+        return array('user' => $user);
+    }
+
+    /**
+     * @Route("/user/{login}/blog/{id}/edit")
+     * @Template()
+     */
+    public function editAction($login, $id)
+    {
+    }
+
+    /**
+     * @Route("/user/{login}/blog/{id}", name="user_show_post")
      * @Template()
      */
     public function showAction($login, $id)
@@ -81,14 +100,6 @@ class BlogController extends Controller
         );
 
         return array('user' => $user, 'post' => $post);
-    }
-
-    /**
-     * @Route("/user/{login}/blog/{id}/edit")
-     * @Template()
-     */
-    public function editAction($login, $id)
-    {
     }
 
 }

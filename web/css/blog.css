@@ -35,3 +35,11 @@
 .comments-link-container {
     margin-top: 30px;
 }
+
+.comment-link {
+    color: inherit;
+}
+
+.comment-link:hover {
+    color: dimgray;
+}
