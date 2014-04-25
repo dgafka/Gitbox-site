@@ -15,9 +15,10 @@ namespace Gitbox\Bundle\CoreBundle\TwigExtension;
         // get gravatar image
         public function getGravatarImage($email, $size = 80, $defaultImage = null, $rating = 'G')
         {
-            if (isset($defaultImage)) {
-                $defaultImage = 'http://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/twDq00QDud4/s160-c/photo.jpg';
+            if (!isset($defaultImage)) {
+                $defaultImage = 'http://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/twDq00QDud4/s' . $size . '-c/photo.jpg';
             }
+            
             return $grav_url = "http://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?d=" . urlencode($defaultImage) . "&s=" . $size . '&r=' . $rating;
         }
 
