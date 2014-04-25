@@ -86,3 +86,9 @@ services:
         class: Gitbox\Bundle\CoreBundle\TwigExtension\Gravatar
         tags:
             -  { name: twig.extension }
+
+ewz_recaptcha:
+    public_key:   6Lc0e_ISAAAAAKCoFImjMk2GwOLPtBoSHQQjnM6U
+    private_key:  6Lc0e_ISAAAAAGx92IFgP-hXGIYos6PO7YotX4A8
+    locale_key:   kernel.default_locale
+    enabled:      true
