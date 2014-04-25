@@ -1,0 +1,7 @@
+parameters:
+    user_helper.class: Gitbox\Bundle\CoreBundle\Helper\UserAccountHelper
+
+services:
+    user_helper:
+        class:        "%user_helper.class%"
+        arguments:    ["@doctrine.orm.entity_manager"]
