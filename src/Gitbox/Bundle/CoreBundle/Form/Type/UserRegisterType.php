@@ -3,6 +3,7 @@ namespace Gitbox\Bundle\CoreBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\True;
 
 class UserRegisterType extends AbstractType
 {
@@ -55,6 +56,18 @@ class UserRegisterType extends AbstractType
                 'second_options' => array(
                     'label' => 'Powtórz hasło',
                     'attr' => array('placeholder' => 'Powtórz swoje hasło', 'class' => 'form-control')
+                )
+            ))
+
+            ->add('recaptcha', 'ewz_recaptcha', array(
+                'attr'          => array(
+                    'options' => array(
+                        'theme' => 'clean'
+                    )
+                ),
+                'mapped' => false,
+                'constraints'   => array(
+                    new True()
                 )
             ))
 
