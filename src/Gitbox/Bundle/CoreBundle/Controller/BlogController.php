@@ -103,7 +103,7 @@ class BlogController extends Controller
     public function showAction($login, $id)
     {
         // TODO: pobieranie treści posta i komentarzy
-        $user['login'] = $login;
+        $user = $this->getUserByLogin($login);
         $post = array(
             'id' => '1',
             'title' => 'Damy radę!',
