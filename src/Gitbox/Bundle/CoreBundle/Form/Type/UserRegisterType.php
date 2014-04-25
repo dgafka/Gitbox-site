@@ -60,10 +60,14 @@ class UserRegisterType extends AbstractType
             ))
 
             ->add('recaptcha', 'ewz_recaptcha', array(
+                'label' => 'Udowodnij, że jesteś człowiekiem',
                 'attr'          => array(
                     'options' => array(
                         'theme' => 'clean'
                     )
+                ),
+                'label_attr'    => array(
+                    'class'     => 'control-label'
                 ),
                 'mapped' => false,
                 'constraints'   => array(
