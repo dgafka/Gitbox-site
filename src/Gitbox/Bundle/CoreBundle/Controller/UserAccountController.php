@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 
 class UserAccountController extends Controller
@@ -49,6 +51,15 @@ class UserAccountController extends Controller
 
 		    if($userAccount instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount) {
 
+			    $status = $userAccount->getStatus();
+				if($status == 'D') {
+					throw new AuthenticationException($this->renderView('GitboxCoreBundle:Error:accountNotActivated.html.twig'));
+				}else if($status == 'B') {
+					throw new AuthenticationException($this->renderView('GitboxCoreBundle:Error:accountBanned.html.twig'));
+				}else if($status != 'A') {
+					throw new NotFoundHttpException($this->renderView('GitboxCoreBundle:Error:notFound.html.twig'));
+				}
+
 				$session->set('username', $userAccount->getLogin());
 			    $session->set('userId', $userAccount->getId());
 
@@ -64,10 +75,7 @@ class UserAccountController extends Controller
 				$helper->instance()->persist($userAccount);
 			    $helper->instance()->flush();
 
-			    return $this->render('GitboxCoreBundle:UserAccount:index.html.twig', array(
-				    'session'   => true,
-				    'username'  => $session->get('username'),
-			    ));
+			    $this->redirect($this->generateUrl('home_url'), 301);
 		    }
 	    }
 
@@ -76,6 +84,13 @@ class UserAccountController extends Controller
 		    'session' => false,
 	    ));
     }
+
+	/**
+	 * @Template()
+	 */
+	public function passwordActionMessageAction($user) {
+		return array('user' => $user);
+	}
 
     /** Tworzy widok z formularzem do zajerestrownia użytkownika.
      * @Route("register", name="user_register_url")
@@ -110,12 +125,8 @@ class UserAccountController extends Controller
 	        $date = new \DateTime();
 	        $userDescription->setRegistrationDate($date);
 			$userDescription->setBanDate(null);
-
-	        $userAccount->setStatus('A');
-	        /**
-	         * @TODO email verification, ustawic status na 'D' i dopiero po wpisaniu tokena zmienic status na A
-	         * $userDescription->setToken()
-	         */
+			$userDescription->setToken(md5(uniqid(mt_rand(), true)));
+	        $userAccount->setStatus('D');
 
 	        $helper->instance()->persist($userDescription);
 
@@ -125,8 +136,8 @@ class UserAccountController extends Controller
 	        $helper->instance()->persist($userAccount);
 	        $helper->instance()->flush();
 
-            return $this->forward('GitboxCoreBundle:UserAccount:registerSubmit', array(
-                'userName' => $userAccount->getLogin()
+            return $this->forward('GitboxCoreBundle:Mailer:accountActivation', array(
+                'user' => $userAccount
             ));
 
         }

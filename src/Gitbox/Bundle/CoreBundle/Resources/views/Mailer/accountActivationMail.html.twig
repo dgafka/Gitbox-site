@@ -1,7 +1,8 @@
-{% extends "::base.html.twig" %}
+<h2>Witaj, {{ login }}!</h2><br/>
+<div>Jesteśmy szczęśliwi, że zechciałeś zarejestrować się na naszym portalu.
+    Jednak, żebyś mógł(a) w pełni cieszyć się z dobrodziejstw Gitboxa, musisz wykonać jeszcze jeden krok<br/>
+    Kliknij w poniższy link, aby dokończyć rejestrację.<br/>
+    <a href="{{ url('account_activation_URL', {'token' : token}) }}">Aktywuj konto</a><br/>
 
-{% block title %}GitboxCoreBundle:Mailer:accountActivation{% endblock %}
-
-{% block body %}
-<h1>Welcome to the Mailer:accountActivation page</h1>
-{% endblock %}
+    Jeśli nie rejestrowałeś(aś), się na naszym portalu, zignoruj tą wiadomość.
+</div>

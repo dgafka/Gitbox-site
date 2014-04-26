@@ -1,0 +1,11 @@
+{# TODO ogarnać jak podmienić oryginalne błędy występujące w symfony... #}
+{#{% extends "::base.html.twig" %}#}
+
+{% block title %}Błąd{% endblock %}
+
+{% block content_inner %}
+    <p class="error-message">
+        {% block error_content %}
+        {% endblock %}
+    </p>
+{% endblock %}

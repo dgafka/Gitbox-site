@@ -3,8 +3,11 @@
 namespace Gitbox\Bundle\CoreBundle\Helper;
 
 
-class SwiftMailerHelper {
+class MailerHelper {
 
+	/**
+	 * @var \Swift_Mailer
+	 */
 	private static $mailer;
 	private static $message;
 
@@ -14,10 +17,13 @@ class SwiftMailerHelper {
 		}
 	}
 
-	/**
-	 * Tworzy wiadomość
+	/** Tworzy nową wiadomość, gotową do wysłania
+	 * @param $title Nazwa maila, przychodzącego do odbiorcy
+	 * @param $content Treść maila przychodzączego do odbiorcy
+	 * @param $email Email odbiorcy
+	 * @return \Gitbox\Bundle\CoreBundle\Helper\MailerHelper
 	 */
-	public static function createMessage($title, $content, $email) {
+	public function createMessage($title, $content, $email) {
 		$message = \Swift_Message::newInstance()
 			->setSubject($title)
 			->setFrom('gitboxswiftmailer@gmail.com')
@@ -28,6 +34,8 @@ class SwiftMailerHelper {
 		;
 
 		self::$message = $message;
+
+		return $this;
 	}
 
 	/**

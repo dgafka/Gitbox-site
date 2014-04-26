@@ -48,6 +48,7 @@ class UserProfileController extends Controller
 	 * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
 	 */
 	private function getUserByLogin($login) {
+
 		/**
 		 * @var $helper \Gitbox\Bundle\CoreBundle\Helper\UserAccountHelper
 		 */

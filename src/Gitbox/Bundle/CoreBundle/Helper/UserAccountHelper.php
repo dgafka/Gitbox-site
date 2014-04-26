@@ -106,4 +106,31 @@ class UserAccountHelper extends Helper {
 		return $object;
 	}
 
+
+	/**
+	 * @param $token
+	 * @return \Gitbox\Bundle\CoreBundle\Entity\UserAccount|array
+	 */
+	public function findByToken($token) {
+
+		/**
+		 * @var $queryBuilder QueryBuilder
+		 */
+		$queryBuilder = $this->instance()->createQueryBuilder();
+		$results = $queryBuilder
+			->select('ua')
+			->from('\Gitbox\Bundle\CoreBundle\Entity\UserAccount', 'ua')
+			->innerJoin('\Gitbox\Bundle\CoreBundle\Entity\UserDescription', 'ud', 'WITH', 'ud.id = ua.idDescription')
+			->where('ud.token = :token')
+			->setParameter('token', $token)
+			->getQuery()
+			->execute()
+		;
+
+		if(count($results) == 1) {
+			$results = $results[0];
+		}
+
+		return $results;
+	}
 } 
