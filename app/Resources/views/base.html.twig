@@ -77,6 +77,20 @@
             <div class="jumbojumba">
                 {% block content_inner %}
                 {% endblock %}
+                {% if information.content is defined %}
+                    <div class="flash-messages">
+                        {% if information.type == 'success'  %}
+                            <p class="bg-primary" id="flash-message-success">
+                                {{ information.content }}
+                            </p>
+                        {% endif %}
+                        {% if information.type == 'warning'  %}
+                            <p class="bg-warning" id="flash-message-warning">
+                                {{ information.content }}
+                            </p>
+                        {% endif %}
+                    </div>
+                {% endif %}
             </div>
         </div>
         {% endblock %}
@@ -102,8 +116,6 @@
             {# Global scripts #}
             <script type="text/javascript" src="{{ asset('js/main.js') }}"></script>
 
-            {# User account helpers #}
-            <script type="text/javascript" src="{{ asset('js/UserAccount/UserAccount.js') }}"></script>
         {% endblock %}
     </body>
 </html>

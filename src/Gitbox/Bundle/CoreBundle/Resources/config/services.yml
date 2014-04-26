@@ -1,6 +1,7 @@
 parameters:
     user_helper.class: Gitbox\Bundle\CoreBundle\Helper\UserAccountHelper
     mailer_helper.class: Gitbox\Bundle\CoreBundle\Helper\MailerHelper
+    information_helper.class: Gitbox\Bundle\CoreBundle\Helper\InformationHelper
 
 services:
     user_helper:

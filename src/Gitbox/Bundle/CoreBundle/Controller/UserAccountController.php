@@ -77,11 +77,26 @@ class UserAccountController extends Controller
 
 			    $this->redirect($this->generateUrl('home_url'), 301);
 		    }
+
+		    /**
+		     * @var $information \Gitbox\Bundle\CoreBundle\Helper\InformationHelper
+		     */
+//		    $information = $this->container->get('information_helper');
+//		    $information->setContent('Błąd!');
+
+		    $information['type'] = 'warning';
+		    $information['content'] = 'test';
+
+		    return $this->render('GitboxCoreBundle:UserAccount:index.html.twig', array(
+			    'form'          => $form->createView(),
+			    'session'       => false,
+			    'information'   => $information,
+		    ));
 	    }
 
 	    return $this->render('GitboxCoreBundle:UserAccount:index.html.twig', array(
-		    'form' => $form->createView(),
-		    'session' => false,
+		    'form'          => $form->createView(),
+		    'session'       => false,
 	    ));
     }
 

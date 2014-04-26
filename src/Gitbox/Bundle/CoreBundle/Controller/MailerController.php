@@ -23,7 +23,7 @@ class MailerController extends Controller
 	     */
 	    $mailerHelper = $this->get('mailer_helper')
 		    ->createMessage(
-			    "test",
+			    "Aktywacja konta dla Gitbox",
 			    $this->renderView(
 		            'GitboxCoreBundle:Mailer:accountActivationMail.html.twig',
 		            array(
