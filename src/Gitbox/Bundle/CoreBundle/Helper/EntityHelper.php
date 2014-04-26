@@ -8,6 +8,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 /**
  * Klasa abstrakcyjna umożliwiająca dostęp do EntityManager-a.
  *
+ * Class EntityHelper
  * @package Gitbox\Bundle\CoreBundle\Helper
  */
 abstract class EntityHelper {

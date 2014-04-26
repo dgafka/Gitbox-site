@@ -6,7 +6,10 @@ use Gitbox\Bundle\CoreBundle\Entity\Module;
 use Doctrine\ORM\NoResultException;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
-
+/**
+ * Class ModuleHelper
+ * @package Gitbox\Bundle\CoreBundle\Helper
+ */
 class ModuleHelper extends EntityHelper {
 
     /**
@@ -32,7 +35,7 @@ class ModuleHelper extends EntityHelper {
     /**
      * Zwraca moduł w postaci rekordu z bazy danych
      *
-     * @return object
+     * @return Module
      * @throws Exception
      */
     public function findModule() {

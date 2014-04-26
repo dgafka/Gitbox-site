@@ -6,6 +6,7 @@ namespace Gitbox\Bundle\CoreBundle\Helper;
 /**
  * Interfejs do implementacji Helpera wykorzystującego 4 podstawowe operacje bazodanowe (CRUD)
  *
+ * Interface CRUDHelper
  * @package Gitbox\Bundle\CoreBundle\Helper
  */
 interface CRUDHelper {
