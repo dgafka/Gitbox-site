@@ -2,6 +2,7 @@
 
 namespace Gitbox\Bundle\CoreBundle\Helper;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
@@ -9,7 +10,7 @@ use Symfony\Component\Config\Definition\Exception\Exception;
  * Class UserAccountHelper
  * @package Gitbox\Bundle\CoreBundle\Helper
  */
-class UserAccountHelper extends Helper {
+class UserAccountHelper extends EntityHelper implements CRUDHelper {
 
 	public function __construct($entityManager) {
 		parent::__construct($entityManager);
