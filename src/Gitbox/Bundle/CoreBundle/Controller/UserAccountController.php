@@ -21,12 +21,7 @@ class UserAccountController extends Controller
      */
     public function indexAction(Request $request)
     {
-	    $session = $request->getSession();
-		if(is_null($session)) {
-			$session = new Session();
-			$session->start();
-			$request->setSession($session);
-		}
+	    $session = $this->container->get('session');
 	    $userAccount = new UserAccount();
 	    //Pobranie zmiennych z $_POST i $_GET, zwazywszy na to, ze gubilo parametry
 	    $request = Request::createFromGlobals();
@@ -79,16 +74,14 @@ class UserAccountController extends Controller
     }
 
     /** Tworzy widok z formularzem do zajerestrownia użytkownika.
-     * @Route("user/register", name="user_register_url")
+     * @Route("register", name="user_register_url")
      * @Template()
      */
     public function registerAction(Request $request)
     {
-	    $session = $request->getSession();
-	    if(is_null($session)) {
-		    if(!is_null($session->get('username'))){
-			    throw $this->createNotFoundException("Nie możesz zarejestrować się bedąc zalogowanym");
-		    }
+	    $session = $this->container->get('session');
+	    if(!is_null($session->get('username'))){
+		    throw $this->createNotFoundException("Nie możesz zarejestrować się bedąc zalogowanym");
 	    }
 
         $userAccount = new UserAccount();
@@ -137,7 +130,7 @@ class UserAccountController extends Controller
 
 	/** Akcja odpwiedzialna za wylogowanie użytkownika
 	 * @Template()
-	 * @Route("user/logout", name="user_logout_url")
+	 * @Route("logout", name="user_logout_url")
 	 */
 	public function logoutAction(Request $request) {
 		$session = $request->getSession();
@@ -157,7 +150,7 @@ class UserAccountController extends Controller
     }
 
 	/** Akcja dla odzyskania hasła
-	 * @Route("user/getMyPasswordBack", name="user_recover_password_url")
+	 * @Route("password_recovery", name="user_recover_password_url")
 	 * @Template()
 	 */
 	public function forgottenPasswordAction() {
