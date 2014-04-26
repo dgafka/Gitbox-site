@@ -37,11 +37,15 @@ class UserAccountController extends Controller
 	    }
 
 	    if($form->isValid()) {
-		    $em = $this->getDoctrine()->getManager();
+
+		    /**
+		     * @var $helper \Gitbox\Bundle\CoreBundle\Helper\UserAccountHelper
+		     */
+		    $helper = $this->container->get('user_helper');
 		    /**
 		     * @param $userGroup \Gitbox\Bundle\CoreBundle\Entity\UserGroup
 		     */
-		    $userAccount = $em->getRepository('\Gitbox\Bundle\CoreBundle\Entity\UserAccount')->findOneBy(array('email' => $userAccount->getEmail(), 'password' => $userAccount->getPassword(), 'status' => 'A'));
+		    $userAccount = $helper->instance()->getRepository('\Gitbox\Bundle\CoreBundle\Entity\UserAccount')->findOneBy(array('email' => $userAccount->getEmail(), 'password' => $userAccount->getPassword(), 'status' => 'A'));
 
 		    if($userAccount instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount) {
 
@@ -57,11 +61,11 @@ class UserAccountController extends Controller
 				    $ip = $_SERVER['REMOTE_ADDR'];
 			    }
 			    $userAccount->getIdDescription()->setIp($ip);
-				$em->persist($userAccount);
-			    $em->flush();
+				$helper->instance()->persist($userAccount);
+			    $helper->instance()->flush();
 
 			    return $this->render('GitboxCoreBundle:UserAccount:index.html.twig', array(
-				    'session' => true,
+				    'session'   => true,
 				    'username'  => $session->get('username'),
 			    ));
 		    }
@@ -92,11 +96,15 @@ class UserAccountController extends Controller
 
         if($form->isValid()) {
 
-	        $em = $this->getDoctrine()->getManager();
+	        /**
+	         * @var $helper \Gitbox\Bundle\CoreBundle\Helper\UserAccountHelper
+	         */
+	        $helper = $this->container->get('user_helper');
+
 	        /**
 	         * @param $userGroup \Gitbox\Bundle\CoreBundle\Entity\UserGroup
 	         */
-	        $userGroup = $em->getRepository('\Gitbox\Bundle\CoreBundle\Entity\UserGroup')->findOneBy(array('permissions' => 1));
+	        $userGroup = $helper->instance()->getRepository('\Gitbox\Bundle\CoreBundle\Entity\UserGroup')->findOneBy(array('permissions' => 1));
 	        $userDescription = new UserDescription();
 	        $userDescription->setHit(1);
 	        $date = new \DateTime();
@@ -109,13 +117,13 @@ class UserAccountController extends Controller
 	         * $userDescription->setToken()
 	         */
 
-	        $em->persist($userDescription);
+	        $helper->instance()->persist($userDescription);
 
 	        $userAccount->setIdDescription($userDescription);
 	        $userAccount->setIdGroup($userGroup);
 
-	        $em->persist($userAccount);
-	        $em->flush();
+	        $helper->instance()->persist($userAccount);
+	        $helper->instance()->flush();
 
             return $this->forward('GitboxCoreBundle:UserAccount:registerSubmit', array(
                 'userName' => $userAccount->getLogin()
