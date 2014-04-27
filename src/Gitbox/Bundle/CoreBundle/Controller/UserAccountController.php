@@ -75,23 +75,17 @@ class UserAccountController extends Controller
 				$helper->instance()->persist($userAccount);
 			    $helper->instance()->flush();
 
-			    $this->redirect($this->generateUrl('home_url'), 301);
+			    return $this->forward('GitboxCoreBundle:Main:index');
 		    }
 
-		    /**
-		     * @var $information \Gitbox\Bundle\CoreBundle\Helper\InformationHelper
-		     */
-//		    $information = $this->container->get('information_helper');
-//		    $information->setContent('Błąd!');
+			    $information['type']    = 'warning';
+			    $information['content'] = 'Niestety podano błędny login/hasło.';
 
-		    $information['type'] = 'warning';
-		    $information['content'] = 'test';
-
-		    return $this->render('GitboxCoreBundle:UserAccount:index.html.twig', array(
-			    'form'          => $form->createView(),
-			    'session'       => false,
-			    'information'   => $information,
-		    ));
+			    return $this->render('GitboxCoreBundle:UserAccount:index.html.twig', array(
+				    'form'          => $form->createView(),
+				    'session'       => false,
+				    'information'   => $information,
+			    ));
 	    }
 
 	    return $this->render('GitboxCoreBundle:UserAccount:index.html.twig', array(

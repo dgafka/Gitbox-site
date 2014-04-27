@@ -224,3 +224,7 @@ a.badge-button:focus {
         font-size: 10px;
     }
 }
+
+.flash-messages {
+  display: block;
+}

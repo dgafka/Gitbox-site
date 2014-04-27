@@ -14,7 +14,6 @@ class UserProfileController extends Controller
 	 * @Template()
 	 */
 	public function indexAction($login) {
-
 		return array('user' => $this->getUserByLogin($login));
 	}
 
