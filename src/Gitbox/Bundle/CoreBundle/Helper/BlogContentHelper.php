@@ -11,6 +11,8 @@ use Doctrine\ORM\Query\Expr\Join;
  */
 class BlogContentHelper extends ContentHelper {
 
+    protected $module = 'blog';
+
     public function __construct($entityManager) {
         parent::__construct($entityManager);
     }

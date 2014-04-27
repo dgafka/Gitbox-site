@@ -6,6 +6,10 @@ namespace Gitbox\Bundle\CoreBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
+use Gitbox\Bundle\CoreBundle\Entity\Content;
+use Gitbox\Bundle\CoreBundle\Form\Type\BlogPostType;
+
 
 class BlogController extends Controller
 {
@@ -48,19 +52,47 @@ class BlogController extends Controller
         // TODO: paginacja
         $posts = $contentHelper->getContents($login);
 
-        return array('user' => $user, 'posts' => $posts);
+        return array(
+            'user' => $user,
+            'posts' => $posts
+        );
     }
 
     /**
      * @Route("/user/{login}/blog/new", name="user_new_post")
      * @Template()
      */
-    public function newAction($login)
+    public function newAction(Request $request, $login)
     {
-        $this->validateURL($login);
+        $user = $this->validateURL($login);
         // TODO: walidacja - permissions
 
-        return array();
+        $postContent = new Content();
+
+        $form = $this->createForm(new BlogPostType(), $postContent, array('csrf_protection' => true));
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $blogContentHelper = $this->container->get('blog_content_helper');
+            $em = $this->getDoctrine()->getManager();
+            $repository = $em->getRepository('GitboxCoreBundle:Menu');
+
+            $postContent->setIdUser($user->getId());
+            $postContent->setCreateDate(new \DateTime('now'));
+            $postContent->setLastModificationDate(new \DateTime('now'));
+            $postContent->setIdMenu($repository->findOneByTitle('blog')->getId()); // TODO: query builder, cuz it doesn't works
+
+            $blogContentHelper->insert($postContent);
+
+            return $this->forward('GitboxCoreBundle:Blog:show', array(
+                'login' => $user->getLogin(),
+                'id' => $postContent->getId()));
+        }
+
+        return array(
+            'user' => $user,
+            'form' => $form->createView()
+        );
     }
 
     /**
@@ -69,10 +101,10 @@ class BlogController extends Controller
      */
     public function editAction($login, $id)
     {
-        $this->validateURL($login);
+        $user = $this->validateURL($login);
         // TODO: walidacja - permissions
 
-        return array();
+        return array('user' => $user);
     }
 
     /**
@@ -93,7 +125,10 @@ class BlogController extends Controller
             throw $this->createNotFoundException('Niestety nie znaleziono wpisu.');
         }
 
-        return array('user' => $user, 'post' => $post);
+        return array(
+            'user' => $user,
+            'post' => $post
+        );
     }
 
 }
