@@ -13,11 +13,21 @@ use Doctrine\ORM\Mapping as ORM;
 class UserDescription
 {
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="user_description_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $id;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="registration_date", type="date", nullable=false)
      */
-    private $registrationDate;
+    private $registrationDate = '1970-01-01';
 
     /**
      * @var \DateTime
@@ -38,7 +48,7 @@ class UserDescription
      *
      * @ORM\Column(name="hit", type="integer", nullable=false)
      */
-    private $hit;
+    private $hit = '0';
 
     /**
      * @var string
@@ -47,134 +57,160 @@ class UserDescription
      */
     private $token;
 
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="content", type="string", nullable=true)
-	 */
-	private $content;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="content", type="text", nullable=true)
+     */
+    private $content;
+
+
 
     /**
-     * @var integer
+     * Set registrationDate
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="user_description_id_seq", allocationSize=1, initialValue=1)
+     * @param \DateTime $registrationDate
+     * @return UserDescription
      */
-    private $id;
+    public function setRegistrationDate($registrationDate)
+    {
+        $this->registrationDate = $registrationDate;
 
-	/**
-	 * @param \DateTime $banDate
-	 */
-	public function setBanDate($banDate)
-	{
-		$this->banDate = $banDate;
-	}
+        return $this;
+    }
 
-	/**
-	 * @return \DateTime
-	 */
-	public function getBanDate()
-	{
-		return $this->banDate;
-	}
+    /**
+     * Get registrationDate
+     *
+     * @return \DateTime 
+     */
+    public function getRegistrationDate()
+    {
+        return $this->registrationDate;
+    }
 
-	/**
-	 * @param int $hit
-	 */
-	public function setHit($hit)
-	{
-		$this->hit = $hit;
-	}
+    /**
+     * Set banDate
+     *
+     * @param \DateTime $banDate
+     * @return UserDescription
+     */
+    public function setBanDate($banDate)
+    {
+        $this->banDate = $banDate;
 
-	/**
-	 * @return int
-	 */
-	public function getHit()
-	{
-		return $this->hit;
-	}
+        return $this;
+    }
 
-	/**
-	 * @param int $id
-	 */
-	public function setId($id)
-	{
-		$this->id = $id;
-	}
+    /**
+     * Get banDate
+     *
+     * @return \DateTime 
+     */
+    public function getBanDate()
+    {
+        return $this->banDate;
+    }
 
-	/**
-	 * @return int
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
+    /**
+     * Set ip
+     *
+     * @param string $ip
+     * @return UserDescription
+     */
+    public function setIp($ip)
+    {
+        $this->ip = $ip;
 
-	/**
-	 * @param string $ip
-	 */
-	public function setIp($ip)
-	{
-		$this->ip = $ip;
-	}
+        return $this;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getIp()
-	{
-		return $this->ip;
-	}
+    /**
+     * Get ip
+     *
+     * @return string 
+     */
+    public function getIp()
+    {
+        return $this->ip;
+    }
 
-	/**
-	 * @param \DateTime $registrationDate
-	 */
-	public function setRegistrationDate($registrationDate)
-	{
-		$this->registrationDate = $registrationDate;
-	}
+    /**
+     * Set hit
+     *
+     * @param integer $hit
+     * @return UserDescription
+     */
+    public function setHit($hit)
+    {
+        $this->hit = $hit;
 
-	/**
-	 * @return \DateTime
-	 */
-	public function getRegistrationDate()
-	{
-		return $this->registrationDate;
-	}
+        return $this;
+    }
 
-	/**
-	 * @param string $token
-	 */
-	public function setToken($token)
-	{
-		$this->token = $token;
-	}
+    /**
+     * Get hit
+     *
+     * @return integer 
+     */
+    public function getHit()
+    {
+        return $this->hit;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getToken()
-	{
-		return $this->token;
-	}
+    /**
+     * Set token
+     *
+     * @param string $token
+     * @return UserDescription
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
 
-	/**
-	 * @param string $content
-	 */
-	public function setContent($content)
-	{
-		$this->content = $content;
-	}
+        return $this;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getContent()
-	{
-		return $this->content;
-	}
+    /**
+     * Get token
+     *
+     * @return string 
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
 
+    /**
+     * Set content
+     *
+     * @param string $content
+     * @return UserDescription
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
 
+        return $this;
+    }
+
+    /**
+     * Get content
+     *
+     * @return string 
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 }

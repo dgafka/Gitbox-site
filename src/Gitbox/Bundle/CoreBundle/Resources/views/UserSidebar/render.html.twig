@@ -3,7 +3,6 @@
         <div class="avatar-box">
             <a class="no-decoration keep-color" href="{{ path('user_profile_index', {'login': user.login}) }}">
                 <img class="pic img-circle" src="{{ user.email | getGravatarImage(160)}}" alt="avatar">
-                {#TODO : poprawić żeby było user.email zamiast na sztywno#}
                 <div class="name">{{ user.login }}</div>
             </a>
             <div class="profile-info">

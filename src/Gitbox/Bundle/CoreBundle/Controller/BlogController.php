@@ -6,86 +6,93 @@ namespace Gitbox\Bundle\CoreBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
+use Gitbox\Bundle\CoreBundle\Entity\Content;
+use Gitbox\Bundle\CoreBundle\Form\Type\BlogPostType;
+
 
 class BlogController extends Controller
 {
+
     /**
-     * @Route("/user/{login}/blog", name="user_blog")
-     * @Template()
+     * Walidacja poprawności URL-a. <br />
+     * Zwraca dane użytkownika z bazy, w przypadku gdy istnieje użytkownik o podanej nazwie oraz gdy posiada aktywowany moduł.
+     *
+     * @param $login
+     * @return mixed
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    public function indexAction($login)
-    {
-        // TODO: pobieranie postów z bazy oraz paginacja [https://github.com/KnpLabs/KnpPaginatorBundle] + ilość komentarzy
+    private function validateURL($login) {
+        $userHelper = $this->container->get('user_helper');
+        $moduleHelper = $this->container->get('module_helper');
+        $moduleHelper->init('blog');
 
-        //$user['login'] = $login;
-        $user = $this->getUserByLogin($login);
-        $posts = array(
-            array(
-                'id' => '1',
-                'title' => 'Damy radę!',
-                'description' => "4 ziomków (właściwie 3) robiło sobie projekt zespołowy, gdy nagle czas przyspieszył i była godzina 14:30, dnia 24.04.2014r.\nNiestety, nasi dzielni bohaterowie bardzo lubili placki i Kacper wybuchł. KONIEC!",
-                'create_date' => date('D j, F Y - H:i:s'),
-                'modification_date' => date('D j, F Y - H:i:s')
-            ),
-            array(
-                'id' => '2',
-                'title' => 'Zdążyliśmy, zdaliśmy!',
-                'description' => "No i zdaliśmy!",
-                'create_date' => date('D j, F Y - H:i:s'),
-                'modification_date' => date('D j, F Y - H:i:s')
-            ),
-            array(
-                'id' => '3',
-                'title' => 'Zdążyliśmy, zdaliśmy!',
-                'description' => "No i zdaliśmy!",
-                'create_date' => date('D j, F Y - H:i:s'),
-                'modification_date' => date('D j, F Y - H:i:s')
-            ),
-            array(
-                'id' => '4',
-                'title' => 'Zdążyliśmy, zdaliśmy!',
-                'description' => "No i zdaliśmy!",
-                'create_date' => date('D j, F Y - H:i:s'),
-                'modification_date' => date('D j, F Y - H:i:s')
-            ),
-            array(
-                'id' => '5',
-                'title' => 'Zdążyliśmy, zdaliśmy!',
-                'description' => "No i zdaliśmy!",
-                'create_date' => date('D j, F Y - H:i:s'),
-                'modification_date' => date('D j, F Y - H:i:s')
-            ),
-            array(
-                'id' => '6',
-                'title' => 'Zdążyliśmy, zdaliśmy!',
-                'description' => "No i zdaliśmy!",
-                'create_date' => date('D j, F Y - H:i:s'),
-                'modification_date' => date('D j, F Y - H:i:s')
-            )
-        );
+        $user = $userHelper->findByLogin($login);
 
-        return array('user' => $user, 'posts' => $posts);
-    }
-
-    private function getUserByLogin($login) {
-        $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository('\Gitbox\Bundle\CoreBundle\Entity\UserAccount')->findOneBy(array('login' => $login));
-        if(!$user instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount) {
-            throw $this->createNotFoundException("Nie znaleziono podanego użytkownika");
+        if (!$user) {
+            throw $this->createNotFoundException('Nie znaleziono użytkownika o nazwie <b>' . $login . '</b>');
+        } else if (!$moduleHelper->isModuleActivated($login)) {
+            throw $this->createNotFoundException('Użytkownik <b>' . $login . '</b> nie posiada aktywowanego modułu');
         }
 
         return $user;
     }
 
     /**
+     * @Route("/user/{login}/blog", name="user_blog")
+     * @Template()
+     */
+    public function indexAction($login)
+    {
+        $user = $this->validateURL($login);
+
+        $contentHelper = $this->container->get('blog_content_helper');
+        $contentHelper->init('blog');
+
+        // TODO: paginacja
+        $posts = $contentHelper->getContents($login);
+
+        return array(
+            'user' => $user,
+            'posts' => $posts
+        );
+    }
+
+    /**
      * @Route("/user/{login}/blog/new", name="user_new_post")
      * @Template()
      */
-    public function newAction($login)
+    public function newAction(Request $request, $login)
     {
-        $user['login'] = $login;
+        $user = $this->validateURL($login);
+        // TODO: walidacja - permissions
 
-        return array('user' => $user);
+        $postContent = new Content();
+
+        $form = $this->createForm(new BlogPostType(), $postContent, array('csrf_protection' => true));
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $blogContentHelper = $this->container->get('blog_content_helper');
+            $em = $this->getDoctrine()->getManager();
+            $repository = $em->getRepository('GitboxCoreBundle:Menu');
+
+            $postContent->setIdUser($user->getId());
+            $postContent->setCreateDate(new \DateTime('now'));
+            $postContent->setLastModificationDate(new \DateTime('now'));
+            $postContent->setIdMenu($repository->findOneByTitle('blog')->getId()); // TODO: query builder, cuz it doesn't works
+
+            $blogContentHelper->insert($postContent);
+
+            return $this->forward('GitboxCoreBundle:Blog:show', array(
+                'login' => $user->getLogin(),
+                'id' => $postContent->getId()));
+        }
+
+        return array(
+            'user' => $user,
+            'form' => $form->createView()
+        );
     }
 
     /**
@@ -94,6 +101,10 @@ class BlogController extends Controller
      */
     public function editAction($login, $id)
     {
+        $user = $this->validateURL($login);
+        // TODO: walidacja - permissions
+
+        return array('user' => $user);
     }
 
     /**
@@ -103,16 +114,21 @@ class BlogController extends Controller
     public function showAction($login, $id)
     {
         // TODO: pobieranie treści posta i komentarzy
-        $user = $this->getUserByLogin($login);
-        $post = array(
-            'id' => '1',
-            'title' => 'Damy radę!',
-            'description' => "4 ziomków (właściwie 3) robiło sobie projekt zespołowy, gdy nagle czas przyspieszył i była godzina 14:30, dnia 24.04.2014r.\nNiestety, nasi dzielni bohaterowie bardzo lubili placki i Kacper wybuchł. KONIEC!",
-            'create_date' => date('D j, F Y - H:i:s'),
-            'modification_date' => date('D j, F Y - H:i:s')
-        );
+        $user = $this->validateURL($login);
 
-        return array('user' => $user, 'post' => $post);
+        $contentHelper = $this->container->get('blog_content_helper');
+        $contentHelper->init('blog');
+
+        $post = $contentHelper->getOneContent($id, $login);
+
+        if (!$post) {
+            throw $this->createNotFoundException('Niestety nie znaleziono wpisu.');
+        }
+
+        return array(
+            'user' => $user,
+            'post' => $post
+        );
     }
 
 }

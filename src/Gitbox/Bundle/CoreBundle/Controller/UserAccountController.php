@@ -136,7 +136,7 @@ class UserAccountController extends Controller
 	         */
 	        $userGroup = $helper->instance()->getRepository('\Gitbox\Bundle\CoreBundle\Entity\UserGroup')->findOneBy(array('permissions' => 1));
 	        $userDescription = new UserDescription();
-	        $userDescription->setHit(1);
+	        $userDescription->setHit(0);
 	        $date = new \DateTime();
 	        $userDescription->setRegistrationDate($date);
 			$userDescription->setBanDate(null);

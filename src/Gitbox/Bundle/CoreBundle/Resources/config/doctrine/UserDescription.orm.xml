@@ -9,5 +9,6 @@
     <field name="ip" type="string" column="ip" length="15" nullable="true"/>
     <field name="hit" type="integer" column="hit" nullable="false"/>
     <field name="token" type="string" column="token" length="32" nullable="true"/>
+    <field name="content" type="text" column="content" nullable="true"/>
   </entity>
 </doctrine-mapping>

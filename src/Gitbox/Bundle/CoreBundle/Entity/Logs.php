@@ -13,6 +13,16 @@ use Doctrine\ORM\Mapping as ORM;
 class Logs
 {
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="logs_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $id;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="description", type="text", nullable=false)
@@ -26,63 +36,61 @@ class Logs
      */
     private $createDate;
 
+
+
     /**
-     * @var integer
+     * Set description
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="logs_id_seq", allocationSize=1, initialValue=1)
+     * @param string $description
+     * @return Logs
      */
-    private $id;
+    public function setDescription($description)
+    {
+        $this->description = $description;
 
-	/**
-	 * @param \DateTime $createDate
-	 */
-	public function setCreateDate($createDate)
-	{
-		$this->createDate = $createDate;
-	}
+        return $this;
+    }
 
-	/**
-	 * @return \DateTime
-	 */
-	public function getCreateDate()
-	{
-		return $this->createDate;
-	}
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
 
-	/**
-	 * @param string $description
-	 */
-	public function setDescription($description)
-	{
-		$this->description = $description;
-	}
+    /**
+     * Set createDate
+     *
+     * @param \DateTime $createDate
+     * @return Logs
+     */
+    public function setCreateDate($createDate)
+    {
+        $this->createDate = $createDate;
 
-	/**
-	 * @return string
-	 */
-	public function getDescription()
-	{
-		return $this->description;
-	}
+        return $this;
+    }
 
-	/**
-	 * @param int $id
-	 */
-	public function setId($id)
-	{
-		$this->id = $id;
-	}
+    /**
+     * Get createDate
+     *
+     * @return \DateTime 
+     */
+    public function getCreateDate()
+    {
+        return $this->createDate;
+    }
 
-	/**
-	 * @return int
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
-
-
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 }
