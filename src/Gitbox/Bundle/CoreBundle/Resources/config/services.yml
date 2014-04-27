@@ -2,6 +2,7 @@ parameters:
     user_helper.class: Gitbox\Bundle\CoreBundle\Helper\UserAccountHelper
     mailer_helper.class: Gitbox\Bundle\CoreBundle\Helper\MailerHelper
     module_helper.class: Gitbox\Bundle\CoreBundle\Helper\ModuleHelper
+    blog_content_helper.class: Gitbox\Bundle\CoreBundle\Helper\BlogContentHelper
 
 services:
     user_helper:
@@ -12,4 +13,7 @@ services:
         arguments:    ["@mailer"]
     module_helper:
         class:        "%module_helper.class%"
+        arguments:    ["@doctrine.orm.entity_manager"]
+    blog_content_helper:
+        class:        "%blog_content_helper.class%"
         arguments:    ["@doctrine.orm.entity_manager"]
