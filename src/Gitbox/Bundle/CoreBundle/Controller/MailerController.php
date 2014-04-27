@@ -60,10 +60,10 @@ class MailerController extends Controller
 	    $userAccount = $helper->findByToken($token);
 
 	    if(!($userAccount instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount)) {
-		    throw new NotFoundHttpException($this->renderView('GitboxCoreBundle:Error:notFound.html.twig'));
+		    throw $this->createNotFoundException(($this->renderView('GitboxCoreBundle:Error:notFound.html.twig')));
 	    }
 		if($userAccount->getStatus() != 'D') {
-			throw new AuthenticationException($this->renderView('GitboxCoreBundle:Error:accountFailActivation.html.twig'));
+			throw $this->createNotFoundException($this->renderView('GitboxCoreBundle:Error:accountFailActivation.html.twig'));
 		}
 
 	    $userAccount->setStatus('A');
@@ -71,7 +71,6 @@ class MailerController extends Controller
 	    $userDescription->setToken(null);
 
 	    $helper->update($userAccount);
-		$helper->update($userDescription);
 
 	    return array('login' => $userAccount->getLogin());
     }

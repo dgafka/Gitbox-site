@@ -49,16 +49,7 @@ class UserAccountController extends Controller
 		     */
 		    $userAccount = $helper->instance()->getRepository('\Gitbox\Bundle\CoreBundle\Entity\UserAccount')->findOneBy(array('email' => $userAccount->getEmail(), 'password' => $userAccount->getPassword(), 'status' => 'A'));
 
-		    if($userAccount instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount) {
-
-			    $status = $userAccount->getStatus();
-				if($status == 'D') {
-					throw new AuthenticationException($this->renderView('GitboxCoreBundle:Error:accountNotActivated.html.twig'));
-				}else if($status == 'B') {
-					throw new AuthenticationException($this->renderView('GitboxCoreBundle:Error:accountBanned.html.twig'));
-				}else if($status != 'A') {
-					throw new NotFoundHttpException($this->renderView('GitboxCoreBundle:Error:notFound.html.twig'));
-				}
+		    if($userAccount instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount && $userAccount->getStatus() == 'A') {
 
 				$session->set('username', $userAccount->getLogin());
 			    $session->set('userId', $userAccount->getId());
