@@ -46,7 +46,7 @@ class BlogContentHelper extends ContentHelper {
             ));
 
         try {
-            $queryBuilder->getQuery()->getResult();
+            return $queryBuilder->getQuery()->getResult();
         } catch (NoResultException $e) {
             return null;
         }
@@ -84,7 +84,7 @@ class BlogContentHelper extends ContentHelper {
             ));
 
         try {
-            $queryBuilder->getQuery()->getResult();
+            return $queryBuilder->getQuery()->getResult();
         } catch (NoResultException $e) {
             return null;
         }
@@ -121,7 +121,7 @@ class BlogContentHelper extends ContentHelper {
             ));
 
         try {
-            $queryBuilder->getQuery()->getResult();
+            return $queryBuilder->getQuery()->getSingleResult();
         } catch (NoResultException $e) {
             return null;
         }

@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Gitbox\Bundle\CoreBundle\Entity\Content;
+use Gitbox\Bundle\CoreBundle\Entity\Menu;
 use Gitbox\Bundle\CoreBundle\Form\Type\BlogPostType;
 
 
@@ -80,13 +81,16 @@ class BlogController extends Controller
             $postContent->setIdUser($user->getId());
             $postContent->setCreateDate(new \DateTime('now'));
             $postContent->setLastModificationDate(new \DateTime('now'));
-            $postContent->setIdMenu($repository->findOneByTitle('blog')->getId()); // TODO: query builder, cuz it doesn't works
+            $postContent->setIdMenu($repository->findOneByTitle('blog'));
 
             $blogContentHelper->insert($postContent);
 
-            return $this->forward('GitboxCoreBundle:Blog:show', array(
-                'login' => $user->getLogin(),
-                'id' => $postContent->getId()));
+            return $this->redirect(
+                $this->generateUrl('user_show_post', array(
+                    'login' => $user->getLogin(),
+                    'id' => $postContent->getId()
+                ))
+            );
         }
 
         return array(
