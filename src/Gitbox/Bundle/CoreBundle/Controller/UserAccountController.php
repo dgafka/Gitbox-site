@@ -111,6 +111,32 @@ class UserAccountController extends Controller
 
         if($form->isValid()) {
 
+	        $message = '';
+	        /**
+	         * @var $helper \Gitbox\Bundle\CoreBundle\Helper\UserAccountHelper
+	         */
+	        $helper = $this->container->get('user_helper');
+	        $emailUser = $helper->findByEmail($userAccount->getEmail());
+	        $loginUser = $helper->findByLogin($userAccount->getLogin());
+
+	        if($emailUser instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount) {
+				$message .= 'Użytkownik o podanym emailu już istnieje. ';
+	        }
+	        if($loginUser instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount) {
+		        $message .= ' Użytkownik o podanym loginie już istnieje ';
+	        }
+
+	        if($message != '') {
+		        $information['type']    = 'warning';
+		        $information['content'] = $message;
+
+		        return $this->render('GitboxCoreBundle:UserAccount:register.html.twig', array(
+			        'form'          => $form->createView(),
+			        'session'       => false,
+			        'information'   => $information,
+		        ));
+	        }
+
 	        /**
 	         * @var $helper \Gitbox\Bundle\CoreBundle\Helper\UserAccountHelper
 	         */

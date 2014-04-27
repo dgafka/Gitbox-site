@@ -45,6 +45,60 @@ class UserAccountHelper extends EntityHelper implements CRUDHelper {
 		return $userAccount;
 	}
 
+	/**
+	 * @param $token
+	 * @return \Gitbox\Bundle\CoreBundle\Entity\UserAccount|array
+	 */
+	public function findByToken($token) {
+
+		/**
+		 * @var $queryBuilder QueryBuilder
+		 */
+		$queryBuilder = $this->instance()->createQueryBuilder();
+		$results = $queryBuilder
+			->select('ua')
+			->from('\Gitbox\Bundle\CoreBundle\Entity\UserAccount', 'ua')
+			->innerJoin('\Gitbox\Bundle\CoreBundle\Entity\UserDescription', 'ud', 'WITH', 'ud.id = ua.idDescription')
+			->where('ud.token = :token')
+			->setParameter('token', $token)
+			->getQuery()
+			->execute()
+		;
+
+		if(count($results) == 1) {
+			$results = $results[0];
+		}
+
+		return $results;
+	}
+
+	/** Szuka użytkownika po emailu
+	 * @param $email
+	 * @return \Gitbox\Bundle\CoreBundle\Entity\UserAccount
+	 */
+	public function findByEmail($email) {
+		/**
+		 * @var $queryBuilder QueryBuilder
+		 */
+		$queryBuilder = $this->instance()->createQueryBuilder();
+		$results = $queryBuilder
+			->select('ua')
+			->from('\Gitbox\Bundle\CoreBundle\Entity\UserAccount', 'ua')
+			->where('ua.email = :email')
+			->setParameter('email', $email)
+			->getQuery()
+			->execute()
+		;
+
+		if(count($results) == 1) {
+			$results = $results[0];
+		}
+
+		return $results;
+	}
+
+
+
 	/** Usuwa rekord z tabeli User Account po id
 	 * @param $object \Gitbox\Bundle\CoreBundle\Entity\UserAccount|int
 	 * @return \Gitbox\Bundle\CoreBundle\Entity\UserAccount|int
@@ -107,31 +161,4 @@ class UserAccountHelper extends EntityHelper implements CRUDHelper {
 		return $object;
 	}
 
-
-	/**
-	 * @param $token
-	 * @return \Gitbox\Bundle\CoreBundle\Entity\UserAccount|array
-	 */
-	public function findByToken($token) {
-
-		/**
-		 * @var $queryBuilder QueryBuilder
-		 */
-		$queryBuilder = $this->instance()->createQueryBuilder();
-		$results = $queryBuilder
-			->select('ua')
-			->from('\Gitbox\Bundle\CoreBundle\Entity\UserAccount', 'ua')
-			->innerJoin('\Gitbox\Bundle\CoreBundle\Entity\UserDescription', 'ud', 'WITH', 'ud.id = ua.idDescription')
-			->where('ud.token = :token')
-			->setParameter('token', $token)
-			->getQuery()
-			->execute()
-		;
-
-		if(count($results) == 1) {
-			$results = $results[0];
-		}
-
-		return $results;
-	}
 } 

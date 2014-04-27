@@ -60,10 +60,14 @@ class MailerController extends Controller
 	    $userAccount = $helper->findByToken($token);
 
 	    if(!($userAccount instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount)) {
-		    throw $this->createNotFoundException(($this->renderView('GitboxCoreBundle:Error:notFound.html.twig')));
+		    $information['type']    = 'warning';
+		    $information['content'] = 'Podany token nie istnieje, czy na pewno nie aktywowałeś konta już wcześniej?';
+		    return $this->forward('GitboxCoreBundle:Main:index.html.twig', array('information' => $information));
 	    }
 		if($userAccount->getStatus() != 'D') {
-			throw $this->createNotFoundException($this->renderView('GitboxCoreBundle:Error:accountFailActivation.html.twig'));
+			$information['type']    = 'warning';
+			$information['content'] = 'Konto było już wcześniej aktywowane!';
+			return $this->render('GitboxCoreBundle:Main:index.html.twig', array('information' => $information));
 		}
 
 	    $userAccount->setStatus('A');
