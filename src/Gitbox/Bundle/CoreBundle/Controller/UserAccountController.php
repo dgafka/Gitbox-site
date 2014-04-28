@@ -66,10 +66,10 @@ class UserAccountController extends Controller
 				$helper->instance()->persist($userAccount);
 			    $helper->instance()->flush();
 
-//			    return $this->forward('GitboxCoreBundle:Main:index');
-			    return $this->redirect(
-				    $this->generateUrl('home_url', array())
-			    );
+			    return $this->forward('GitboxCoreBundle:Main:index');
+//			    return $this->redirect(
+//				    $this->generateUrl('home_url', array())
+//			    );
 		    }
 
 			    $information['type']    = 'warning';
