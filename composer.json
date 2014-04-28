@@ -21,7 +21,8 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "yiisoft/jquery": "2.1.0",
         "twbs/bootstrap": "3.0.*@dev",
-        "gregwar/captcha-bundle": "dev-master"
+        "excelwebzone/recaptcha-bundle": "v1.0.0",
+        "braincrafted/bootstrap-bundle": "~2.0"
     },
     "scripts": {
         "post-install-cmd": [
