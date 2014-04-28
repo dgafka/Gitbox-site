@@ -1,7 +1,5 @@
 {% extends "::base.html.twig" %}
 
-{% form_theme form 'EWZRecaptchaBundle:Form:ewz_recaptcha_widget.html.twig' %}
-
 {% block title %}Register{% endblock %}
 
 {% block content_inner %}
@@ -18,11 +16,6 @@
             {{ form_widget(form.login) }}
 
             {{ form_widget(form.password) }}
-
-            <div class="captcha-container">
-                {{ form_label(form.recaptcha) }}
-                {{ form_widget(form.recaptcha) }}
-            </div>
         </div>
 
     {{ form_end(form) }}
