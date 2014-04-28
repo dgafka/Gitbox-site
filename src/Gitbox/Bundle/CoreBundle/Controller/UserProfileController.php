@@ -34,7 +34,6 @@ class UserProfileController extends Controller
     }
 
 	/**
-	 * @param $login
 	 * @Route("/user/{login}/search", name="user_profile_search")
 	 * @Template()
 	 */
@@ -42,13 +41,17 @@ class UserProfileController extends Controller
 		return array('user' => $this->getUserByLogin($login));
 	}
 
+	/** Metoda odpowiedzialna za pobranie z bazy usera za pomocą loginu
+	 * @param $login
+	 * @return object
+	 * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+	 */
 	private function getUserByLogin($login) {
-		$em = $this->getDoctrine()->getManager();
-		$user = $em->getRepository('\Gitbox\Bundle\CoreBundle\Entity\UserAccount')->findOneBy(array('login' => $login));
-		if(!$user instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount) {
-			throw $this->createNotFoundException("Nie znaleziono podanego użytkownika");
-		}
 
-		return $user;
+		/**
+		 * @var $helper \Gitbox\Bundle\CoreBundle\Helper\UserAccountHelper
+		 */
+		$helper = $this->container->get('user_helper');
+		return $helper->findByLogin($login);
 	}
 }

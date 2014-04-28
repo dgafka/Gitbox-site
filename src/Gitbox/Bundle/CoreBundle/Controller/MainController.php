@@ -15,24 +15,6 @@ class MainController extends Controller
      */
     public function indexAction()
     {
-//	    /**
-//	     * @var $queryBuilder QueryBuilder
-//	     */
-//	    $queryBuilder = $this->getDoctrine()->getManager()->createQueryBuilder();
-//	    $results = $queryBuilder
-//			 ->select('m')
-//		    ->from('\Gitbox\Bundle\CoreBundle\Entity\Menu', 'm')
-//		    ->where('m.parent IS NULL')
-//	       ->getQuery()
-//	       ->execute();
-//
-////	    var_dump($results);
-//	    $response = $this->forward('GitboxCoreBundle:Default:index', array(
-//		    'name'  => "bla",
-//	    ));
-//	    var_dump($response->getContent());
-//	    return array('response' => $response);
-
         return array();
     }
 

@@ -15,6 +15,16 @@ class UserGroup
     /**
      * @var integer
      *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="user_group_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $id;
+
+    /**
+     * @var integer
+     *
      * @ORM\Column(name="permissions", type="integer", nullable=false)
      */
     private $permissions;
@@ -26,63 +36,61 @@ class UserGroup
      */
     private $description;
 
+
+
     /**
-     * @var integer
+     * Set permissions
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="user_group_id_seq", allocationSize=1, initialValue=1)
+     * @param integer $permissions
+     * @return UserGroup
      */
-    private $id;
+    public function setPermissions($permissions)
+    {
+        $this->permissions = $permissions;
 
-	/**
-	 * @param string $description
-	 */
-	public function setDescription($description)
-	{
-		$this->description = $description;
-	}
+        return $this;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getDescription()
-	{
-		return $this->description;
-	}
+    /**
+     * Get permissions
+     *
+     * @return integer 
+     */
+    public function getPermissions()
+    {
+        return $this->permissions;
+    }
 
-	/**
-	 * @param int $id
-	 */
-	public function setId($id)
-	{
-		$this->id = $id;
-	}
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return UserGroup
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
 
-	/**
-	 * @return int
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
+        return $this;
+    }
 
-	/**
-	 * @param int $permissions
-	 */
-	public function setPermissions($permissions)
-	{
-		$this->permissions = $permissions;
-	}
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
 
-	/**
-	 * @return int
-	 */
-	public function getPermissions()
-	{
-		return $this->permissions;
-	}
-
-
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 }

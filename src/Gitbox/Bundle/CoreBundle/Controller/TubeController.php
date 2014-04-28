@@ -14,8 +14,13 @@ class TubeController extends Controller
      */
     public function indexAction($login)
     {
-        $user = $this->getUserByLogin($login);
-        $posts = array(
+	    /**
+	     * @var $helper \Gitbox\Bundle\CoreBundle\Helper\UserAccountHelper
+	     */
+	    $helper = $this->container->get('user_helper');
+
+        $user   = $helper->findByLogin($login);
+	    $posts = array(
             array(
                 'id' => '1',
                 'title' => 'Template preview',
@@ -73,15 +78,6 @@ class TubeController extends Controller
             )
         );
         return array('user' => $user, 'posts' => $posts);
-    }
-    private function getUserByLogin($login) {
-        $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository('\Gitbox\Bundle\CoreBundle\Entity\UserAccount')->findOneBy(array('login' => $login));
-        if(!$user instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount) {
-            throw $this->createNotFoundException("Nie znaleziono podanego użytkownika");
-        }
-
-        return $user;
     }
 
 }

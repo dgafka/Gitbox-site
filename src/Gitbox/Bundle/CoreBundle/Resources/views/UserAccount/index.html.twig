@@ -1,4 +1,5 @@
 {% block user_menu_items %}
+
     {% if session == true %}
         {# After login #}
         <ul class="nav navbar-nav navbar-right">
@@ -25,6 +26,9 @@
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="glyphicon glyphicon-user" style="font-size: 14pt;"></b> Zaloguj się</a>
                 <div class="dropdown-menu login-dropdown">
+                    {% if information is defined %}
+                        {%  include 'GitboxCoreBundle:InformationBar:index.html.twig' %}
+                    {% endif %}
                     {{ form_start(form) }}
                     {{ form_errors(form) }}
                     <div class="form-group">

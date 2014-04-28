@@ -9,16 +9,14 @@
         {# post #}
         <div class="post-in-the-box">
             <h1>{{ post.title }}</h1>
-            <p><span class="glyphicon glyphicon-time"></span> <b>Utworzono</b> {{ post.create_date }}</p>
-            <p><span class="glyphicon glyphicon-time"></span> <b>Ostatnio edytowano</b> {{ post.modification_date }}</p>
+            <p><span class="glyphicon glyphicon-time"></span> <b>Utworzono</b> {{ post.createDate | date("D j/m/Y H:i:s") }}</p>
+            <p><span class="glyphicon glyphicon-time"></span> <b>Ostatnio edytowano</b> {{ post.lastModificationDate | date("D j/m/Y H:i:s") }}</p>
             {# TODO: rating #}
             <hr>
 
-            <p class="lead">Lubimy placki.</p>
-            <p>{{ post.description }}</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit mi vitae sodales faucibus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Praesent sit amet sapien sagittis, euismod dui at, gravida tortor. Suspendisse vulputate ultrices dui, semper dictum nisl tincidunt nec. Cras ultrices, magna nec mattis gravida, diam diam sagittis leo, vitae eleifend nunc orci et orci. Curabitur pulvinar, justo in ultrices sollicitudin, justo tortor auctor risus, vel sodales turpis massa quis orci. In nec aliquam odio, vestibulum luctus lectus. Cras urna sapien, pellentesque vitae mollis eget, bibendum varius ligula.</p>
-            <p>Aenean elementum scelerisque interdum. Aliquam imperdiet ullamcorper eros vitae pharetra. Sed quis sem a felis porta gravida sit amet et est. Maecenas mollis imperdiet ante. Mauris ut lectus sit amet tortor mollis porta in vel tellus. Nulla facilisi. Fusce velit elit, consequat eu pretium id, aliquet a nunc. Nam id diam dolor. Nullam dui augue, euismod vitae tortor a, feugiat sagittis nisl. Aliquam eu mauris eget nulla vulputate tincidunt a nec arcu. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Pellentesque at tristique nulla.</p>
-            <p>Quisque non mi vitae mauris posuere consectetur nec sed ligula. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nunc volutpat ac mauris sit amet dapibus. Curabitur sit amet sem at odio varius elementum vel sed nibh. Nullam faucibus neque velit, ac gravida mi aliquet vel. Fusce lectus lorem, aliquet ac ultrices gravida, commodo pretium sapien. Nunc sed sem quis velit molestie facilisis.</p>
+            <div class="post-content">
+                {{ post.description | raw }}
+            </div>
         </div>
         <hr>
 

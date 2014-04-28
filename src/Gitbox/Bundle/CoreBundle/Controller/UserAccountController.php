@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 
 class UserAccountController extends Controller
@@ -21,12 +23,7 @@ class UserAccountController extends Controller
      */
     public function indexAction(Request $request)
     {
-	    $session = $request->getSession();
-		if(is_null($session)) {
-			$session = new Session();
-			$session->start();
-			$request->setSession($session);
-		}
+	    $session = $this->container->get('session');
 	    $userAccount = new UserAccount();
 	    //Pobranie zmiennych z $_POST i $_GET, zwazywszy na to, ze gubilo parametry
 	    $request = Request::createFromGlobals();
@@ -42,13 +39,17 @@ class UserAccountController extends Controller
 	    }
 
 	    if($form->isValid()) {
-		    $em = $this->getDoctrine()->getManager();
+
+		    /**
+		     * @var $helper \Gitbox\Bundle\CoreBundle\Helper\UserAccountHelper
+		     */
+		    $helper = $this->container->get('user_helper');
 		    /**
 		     * @param $userGroup \Gitbox\Bundle\CoreBundle\Entity\UserGroup
 		     */
-		    $userAccount = $em->getRepository('\Gitbox\Bundle\CoreBundle\Entity\UserAccount')->findOneBy(array('email' => $userAccount->getEmail(), 'password' => $userAccount->getPassword(), 'status' => 'A'));
+		    $userAccount = $helper->instance()->getRepository('\Gitbox\Bundle\CoreBundle\Entity\UserAccount')->findOneBy(array('email' => $userAccount->getEmail(), 'password' => $userAccount->getPassword(), 'status' => 'A'));
 
-		    if($userAccount instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount) {
+		    if($userAccount instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount && $userAccount->getStatus() == 'A') {
 
 				$session->set('username', $userAccount->getLogin());
 			    $session->set('userId', $userAccount->getId());
@@ -62,33 +63,44 @@ class UserAccountController extends Controller
 				    $ip = $_SERVER['REMOTE_ADDR'];
 			    }
 			    $userAccount->getIdDescription()->setIp($ip);
-				$em->persist($userAccount);
-			    $em->flush();
+				$helper->instance()->persist($userAccount);
+			    $helper->instance()->flush();
+
+			    return $this->forward('GitboxCoreBundle:Main:index');
+		    }
+
+			    $information['type']    = 'warning';
+			    $information['content'] = 'Niestety podano błędny login/hasło.';
 
 			    return $this->render('GitboxCoreBundle:UserAccount:index.html.twig', array(
-				    'session' => true,
-				    'username'  => $session->get('username'),
+				    'form'          => $form->createView(),
+				    'session'       => false,
+				    'information'   => $information,
 			    ));
-		    }
 	    }
 
 	    return $this->render('GitboxCoreBundle:UserAccount:index.html.twig', array(
-		    'form' => $form->createView(),
-		    'session' => false,
+		    'form'          => $form->createView(),
+		    'session'       => false,
 	    ));
     }
 
+	/**
+	 * @Template()
+	 */
+	public function passwordActionMessageAction($user) {
+		return array('user' => $user);
+	}
+
     /** Tworzy widok z formularzem do zajerestrownia użytkownika.
-     * @Route("user/register", name="user_register_url")
+     * @Route("register", name="user_register_url")
      * @Template()
      */
     public function registerAction(Request $request)
     {
-	    $session = $request->getSession();
-	    if(is_null($session)) {
-		    if(!is_null($session->get('username'))){
-			    throw $this->createNotFoundException("Nie możesz zarejestrować się bedąc zalogowanym");
-		    }
+	    $session = $this->container->get('session');
+	    if(!is_null($session->get('username'))){
+		    throw $this->createNotFoundException("Nie możesz zarejestrować się bedąc zalogowanym");
 	    }
 
         $userAccount = new UserAccount();
@@ -99,33 +111,59 @@ class UserAccountController extends Controller
 
         if($form->isValid()) {
 
-	        $em = $this->getDoctrine()->getManager();
+	        $message = '';
+	        /**
+	         * @var $helper \Gitbox\Bundle\CoreBundle\Helper\UserAccountHelper
+	         */
+	        $helper = $this->container->get('user_helper');
+	        $emailUser = $helper->findByEmail($userAccount->getEmail());
+	        $loginUser = $helper->findByLogin($userAccount->getLogin());
+
+	        if($emailUser instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount) {
+				$message .= 'Użytkownik o podanym emailu już istnieje. ';
+	        }
+	        if($loginUser instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount) {
+		        $message .= ' Użytkownik o podanym loginie już istnieje ';
+	        }
+
+	        if($message != '') {
+		        $information['type']    = 'warning';
+		        $information['content'] = $message;
+
+		        return $this->render('GitboxCoreBundle:UserAccount:register.html.twig', array(
+			        'form'          => $form->createView(),
+			        'session'       => false,
+			        'information'   => $information,
+		        ));
+	        }
+
+	        /**
+	         * @var $helper \Gitbox\Bundle\CoreBundle\Helper\UserAccountHelper
+	         */
+	        $helper = $this->container->get('user_helper');
+
 	        /**
 	         * @param $userGroup \Gitbox\Bundle\CoreBundle\Entity\UserGroup
 	         */
-	        $userGroup = $em->getRepository('\Gitbox\Bundle\CoreBundle\Entity\UserGroup')->findOneBy(array('permissions' => 1));
+	        $userGroup = $helper->instance()->getRepository('\Gitbox\Bundle\CoreBundle\Entity\UserGroup')->findOneBy(array('permissions' => 1));
 	        $userDescription = new UserDescription();
-	        $userDescription->setHit(1);
+	        $userDescription->setHit(0);
 	        $date = new \DateTime();
 	        $userDescription->setRegistrationDate($date);
 			$userDescription->setBanDate(null);
+			$userDescription->setToken(md5(uniqid(mt_rand(), true)));
+	        $userAccount->setStatus('D');
 
-	        $userAccount->setStatus('A');
-	        /**
-	         * @TODO email verification, ustawic status na 'D' i dopiero po wpisaniu tokena zmienic status na A
-	         * $userDescription->setToken()
-	         */
-
-	        $em->persist($userDescription);
+	        $helper->instance()->persist($userDescription);
 
 	        $userAccount->setIdDescription($userDescription);
 	        $userAccount->setIdGroup($userGroup);
 
-	        $em->persist($userAccount);
-	        $em->flush();
+	        $helper->instance()->persist($userAccount);
+	        $helper->instance()->flush();
 
-            return $this->forward('GitboxCoreBundle:UserAccount:registerSubmit', array(
-                'userName' => $userAccount->getLogin()
+            return $this->forward('GitboxCoreBundle:Mailer:accountActivation', array(
+                'user' => $userAccount
             ));
 
         }
@@ -137,7 +175,7 @@ class UserAccountController extends Controller
 
 	/** Akcja odpwiedzialna za wylogowanie użytkownika
 	 * @Template()
-	 * @Route("user/logout", name="user_logout_url")
+	 * @Route("logout", name="user_logout_url")
 	 */
 	public function logoutAction(Request $request) {
 		$session = $request->getSession();
@@ -157,7 +195,7 @@ class UserAccountController extends Controller
     }
 
 	/** Akcja dla odzyskania hasła
-	 * @Route("user/getMyPasswordBack", name="user_recover_password_url")
+	 * @Route("password_recovery", name="user_recover_password_url")
 	 * @Template()
 	 */
 	public function forgottenPasswordAction() {

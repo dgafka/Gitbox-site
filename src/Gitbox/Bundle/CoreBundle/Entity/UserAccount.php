@@ -13,6 +13,16 @@ use Doctrine\ORM\Mapping as ORM;
 class UserAccount
 {
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="user_account_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $id;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="login", type="string", length=25, nullable=false)
@@ -41,19 +51,9 @@ class UserAccount
     private $email;
 
     /**
-     * @var integer
+     * @var \UserGroup
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="user_account_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
-
-    /**
-     * @var \Gitbox\Bundle\CoreBundle\Entity\UserGroup
-     *
-     * @ORM\ManyToOne(targetEntity="Gitbox\Bundle\CoreBundle\Entity\UserGroup")
+     * @ORM\ManyToOne(targetEntity="UserGroup")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_group", referencedColumnName="id")
      * })
@@ -61,9 +61,9 @@ class UserAccount
     private $idGroup;
 
     /**
-     * @var \Gitbox\Bundle\CoreBundle\Entity\UserDescription
+     * @var \UserDescription
      *
-     * @ORM\ManyToOne(targetEntity="Gitbox\Bundle\CoreBundle\Entity\UserDescription")
+     * @ORM\ManyToOne(targetEntity="UserDescription")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_description", referencedColumnName="id")
      * })
@@ -73,7 +73,7 @@ class UserAccount
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Gitbox\Bundle\CoreBundle\Entity\Module", inversedBy="idUser")
+     * @ORM\ManyToMany(targetEntity="Module", inversedBy="idUser")
      * @ORM\JoinTable(name="user_modules",
      *   joinColumns={
      *     @ORM\JoinColumn(name="id_user", referencedColumnName="id")
@@ -93,134 +93,185 @@ class UserAccount
         $this->idModule = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-	/**
-	 * @param string $email
-	 */
-	public function setEmail($email)
-	{
-		$this->email = $email;
-	}
 
-	/**
-	 * @return string
-	 */
-	public function getEmail()
-	{
-		return $this->email;
-	}
+    /**
+     * Set login
+     *
+     * @param string $login
+     * @return UserAccount
+     */
+    public function setLogin($login)
+    {
+        $this->login = $login;
 
-	/**
-	 * @param int $id
-	 */
-	public function setId($id)
-	{
-		$this->id = $id;
-	}
+        return $this;
+    }
 
-	/**
-	 * @return int
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
+    /**
+     * Get login
+     *
+     * @return string 
+     */
+    public function getLogin()
+    {
+        return $this->login;
+    }
 
-	/**
-	 * @param \Gitbox\Bundle\CoreBundle\Entity\UserDescription $idDescription
-	 */
-	public function setIdDescription($idDescription)
-	{
-		$this->idDescription = $idDescription;
-	}
+    /**
+     * Set password
+     *
+     * @param string $password
+     * @return UserAccount
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
 
-	/**
-	 * @return \Gitbox\Bundle\CoreBundle\Entity\UserDescription
-	 */
-	public function getIdDescription()
-	{
-		return $this->idDescription;
-	}
+        return $this;
+    }
 
-	/**
-	 * @param \Gitbox\Bundle\CoreBundle\Entity\UserGroup $idGroup
-	 */
-	public function setIdGroup($idGroup)
-	{
-		$this->idGroup = $idGroup;
-	}
+    /**
+     * Get password
+     *
+     * @return string 
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
 
-	/**
-	 * @return \Gitbox\Bundle\CoreBundle\Entity\UserGroup
-	 */
-	public function getIdGroup()
-	{
-		return $this->idGroup;
-	}
+    /**
+     * Set status
+     *
+     * @param string $status
+     * @return UserAccount
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
 
-	/**
-	 * @param \Doctrine\Common\Collections\Collection $idModule
-	 */
-	public function setIdModule($idModule)
-	{
-		$this->idModule = $idModule;
-	}
+        return $this;
+    }
 
-	/**
-	 * @return \Doctrine\Common\Collections\Collection
-	 */
-	public function getIdModule()
-	{
-		return $this->idModule;
-	}
+    /**
+     * Get status
+     *
+     * @return string 
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
 
-	/**
-	 * @param string $login
-	 */
-	public function setLogin($login)
-	{
-		$this->login = $login;
-	}
+    /**
+     * Set email
+     *
+     * @param string $email
+     * @return UserAccount
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
 
-	/**
-	 * @return string
-	 */
-	public function getLogin()
-	{
-		return $this->login;
-	}
+        return $this;
+    }
 
-	/**
-	 * @param string $password
-	 */
-	public function setPassword($password)
-	{
-		$this->password = $password;
-	}
+    /**
+     * Get email
+     *
+     * @return string 
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getPassword()
-	{
-		return $this->password;
-	}
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	/**
-	 * @param string $status
-	 */
-	public function setStatus($status)
-	{
-		$this->status = $status;
-	}
+    /**
+     * Set idGroup
+     *
+     * @param \Gitbox\Bundle\CoreBundle\Entity\UserGroup $idGroup
+     * @return UserAccount
+     */
+    public function setIdGroup(\Gitbox\Bundle\CoreBundle\Entity\UserGroup $idGroup = null)
+    {
+        $this->idGroup = $idGroup;
 
-	/**
-	 * @return string
-	 */
-	public function getStatus()
-	{
-		return $this->status;
-	}
+        return $this;
+    }
 
+    /**
+     * Get idGroup
+     *
+     * @return \Gitbox\Bundle\CoreBundle\Entity\UserGroup 
+     */
+    public function getIdGroup()
+    {
+        return $this->idGroup;
+    }
 
+    /**
+     * Set idDescription
+     *
+     * @param \Gitbox\Bundle\CoreBundle\Entity\UserDescription $idDescription
+     * @return UserAccount
+     */
+    public function setIdDescription(\Gitbox\Bundle\CoreBundle\Entity\UserDescription $idDescription = null)
+    {
+        $this->idDescription = $idDescription;
 
+        return $this;
+    }
+
+    /**
+     * Get idDescription
+     *
+     * @return \Gitbox\Bundle\CoreBundle\Entity\UserDescription 
+     */
+    public function getIdDescription()
+    {
+        return $this->idDescription;
+    }
+
+    /**
+     * Add idModule
+     *
+     * @param \Gitbox\Bundle\CoreBundle\Entity\Module $idModule
+     * @return UserAccount
+     */
+    public function addIdModule(\Gitbox\Bundle\CoreBundle\Entity\Module $idModule)
+    {
+        $this->idModule[] = $idModule;
+
+        return $this;
+    }
+
+    /**
+     * Remove idModule
+     *
+     * @param \Gitbox\Bundle\CoreBundle\Entity\Module $idModule
+     */
+    public function removeIdModule(\Gitbox\Bundle\CoreBundle\Entity\Module $idModule)
+    {
+        $this->idModule->removeElement($idModule);
+    }
+
+    /**
+     * Get idModule
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getIdModule()
+    {
+        return $this->idModule;
+    }
 }
