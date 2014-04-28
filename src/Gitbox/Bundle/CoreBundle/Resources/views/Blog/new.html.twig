@@ -8,27 +8,7 @@
 {% endblock %}
 
 {% block content_inner %}
-    <div class="centered-form">
-        {# TODO: obsługa uploadu obrazków http://editor.froala.com/docs/image-upload (nie jest konieczna) #}
-        <h2 style="margin-bottom: 20px;">Dodawanie nowego wpisu</h2>
-        {{ form_start(form) }}
-            {{ form_errors(form) }}
-            <div class="form-group">
-                {{ form_widget(form.title) }}
-
-                {{ form_widget(form.description) }}
-            </div>
-        {{ form_end(form) }}
-        {#<form method="post">#}
-            {#<div class="form-group" style="margin-bottom: 10px;">#}
-                {#<input id="content_title" class="form-control" type="text" name="content[title]" placeholder="Tytuł wpisu" size="30" required/>#}
-                {#<textarea class="post-editor">#}
-                    {#&#123;&#35; froala editor &#35;&#125;#}
-                {#</textarea>#}
-            {#</div>#}
-            {#<input class="btn btn-primary btn-stretched" type="submit" name="commit" value="Dodaj wpis" />#}
-        {#</form>#}
-    </div>
+    {% include "GitboxCoreBundle:Blog:_form.html.twig" %}
 {% endblock %}
 
 {% block lazy_javascripts %}

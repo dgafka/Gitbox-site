@@ -1,7 +1,18 @@
-{% extends "::base.html.twig" %}
+{% extends "GitboxCoreBundle:Blog:layout.html.twig" %}
 
-{% block title %}GitboxCoreBundle:Blog:edit{% endblock %}
+{% block title %}{{ parent() }} | Edycja wpisu „{{ post.title }}”{% endblock %}
 
-{% block body %}
-<h1>Welcome to the Blog:edit page</h1>
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/froala_editor/froala_editor.min.css') }}" />
+{% endblock %}
+
+{% block content_inner %}
+    {% include "GitboxCoreBundle:Blog:_form.html.twig" %}
+{% endblock %}
+
+{% block lazy_javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/froala_editor/froala_editor.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/editorHandler.js') }}"></script>
 {% endblock %}

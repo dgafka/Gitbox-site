@@ -48,7 +48,6 @@ class BlogController extends Controller
         $user = $this->validateURL($login);
 
         $contentHelper = $this->container->get('blog_content_helper');
-        $contentHelper->init('blog');
 
         // TODO: paginacja
         $posts = $contentHelper->getContents($login);
@@ -74,7 +73,7 @@ class BlogController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $blogContentHelper = $this->container->get('blog_content_helper');
+            $contentHelper = $this->container->get('blog_content_helper');
             $em = $this->getDoctrine()->getManager();
             $repository = $em->getRepository('GitboxCoreBundle:Menu');
 
@@ -83,7 +82,7 @@ class BlogController extends Controller
             $postContent->setLastModificationDate(new \DateTime('now'));
             $postContent->setIdMenu($repository->findOneByTitle('blog'));
 
-            $blogContentHelper->insert($postContent);
+            $contentHelper->insert($postContent);
 
             return $this->redirect(
                 $this->generateUrl('user_show_post', array(
@@ -103,12 +102,36 @@ class BlogController extends Controller
      * @Route("/user/{login}/blog/{id}/edit")
      * @Template()
      */
-    public function editAction($login, $id)
+    public function editAction(Request $request, $login, $id)
     {
         $user = $this->validateURL($login);
         // TODO: walidacja - permissions
 
-        return array('user' => $user);
+        $contentHelper = $this->container->get('blog_content_helper');
+
+        $postContent = $contentHelper->getOneContent($id, $login);
+
+        $form = $this->createForm(new BlogPostType(), $postContent, array('csrf_protection' => true));
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $postContent->setLastModificationDate(new \DateTime('now'));
+
+            $contentHelper->update($postContent);
+
+            return $this->redirect(
+                $this->generateUrl('user_show_post', array(
+                    'login' => $user->getLogin(),
+                    'id' => $postContent->getId()
+                ))
+            );
+        }
+
+        return array(
+            'user' => $user,
+            'form' => $form->createView(),
+            'post' => $postContent
+        );
     }
 
     /**
@@ -121,17 +144,16 @@ class BlogController extends Controller
         $user = $this->validateURL($login);
 
         $contentHelper = $this->container->get('blog_content_helper');
-        $contentHelper->init('blog');
 
-        $post = $contentHelper->getOneContent($id, $login);
+        $postContent = $contentHelper->getOneContent($id, $login);
 
-        if (!$post) {
+        if (!$postContent) {
             throw $this->createNotFoundException('Niestety nie znaleziono wpisu.');
         }
 
         return array(
             'user' => $user,
-            'post' => $post
+            'post' => $postContent
         );
     }
 

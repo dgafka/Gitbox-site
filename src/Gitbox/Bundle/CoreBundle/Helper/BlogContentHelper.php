@@ -15,6 +15,8 @@ class BlogContentHelper extends ContentHelper {
 
     public function __construct($entityManager) {
         parent::__construct($entityManager);
+
+        $this->module = 'blog';
     }
 
     /**
