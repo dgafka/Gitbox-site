@@ -9,7 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class TubeController extends Controller
 {
     /**
-     * @Route("/user/{login}/tube")
+     * @Route("/user/{login}/tube", name="tube_index")
      * @Template()
      */
     public function indexAction($login)

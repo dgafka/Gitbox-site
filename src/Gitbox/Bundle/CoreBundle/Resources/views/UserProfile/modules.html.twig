@@ -15,7 +15,7 @@
                 <div id="collapseOne" class="panel-collapse collapse in">
                     <div class="panel-body">
                         {{ module.GitBlog | raw }}<br/>
-                        *TUTAJ POWINNIEN ZNALESC SIE FORWARD DO GitBlog-a użytkownika
+                        <a href="{{ url('tube_index', {'login' : login}) }}">Przejdź do modułu</a>
                     </div>
                 </div>
             </div>
@@ -32,7 +32,7 @@
                 <div id="collapseThree" class="panel-collapse collapse">
                     <div class="panel-body">
                         {{ module.GitTube | raw }}<br/>
-                        *TUTAJ POWINNIEN ZNALESC SIE FORWARD DO GitTube-a użytkownika
+                        <a href="{{ url('user_blog', {'login' : login}) }}">Przejdź do modułu</a>
                     </div>
                 </div>
             </div>

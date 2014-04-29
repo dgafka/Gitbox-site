@@ -18,7 +18,15 @@ class UserProfileController extends Controller
 	public function indexAction($login) {
 		$user = $this->getUserByLogin($login);
 		$userDescription = $user->getIdDescription();
-		return array('login' => $user->getLogin(), 'email' => $user->getEmail(), 'userGroup' => $user->getIdGroup()->getDescription(),'description' => $userDescription->getContent(), 'registerDate' => $userDescription->getRegistrationDate()->format('Y-m-d H:m:s'));
+
+		/**
+		 * @var $permissionHelper PermissionHelper
+		 */
+		$permissionHelper = $this->container->get('permission_helper');
+		$owner            = $permissionHelper->checkPermission($login);
+
+
+		return array('login' => $user->getLogin(), 'email' => $user->getEmail(), 'userGroup' => $user->getIdGroup()->getDescription(),'description' => $userDescription->getContent(), 'registerDate' => $userDescription->getRegistrationDate()->format('Y-m-d H:m:s'), 'isOwner' => $owner);
 	}
 
     /**
@@ -32,6 +40,8 @@ class UserProfileController extends Controller
 	     */
 	    $moduleHelper = $this->container->get('module_helper');
 	    $modules = $moduleHelper->getUserModules($login);
+	    $availableModules = array();
+
 		foreach($modules as $module) {
 			$availableModules[$module->getName()] = $module->getDescription();
 		}
@@ -47,10 +57,10 @@ class UserProfileController extends Controller
     }
 
     /**
-     * @Route("/user/{login}/about", name="user_profile_about")
+     * @Route("/user/{login}/settings", name="user_profile_settings")
      * @Template()
      */
-    public function aboutAction($login) {
+    public function settingsAction($login) {
 		return array('user' => $this->getUserByLogin($login));
     }
 
