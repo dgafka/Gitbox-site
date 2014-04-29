@@ -236,3 +236,7 @@ a.badge-button:focus {
 #sizeHack {
     max-height: 26px;
 }
+
+.list-group.blog a.list-group-item .list-group-item-heading{
+    font-size: 15px;
+}

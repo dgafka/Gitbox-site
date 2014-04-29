@@ -14,8 +14,21 @@
                 </div>
                 <div id="collapseOne" class="panel-collapse collapse in">
                     <div class="panel-body">
-                        {{ module.GitBlog | raw }}<br/>
-                        <a href="{{ url('user_blog', {'login' : login}) }}">Przejdź do modułu</a>
+
+                        <div class="list-group blog">
+                            <a href="{{ url('about_url') }}" class="list-group-item">
+                                <h4 class="list-group-item-heading">Dowiedz się więcej o Gitblog.</h4>
+                            </a>
+                            <a href="{{ url('user_blog', {'login' : login}) }}" class="list-group-item">
+                                <h4 class="list-group-item-heading">Może zechciałbyś zaszczycić nas swoja obecnościa w GitBlog użytkownika {{ login }}?</h4>
+                            </a>
+                            {% if isOwner == true %}
+                            <a href="{{ url('user_new_post', {'login' : login}) }}" class="list-group-item">
+                                <h4 class="list-group-item-heading">Widzę, że jesteś posiadaczem tego modułu. Może zechciałbyś napisać jakiś nowy post?</h4>
+                            </a>
+                            {% endif %}
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -31,8 +44,16 @@
                 </div>
                 <div id="collapseThree" class="panel-collapse collapse">
                     <div class="panel-body">
-                        {{ module.GitTube | raw }}<br/>
-                        <a href="{{ url('tube_index', {'login' : login}) }}">Przejdź do modułu</a>
+
+                        <div class="list-group blog">
+                            <a href="{{ url('about_url') }}" class="list-group-item">
+                                <h4 class="list-group-item-heading">Dowiedz się więcej o GitTube.</h4>
+                            </a>
+                            <a href="{{ url('tube_index', {'login' : login}) }}" class="list-group-item">
+                                <h4 class="list-group-item-heading">Może zechciałbyś zaszczycić nas swoja obecnościa w GitTube użytkownika {{ login }}?</h4>
+                            </a>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -48,8 +69,13 @@
                 </div>
                 <div id="collapseTwo" class="panel-collapse collapse">
                     <div class="panel-body">
-                        {{ module.GitDrive | raw }}<br/>
-                        *TUTAJ POWINNIEN ZNALESC SIE FORWARD DO GitDrive-a użytkownika
+
+                        <div class="list-group blog">
+                            <a href="{{ url('about_url') }}" class="list-group-item">
+                                <h4 class="list-group-item-heading">Dowiedz się więcej o GitDrive.</h4>
+                            </a>
+                        </div>
+
                     </div>
                 </div>
             </div>
