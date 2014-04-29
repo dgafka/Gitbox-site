@@ -8,7 +8,7 @@
                 <div class="panel-heading">
                     <h4 class="panel-title">
                         <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                            <img id="sizeHack" class="module-logo" src="{{ asset('images/logo/GitBlog_logo.png') }}" style="height: 44px;">
+                            <img class="modules-logo" src="{{ asset('images/logo/GitBlog_logo.png') }}" style="max-height: 26px;">
                         </a>
                     </h4>
                 </div>
@@ -16,15 +16,15 @@
                     <div class="panel-body">
 
                         <div class="list-group blog">
-                            <a href="{{ url('about_url') }}" class="list-group-item">
-                                <h4 class="list-group-item-heading">Dowiedz się więcej o Gitblog.</h4>
+                            <a href="{{ url('about_url') }}#gitblog-logo" class="list-group-item">
+                                <h4 class="list-group-item-heading"><i class="fa fa-question-circle"></i> Dowiedz się więcej o Gitblog.</h4>
                             </a>
                             <a href="{{ url('user_blog', {'login' : login}) }}" class="list-group-item">
-                                <h4 class="list-group-item-heading">Może zechciałbyś zaszczycić nas swoja obecnościa w GitBlog użytkownika {{ login }}?</h4>
+                                <h4 class="list-group-item-heading"><i class="fa fa-reply-all"></i> Może zechciałbyś zaszczycić nas swoja obecnościa w GitBlog użytkownika {{ login }}?</h4>
                             </a>
                             {% if isOwner == true %}
                             <a href="{{ url('user_new_post', {'login' : login}) }}" class="list-group-item">
-                                <h4 class="list-group-item-heading">Widzę, że jesteś posiadaczem tego modułu. Może zechciałbyś napisać jakiś nowy post?</h4>
+                                <h4 class="list-group-item-heading"><i class="fa fa-quote-right"></i> Widzę, że jesteś posiadaczem tego modułu. Może zechciałbyś napisać jakiś nowy post?</h4>
                             </a>
                             {% endif %}
                         </div>
@@ -38,7 +38,7 @@
                 <div class="panel-heading">
                     <h4 class="panel-title">
                         <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-                            <img class="module-logo" src="{{ asset('images/logo/GitTube_logo.png') }}">
+                            <img class="modules-logo" src="{{ asset('images/logo/GitTube_logo.png') }}" style="max-height: 21px;">
                         </a>
                     </h4>
                 </div>
@@ -46,11 +46,11 @@
                     <div class="panel-body">
 
                         <div class="list-group blog">
-                            <a href="{{ url('about_url') }}" class="list-group-item">
-                                <h4 class="list-group-item-heading">Dowiedz się więcej o GitTube.</h4>
+                            <a href="{{ url('about_url') }}#gittube-logo" class="list-group-item">
+                                <h4 class="list-group-item-heading"><i class="fa fa-question-circle"></i> Dowiedz się więcej o GitTube.</h4>
                             </a>
                             <a href="{{ url('tube_index', {'login' : login}) }}" class="list-group-item">
-                                <h4 class="list-group-item-heading">Może zechciałbyś zaszczycić nas swoja obecnościa w GitTube użytkownika {{ login }}?</h4>
+                                <h4 class="list-group-item-heading"><i class="fa fa-reply-all"></i> Może zechciałbyś zaszczycić nas swoja obecnościa w GitTube użytkownika {{ login }}?</h4>
                             </a>
                         </div>
 
@@ -63,7 +63,7 @@
                 <div class="panel-heading">
                     <h4 class="panel-title">
                         <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                            <img class="module-logo" src="{{ asset('images/logo/GitDrive_logo.png') }}">
+                            <img class="modules-logo" src="{{ asset('images/logo/GitDrive_logo.png') }}" style="max-height: 20px;">
                         </a>
                     </h4>
                 </div>
@@ -71,8 +71,8 @@
                     <div class="panel-body">
 
                         <div class="list-group blog">
-                            <a href="{{ url('about_url') }}" class="list-group-item">
-                                <h4 class="list-group-item-heading">Dowiedz się więcej o GitDrive.</h4>
+                            <a href="{{ url('about_url') }}#gitdrive-logo" class="list-group-item">
+                                <h4 class="list-group-item-heading"><i class="fa fa-question-circle"></i> Dowiedz się więcej o GitDrive.</h4>
                             </a>
                         </div>
 

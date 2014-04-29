@@ -252,17 +252,13 @@ a.badge-button:focus {
         font-size: 10px;
     }
 }
-
+/* ------------------------------------- */
 .flash-messages {
   display: block;
 }
 
-.profileDescription .panel-title img {
+.modules-logo {
     max-height: 20px;
-}
-
-#sizeHack {
-    max-height: 26px;
 }
 
 .list-group.blog a.list-group-item .list-group-item-heading{
