@@ -4,9 +4,9 @@
 
 {% block content_inner %}
 <div class="row">
-    <div class="col-lg-8">
+    <div class="col-lg-8 main-content">
 
-        {# posty #}
+        {# POSTS #}
         {% for post in posts %}
             <div class="post-in-the-box">
                 <a class="no-decoration keep-color" href="{{ path('user_show_post', {'login': user.login, 'id': post.id}) }}">

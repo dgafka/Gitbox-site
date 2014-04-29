@@ -1,4 +1,6 @@
 {% block blog_form %}
+    {# BACK BUTTON #}
+    <a href="{{ path('user_blog', {'login': user.login}) }}" class="btn btn-info btn-need-some-place"><i class="glyphicon glyphicon-arrow-left"></i> Powrót do wpisów</a>
     <div class="centered-form">
         {# TODO: obsługa uploadu obrazków http://editor.froala.com/docs/image-upload (nie jest konieczna) #}
         <h2 style="margin-bottom: 20px;">Dodawanie nowego wpisu</h2>

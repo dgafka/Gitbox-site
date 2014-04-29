@@ -1,5 +1,6 @@
 {% block user_sidebar %}
-    <div class="col-lg-4">
+    <button type="button" class="btn collapse-slider-switch"></button>
+    <div class="col-lg-3 sidebar">
         <div class="avatar-box">
             <a class="no-decoration keep-color" href="{{ path('user_profile_index', {'login': user.login}) }}">
                 <img class="pic img-circle" src="{{ user.email | getGravatarImage(160)}}" alt="avatar">

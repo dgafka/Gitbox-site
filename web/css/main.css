@@ -181,6 +181,34 @@ a.badge-button:focus {
     height: 50px;
 }
 
+.btn-need-some-place {
+    margin: 10px 0px;
+}
+
+.collapse-slider-switch {
+    padding: 0.1% 0.1%;
+    height: 700px;
+    float: left;
+    cursor: default;
+    color: white;
+}
+
+.collapse-slider-switch:hover {
+    background: #990000;
+    border-color: #990000;
+    cursor: col-resize;
+}
+
+.main-content {
+    z-index: 1;
+}
+
+.sidebar {
+    right: 0px;
+    width: 31%;
+    z-index: 2;
+}
+
 /* ------------------------------------- */
 .masthead {
     position: static; /* fixed */
