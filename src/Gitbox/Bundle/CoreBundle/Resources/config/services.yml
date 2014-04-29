@@ -3,6 +3,7 @@ parameters:
     mailer_helper.class: Gitbox\Bundle\CoreBundle\Helper\MailerHelper
     module_helper.class: Gitbox\Bundle\CoreBundle\Helper\ModuleHelper
     blog_content_helper.class: Gitbox\Bundle\CoreBundle\Helper\BlogContentHelper
+    permission_helper.class: Gitbox\Bundle\CoreBundle\Helper\PermissionHelper
 
 services:
     user_helper:
@@ -17,3 +18,6 @@ services:
     blog_content_helper:
         class:        "%blog_content_helper.class%"
         arguments:    ["@doctrine.orm.entity_manager"]
+    permission_helper:
+        class:        "%permission_helper.class%"
+        arguments:    ["@session"]
