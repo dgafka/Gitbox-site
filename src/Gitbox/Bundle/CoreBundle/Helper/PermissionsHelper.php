@@ -5,7 +5,7 @@ namespace Gitbox\Bundle\CoreBundle\Helper;
 
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class PermissionHelper {
+class PermissionsHelper {
 
 	/**
 	 * @var Session
