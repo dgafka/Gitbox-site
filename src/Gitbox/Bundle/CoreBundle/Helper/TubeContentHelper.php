@@ -60,6 +60,42 @@ class TubeContentHelper extends ContentHelper {
             return null;
         }
     }
+    /**
+     * Pobranie jednego filmu z bazy
+     *
+     * @param int $id
+     * @param $userLogin
+     *
+     * @return Content | null
+     *
+     * @throws Exception
+     */
+    public function getOneContent($id, $userLogin) {
+        if (!isset($this->module)) {
+            throw new Exception("Nie zainicjalizowano instancji.");
+        }
+
+        $queryBuilder = $this->instance()->createQueryBuilder();
+
+        $queryBuilder
+            ->select('c')
+            ->from('GitboxCoreBundle:Content', 'c')
+            ->innerJoin('GitboxCoreBundle:UserAccount', 'ua', JOIN::WITH, 'c.idUser = ua.id')
+            ->innerJoin('c.idMenu', 'menu')
+            ->innerJoin('menu.idModule', 'm')
+            ->where('c.id = :id AND ua.login = :login AND m.name = :module')
+            ->setParameters(array(
+                'id' => $id,
+                'login' => $userLogin,
+                'module' => $this->module
+            ));
+
+        try {
+            return $queryBuilder->getQuery()->getSingleResult();
+        } catch (NoResultException $e) {
+            return null;
+        }
+    }
 
 
 }
