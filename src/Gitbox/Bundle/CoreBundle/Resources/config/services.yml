@@ -3,6 +3,8 @@ parameters:
     mailer_helper.class: Gitbox\Bundle\CoreBundle\Helper\MailerHelper
     module_helper.class: Gitbox\Bundle\CoreBundle\Helper\ModuleHelper
     blog_content_helper.class: Gitbox\Bundle\CoreBundle\Helper\BlogContentHelper
+    tube_content_helper.class: Gitbox\Bundle\CoreBundle\Helper\TubeContentHelper
+
 
 services:
     user_helper:
@@ -15,5 +17,8 @@ services:
         class:        "%module_helper.class%"
         arguments:    ["@doctrine.orm.entity_manager"]
     blog_content_helper:
-        class:        "%blog_content_helper.class%"
-        arguments:    ["@doctrine.orm.entity_manager"]
+            class:        "%blog_content_helper.class%"
+            arguments:    ["@doctrine.orm.entity_manager"]
+    tube_content_helper:
+            class:        "%tube_content_helper.class%"
+            arguments:    ["@doctrine.orm.entity_manager"]
