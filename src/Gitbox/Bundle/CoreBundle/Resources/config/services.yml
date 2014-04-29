@@ -4,7 +4,7 @@ parameters:
     module_helper.class: Gitbox\Bundle\CoreBundle\Helper\ModuleHelper
     blog_content_helper.class: Gitbox\Bundle\CoreBundle\Helper\BlogContentHelper
     tube_content_helper.class: Gitbox\Bundle\CoreBundle\Helper\TubeContentHelper
-    permission_helper.class: Gitbox\Bundle\CoreBundle\Helper\PermissionHelper
+    permissions_helper.class: Gitbox\Bundle\CoreBundle\Helper\PermissionsHelper
 
 services:
     user_helper:
@@ -22,6 +22,6 @@ services:
     tube_content_helper:
         class:        "%tube_content_helper.class%"
         arguments:    ["@doctrine.orm.entity_manager"]
-    permission_helper:
-        class:        "%permission_helper.class%"
+    permissions_helper:
+        class:        "%permissions_helper.class%"
         arguments:    ["@session"]

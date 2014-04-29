@@ -22,7 +22,7 @@ class UserProfileController extends Controller
 		/**
 		 * @var $permissionHelper PermissionHelper
 		 */
-		$permissionHelper = $this->container->get('permission_helper');
+		$permissionHelper = $this->container->get('permissions_helper');
 		$owner            = $permissionHelper->checkPermission($login);
 
 
@@ -49,7 +49,7 @@ class UserProfileController extends Controller
 	    /**
 	     * @var $permissionHelper PermissionHelper
 	     */
-	    $permissionHelper = $this->container->get('permission_helper');
+	    $permissionHelper = $this->container->get('permissions_helper');
 		$owner            = $permissionHelper->checkPermission($login);
 
 
