@@ -3,5 +3,30 @@
 {% block profileContent %}
     <div class="profileDescription">
 
+        <div class="panel panel-default">
+            <div class="panel-heading">Informacje o użytkowniku {{ login }}</div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Rejestracja</th>
+                        <th>Typ użytkownika</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ registerDate }}</td>
+                        <td>{{ userGroup }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="panel-heading">Opis</div>
+            <div class="panel-body">
+                <div class="profile-description">
+                    {{ description | raw }}
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}

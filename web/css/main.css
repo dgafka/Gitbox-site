@@ -228,3 +228,11 @@ a.badge-button:focus {
 .flash-messages {
   display: block;
 }
+
+.profileDescription .panel-title img {
+    max-height: 20px;
+}
+
+#sizeHack {
+    max-height: 26px;
+}

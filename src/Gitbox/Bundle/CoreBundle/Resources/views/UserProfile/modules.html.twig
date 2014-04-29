@@ -1,5 +1,60 @@
 {% extends 'GitboxCoreBundle:UserProfile:userProfile.html.twig' %}
 
 {% block profileContent %}
-    <div class="profileDescription">My modules will be here.</div>
+    <div class="profileDescription">
+        <div class="panel-group" id="accordion">
+        {% if module.GitBlog is defined %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                            <img id="sizeHack" class="module-logo" src="{{ asset('images/logo/GitBlog_logo.png') }}" style="height: 44px;">
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        {{ module.GitBlog | raw }}<br/>
+                        *TUTAJ POWINNIEN ZNALESC SIE FORWARD DO GitBlog-a użytkownika
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        {% if module.GitTube is defined %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                            <img class="module-logo" src="{{ asset('images/logo/GitTube_logo.png') }}">
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseThree" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        {{ module.GitTube | raw }}<br/>
+                        *TUTAJ POWINNIEN ZNALESC SIE FORWARD DO GitTube-a użytkownika
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        {% if module.GitDrive is defined %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                            <img class="module-logo" src="{{ asset('images/logo/GitDrive_logo.png') }}">
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        {{ module.GitDrive | raw }}<br/>
+                        *TUTAJ POWINNIEN ZNALESC SIE FORWARD DO GitDrive-a użytkownika
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        </div>
+
+    </div>
 {% endblock %}
