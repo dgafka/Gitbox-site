@@ -1,5 +1,86 @@
 {% extends 'GitboxCoreBundle:UserProfile:userProfile.html.twig' %}
 
 {% block profileContent %}
-    <div class="profileDescription">My modules will be here.</div>
+    <div class="profileDescription">
+        <div class="panel-group" id="accordion">
+        {% if module.GitBlog is defined %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                            <img id="sizeHack" class="module-logo" src="{{ asset('images/logo/GitBlog_logo.png') }}" style="height: 44px;">
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse in">
+                    <div class="panel-body">
+
+                        <div class="list-group blog">
+                            <a href="{{ url('about_url') }}" class="list-group-item">
+                                <h4 class="list-group-item-heading">Dowiedz się więcej o Gitblog.</h4>
+                            </a>
+                            <a href="{{ url('user_blog', {'login' : login}) }}" class="list-group-item">
+                                <h4 class="list-group-item-heading">Może zechciałbyś zaszczycić nas swoja obecnościa w GitBlog użytkownika {{ login }}?</h4>
+                            </a>
+                            {% if isOwner == true %}
+                            <a href="{{ url('user_new_post', {'login' : login}) }}" class="list-group-item">
+                                <h4 class="list-group-item-heading">Widzę, że jesteś posiadaczem tego modułu. Może zechciałbyś napisać jakiś nowy post?</h4>
+                            </a>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        {% if module.GitTube is defined %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                            <img class="module-logo" src="{{ asset('images/logo/GitTube_logo.png') }}">
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseThree" class="panel-collapse collapse">
+                    <div class="panel-body">
+
+                        <div class="list-group blog">
+                            <a href="{{ url('about_url') }}" class="list-group-item">
+                                <h4 class="list-group-item-heading">Dowiedz się więcej o GitTube.</h4>
+                            </a>
+                            <a href="{{ url('tube_index', {'login' : login}) }}" class="list-group-item">
+                                <h4 class="list-group-item-heading">Może zechciałbyś zaszczycić nas swoja obecnościa w GitTube użytkownika {{ login }}?</h4>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        {% if module.GitDrive is defined %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                            <img class="module-logo" src="{{ asset('images/logo/GitDrive_logo.png') }}">
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse">
+                    <div class="panel-body">
+
+                        <div class="list-group blog">
+                            <a href="{{ url('about_url') }}" class="list-group-item">
+                                <h4 class="list-group-item-heading">Dowiedz się więcej o GitDrive.</h4>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        </div>
+
+    </div>
 {% endblock %}
