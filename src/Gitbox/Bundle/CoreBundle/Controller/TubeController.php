@@ -30,7 +30,7 @@ class TubeController extends Controller
     }
 
     /**
-     * @Route("user/{login}/tube/{id}", name="content_show")
+     * @Route("user/{login}/tube/{id}", name="tube_content_show")
      * @Template()
      */
     public function showAction($login, $id)
