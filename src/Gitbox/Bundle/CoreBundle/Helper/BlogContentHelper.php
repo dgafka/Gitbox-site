@@ -11,12 +11,10 @@ use Doctrine\ORM\Query\Expr\Join;
  */
 class BlogContentHelper extends ContentHelper {
 
-    protected $module = 'blog';
+    protected $module = 'GitBlog';
 
     public function __construct($entityManager) {
         parent::__construct($entityManager);
-
-        $this->module = 'blog';
     }
 
     /**

@@ -1,0 +1,1 @@
+UPDATE menu SET title = 'GitBlog' WHERE title = 'blog';
