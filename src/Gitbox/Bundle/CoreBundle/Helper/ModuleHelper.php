@@ -96,4 +96,24 @@ class ModuleHelper extends EntityHelper {
         }
     }
 
+	/** Zwraca moduły użytkownika
+	 * @param $userLogin
+	 */
+	public function getUserModules($userLogin) {
+		$queryBuilder = $this->instance()->createQueryBuilder();
+
+		$queryBuilder
+			->select('m')
+			->from('GitboxCoreBundle:Module', 'm')
+			->innerJoin('m.idUser', 'ua')
+			->where('ua.login = :login')
+			->setParameters(array(
+				'login' => $userLogin,
+			));
+
+		$results = $queryBuilder->getQuery()->execute();
+
+		return $results;
+	}
+
 }

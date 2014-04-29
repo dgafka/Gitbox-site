@@ -12,7 +12,7 @@ use Gitbox\Bundle\CoreBundle\Form\Type\TubePostType;
 class TubeController extends Controller
 {
     /**
-     * @Route("/user/{login}/tube", name="user_tube")
+     * @Route("/user/{login}/tube", name="tube_index")
      * @Template()
      */
     public function indexAction($login)

@@ -228,3 +228,15 @@ a.badge-button:focus {
 .flash-messages {
   display: block;
 }
+
+.profileDescription .panel-title img {
+    max-height: 20px;
+}
+
+#sizeHack {
+    max-height: 26px;
+}
+
+.list-group.blog a.list-group-item .list-group-item-heading{
+    font-size: 15px;
+}

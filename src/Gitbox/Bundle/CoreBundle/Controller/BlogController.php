@@ -15,7 +15,13 @@ use Gitbox\Bundle\CoreBundle\Form\Type\BlogPostType;
 class BlogController extends Controller
 {
 
-    /**
+	/**
+	 * @TODO dla Romka. Opakować akcje w komentarzach, każdy kto wchodzi w kontroler, chciałby wiedzieć
+	 * co się dzieje w danej metodzie bez zaglądania w kod! (Nawet jeśli nazwa mówi sama za siebie, dobra praktyka nie boli ;) )
+	 */
+
+
+	/**
      * Walidacja poprawności URL-a. <br />
      * Zwraca dane użytkownika z bazy, w przypadku gdy istnieje użytkownik o podanej nazwie oraz gdy posiada aktywowany moduł.
      *
@@ -26,7 +32,7 @@ class BlogController extends Controller
     private function validateURL($login) {
         $userHelper = $this->container->get('user_helper');
         $moduleHelper = $this->container->get('module_helper');
-        $moduleHelper->init('blog');
+        $moduleHelper->init('GitBlog');
 
         $user = $userHelper->findByLogin($login);
 

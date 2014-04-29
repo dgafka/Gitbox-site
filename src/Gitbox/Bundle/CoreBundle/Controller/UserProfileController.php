@@ -2,6 +2,8 @@
 
 namespace Gitbox\Bundle\CoreBundle\Controller;
 
+use Gitbox\Bundle\CoreBundle\Helper\ModuleHelper;
+use Gitbox\Bundle\CoreBundle\Helper\PermissionHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -14,7 +16,17 @@ class UserProfileController extends Controller
 	 * @Template()
 	 */
 	public function indexAction($login) {
-		return array('user' => $this->getUserByLogin($login));
+		$user = $this->getUserByLogin($login);
+		$userDescription = $user->getIdDescription();
+
+		/**
+		 * @var $permissionHelper PermissionHelper
+		 */
+		$permissionHelper = $this->container->get('permission_helper');
+		$owner            = $permissionHelper->checkPermission($login);
+
+
+		return array('login' => $user->getLogin(), 'email' => $user->getEmail(), 'userGroup' => $user->getIdGroup()->getDescription(),'description' => $userDescription->getContent(), 'registerDate' => $userDescription->getRegistrationDate()->format('Y-m-d H:m:s'), 'isOwner' => $owner);
 	}
 
     /**
@@ -22,14 +34,33 @@ class UserProfileController extends Controller
      * @Template()
      */
     public function modulesAction($login) {
-	    return array('user' => $this->getUserByLogin($login));
+	    $user = $this->getUserByLogin($login);
+	    /**
+	     * @var $moduleHelper ModuleHelper
+	     */
+	    $moduleHelper = $this->container->get('module_helper');
+	    $modules = $moduleHelper->getUserModules($login);
+	    $availableModules = array();
+
+		foreach($modules as $module) {
+			$availableModules[$module->getName()] = $module->getDescription();
+		}
+
+	    /**
+	     * @var $permissionHelper PermissionHelper
+	     */
+	    $permissionHelper = $this->container->get('permission_helper');
+		$owner            = $permissionHelper->checkPermission($login);
+
+
+	    return array('login' => $user->getLogin(), 'email' => $user->getEmail(), 'module' => $availableModules, 'isOwner' => $owner);
     }
 
     /**
-     * @Route("/user/{login}/about", name="user_profile_about")
+     * @Route("/user/{login}/settings", name="user_profile_settings")
      * @Template()
      */
-    public function aboutAction($login) {
+    public function settingsAction($login) {
 		return array('user' => $this->getUserByLogin($login));
     }
 
@@ -43,7 +74,7 @@ class UserProfileController extends Controller
 
 	/** Metoda odpowiedzialna za pobranie z bazy usera za pomocą loginu
 	 * @param $login
-	 * @return object
+	 * @return \Gitbox\Bundle\CoreBundle\Entity\UserAccount
 	 * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
 	 */
 	private function getUserByLogin($login) {
