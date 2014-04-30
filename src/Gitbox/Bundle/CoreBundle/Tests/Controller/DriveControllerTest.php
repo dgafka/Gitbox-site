@@ -4,13 +4,13 @@ namespace Gitbox\Bundle\CoreBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class UserSidebarControllerTest extends WebTestCase
+class DriveControllerTest extends WebTestCase
 {
-    public function testRender()
+    public function testNewdriveitem()
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/render');
+        $crawler = $client->request('GET', '/user/{login}/drive/new');
     }
 
 }

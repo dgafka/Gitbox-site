@@ -5,7 +5,7 @@ namespace Gitbox\Bundle\CoreBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class BlogPostType extends AbstractType {
+class DriveElementType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -13,7 +13,7 @@ class BlogPostType extends AbstractType {
             ->add('title', 'text', array(
                 'attr' => array (
                     'class'       => 'form-control',
-                    'placeholder' => 'Tytuł wpisu'
+                    'placeholder' => 'Tytuł elementu'
                 ),
                 'required' => true,
                 'max_length' => 50,
@@ -37,6 +37,6 @@ class BlogPostType extends AbstractType {
 
     public function getName()
     {
-        return 'blogPost';
+        return 'driveElement';
     }
 }
