@@ -86,7 +86,7 @@ class BlogController extends Controller
             $postContent->setIdUser($user->getId());
             $postContent->setCreateDate(new \DateTime('now'));
             $postContent->setLastModificationDate(new \DateTime('now'));
-            $postContent->setIdMenu($repository->findOneByTitle('blog'));
+            $postContent->setIdMenu($repository->findOneByTitle('GitBlog'));
 
             $contentHelper->insert($postContent);
 
