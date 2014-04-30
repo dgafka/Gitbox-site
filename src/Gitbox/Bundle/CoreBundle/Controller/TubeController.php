@@ -11,6 +11,34 @@ use Gitbox\Bundle\CoreBundle\Form\Type\TubePostType;
 
 class TubeController extends Controller
 {
+
+    private $dir = __DIR__;
+
+    /**
+     * Walidacja poprawności URL-a. <br />
+     * Zwraca dane użytkownika z bazy, w przypadku gdy istnieje użytkownik o podanej nazwie oraz gdy posiada aktywowany moduł.
+     *
+     * @param $login
+     * @return mixed
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    private function validateURL($login) {
+        $userHelper = $this->container->get('user_helper');
+        $moduleHelper = $this->container->get('module_helper');
+        $moduleHelper->init('GitTube');
+
+        $user = $userHelper->findByLogin($login);
+
+        if (!$user) {
+            throw $this->createNotFoundException('Nie znaleziono użytkownika o nazwie <b>' . $login . '</b>');
+        } else if (!$moduleHelper->isModuleActivated($login)) {
+            throw $this->createNotFoundException('Użytkownik <b>' . $login . '</b> nie posiada aktywowanego modułu');
+        }
+
+        return $user;
+    }
+
+
     /**
      * @Route("/user/{login}/tube", name="tube_index")
      * @Template()
@@ -25,8 +53,8 @@ class TubeController extends Controller
         $user = $helper->findByLogin($login);
 
 	    $posts = $contentHelper->getContents($login);
-
-        return array('user' => $user, 'posts' => $posts);
+//        print_r($posts[1]);
+        return array('user' => $user, 'posts' => $posts[1]);
     }
 
     /**
@@ -35,18 +63,20 @@ class TubeController extends Controller
      */
     public function showAction($login, $id)
     {
-        $em = $this->getDoctrine()->getManager();
+        // TODO: pobieranie treści posta i komentarzy
+        $user = $this->validateURL($login);
 
-        $entity = $em->getRepository('GitboxCoreBundle:Content')->find($id);
+        $contentHelper = $this->container->get('tube_content_helper');
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Content entity.');
+        $postContent = $contentHelper->getOneContent($id, $login);
+
+        if (!$postContent) {
+            throw $this->createNotFoundException('Niestety nie znaleziono wpisu.');
         }
 
-
         return array(
-            'entity'      => $entity,
-
+            'user' => $user,
+            'post' => $postContent
         );
     }
 
