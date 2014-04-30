@@ -5,6 +5,7 @@ namespace Gitbox\Bundle\CoreBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Gitbox\Bundle\CoreBundle\Form\Type\DriveElementType;
 
 class DriveController extends Controller
 {
@@ -13,7 +14,12 @@ class DriveController extends Controller
      * @Template()
      */
     public function NewDriveItemAction($login)
-    {
+    {	
+	
+	$form = $this->createForm(new DriveElementType());
+	 return array(
+		'form' => $form->createView()
+	);
     }
 
 }
