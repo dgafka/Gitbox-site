@@ -6,14 +6,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-class UserSidebarController extends Controller
+class DriveController extends Controller
 {
     /**
+     * @Route("/user/{login}/drive/new")
      * @Template()
      */
-    public function renderAction()
+    public function NewDriveItemAction($login)
     {
-
     }
 
 }
