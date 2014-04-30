@@ -1,7 +1,9 @@
 $(document).ready(function() {
+    /** VARIABLES **/
     var sliderActive = false;
 
-    var collapseSidebar = function(speed, easing, callback) {
+    /* FUNCTIONS */
+    var collapseSidebar = function (speed, easing, target) {
         var totalWidth = $('.jumbojumba').find('.row').width();
         var totalMinusBtn = totalWidth - totalWidth*0.05;
         var contentWidth = $('.main-content').width();
@@ -16,32 +18,44 @@ $(document).ready(function() {
 
         // run simultaneously 2 effects
         $('.main-content').animate({
-            width: width }, speed, easing, callback
+            width: width }, speed, easing, function () {
+                var cell = $(target).find('.collapse-slider-cell');
+
+                if (cell.html() === '»') {
+                    cell.html('«');
+                } else {
+                    cell.html('»');
+                }
+            }
         );
         $('.sidebar').toggle(speed, easing, function () {
             sliderActive = false;
+
+            if ($('.collapse-slider-switch').is(':hover')) {
+                switchLeave();
+            }
         });
     };
 
-//    $('.collapse-slider-switch').hover(function() {
-//        // mouseover
-//        var totalWidth = $('.jumbojumba').find('.row').width();
-//
-//        $(this).animate({paddingLeft: totalWidth*0.005, paddingRight: totalWidth*0.005}, 300, 'linear');
-//    }, function() {
-//        // mouseout
-//        var totalWidth = $('.jumbojumba').find('.row').width();
-//
-//        $(this).animate({paddingLeft: totalWidth*0.001, paddingRight: totalWidth*0.001}, 300, 'linear');
-//    })
-//    $('.collapse-slider-switch').
+    var switchHover = function () {
+        $('.sidebar').animate({opacity: 0.3}, 'fast');
+    };
+
+    var switchLeave = function () {
+        $('.sidebar').animate({opacity: 1}, 'fast');
+    };
+
+    /** EVENTS **/
+    $('.collapse-slider-switch').hover(switchHover, switchLeave);
 
     $('.collapse-slider-switch').click(function() {
+        $(this).blur();
+
         if (sliderActive) {
             return;
         }
         sliderActive = true;
 
-        collapseSidebar('slow', 'linear');
+        collapseSidebar('slow', 'linear', this);
     });
 });
