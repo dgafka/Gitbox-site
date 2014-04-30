@@ -1,0 +1,13 @@
+{% block newDrive_form %}
+    <div class="centered-form">
+        <h2 style="margin-bottom: 20px;">Nowy element</h2>
+        {{ form_start(form) }}
+            {{ form_errors(form) }}
+            <div class="form-group">
+                {{ form_widget(form.title) }}
+
+                {{ form_widget(form.description) }}
+            </div>
+        {{ form_end(form) }} {# TODO: submit button for new/edit actions #}
+    </div>
+{% endblock %}

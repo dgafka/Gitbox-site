@@ -186,17 +186,26 @@ a.badge-button:focus {
 }
 
 .collapse-slider-switch {
-    padding: 0.1% 0.1%;
-    height: 700px;
+    display: table;
+    word-wrap: break-word;
+    font-size: 24pt;
+    padding: 0.1% 0.1% 15% 0.1%;
+    width: 20px;
+    height: 650px;
     float: left;
     cursor: default;
-    color: white;
+    color: #e9e9e9;
 }
 
 .collapse-slider-switch:hover {
-    background: #990000;
-    border-color: #990000;
+    color: #333333;
+    background: #f3f3f3;
     cursor: col-resize;
+}
+
+.collapse-slider-cell {
+    display: table-cell;
+    vertical-align: middle;
 }
 
 .main-content {
@@ -207,6 +216,16 @@ a.badge-button:focus {
     right: 0px;
     width: 31%;
     z-index: 2;
+}
+
+.overlay-mask{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.3);
+    top: 0;
+    left: 0;
+    display: none;
 }
 
 /* ------------------------------------- */
