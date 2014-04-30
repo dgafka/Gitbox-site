@@ -1,7 +1,10 @@
 {% extends "::base.html.twig" %}
 
-{% block title %}GitboxCoreBundle:Drive:NewDriveItem{% endblock %}
+{% block title %}Gitbox | Drive {% endblock %}
 
-{% block body %}
-<h1>Welcome to the Drive:NewDriveItem page</h1>
+{% block content_inner %}
+	<h1>Welcome to the Drive:NewDriveItem page</h1>
+    {% include "GitboxCoreBundle:Drive:_form.html.twig" %}
 {% endblock %}
+
+
