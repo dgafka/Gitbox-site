@@ -207,10 +207,6 @@ class UserAccountController extends Controller
 	        $userMenuGitBlog = new \Gitbox\Bundle\CoreBundle\Entity\Menu();
 	        $userMenuGitDrive = new \Gitbox\Bundle\CoreBundle\Entity\Menu();
 
-	        $userMenuGitTube->setStatus('D');
-	        $userMenuGitBlog->setStatus('D');
-	        $userMenuGitDrive->setStatus('D');
-
 	        $userMenuGitTube->setTitle('GitTube ' . $userAccount->getLogin());
 	        $userMenuGitBlog->setTitle('GitBlog ' . $userAccount->getLogin());
 	        $userMenuGitDrive->setTitle('GitDrive ' . $userAccount->getLogin());
