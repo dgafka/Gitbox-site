@@ -16,25 +16,15 @@
     <field name="password" type="string" column="password" length="32" nullable="false"/>
     <field name="status" type="string" column="status" length="1" nullable="false"/>
     <field name="email" type="string" column="email" length="50" nullable="false"/>
-    <many-to-one field="idGroup" target-entity="UserGroup">
-      <join-columns>
-        <join-column name="id_group" referenced-column-name="id"/>
-      </join-columns>
-    </many-to-one>
     <many-to-one field="idDescription" target-entity="UserDescription">
       <join-columns>
         <join-column name="id_description" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
-    <many-to-many field="idModule" target-entity="Module" inversed-by="idUser">
-      <join-table name="user_modules">
-        <join-columns>
-          <join-column name="id_user" referenced-column-name="id"/>
-        </join-columns>
-        <inverse-join-columns>
-          <join-column name="id_module" referenced-column-name="id"/>
-        </inverse-join-columns>
-      </join-table>
-    </many-to-many>
+    <many-to-one field="idGroup" target-entity="UserGroup">
+      <join-columns>
+        <join-column name="id_group" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
   </entity>
 </doctrine-mapping>

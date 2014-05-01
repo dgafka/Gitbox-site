@@ -5,23 +5,29 @@ parameters:
     blog_content_helper.class: Gitbox\Bundle\CoreBundle\Helper\BlogContentHelper
     tube_content_helper.class: Gitbox\Bundle\CoreBundle\Helper\TubeContentHelper
     permissions_helper.class: Gitbox\Bundle\CoreBundle\Helper\PermissionsHelper
+    cache_helper.class: Gitbox\Bundle\CoreBundle\Helper\CacheHelper
+    cache_helper.host: localhost
+    cache_helper.port: 11211
 
 services:
     user_helper:
         class:        "%user_helper.class%"
-        arguments:    ["@doctrine.orm.entity_manager"]
+        arguments:    ["@doctrine.orm.entity_manager", , "@cache_helper"]
     mailer_helper:
         class:        "%mailer_helper.class%"
         arguments:    ["@mailer"]
     module_helper:
         class:        "%module_helper.class%"
-        arguments:    ["@doctrine.orm.entity_manager"]
+        arguments:    ["@doctrine.orm.entity_manager", , "@cache_helper"]
     blog_content_helper:
         class:        "%blog_content_helper.class%"
-        arguments:    ["@doctrine.orm.entity_manager"]
+        arguments:    ["@doctrine.orm.entity_manager", , "@cache_helper"]
     tube_content_helper:
         class:        "%tube_content_helper.class%"
-        arguments:    ["@doctrine.orm.entity_manager"]
+        arguments:    ["@doctrine.orm.entity_manager", "@cache_helper"]
     permissions_helper:
         class:        "%permissions_helper.class%"
         arguments:    ["@session"]
+    cache_helper:
+        class:        "%cache_helper.class%"
+        arguments:    ["@doctrine.orm.entity_manager", "%cache_helper.host%", "%cache_helper.port%"]

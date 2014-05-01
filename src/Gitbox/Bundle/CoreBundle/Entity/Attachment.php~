@@ -1,0 +1,78 @@
+<?php
+
+namespace Gitbox\Bundle\CoreBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Attachment
+ *
+ * @ORM\Table(name="attachment", indexes={@ORM\Index(name="IDX_795FD9BB205899D9", columns={"id_content"})})
+ * @ORM\Entity
+ */
+class Attachment
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="status", type="string", length=1, nullable=false)
+     */
+    private $status;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="filename", type="string", length=100, nullable=false)
+     */
+    private $filename;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="title", type="string", length=50, nullable=false)
+     */
+    private $title;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=255, nullable=true)
+     */
+    private $description;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="create_date", type="date", nullable=false)
+     */
+    private $createDate;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="mime", type="string", length=20, nullable=true)
+     */
+    private $mime;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="attachment_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $id;
+
+    /**
+     * @var \Gitbox\Bundle\CoreBundle\Entity\Content
+     *
+     * @ORM\ManyToOne(targetEntity="Gitbox\Bundle\CoreBundle\Entity\Content")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_content", referencedColumnName="id")
+     * })
+     */
+    private $idContent;
+
+
+}

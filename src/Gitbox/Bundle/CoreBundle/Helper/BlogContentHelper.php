@@ -13,8 +13,8 @@ class BlogContentHelper extends ContentHelper {
 
     protected $module = 'GitBlog';
 
-    public function __construct($entityManager) {
-        parent::__construct($entityManager);
+    public function __construct($entityManager, $cacheHelper) {
+        parent::__construct($entityManager, $cacheHelper);
     }
 
     /**

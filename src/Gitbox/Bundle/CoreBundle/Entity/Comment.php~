@@ -1,0 +1,74 @@
+<?php
+
+namespace Gitbox\Bundle\CoreBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Comment
+ *
+ * @ORM\Table(name="comment", indexes={@ORM\Index(name="IDX_9474526C6B3CA4B", columns={"id_user"}), @ORM\Index(name="IDX_9474526C205899D9", columns={"id_content"})})
+ * @ORM\Entity
+ */
+class Comment
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="content", type="text", nullable=false)
+     */
+    private $content;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="status", type="string", length=1, nullable=false)
+     */
+    private $status;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="last_modification_date", type="date", nullable=true)
+     */
+    private $lastModificationDate;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="create_date", type="date", nullable=false)
+     */
+    private $createDate;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="comment_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $id;
+
+    /**
+     * @var \Gitbox\Bundle\CoreBundle\Entity\Content
+     *
+     * @ORM\ManyToOne(targetEntity="Gitbox\Bundle\CoreBundle\Entity\Content")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_content", referencedColumnName="id")
+     * })
+     */
+    private $idContent;
+
+    /**
+     * @var \Gitbox\Bundle\CoreBundle\Entity\UserAccount
+     *
+     * @ORM\ManyToOne(targetEntity="Gitbox\Bundle\CoreBundle\Entity\UserAccount")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_user", referencedColumnName="id")
+     * })
+     */
+    private $idUser;
+
+
+}

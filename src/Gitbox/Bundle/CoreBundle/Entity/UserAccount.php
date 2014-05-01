@@ -13,16 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 class UserAccount
 {
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="user_account_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="login", type="string", length=25, nullable=false)
@@ -51,19 +41,19 @@ class UserAccount
     private $email;
 
     /**
-     * @var \UserGroup
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="UserGroup")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_group", referencedColumnName="id")
-     * })
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="user_account_id_seq", allocationSize=1, initialValue=1)
      */
-    private $idGroup;
+    private $id;
 
     /**
-     * @var \UserDescription
+     * @var \Gitbox\Bundle\CoreBundle\Entity\UserDescription
      *
-     * @ORM\ManyToOne(targetEntity="UserDescription")
+     * @ORM\ManyToOne(targetEntity="Gitbox\Bundle\CoreBundle\Entity\UserDescription")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_description", referencedColumnName="id")
      * })
@@ -71,27 +61,15 @@ class UserAccount
     private $idDescription;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * @var \Gitbox\Bundle\CoreBundle\Entity\UserGroup
      *
-     * @ORM\ManyToMany(targetEntity="Module", inversedBy="idUser")
-     * @ORM\JoinTable(name="user_modules",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="id_user", referencedColumnName="id")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="id_module", referencedColumnName="id")
-     *   }
-     * )
+     * @ORM\ManyToOne(targetEntity="Gitbox\Bundle\CoreBundle\Entity\UserGroup")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_group", referencedColumnName="id")
+     * })
      */
-    private $idModule;
+    private $idGroup;
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->idModule = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
 
     /**
@@ -197,29 +175,6 @@ class UserAccount
     }
 
     /**
-     * Set idGroup
-     *
-     * @param \Gitbox\Bundle\CoreBundle\Entity\UserGroup $idGroup
-     * @return UserAccount
-     */
-    public function setIdGroup(\Gitbox\Bundle\CoreBundle\Entity\UserGroup $idGroup = null)
-    {
-        $this->idGroup = $idGroup;
-
-        return $this;
-    }
-
-    /**
-     * Get idGroup
-     *
-     * @return \Gitbox\Bundle\CoreBundle\Entity\UserGroup 
-     */
-    public function getIdGroup()
-    {
-        return $this->idGroup;
-    }
-
-    /**
      * Set idDescription
      *
      * @param \Gitbox\Bundle\CoreBundle\Entity\UserDescription $idDescription
@@ -243,35 +198,25 @@ class UserAccount
     }
 
     /**
-     * Add idModule
+     * Set idGroup
      *
-     * @param \Gitbox\Bundle\CoreBundle\Entity\Module $idModule
+     * @param \Gitbox\Bundle\CoreBundle\Entity\UserGroup $idGroup
      * @return UserAccount
      */
-    public function addIdModule(\Gitbox\Bundle\CoreBundle\Entity\Module $idModule)
+    public function setIdGroup(\Gitbox\Bundle\CoreBundle\Entity\UserGroup $idGroup = null)
     {
-        $this->idModule[] = $idModule;
+        $this->idGroup = $idGroup;
 
         return $this;
     }
 
     /**
-     * Remove idModule
+     * Get idGroup
      *
-     * @param \Gitbox\Bundle\CoreBundle\Entity\Module $idModule
+     * @return \Gitbox\Bundle\CoreBundle\Entity\UserGroup 
      */
-    public function removeIdModule(\Gitbox\Bundle\CoreBundle\Entity\Module $idModule)
+    public function getIdGroup()
     {
-        $this->idModule->removeElement($idModule);
-    }
-
-    /**
-     * Get idModule
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getIdModule()
-    {
-        return $this->idModule;
+        return $this->idGroup;
     }
 }

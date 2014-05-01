@@ -20,8 +20,8 @@ abstract class ContentHelper extends EntityHelper implements CRUDHelper {
      */
     protected $module;
 
-    public function __construct($entityManager) {
-        parent::__construct($entityManager);
+    public function __construct($entityManager, $cacheHelper) {
+        parent::__construct($entityManager, $cacheHelper);
     }
 
     /**

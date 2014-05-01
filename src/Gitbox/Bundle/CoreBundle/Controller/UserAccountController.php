@@ -121,6 +121,7 @@ class UserAccountController extends Controller
 	        $userAccount->setEmail(strtolower($userAccount->getEmail()));
 	        $userAccount->setLogin(strtolower($userAccount->getLogin()));
 	        $userAccount->setPassword(md5($userAccount->getPassword()));
+
 	        /**
 	         * @var $helper \Gitbox\Bundle\CoreBundle\Helper\UserAccountHelper
 	         */
@@ -151,6 +152,7 @@ class UserAccountController extends Controller
 	         */
 	        $helper = $this->container->get('user_helper');
 
+	        //Dodanie użytkownika
 	        /**
 	         * @param $userGroup \Gitbox\Bundle\CoreBundle\Entity\UserGroup
 	         */
@@ -163,14 +165,77 @@ class UserAccountController extends Controller
 			$userDescription->setToken(md5(uniqid(mt_rand(), true)));
 	        $userAccount->setStatus('D');
 
-	        $helper->instance()->persist($userDescription);
+	        //adding modules for user
+	        /**
+	         * @var $cacheHelper \Gitbox\Bundle\CoreBundle\Helper\CacheHelper
+	         */
+	        $cacheHelper = $this->container->get('cache_helper');
+	        $gitTube     = $this->getDoctrine()->getManager()->getRepository('\Gitbox\Bundle\CoreBundle\Entity\Module')->find($cacheHelper->getModuleIdByName('GitTube'));
+	        $gitBlog     = $this->getDoctrine()->getManager()->getRepository('\Gitbox\Bundle\CoreBundle\Entity\Module')->find($cacheHelper->getModuleIdByName('GitBlog'));
+	        $gitDrive    = $this->getDoctrine()->getManager()->getRepository('\Gitbox\Bundle\CoreBundle\Entity\Module')->find($cacheHelper->getModuleIdByName('GitDrive'));
 
+
+
+	        $this->getDoctrine()->getManager()->persist($userDescription);
+	        //Ustawienie opisu i grupy dla usera
 	        $userAccount->setIdDescription($userDescription);
 	        $userAccount->setIdGroup($userGroup);
 
-	        $helper->instance()->persist($userAccount);
-	        $helper->instance()->flush();
+	        $this->getDoctrine()->getManager()->persist($userAccount);
 
+	        //Ustawienie modułów dla usera
+	        $userModuleGitTube = new \Gitbox\Bundle\CoreBundle\Entity\UserModules();
+	        $userModuleGitTube->setIdModule($gitTube);
+	        $userModuleGitBlog = new \Gitbox\Bundle\CoreBundle\Entity\UserModules();
+	        $userModuleGitBlog->setIdModule($gitBlog);
+	        $userModuleGitDrive = new \Gitbox\Bundle\CoreBundle\Entity\UserModules();
+	        $userModuleGitDrive->setIdModule($gitDrive);
+
+	        $userModuleGitBlog->setIdUser($userAccount);
+	        $userModuleGitTube->setIdUser($userAccount);
+	        $userModuleGitDrive->setIdUser($userAccount);
+	        $userModuleGitBlog->setStatus('D');
+	        $userModuleGitDrive->setStatus('D');
+	        $userModuleGitTube->setStatus('D');
+
+	        $this->getDoctrine()->getManager()->persist($userModuleGitTube);
+	        $this->getDoctrine()->getManager()->persist($userModuleGitBlog);
+	        $this->getDoctrine()->getManager()->persist($userModuleGitDrive);
+
+	        //ustawienie elementów menu, ja pierdole, ale sie rozrosło :D
+	        $userMenuGitTube = new \Gitbox\Bundle\CoreBundle\Entity\Menu();
+	        $userMenuGitBlog = new \Gitbox\Bundle\CoreBundle\Entity\Menu();
+	        $userMenuGitDrive = new \Gitbox\Bundle\CoreBundle\Entity\Menu();
+
+	        $userMenuGitTube->setStatus('D');
+	        $userMenuGitBlog->setStatus('D');
+	        $userMenuGitDrive->setStatus('D');
+
+	        $userMenuGitTube->setTitle('GitTube ' . $userAccount->getLogin());
+	        $userMenuGitBlog->setTitle('GitBlog ' . $userAccount->getLogin());
+	        $userMenuGitDrive->setTitle('GitDrive ' . $userAccount->getLogin());
+
+	        $userMenuGitTube->setSort(3);
+	        $userMenuGitBlog->setSort(2);
+	        $userMenuGitDrive->setSort(1);
+
+	        $userMenuGitTube->setParent(null);
+	        $userMenuGitBlog->setParent(null);
+	        $userMenuGitDrive->setParent(null);
+
+	        $userMenuGitTube->setIdModule($gitTube);
+	        $userMenuGitBlog->setIdModule($gitBlog);
+	        $userMenuGitDrive->setIdModule($gitDrive);
+
+	        $userMenuGitTube->setIdUser($userAccount);
+	        $userMenuGitDrive->setIdUser($userAccount);
+	        $userMenuGitBlog->setIdUser($userAccount);
+
+	        $this->getDoctrine()->getManager()->persist($userMenuGitTube);
+	        $this->getDoctrine()->getManager()->persist($userMenuGitBlog);
+	        $this->getDoctrine()->getManager()->persist($userMenuGitDrive);
+
+	        $this->getDoctrine()->getManager()->flush();
             return $this->forward('GitboxCoreBundle:Mailer:accountActivation', array(
                 'user' => $userAccount
             ));

@@ -18,13 +18,20 @@ abstract class EntityHelper {
      */
     protected static $em;
 
+	/**
+	 * @var \Gitbox\Bundle\CoreBundle\Helper\CacheHelper
+	 */
+	protected static $cacheHelper;
+
     /**
      * Pobranie entity managera z containera symfony
      *
      * @param $entityManager
+     * @param $cacheHelper
      */
-    public function __construct($entityManager) {
+    public function __construct($entityManager, $cacheHelper) {
         self::$em = $entityManager;
+	    self::$cacheHelper = $cacheHelper;
     }
 
     /**
@@ -37,4 +44,11 @@ abstract class EntityHelper {
 
         return self::$em;
     }
+
+	/**
+	 * @return CacheHelper
+	 */
+	public function instanceCache() {
+		return self::$cacheHelper;
+	}
 }

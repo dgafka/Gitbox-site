@@ -13,8 +13,8 @@ class TubeContentHelper extends ContentHelper {
 
     protected $module = 'GitTube';
 
-    public function __construct($entityManager) {
-        parent::__construct($entityManager);
+    public function __construct($entityManager, $cacheHelper) {
+        parent::__construct($entityManager, $cacheHelper);
 
         $this->module = 'GitTube';
     }
@@ -32,8 +32,16 @@ class TubeContentHelper extends ContentHelper {
         if (!isset($this->module)) {
             throw new Exception("Nie zainicjalizowano instancji.");
         }
+		$userId    = $this->instanceCache()->getUserIdByLogin($userLogin);
+		$gitTubeId = $this->instanceCache()->getModuleIdByName('GitTube');
 
         $queryBuilder = $this->instance()->createQueryBuilder();
+
+//	    $queryBuilder
+//		    ->select('c, a')
+//		    ->from('GitboxCoreBundle:Content', 'c')
+//		    ->innerJoin('GitboxCoreBundle:Attachment', 'Attachment', 'a', 'WITH', 'a.idContent = c.id')
+//		    ->innerJoin('GitboxCoreBundle', )
 
         $queryBuilder
             ->select('c, a')

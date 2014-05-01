@@ -12,8 +12,8 @@ use Symfony\Component\Config\Definition\Exception\Exception;
  */
 class UserAccountHelper extends EntityHelper implements CRUDHelper {
 
-	public function __construct($entityManager) {
-		parent::__construct($entityManager);
+	public function __construct($entityManager, $cacheHelper) {
+		parent::__construct($entityManager, $cacheHelper);
 	}
 
 	/** Wyszukuje obiekt po id

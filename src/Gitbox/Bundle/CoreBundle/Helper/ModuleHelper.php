@@ -19,9 +19,9 @@ class ModuleHelper extends EntityHelper {
      */
     private $module;
 
-    public function __construct($entityManager) {
-        parent::__construct($entityManager);
-    }
+	public function __construct($entityManager, $cacheHelper) {
+		parent::__construct($entityManager, $cacheHelper);
+	}
 
     /**
      * Ustawia nazwę modułu dla instancji helper-a
@@ -101,19 +101,34 @@ class ModuleHelper extends EntityHelper {
 	 */
 	public function getUserModules($userLogin) {
 		$queryBuilder = $this->instance()->createQueryBuilder();
+		$userId       = $this->instanceCache()->getUserIdByLogin($userLogin);
 
 		$queryBuilder
 			->select('m')
 			->from('GitboxCoreBundle:Module', 'm')
-			->innerJoin('m.idUser', 'ua')
-			->where('ua.login = :login')
+			->innerJoin('GitboxCoreBundle:UserModules', 'um', 'WITH', 'um.idModule = m.id')
+			->where('um.idUser = :user')
 			->setParameters(array(
-				'login' => $userLogin,
+				'user' => $userId
 			));
+
 
 		$results = $queryBuilder->getQuery()->execute();
 
 		return $results;
+	}
+
+	/** Zwraca moduł, wyszukując po nazwie
+	 * @param $name
+	 * @return \Gitbox\Bundle\CoreBundle\Entity\Module|false
+	 */
+	public function getModuleByName($name) {
+		$module = $this->instance()->getRepository('\Gitbox\Bundle\CoreBundle\Entity\Module')->findOneBy(array('name' => $name));
+		if($module instanceof \Gitbox\Bundle\CoreBundle\Entity\Module) {
+			return $module;
+		}
+
+		return false;
 	}
 
 }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Gitbox\Bundle\CoreBundle\Entity\UserModules" table="user_modules">
+    <indexes>
+      <index name="IDX_76BA5DDD6B3CA4B" columns="id_user"/>
+      <index name="IDX_76BA5DDD2A1393C5" columns="id_module"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="status" type="string" column="status" length="1" nullable="false"/>
+    <many-to-one field="idModule" target-entity="Module">
+      <join-columns>
+        <join-column name="id_module" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idUser" target-entity="UserAccount">
+      <join-columns>
+        <join-column name="id_user" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>
