@@ -166,6 +166,14 @@ class UserProfileController extends Controller
 		return array('user' => $this->getUserByLogin($login));
 	}
 
+	/**
+	 * @Route("/user/{login}/search", name="user_profile_search")
+	 */
+	public function activeModule($module) {
+
+	}
+
+
 	/** Metoda odpowiedzialna za pobranie z bazy usera za pomocą loginu
 	 * @param $login
 	 * @return \Gitbox\Bundle\CoreBundle\Entity\UserAccount

@@ -79,6 +79,27 @@
                     </div>
                 </div>
             </div>
+        {% else %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                            <img class="modules-logo" src="{{ asset('images/logo/GitDrive_logo.png') }}" style="max-height: 20px;">
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse">
+                    <div class="panel-body">
+
+                        <div class="list-group blog">
+                            <a href="{{ url('about_url') }}#gitdrive-logo" class="list-group-item">
+                                <h4 class="list-group-item-heading"><i class="fa fa-question-circle"></i> Dowiedz się więcej o GitDrive.</h4>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
         {% endif %}
         </div>
 
