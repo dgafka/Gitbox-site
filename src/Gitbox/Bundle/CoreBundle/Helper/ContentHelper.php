@@ -35,7 +35,7 @@ abstract class ContentHelper extends EntityHelper implements CRUDHelper {
 
     /**
      * @param mixed $entity typeof [UserAccount | integer]
-     * @return UserAccount
+     * @return Content
      * @throws Exception
      */
     public function find($entity) {
@@ -64,7 +64,7 @@ abstract class ContentHelper extends EntityHelper implements CRUDHelper {
     }
 
     /**
-     * @param $content UserAccount
+     * @param $content Content
      * @throws Exception
      */
     public function remove($content) {
@@ -77,7 +77,7 @@ abstract class ContentHelper extends EntityHelper implements CRUDHelper {
     }
 
     /**
-     * @param $content UserAccount
+     * @param $content Content
      * @throws Exception
      */
     public function update($content) {
@@ -90,7 +90,7 @@ abstract class ContentHelper extends EntityHelper implements CRUDHelper {
     }
 
     /**
-     * @param $content UserAccount
+     * @param $content Content
      * @throws Exception
      */
     public function insert($content) {
