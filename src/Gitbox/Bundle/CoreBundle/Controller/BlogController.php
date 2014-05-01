@@ -16,12 +16,6 @@ class BlogController extends Controller
 {
 
 	/**
-	 * @TODO dla Romka. Opakować akcje w komentarzach, każdy kto wchodzi w kontroler, chciałby wiedzieć
-	 * co się dzieje w danej metodzie bez zaglądania w kod! (Nawet jeśli nazwa mówi sama za siebie, dobra praktyka nie boli ;) )
-	 */
-
-
-	/**
      * Walidacja poprawności URL-a. <br />
      * Zwraca dane użytkownika z bazy, w przypadku gdy istnieje użytkownik o podanej nazwie oraz gdy posiada aktywowany moduł.
      *
@@ -37,25 +31,45 @@ class BlogController extends Controller
         $user = $userHelper->findByLogin($login);
 
         if (!$user) {
-            throw $this->createNotFoundException('Nie znaleziono użytkownika o nazwie <b>' . $login . '</b>');
+            throw $this->createNotFoundException('Nie znaleziono użytkownika o nazwie <b>' . $login . '</b>.');
         } else if (!$moduleHelper->isModuleActivated($login)) {
-            throw $this->createNotFoundException('Użytkownik <b>' . $login . '</b> nie posiada aktywowanego modułu');
+            throw $this->createNotFoundException('Użytkownik <b>' . $login . '</b> nie posiada aktywowanego modułu.');
         }
 
         return $user;
     }
 
     /**
+     * Walidacja dostępu do aktywności użytkownika np. dodawanie/edycja wpisu
+     *
+     * @param $login
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    private function checkAccess($login) {
+        $permissionsHelper = $this->container->get('permissions_helper');
+
+        $hasAccess = $permissionsHelper->checkPermission($login);
+
+        if (!$hasAccess) {
+            throw $this->createNotFoundException('Nie masz dostępu do tej aktywności.');
+        }
+    }
+
+    /**
+     * Akcja dla głównej strony bloga, wyświetlenie wszystkich wpisów
+     *
      * @Route("/user/{login}/blog", name="user_blog")
      * @Template()
      */
     public function indexAction($login)
     {
+        // walidacja dostępu
         $user = $this->validateURL($login);
 
         $contentHelper = $this->container->get('blog_content_helper');
 
         // TODO: paginacja
+        // pobranie wszystkich wpisów z bazy
         $posts = $contentHelper->getContents($login);
 
         return array(
@@ -65,19 +79,25 @@ class BlogController extends Controller
     }
 
     /**
+     * Dodawanie nowego wpisu
+     *
      * @Route("/user/{login}/blog/new", name="user_new_post")
      * @Template()
      */
     public function newAction(Request $request, $login)
     {
+        // walidacja dostępu
         $user = $this->validateURL($login);
-        // TODO: walidacja - permissions
+        $this->checkAccess($login);
 
+        // utworzenie instancji wpisu
         $postContent = new Content();
 
+        // formularz nowego wpisu
         $form = $this->createForm(new BlogPostType(), $postContent, array('csrf_protection' => true));
         $form->handleRequest($request);
 
+        // walidacja formularza
         if ($form->isValid()) {
             $contentHelper = $this->container->get('blog_content_helper');
             $em = $this->getDoctrine()->getManager();
@@ -105,21 +125,26 @@ class BlogController extends Controller
     }
 
     /**
+     * Edytowanie wpisu
+     *
      * @Route("/user/{login}/blog/{id}/edit")
      * @Template()
      */
     public function editAction(Request $request, $login, $id)
     {
+        // walidacja dostępu
         $user = $this->validateURL($login);
-        // TODO: walidacja - permissions
+        $this->checkAccess($login);
 
         $contentHelper = $this->container->get('blog_content_helper');
 
+        // pobranie wpisu z bazy
         $postContent = $contentHelper->getOneContent($id, $login);
 
         $form = $this->createForm(new BlogPostType(), $postContent, array('csrf_protection' => true));
         $form->handleRequest($request);
 
+        // walidacja formularza
         if ($form->isValid()) {
             $postContent->setLastModificationDate(new \DateTime('now'));
 
@@ -141,17 +166,20 @@ class BlogController extends Controller
     }
 
     /**
+     * Wyświetlenie pojedynczego wpisu o id = {id}
+     *
      * @Route("/user/{login}/blog/{id}", name="user_show_post")
      * @Template()
      */
     public function showAction($login, $id)
     {
-        // TODO: pobieranie treści posta i komentarzy
+        // walidacja dostępu
         $user = $this->validateURL($login);
 
         $contentHelper = $this->container->get('blog_content_helper');
 
         $postContent = $contentHelper->getOneContent($id, $login);
+        // TODO: pobieranie treści komentarzy
 
         if (!$postContent) {
             throw $this->createNotFoundException('Niestety nie znaleziono wpisu.');
