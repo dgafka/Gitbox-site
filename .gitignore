@@ -16,3 +16,4 @@
 /.idea/*
 ~*
 /postgresql-9.3-1100.jdbc4.jar
+*~
