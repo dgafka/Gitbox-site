@@ -108,8 +108,10 @@ class ModuleHelper extends EntityHelper {
 			->from('GitboxCoreBundle:Module', 'm')
 			->innerJoin('GitboxCoreBundle:UserModules', 'um', 'WITH', 'um.idModule = m.id')
 			->where('um.idUser = :user')
+			->andWhere('um.status = :status')
 			->setParameters(array(
-				'user' => $userId
+				'user'      => $userId,
+				'status' => 'A'
 			));
 
 
@@ -129,6 +131,33 @@ class ModuleHelper extends EntityHelper {
 		}
 
 		return false;
+	}
+
+	/** Aktywuje/Dezaktywuje moduł dla danego użytkownika
+	 * @param $user
+	 * @param $module
+	 * @param $mode (A lub D)
+	 */
+	public function setStatusModule($user, $module, $mode) {
+		$queryBuilder = $this->instance()->createQueryBuilder();
+		$userId       = $this->instanceCache()->getUserIdByLogin($user);
+		$moduleId     = $this->instanceCache()->getModuleIdByName($module);
+
+
+		$queryBuilder
+			->update('GitboxCoreBundle:UserModules', 'um')
+			->set('um.status', ':status')
+			->where('um.idUser = :user')
+			->andWhere('um.idModule = :module')
+			->setParameters(array(
+				'status' => $mode,
+				'module' => $moduleId,
+				'user'   => $userId
+			));
+
+		$queryBuilder->getQuery()->execute();
+
+		return;
 	}
 
 }

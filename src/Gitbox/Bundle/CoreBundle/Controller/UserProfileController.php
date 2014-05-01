@@ -167,12 +167,49 @@ class UserProfileController extends Controller
 	}
 
 	/**
-	 * @Route("/user/{login}/search", name="user_profile_search")
+	 * @Route("/user/{login}/{module}/active", name="user_profile_module_active")
 	 */
-	public function activeModule($module) {
+	public function activeModule($login, $module) {
+		/**
+		 * @var $permissionHelper PermissionHelper
+		 */
+		$permissionHelper = $this->container->get('permissions_helper');
+		$owner            = $permissionHelper->checkPermission($login);
 
+		if($owner) {
+			/**
+			 * @var $moduleHelper ModuleHelper
+			 */
+			$moduleHelper = $this->container->get('module_helper');
+			$moduleHelper->setStatusModule($login, $module, 'A');
+		}
+
+		return $this->redirect($this->generateUrl('user_profile_modules', array('login' => $login)));
 	}
 
+	/** Dezaktywuje moduł
+	 * @param $login
+	 * @Route("/user/{login}/{module}/deactive", name="user_profile_module_deactive")
+	 * @param $module
+	 * @return array
+	 */
+	public function deactiveModule($login, $module) {
+		/**
+		 * @var $permissionHelper PermissionHelper
+		 */
+		$permissionHelper = $this->container->get('permissions_helper');
+		$owner            = $permissionHelper->checkPermission($login);
+
+		if($owner) {
+			/**
+			 * @var $moduleHelper ModuleHelper
+			 */
+			$moduleHelper = $this->container->get('module_helper');
+			$moduleHelper->setStatusModule($login, $module, 'D');
+		}
+
+		return $this->redirect($this->generateUrl('user_profile_modules', array('login' => $login)));
+	}
 
 	/** Metoda odpowiedzialna za pobranie z bazy usera za pomocą loginu
 	 * @param $login

@@ -51,27 +51,6 @@ class TubeContentHelper extends ContentHelper {
 			   'status'     => 'A'
 		    ));
 
-//        $queryBuilder
-//            ->select('c, a')
-//            ->from('GitboxCoreBundle:Content', 'c')
-//            ->innerJoin('GitboxCoreBundle:UserAccount', 'ua', JOIN::WITH, 'c.idUser = ua.id')
-//            ->innerJoin('c.idMenu', 'menu')
-//            ->innerJoin('menu.idModule', 'm')
-//            ->innerJoin('GitboxCoreBundle:Attachment','a', JOIN::WITH, 'a.idContent = c.id')
-//            ->where('ua.login = :login AND m.name = :module')
-//            ->setParameters(array(
-//                'login' => $userLogin,
-//                'module' => $this->module
-//            ));
-
-/*        SELECT c.*, a.* FROM content c
-        INNER JOIN user_account ua ON ua.id=c.id_user
-        INNER JOIN menu men ON men.id=c.id_menu
-        INNER JOIN module mod ON mod.id=men.id_module
-        INNER JOIN attachment a ON a.id_content=c.id
-        where mod.name='GitTube' AND ua.login='test2';
-*/
-
         $results = $queryBuilder->getQuery()->getResult();
 
 	    return $results;
