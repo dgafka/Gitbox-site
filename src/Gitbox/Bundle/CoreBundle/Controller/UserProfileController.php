@@ -100,6 +100,8 @@ class UserProfileController extends Controller
 			$form->handleRequest($request);
 
 			if($form->isValid()) {
+				$userAccount->setPassword(md5($userAccount->getPassword()));
+
 				$userHelper = $this->container->get('user_helper');
 				$user->setPassword($userAccount->getPassword());
 				$userHelper->update($user);

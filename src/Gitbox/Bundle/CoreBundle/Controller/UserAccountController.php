@@ -40,6 +40,9 @@ class UserAccountController extends Controller
 
 	    if($form->isValid()) {
 
+		    $userAccount->setEmail(strtolower($userAccount->getEmail()));
+		    $userAccount->setPassword(md5($userAccount->getPassword()));
+
 		    /**
 		     * @var $helper \Gitbox\Bundle\CoreBundle\Helper\UserAccountHelper
 		     */
@@ -115,6 +118,9 @@ class UserAccountController extends Controller
         if($form->isValid()) {
 
 	        $message = '';
+	        $userAccount->setEmail(strtolower($userAccount->getEmail()));
+	        $userAccount->setLogin(strtolower($userAccount->getLogin()));
+	        $userAccount->setPassword(md5($userAccount->getPassword()));
 	        /**
 	         * @var $helper \Gitbox\Bundle\CoreBundle\Helper\UserAccountHelper
 	         */
