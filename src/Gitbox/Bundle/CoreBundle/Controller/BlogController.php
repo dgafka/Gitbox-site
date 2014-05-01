@@ -51,6 +51,13 @@ class BlogController extends Controller
         $hasAccess = $permissionsHelper->checkPermission($login);
 
         if (!$hasAccess) {
+            $session = $this->container->get('session');
+            $userId = $session->get('userId');
+
+            if (!isset($userId)) {
+                throw $this->createNotFoundException('Zaloguj się, aby mieć dostęp do tej aktywności.');
+            }
+
             throw $this->createNotFoundException('Nie masz dostępu do tej aktywności.');
         }
     }
