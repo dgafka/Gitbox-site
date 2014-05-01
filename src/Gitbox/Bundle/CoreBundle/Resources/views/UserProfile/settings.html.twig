@@ -1,5 +1,23 @@
 {% extends 'GitboxCoreBundle:UserProfile:userProfile.html.twig' %}
-
-{% block profileContent %}
-    <div class="profileDescription">My About will be here.</div>
-{% endblock %}
+{% if isOwner == true %}
+    {% block profileContent %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Chcesz zmienić swoje ustawienia? Wybierz opcję poniżej...</h3>
+            </div>
+            <div class="panel-body">
+                <div class="panel-group" id="accordion">
+                    <div class="panel panel-default">
+                        <div class="list-group blog">
+                            <a href="{{ url('user_profile_settings_main', {'login' : login}) }}" class="list-group-item">
+                                <h4 class="list-group-item-heading"><span class="glyphicon glyphicon-wrench"></span> Zmień podstawowe ustawienia.</h4>
+                            </a>
+                            <a href="{{ url('user_profile_settings_description', {'login' : login}) }}" class="list-group-item">
+                                <h4 class="list-group-item-heading"><span class="glyphicon glyphicon-book"></span> Ustaw swój profilowy opis.</h4>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    {% endblock %}
+{% endif %}

@@ -1,0 +1,23 @@
+{% extends 'GitboxCoreBundle:UserProfile:userProfile.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/froala_editor/froala_editor.min.css') }}" />
+{% endblock %}
+
+{% block profileContent %}
+    <div class="centered-form">
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        <div class="form-group">
+            {{ form_widget(form.content) }}
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+{% block lazy_javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/froala_editor/froala_editor.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/editorHandler.js') }}"></script>
+{% endblock %}

@@ -2,11 +2,13 @@
 
 namespace Gitbox\Bundle\CoreBundle\Controller;
 
+use Gitbox\Bundle\CoreBundle\Entity\UserAccount;
 use Gitbox\Bundle\CoreBundle\Helper\ModuleHelper;
 use Gitbox\Bundle\CoreBundle\Helper\PermissionHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\BrowserKit\Request;
 
 class UserProfileController extends Controller
 {
@@ -61,8 +63,98 @@ class UserProfileController extends Controller
      * @Template()
      */
     public function settingsAction($login) {
-		return array('user' => $this->getUserByLogin($login));
+	    $user = $this->getUserByLogin($login);
+
+	    /**
+	     * @var $permissionHelper PermissionHelper
+	     */
+	    $permissionHelper = $this->container->get('permissions_helper');
+	    $owner            = $permissionHelper->checkPermission($login);
+		if($owner) {
+			return array('login' => $user->getLogin(),'email' => $user->getEmail(), 'isOwner' => $owner);
+		}else {
+			throw $this->createNotFoundException("Przepraszamy, ale nie ma takiej strony, bądź nie masz do niej dostępu");
+		}
     }
+
+	/**
+	 * @param $login
+	 * @param $request
+	 * @return array
+	 * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+	 * @Route("/user/{login}/settings/main", name="user_profile_settings_main")
+	 * @Template()
+	 */
+	public function settingsMainAction(\Symfony\Component\HttpFoundation\Request $request, $login) {
+		$user = $this->getUserByLogin($login);
+
+		/**
+		 * @var $permissionHelper PermissionHelper
+		 */
+		$permissionHelper = $this->container->get('permissions_helper');
+		$owner            = $permissionHelper->checkPermission($login);
+		if($owner) {
+
+			$userAccount     = new UserAccount();
+			$form = $this->createForm(new \Gitbox\Bundle\CoreBundle\Form\Type\UserSettingsMainType(), $userAccount);
+			$form->handleRequest($request);
+
+			if($form->isValid()) {
+				$userHelper = $this->container->get('user_helper');
+				$user->setPassword($userAccount->getPassword());
+				$userHelper->update($user);
+
+				return $this->redirect(
+					$this->generateUrl('user_profile_index', array(
+						'login'       => $user->getLogin(),
+					))
+				);
+			}
+
+			return array('login' => $user->getLogin(),'email' => $user->getEmail(), 'isOwner' => $owner, 'form' => $form->createView());
+		}else {
+			throw $this->createNotFoundException("Przepraszamy, ale nie ma takiej strony, bądź nie masz do niej dostępu");
+		}
+	}
+
+	/**
+	 * @param $login
+	 * @param $request
+	 * @return array
+	 * @Route("/user/{login}/settings/description", name="user_profile_settings_description")
+	 * @Template()
+	 * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+	 */
+	public function settingsDescriptionAction(\Symfony\Component\HttpFoundation\Request $request, $login) {
+		$user = $this->getUserByLogin($login);
+
+		/**
+		 * @var $permissionHelper PermissionHelper
+		 */
+		$permissionHelper = $this->container->get('permissions_helper');
+		$owner            = $permissionHelper->checkPermission($login);
+
+		if($owner) {
+			$userDescription = $user->getIdDescription();
+			$form = $this->createForm(new \Gitbox\Bundle\CoreBundle\Form\Type\UserSettingsDescriptionType(), $userDescription);
+			$form->handleRequest($request);
+
+			if($form->isValid()) {
+				$userHelper = $this->container->get('user_helper');
+				$userHelper->update($user);
+
+				return $this->redirect(
+					$this->generateUrl('user_profile_index', array(
+						'login'       => $user->getLogin(),
+					))
+				);
+			}
+
+			return array('login' => $user->getLogin(),'email' => $user->getEmail(), 'isOwner' => $owner, 'form' => $form->createView());
+		}else {
+			throw $this->createNotFoundException("Przepraszamy, ale nie ma takiej strony, bądź nie masz do niej dostępu");
+		}
+	}
 
 	/**
 	 * @Route("/user/{login}/search", name="user_profile_search")
