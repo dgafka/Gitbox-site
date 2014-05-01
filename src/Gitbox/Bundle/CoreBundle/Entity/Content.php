@@ -15,6 +15,16 @@ class Content
     /**
      * @var integer
      *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="content_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $id;
+
+    /**
+     * @var integer
+     *
      * @ORM\Column(name="id_user", type="integer", nullable=false)
      */
     private $idUser;
@@ -24,7 +34,7 @@ class Content
      *
      * @ORM\Column(name="status", type="string", length=1, nullable=false)
      */
-    private $status;
+    private $status = 'A';
 
     /**
      * @var string
@@ -52,14 +62,14 @@ class Content
      *
      * @ORM\Column(name="create_date", type="datetime", nullable=false)
      */
-    private $createDate;
+    private $createDate = '1970-01-01';
 
     /**
      * @var integer
      *
      * @ORM\Column(name="hit", type="integer", nullable=false)
      */
-    private $hit;
+    private $hit = '0';
 
     /**
      * @var \DateTime
@@ -87,37 +97,27 @@ class Content
      *
      * @ORM\Column(name="type", type="string", length=1, nullable=false)
      */
-    private $type;
+    private $type = '1';
 
     /**
-     * @var integer
+     * @var \Menu
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="content_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
-
-    /**
-     * @var \Gitbox\Bundle\CoreBundle\Entity\Category
-     *
-     * @ORM\ManyToOne(targetEntity="Gitbox\Bundle\CoreBundle\Entity\Category")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_category", referencedColumnName="id")
-     * })
-     */
-    private $idCategory;
-
-    /**
-     * @var \Gitbox\Bundle\CoreBundle\Entity\Menu
-     *
-     * @ORM\ManyToOne(targetEntity="Gitbox\Bundle\CoreBundle\Entity\Menu")
+     * @ORM\ManyToOne(targetEntity="Menu")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_menu", referencedColumnName="id")
      * })
      */
     private $idMenu;
+
+    /**
+     * @var \Category
+     *
+     * @ORM\ManyToOne(targetEntity="Category")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_category", referencedColumnName="id")
+     * })
+     */
+    private $idCategory;
 
 
 

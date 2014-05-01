@@ -13,6 +13,16 @@ use Doctrine\ORM\Mapping as ORM;
 class Comment
 {
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="comment_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $id;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="content", type="text", nullable=false)
@@ -41,34 +51,24 @@ class Comment
     private $createDate;
 
     /**
-     * @var integer
+     * @var \UserAccount
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="comment_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
-
-    /**
-     * @var \Gitbox\Bundle\CoreBundle\Entity\Content
-     *
-     * @ORM\ManyToOne(targetEntity="Gitbox\Bundle\CoreBundle\Entity\Content")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_content", referencedColumnName="id")
-     * })
-     */
-    private $idContent;
-
-    /**
-     * @var \Gitbox\Bundle\CoreBundle\Entity\UserAccount
-     *
-     * @ORM\ManyToOne(targetEntity="Gitbox\Bundle\CoreBundle\Entity\UserAccount")
+     * @ORM\ManyToOne(targetEntity="UserAccount")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_user", referencedColumnName="id")
      * })
      */
     private $idUser;
+
+    /**
+     * @var \Content
+     *
+     * @ORM\ManyToOne(targetEntity="Content")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_content", referencedColumnName="id")
+     * })
+     */
+    private $idContent;
 
 
 

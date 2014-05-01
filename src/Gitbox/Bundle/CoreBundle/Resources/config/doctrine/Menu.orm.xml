@@ -11,7 +11,6 @@
     <field name="idCategory" type="integer" column="id_category" nullable="true"/>
     <field name="parent" type="integer" column="parent" nullable="true"/>
     <field name="title" type="string" column="title" length="50" nullable="false"/>
-    <field name="status" type="string" column="status" length="1" nullable="false"/>
     <field name="sort" type="integer" column="sort" nullable="true"/>
     <field name="expire" type="date" column="expire" nullable="true"/>
     <many-to-one field="idUser" target-entity="UserAccount">

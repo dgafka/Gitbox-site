@@ -15,6 +15,16 @@ class Menu
     /**
      * @var integer
      *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="menu_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $id;
+
+    /**
+     * @var integer
+     *
      * @ORM\Column(name="id_category", type="integer", nullable=true)
      */
     private $idCategory;
@@ -34,13 +44,6 @@ class Menu
     private $title;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="status", type="string", length=1, nullable=false)
-     */
-    private $status;
-
-    /**
      * @var integer
      *
      * @ORM\Column(name="sort", type="integer", nullable=true)
@@ -55,34 +58,24 @@ class Menu
     private $expire;
 
     /**
-     * @var integer
+     * @var \Module
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="menu_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
-
-    /**
-     * @var \Gitbox\Bundle\CoreBundle\Entity\UserAccount
-     *
-     * @ORM\ManyToOne(targetEntity="Gitbox\Bundle\CoreBundle\Entity\UserAccount")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_user", referencedColumnName="id")
-     * })
-     */
-    private $idUser;
-
-    /**
-     * @var \Gitbox\Bundle\CoreBundle\Entity\Module
-     *
-     * @ORM\ManyToOne(targetEntity="Gitbox\Bundle\CoreBundle\Entity\Module")
+     * @ORM\ManyToOne(targetEntity="Module")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_module", referencedColumnName="id")
      * })
      */
     private $idModule;
+
+    /**
+     * @var \UserAccount
+     *
+     * @ORM\ManyToOne(targetEntity="UserAccount")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_user", referencedColumnName="id")
+     * })
+     */
+    private $idUser;
 
 
 
@@ -153,29 +146,6 @@ class Menu
     public function getTitle()
     {
         return $this->title;
-    }
-
-    /**
-     * Set status
-     *
-     * @param string $status
-     * @return Menu
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return string 
-     */
-    public function getStatus()
-    {
-        return $this->status;
     }
 
     /**

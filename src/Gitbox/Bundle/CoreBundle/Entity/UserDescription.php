@@ -13,11 +13,21 @@ use Doctrine\ORM\Mapping as ORM;
 class UserDescription
 {
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="user_description_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $id;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="registration_date", type="date", nullable=false)
      */
-    private $registrationDate;
+    private $registrationDate = '1970-01-01';
 
     /**
      * @var \DateTime
@@ -38,7 +48,7 @@ class UserDescription
      *
      * @ORM\Column(name="hit", type="integer", nullable=false)
      */
-    private $hit;
+    private $hit = '0';
 
     /**
      * @var string
@@ -53,16 +63,6 @@ class UserDescription
      * @ORM\Column(name="content", type="text", nullable=true)
      */
     private $content;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="user_description_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
 
 
 

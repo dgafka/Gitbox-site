@@ -13,6 +13,16 @@ use Doctrine\ORM\Mapping as ORM;
 class UserAccount
 {
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="user_account_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $id;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="login", type="string", length=25, nullable=false)
@@ -41,34 +51,24 @@ class UserAccount
     private $email;
 
     /**
-     * @var integer
+     * @var \UserGroup
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="user_account_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
-
-    /**
-     * @var \Gitbox\Bundle\CoreBundle\Entity\UserDescription
-     *
-     * @ORM\ManyToOne(targetEntity="Gitbox\Bundle\CoreBundle\Entity\UserDescription")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_description", referencedColumnName="id")
-     * })
-     */
-    private $idDescription;
-
-    /**
-     * @var \Gitbox\Bundle\CoreBundle\Entity\UserGroup
-     *
-     * @ORM\ManyToOne(targetEntity="Gitbox\Bundle\CoreBundle\Entity\UserGroup")
+     * @ORM\ManyToOne(targetEntity="UserGroup")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_group", referencedColumnName="id")
      * })
      */
     private $idGroup;
+
+    /**
+     * @var \UserDescription
+     *
+     * @ORM\ManyToOne(targetEntity="UserDescription")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_description", referencedColumnName="id")
+     * })
+     */
+    private $idDescription;
 
 
 
