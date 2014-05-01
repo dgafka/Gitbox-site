@@ -37,24 +37,33 @@ class TubeContentHelper extends ContentHelper {
 
         $queryBuilder = $this->instance()->createQueryBuilder();
 
-//	    $queryBuilder
-//		    ->select('c, a')
-//		    ->from('GitboxCoreBundle:Content', 'c')
-//		    ->innerJoin('GitboxCoreBundle:Attachment', 'Attachment', 'a', 'WITH', 'a.idContent = c.id')
-//		    ->innerJoin('GitboxCoreBundle', )
+	    $queryBuilder
+		    ->select('a')
+		    ->from('GitboxCoreBundle:Content', 'c')
+		    ->innerJoin('GitboxCoreBundle:Attachment', 'a', 'WITH', 'a.idContent = c.id')
+		    ->innerJoin('GitboxCoreBundle:Menu', 'm', 'WITH','m.id = c.idMenu')
+		    ->where('m.idUser = :userId')
+		    ->andWhere('m.idModule = :moduleId')
+	        ->andWhere('m.status = :status')
+		    ->setParameters(array(
+			   'userId'     => $userId,
+			   'moduleId'   => $gitTubeId,
+			   'status'     => 'A'
+		    ));
 
-        $queryBuilder
-            ->select('c, a')
-            ->from('GitboxCoreBundle:Content', 'c')
-            ->innerJoin('GitboxCoreBundle:UserAccount', 'ua', JOIN::WITH, 'c.idUser = ua.id')
-            ->innerJoin('c.idMenu', 'menu')
-            ->innerJoin('menu.idModule', 'm')
-            ->innerJoin('GitboxCoreBundle:Attachment','a', JOIN::WITH, 'a.idContent = c.id')
-            ->where('ua.login = :login AND m.name = :module')
-            ->setParameters(array(
-                'login' => $userLogin,
-                'module' => $this->module
-            ));
+//        $queryBuilder
+//            ->select('c, a')
+//            ->from('GitboxCoreBundle:Content', 'c')
+//            ->innerJoin('GitboxCoreBundle:UserAccount', 'ua', JOIN::WITH, 'c.idUser = ua.id')
+//            ->innerJoin('c.idMenu', 'menu')
+//            ->innerJoin('menu.idModule', 'm')
+//            ->innerJoin('GitboxCoreBundle:Attachment','a', JOIN::WITH, 'a.idContent = c.id')
+//            ->where('ua.login = :login AND m.name = :module')
+//            ->setParameters(array(
+//                'login' => $userLogin,
+//                'module' => $this->module
+//            ));
+
 /*        SELECT c.*, a.* FROM content c
         INNER JOIN user_account ua ON ua.id=c.id_user
         INNER JOIN menu men ON men.id=c.id_menu
@@ -63,11 +72,9 @@ class TubeContentHelper extends ContentHelper {
         where mod.name='GitTube' AND ua.login='test2';
 */
 
-        try {
-            return $queryBuilder->getQuery()->getResult();
-        } catch (NoResultException $e) {
-            return null;
-        }
+        $results = $queryBuilder->getQuery()->getResult();
+
+	    return $results;
     }
     /**
      * Pobranie jednego filmu z bazy

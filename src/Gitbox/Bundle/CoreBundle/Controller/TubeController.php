@@ -53,8 +53,9 @@ class TubeController extends Controller
         $user = $helper->findByLogin($login);
 
 	    $posts = $contentHelper->getContents($login);
+
 //        print_r($posts[1]);
-        return array('user' => $user, 'posts' => $posts[1]);
+        return array('user' => $user, 'posts' => $posts);
     }
 
     /**
