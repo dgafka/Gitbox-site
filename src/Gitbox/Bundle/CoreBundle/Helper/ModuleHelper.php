@@ -75,16 +75,17 @@ class ModuleHelper extends EntityHelper {
             throw new Exception("Brak zdefiniowanej nazwy modułu.");
         }
 
-        $queryBuilder = $this->instance()->createQueryBuilder();
+        $userId = $this->instanceCache()->getUserIdByLogin($userLogin);
+        $moduleId = $this->instanceCache()->getModuleIdByName($this->module);
 
+        $queryBuilder = $this->instance()->createQueryBuilder();
         $queryBuilder
-            ->select('m')
-            ->from('GitboxCoreBundle:Module', 'm')
-            ->innerJoin('m.idUser', 'ua')
-            ->where('ua.login = :login AND m.name = :module')
+            ->select('um')
+            ->from('GitboxCoreBundle:UserModules', 'um')
+            ->where('um.idUser = :user_id AND um.idModule = :module_id AND um.status = \'A\'')
             ->setParameters(array(
-                'login' => $userLogin,
-                'module' => $this->module
+                'user_id' => $userId,
+                'module_id' => $moduleId
             ));
 
         try {
@@ -116,19 +117,6 @@ class ModuleHelper extends EntityHelper {
 		$results = $queryBuilder->getQuery()->execute();
 
 		return $results;
-	}
-
-	/** Zwraca moduł, wyszukując po nazwie
-	 * @param $name
-	 * @return \Gitbox\Bundle\CoreBundle\Entity\Module|false
-	 */
-	public function getModuleByName($name) {
-		$module = $this->instance()->getRepository('\Gitbox\Bundle\CoreBundle\Entity\Module')->findOneBy(array('name' => $name));
-		if($module instanceof \Gitbox\Bundle\CoreBundle\Entity\Module) {
-			return $module;
-		}
-
-		return false;
 	}
 
 }
