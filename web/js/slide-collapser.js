@@ -17,8 +17,11 @@ $(document).ready(function() {
         }
 
         // run simultaneously 2 effects
-        $('.main-content').animate({
-            width: width }, speed, easing, function () {
+        $('.main-content').animate({ width: width }, {
+            duration: speed,
+            easing: easing,
+            queue: false,
+            complete: function () {
                 var cell = $(target).find('.collapse-slider-cell');
 
                 if (cell.html() === '»') {
@@ -27,12 +30,17 @@ $(document).ready(function() {
                     cell.html('»');
                 }
             }
-        );
-        $('.sidebar').toggle(speed, easing, function () {
-            sliderActive = false;
+        });
+        $('.sidebar').toggle({
+            duration: speed,
+            easing: easing,
+            queue: false,
+            complete: function () {
+                sliderActive = false;
 
-            if ($('.collapse-slider-switch').is(':hover')) {
-                switchLeave();
+                if ($('.collapse-slider-switch').is(':hover')) {
+                    switchLeave();
+                }
             }
         });
     };
