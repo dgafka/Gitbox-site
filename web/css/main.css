@@ -285,6 +285,10 @@ a.badge-button:focus {
     max-height: 20px;
 }
 
+.module-bar:hover {
+    text-decoration: none;
+}
+
 .list-group.blog a.list-group-item .list-group-item-heading{
     font-size: 15px;
 }
