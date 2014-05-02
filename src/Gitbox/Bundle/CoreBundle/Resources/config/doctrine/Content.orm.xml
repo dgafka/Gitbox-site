@@ -17,8 +17,9 @@
     <field name="hit" type="integer" column="hit" nullable="false"/>
     <field name="expire" type="date" column="expire" nullable="true"/>
     <field name="lastModificationDate" type="datetime" column="last_modification_date" nullable="false"/>
-    <field name="rate" type="float" column="rate" precision="10" scale="0" nullable="true"/>
     <field name="type" type="string" column="type" length="1" nullable="false"/>
+    <field name="voteUp" type="integer" column="vote_up" nullable="false"/>
+    <field name="voteDown" type="integer" column="vote_down" nullable="false"/>
     <many-to-one field="idCategory" target-entity="Category">
       <join-columns>
         <join-column name="id_category" referenced-column-name="id"/>

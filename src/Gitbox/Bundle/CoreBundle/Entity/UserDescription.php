@@ -64,6 +64,13 @@ class UserDescription
      */
     private $content;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="total_rating", type="integer", nullable=false)
+     */
+    private $totalRating = '0';
+
 
 
     /**
@@ -202,6 +209,29 @@ class UserDescription
     public function getContent()
     {
         return $this->content;
+    }
+
+    /**
+     * Set totalRating
+     *
+     * @param integer $totalRating
+     * @return UserDescription
+     */
+    public function setTotalRating($totalRating)
+    {
+        $this->totalRating = $totalRating;
+
+        return $this;
+    }
+
+    /**
+     * Get totalRating
+     *
+     * @return integer 
+     */
+    public function getTotalRating()
+    {
+        return $this->totalRating;
     }
 
     /**

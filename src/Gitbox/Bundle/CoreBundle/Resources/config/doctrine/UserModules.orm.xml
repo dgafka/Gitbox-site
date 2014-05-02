@@ -9,6 +9,7 @@
       <generator strategy="SEQUENCE"/>
     </id>
     <field name="status" type="string" column="status" length="1" nullable="false"/>
+    <field name="totalContents" type="integer" column="total_contents" nullable="false"/>
     <many-to-one field="idModule" target-entity="Module">
       <join-columns>
         <join-column name="id_module" referenced-column-name="id"/>

@@ -30,6 +30,13 @@ class UserModules
     private $status = 'D';
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="total_contents", type="integer", nullable=false)
+     */
+    private $totalContents = '0';
+
+    /**
      * @var \UserAccount
      *
      * @ORM\ManyToOne(targetEntity="UserAccount")
@@ -72,6 +79,29 @@ class UserModules
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Set totalContents
+     *
+     * @param integer $totalContents
+     * @return UserModules
+     */
+    public function setTotalContents($totalContents)
+    {
+        $this->totalContents = $totalContents;
+
+        return $this;
+    }
+
+    /**
+     * Get totalContents
+     *
+     * @return integer 
+     */
+    public function getTotalContents()
+    {
+        return $this->totalContents;
     }
 
     /**

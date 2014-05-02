@@ -86,18 +86,25 @@ class Content
     private $lastModificationDate;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="rate", type="float", precision=10, scale=0, nullable=true)
-     */
-    private $rate;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="type", type="string", length=1, nullable=false)
      */
     private $type = '1';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="vote_up", type="integer", nullable=false)
+     */
+    private $voteUp = '0';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="vote_down", type="integer", nullable=false)
+     */
+    private $voteDown = '0';
 
     /**
      * @var \Menu
@@ -329,29 +336,6 @@ class Content
     }
 
     /**
-     * Set rate
-     *
-     * @param float $rate
-     * @return Content
-     */
-    public function setRate($rate)
-    {
-        $this->rate = $rate;
-
-        return $this;
-    }
-
-    /**
-     * Get rate
-     *
-     * @return float 
-     */
-    public function getRate()
-    {
-        return $this->rate;
-    }
-
-    /**
      * Set type
      *
      * @param string $type
@@ -372,6 +356,52 @@ class Content
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * Set voteUp
+     *
+     * @param integer $voteUp
+     * @return Content
+     */
+    public function setVoteUp($voteUp)
+    {
+        $this->voteUp = $voteUp;
+
+        return $this;
+    }
+
+    /**
+     * Get voteUp
+     *
+     * @return integer 
+     */
+    public function getVoteUp()
+    {
+        return $this->voteUp;
+    }
+
+    /**
+     * Set voteDown
+     *
+     * @param integer $voteDown
+     * @return Content
+     */
+    public function setVoteDown($voteDown)
+    {
+        $this->voteDown = $voteDown;
+
+        return $this;
+    }
+
+    /**
+     * Get voteDown
+     *
+     * @return integer 
+     */
+    public function getVoteDown()
+    {
+        return $this->voteDown;
     }
 
     /**
