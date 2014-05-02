@@ -1,6 +1,11 @@
 {% block blog_form %}
+
     {# BACK BUTTON #}
-    <a href="{{ path('user_blog', {'login': user.login}) }}" class="btn btn-info btn-need-some-place"><i class="glyphicon glyphicon-arrow-left"></i> Powrót do wpisów</a>
+    {% if calledBy is defined and calledBy == 'showAction' %}
+        <a href="{{ path('user_show_post', {'login': user.login, 'id': post.id}) }}" class="btn btn-info btn-need-some-space"><i class="glyphicon glyphicon-arrow-left"></i> Powrót do wpisu</a>
+    {% else %}
+        <a href="{{ path('user_blog', {'login': user.login}) }}" class="btn btn-info btn-need-some-space"><i class="glyphicon glyphicon-arrow-left"></i> Powrót do wpisów</a>
+    {% endif %}
     <div class="centered-form">
         {# TODO: obsługa uploadu obrazków http://editor.froala.com/docs/image-upload (nie jest konieczna) #}
         <h2 style="margin-bottom: 20px;">Dodawanie nowego wpisu</h2>
@@ -10,7 +15,11 @@
                 {{ form_widget(form.title) }}
 
                 {{ form_widget(form.description) }}
+
+                {{ form_widget(form.save, {
+                    'label': btnLabel
+                }) }}
             </div>
-        {{ form_end(form) }} {# TODO: submit button for new/edit actions #}
+        {{ form_end(form) }}
     </div>
 {% endblock %}

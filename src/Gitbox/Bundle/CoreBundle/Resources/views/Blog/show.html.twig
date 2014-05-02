@@ -4,15 +4,34 @@
 
 {% block content_inner %}
 <div class="row">
-    <div class="col-lg-8 main-content">
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="alert alert-success alert-dismissable alert-message">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            {{ flashMessage | raw }}
+        </div>
+    {% endfor %}
 
+    <div class="col-lg-8 main-content">
+        <a href="{{ path('user_blog', {'login': user.login}) }}" class="btn btn-info btn-need-some-space"><i class="glyphicon glyphicon-arrow-left"></i> Powrót do wpisów</a>
         {# post #}
         <div class="post-in-the-box">
             <h1>{{ post.title }}</h1>
             <p><span class="glyphicon glyphicon-time"></span> <b>Utworzono</b> {{ post.createDate | date("D j/m/Y H:i:s") }}</p>
             <p><span class="glyphicon glyphicon-time"></span> <b>Ostatnio edytowano</b> {{ post.lastModificationDate | date("D j/m/Y H:i:s") }}</p>
+            {% if hasAccess == true %}
+                <a class="btn-float-left"
+                   href="{{ path('user_edit_post', {'login': user.login, 'id': post.id, 'calledBy': 'showAction'}) }}"
+                   title="Edytuj wpis" data-toggle="tooltip" data-placement="bottom">
+                    <span class="glyphicon glyphicon-pencil"></span> Edytuj
+                </a>
+                <a class="btn-float-left"
+                   href="{{ path('user_remove_post', {'id': post.id, 'postTitle': post.title, 'login': user.login}) }}"
+                   title="Usuń wpis" data-toggle="tooltip" data-placement="bottom">
+                    <span class="glyphicon glyphicon-trash"></span> Usuń
+                </a>
+            {% endif %}
             {# TODO: rating #}
-            <hr>
+            <hr style="margin-top: 40px;">
 
             <div class="post-content">
                 {{ post.description | raw }}

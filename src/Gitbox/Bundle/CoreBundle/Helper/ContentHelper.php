@@ -34,7 +34,7 @@ abstract class ContentHelper extends EntityHelper implements CRUDHelper {
     }
 
     /**
-     * @param mixed $entity typeof [UserAccount | integer]
+     * @param mixed $entity
      * @return Content
      * @throws Exception
      */
@@ -64,13 +64,21 @@ abstract class ContentHelper extends EntityHelper implements CRUDHelper {
     }
 
     /**
-     * @param $content Content
+     * @param mixed $content
      * @throws Exception
      */
     public function remove($content) {
         if ($content instanceof Content) {
             $this->instance()->remove($content);
             $this->instance()->flush();
+        } else if (is_int($content)) {
+            $queryBuilder = $this->instance()->createQueryBuilder();
+            $queryBuilder
+                ->delete('GitboxCoreBundle:Content', 'c')
+                ->where('c.id = :id')
+                ->setParameter('id', $content)
+                ->getQuery()
+                ->execute();
         } else {
             throw new Exception('Niepoprawny typ parametru.');
         }

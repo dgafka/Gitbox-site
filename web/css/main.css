@@ -181,8 +181,8 @@ a.badge-button:focus {
     height: 50px;
 }
 
-.btn-need-some-place {
-    margin: 10px 0px;
+.btn-need-some-space {
+    margin: 10px 0px 20px 0px;
 }
 
 .collapse-slider-switch {
@@ -272,6 +272,11 @@ a.badge-button:focus {
     }
 }
 /* ------------------------------------- */
+.alert-message {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
 .flash-messages {
   display: block;
 }

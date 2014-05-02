@@ -4,7 +4,20 @@
 
 {% block content_inner %}
 <div class="row">
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="alert alert-success alert-dismissable alert-message">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            {{ flashMessage | raw }}
+        </div>
+    {% endfor %}
+
     <div class="col-lg-8 main-content">
+        {% if hasAccess == true %}
+            <a href="{{ url('user_new_post', {'login' : user.login}) }}"
+               class="btn btn-primary btn-need-some-space" style="margin-bottom: 20px;">
+                <span class="glyphicon glyphicon-file"></span> Dodaj nowy wpis
+            </a>
+        {% endif %}
 
         {# POSTS #}
         {% for post in posts %}
@@ -13,8 +26,20 @@
                     <h1>{{ post.title }}</h1>
                     <p><span class="glyphicon glyphicon-time"></span> <b>Utworzono</b> {{ post.createDate | date("D j/m/Y H:i:s") }}</p>
                     <p><span class="glyphicon glyphicon-time"></span> <b>Ostatnio edytowano</b> {{ post.lastModificationDate | date("D j/m/Y H:i:s") }}</p>
+                    {% if hasAccess == true %}
+                        <a class="btn-float-left"
+                           href="{{ path('user_edit_post', {'login': user.login, 'id': post.id, 'calledBy': 'showAction'}) }}"
+                           title="Edytuj wpis" data-toggle="tooltip" data-placement="bottom">
+                            <span class="glyphicon glyphicon-pencil"></span> Edytuj
+                        </a>
+                        <a class="btn-float-left"
+                           href="{{ path('user_remove_post', {'id': post.id, 'postTitle': post.title, 'login': user.login}) }}"
+                           title="Usuń wpis" data-toggle="tooltip" data-placement="bottom">
+                            <span class="glyphicon glyphicon-trash"></span> Usuń
+                        </a>
+                    {% endif %}
                     {# TODO: rating #}
-                    <hr>
+                    <hr style="margin-top: 40px;">
 
                     <div class="post-content">
                         {{ post.description | raw }}
@@ -37,12 +62,23 @@
                 <h1>To jest przykładowy wpis.</h1>
                 <p><span class="glyphicon glyphicon-time"></span> <b>Utworzono</b> {{ "now"|date("D j/m/Y H:i:s") }}</p> {# date formats: D j/m/Y H:i:s || D j, F Y - H:i:s #}
                 <p><span class="glyphicon glyphicon-time"></span> <b>Ostatnio edytowano</b> {{ "now"|date("D j/m/Y H:i:s") }}</p>
+                <a class="btn-float-left"
+                   href="#"
+                   title="Edytuj wpis" data-toggle="tooltip" data-placement="bottom">
+                    <span class="glyphicon glyphicon-pencil"></span> Edytuj
+                </a>
+                <a class="btn-float-left"
+                   href="#"
+                   title="Usuń wpis" data-toggle="tooltip" data-placement="bottom">
+                    <span class="glyphicon glyphicon-trash"></span> Usuń
+                </a>
                 {# TODO: rating dummy #}
-                <hr>
+                <hr style="margin-top: 40px;">
 
                 <p class="lead">Może warto by coś napisać?</p>
-                <p>Jeśli chcesz dodać nowy wpis, przejdź na swój profil.</p>
-                <p>Następnie przejdź do zakładki `Moduły` i wybierz `Dodaj nowy wpis`.</p>
+                <p>Jeśli chcesz dodać nowy wpis, przejdź do formularza, w którym dodasz nowy wpis.</p>
+                <p>Zrobisz to poprzez kliknięcie przycisku `Dodaj nowy wpis`, który znajduje się nad tym postem.</p>
+                <p>Możesz także dodawać posty z poziomu swojego profilu, w zakładce `Moduły`.</p>
                 <p class="lead">Powodzenia! :-)</p>
 
                 <div class="comments-link-container" title="Skomentuj „To jest przykładowy wpis.”">

@@ -28,7 +28,7 @@ class BlogPostType extends AbstractType {
             ))
 
             ->add('save', 'submit', array(
-                'label' => 'Dodaj wpis',
+                'label' => 'OK',
                 'attr' => array (
                     'class' => 'btn btn-primary btn-stretched'
                 )

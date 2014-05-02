@@ -1,4 +1,5 @@
 .post-in-the-box {
+    position: relative;
     padding: 10px;
 }
 
@@ -7,6 +8,16 @@
     border: 2px solid lightskyblue;
     border-radius: 8px;
     padding: 8px;
+}
+
+.btn-float-left {
+    float: left;
+    margin-left: 5px;
+    color: lightgray;
+}
+
+.post-in-the-box:hover > .btn-float-left {
+    color: dimgray;
 }
 
 .divider {

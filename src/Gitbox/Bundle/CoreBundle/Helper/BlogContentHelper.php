@@ -31,18 +31,19 @@ class BlogContentHelper extends ContentHelper {
             throw new Exception("Nie zainicjalizowano instancji.");
         }
 
+        $userId = $this->instanceCache()->getUserIdByLogin($userLogin);
+        $moduleId = $this->instanceCache()->getModuleIdByName($this->module);
+
         $queryBuilder = $this->instance()->createQueryBuilder();
 
         $queryBuilder
             ->select('c')
             ->from('GitboxCoreBundle:Content', 'c')
-            ->innerJoin('GitboxCoreBundle:UserAccount', 'ua', JOIN::WITH, 'c.idUser = ua.id')
-            ->innerJoin('c.idMenu', 'menu')
-            ->innerJoin('menu.idModule', 'm')
-            ->where('ua.login = :login AND m.name = :module')
+            ->innerJoin('c.idMenu', 'm') // automaticaly join keys, upon relation
+            ->where('c.idUser = :user_id AND m.idModule = :module_id')
             ->setParameters(array(
-                'login' => $userLogin,
-                'module' => $this->module
+                'user_id' => $userId,
+                'module_id' => $moduleId
             ));
 
         try {
@@ -67,20 +68,21 @@ class BlogContentHelper extends ContentHelper {
             throw new Exception("Nie zainicjalizowano instancji.");
         }
 
+        $userId = $this->instanceCache()->getUserIdByLogin($userLogin);
+        $moduleId = $this->instanceCache()->getModuleIdByName($this->module);
+
         $queryBuilder = $this->instance()->createQueryBuilder();
 
         $queryBuilder
             ->select('c')
             ->from('GitboxCoreBundle:Content', 'c')
-            ->innerJoin('GitboxCoreBundle:UserAccount', 'ua', JOIN::WITH, 'c.idUser = ua.id')
-            ->innerJoin('c.idMenu', 'menu')
-            ->innerJoin('menu.idModule', 'm')
-            ->innerJoin('c.idCategory', 'cat')
-            ->where('ua.login = :login AND m.name = :module AND cat.name = :category')
+            ->innerJoin('c.idMenu', 'm') // automaticaly join keys, upon relation
+            ->innerJoin('c.idCategory', 'cat') // same here
+            ->where('c.idUser = :user_id AND m.idModule = :module_id AND cat.name = :category_name')
             ->setParameters(array(
-                'login' => $userLogin,
-                'module' => $this->module,
-                'category' => $categoryName
+                'user_id' => $userId,
+                'module_id' => $moduleId,
+                'category_name' => $categoryName
             ));
 
         try {
@@ -105,25 +107,22 @@ class BlogContentHelper extends ContentHelper {
             throw new Exception("Nie zainicjalizowano instancji.");
         }
 
+        $userId = $this->instanceCache()->getUserIdByLogin($userLogin);
+        $moduleId = $this->instanceCache()->getModuleIdByName($this->module);
+
         $queryBuilder = $this->instance()->createQueryBuilder();
 
         $queryBuilder
             ->select('c')
             ->from('GitboxCoreBundle:Content', 'c')
-            ->innerJoin('GitboxCoreBundle:UserAccount', 'ua', JOIN::WITH, 'c.idUser = ua.id')
-            ->innerJoin('c.idMenu', 'menu')
-            ->innerJoin('menu.idModule', 'm')
-            ->where('c.id = :id AND ua.login = :login AND m.name = :module')
+            ->innerJoin('c.idMenu', 'm') // automaticaly join keys, upon relation
+            ->where('c.id = :id AND c.idUser = :user_id AND m.idModule = :module_id')
             ->setParameters(array(
                 'id' => $id,
-                'login' => $userLogin,
-                'module' => $this->module
+                'user_id' => $userId,
+                'module_id' => $moduleId
             ));
 
-        try {
-            return $queryBuilder->getQuery()->getSingleResult();
-        } catch (NoResultException $e) {
-            return null;
-        }
+        return $queryBuilder->getQuery()->getOneOrNullResult();
     }
 }

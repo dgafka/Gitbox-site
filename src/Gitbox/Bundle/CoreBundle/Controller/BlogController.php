@@ -6,14 +6,30 @@ namespace Gitbox\Bundle\CoreBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Gitbox\Bundle\CoreBundle\Entity\Content;
 use Gitbox\Bundle\CoreBundle\Entity\Menu;
 use Gitbox\Bundle\CoreBundle\Form\Type\BlogPostType;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 
 class BlogController extends Controller
 {
+
+    /**
+     * Zwraca informację o uprawnieniach użytkownika.
+     *
+     * @param $login
+     * @return mixed
+     */
+    private function getAccess($login) {
+        $permissionsHelper = $this->container->get('permissions_helper');
+
+        $hasAccess = $permissionsHelper->checkPermission($login);
+
+        return $hasAccess;
+    }
 
 	/**
      * Walidacja poprawności URL-a. <br />
@@ -40,15 +56,13 @@ class BlogController extends Controller
     }
 
     /**
-     * Walidacja dostępu do aktywności użytkownika np. dodawanie/edycja wpisu
+     * Walidacja dostępu do aktywności użytkownika np. dodawanie/edycja wpisu.
      *
      * @param $login
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     private function checkAccess($login) {
-        $permissionsHelper = $this->container->get('permissions_helper');
-
-        $hasAccess = $permissionsHelper->checkPermission($login);
+        $hasAccess = $this->getAccess($login);
 
         if (!$hasAccess) {
             $session = $this->container->get('session');
@@ -60,6 +74,8 @@ class BlogController extends Controller
 
             throw $this->createNotFoundException('Nie masz dostępu do tej aktywności.');
         }
+
+        return $hasAccess;
     }
 
     /**
@@ -73,6 +89,8 @@ class BlogController extends Controller
         // walidacja dostępu
         $user = $this->validateURL($login);
 
+        $hasAccess = $this->getAccess($login);
+
         $contentHelper = $this->container->get('blog_content_helper');
 
         // TODO: paginacja
@@ -81,7 +99,8 @@ class BlogController extends Controller
 
         return array(
             'user' => $user,
-            'posts' => $posts
+            'posts' => $posts,
+            'hasAccess' => $hasAccess
         );
     }
 
@@ -117,6 +136,10 @@ class BlogController extends Controller
 
             $contentHelper->insert($postContent);
 
+            // inicjalizacja flash baga
+            $session = $this->container->get('session');
+            $session->getFlashBag()->add('success', 'Dodano wpis <b>' . $postContent->getTitle() . '</b>');
+
             return $this->redirect(
                 $this->generateUrl('user_show_post', array(
                     'login' => $user->getLogin(),
@@ -127,14 +150,15 @@ class BlogController extends Controller
 
         return array(
             'user' => $user,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'btnLabel' => 'Dodaj wpis'
         );
     }
 
     /**
      * Edytowanie wpisu
      *
-     * @Route("/user/{login}/blog/{id}/edit")
+     * @Route("/user/{login}/blog/{id}/edit", name="user_edit_post")
      * @Template()
      */
     public function editAction(Request $request, $login, $id)
@@ -157,6 +181,10 @@ class BlogController extends Controller
 
             $contentHelper->update($postContent);
 
+            // inicjalizacja flash baga
+            $session = $this->container->get('session');
+            $session->getFlashBag()->add('success', 'Pomyślnie zaktualizowano wpis');
+
             return $this->redirect(
                 $this->generateUrl('user_show_post', array(
                     'login' => $user->getLogin(),
@@ -168,7 +196,9 @@ class BlogController extends Controller
         return array(
             'user' => $user,
             'form' => $form->createView(),
-            'post' => $postContent
+            'btnLabel' => 'Edytuj wpis',
+            'post' => $postContent,
+            'calledBy' => $request->get('calledBy')
         );
     }
 
@@ -183,6 +213,8 @@ class BlogController extends Controller
         // walidacja dostępu
         $user = $this->validateURL($login);
 
+        $hasAccess = $this->getAccess($login);
+
         $contentHelper = $this->container->get('blog_content_helper');
 
         $postContent = $contentHelper->getOneContent($id, $login);
@@ -194,7 +226,32 @@ class BlogController extends Controller
 
         return array(
             'user' => $user,
-            'post' => $postContent
+            'post' => $postContent,
+            'hasAccess' => $hasAccess
+        );
+    }
+
+    /**
+     * Usunięcie wpisu o id = {id}
+     *
+     * @Route("/user/{login}/blog/{id}/remove", name="user_remove_post")
+     * @Method({"POST", "GET"})
+     */
+    public function removeAction(Request $request, $id, $login) {
+        // walidacja dostępu
+        $this->checkAccess($login);
+
+        $contentHelper = $this->container->get('blog_content_helper');
+        $contentHelper->remove(intval($id));
+
+        // inicjalizacja flash baga
+        $session = $this->container->get('session');
+        $session->getFlashBag()->add('success', 'Usunięto wpis <b>' . $request->get('postTitle') . '</b>');
+
+        return $this->redirect(
+            $this->generateUrl('user_blog', array(
+                'login' => $login
+            ))
         );
     }
 
