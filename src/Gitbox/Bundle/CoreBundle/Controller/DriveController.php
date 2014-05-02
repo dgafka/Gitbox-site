@@ -9,6 +9,20 @@ use Gitbox\Bundle\CoreBundle\Form\Type\DriveElementType;
 
 class DriveController extends Controller
 {
+
+    /**
+     * @Route("/user/{login}/drive")
+     * @Template()
+     */
+    public function DriveAction($login)
+    {   
+    
+    $form = $this->createForm(new DriveElementType());
+     return array(
+        'form' => $form->createView()
+    );
+    }
+
     /**
      * @Route("/user/{login}/drive/new")
      * @Template()
