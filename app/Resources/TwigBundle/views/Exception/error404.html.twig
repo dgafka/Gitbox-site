@@ -1,5 +1,14 @@
 {% extends "::base.html.twig" %}
+
+{% block title %}Błąd 404!{% endblock %}
+
 {% block content_inner %}
     <h2>Błąd 404!</h2>
-    <p>Niestety, strona o podanym adresie nie istnieje!</p>
+    <h5>
+        {% if exception.message matches '{No route found for ".*"}' %}
+            {{ 'Niestety, strona o podanym adresie nie istnieje!' }}
+        {% else %}
+            {{ exception.message | default('Niestety, strona o podanym adresie nie istnieje!') | raw }}
+        {% endif %}
+    </h5>
 {% endblock %}

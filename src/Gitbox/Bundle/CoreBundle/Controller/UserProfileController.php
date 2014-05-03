@@ -20,6 +20,11 @@ class UserProfileController extends Controller
 	public function indexAction($login) {
 
 		$user = $this->getUserByLogin($login);
+
+        if (!$user) {
+            throw $this->createNotFoundException('Nie znaleziono użytkownika o nazwie <b>' . $login . '</b>.');
+        }
+
 		$userDescription = $user->getIdDescription();
 
 		/**
@@ -73,7 +78,7 @@ class UserProfileController extends Controller
 		if($owner) {
 			return array('login' => $user->getLogin(),'email' => $user->getEmail(), 'isOwner' => $owner);
 		}else {
-			throw $this->createNotFoundException("Przepraszamy, ale nie ma takiej strony, bądź nie masz do niej dostępu");
+            throw $this->createNotFoundException('Zaloguj się, aby mieć dostęp do tej aktywności.');
 		}
     }
 
@@ -115,7 +120,7 @@ class UserProfileController extends Controller
 
 			return array('login' => $user->getLogin(),'email' => $user->getEmail(), 'isOwner' => $owner, 'form' => $form->createView());
 		}else {
-			throw $this->createNotFoundException("Przepraszamy, ale nie ma takiej strony, bądź nie masz do niej dostępu");
+            throw $this->createNotFoundException('Zaloguj się, aby mieć dostęp do tej aktywności.');
 		}
 	}
 
@@ -154,7 +159,7 @@ class UserProfileController extends Controller
 
 			return array('login' => $user->getLogin(),'email' => $user->getEmail(), 'isOwner' => $owner, 'form' => $form->createView());
 		}else {
-			throw $this->createNotFoundException("Przepraszamy, ale nie ma takiej strony, bądź nie masz do niej dostępu");
+            throw $this->createNotFoundException('Zaloguj się, aby mieć dostęp do tej aktywności.');
 		}
 	}
 
