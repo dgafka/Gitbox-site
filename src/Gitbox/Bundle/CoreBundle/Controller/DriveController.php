@@ -25,7 +25,7 @@ class DriveController extends Controller
     private function validateURL($login) {
         $userHelper = $this->container->get('user_helper');
         $moduleHelper = $this->container->get('module_helper');
-        $moduleHelper->init('virtualDrive');
+        $moduleHelper->init('GitDrive');
 
         $user = $userHelper->findByLogin($login);
 
