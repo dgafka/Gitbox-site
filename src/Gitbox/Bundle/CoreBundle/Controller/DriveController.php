@@ -104,4 +104,19 @@ class DriveController extends Controller
 	);
     }
 
+
+
+    /**
+     * @Route("/user/{login}/drive/test")
+     * @Template("GitboxCoreBundle:Drive:Drive.html.twig")
+     */
+    public function DriveFormTestAction($login)
+    {
+
+        $form = $this->createForm(new DriveElementType());
+        return array(
+            'form' => $form->createView()
+        );
+    }
+
 }
