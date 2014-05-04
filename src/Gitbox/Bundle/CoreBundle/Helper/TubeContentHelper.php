@@ -44,11 +44,10 @@ class TubeContentHelper extends ContentHelper {
 		    ->innerJoin('GitboxCoreBundle:Menu', 'm', 'WITH','m.id = c.idMenu')
 		    ->where('m.idUser = :userId')
 		    ->andWhere('m.idModule = :moduleId')
-	        ->andWhere('m.status = :status')
+
 		    ->setParameters(array(
 			   'userId'     => $userId,
-			   'moduleId'   => $gitTubeId,
-			   'status'     => 'A'
+			   'moduleId'   => $gitTubeId
 		    ));
 
         $results = $queryBuilder->getQuery()->getResult();

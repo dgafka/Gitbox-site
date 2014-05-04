@@ -103,6 +103,10 @@ a.badge-button:focus {
     max-width: 500px;
 }
 
+.register-form textarea{
+    width: 100%;
+}
+
 .centered-form {
     margin: 0px auto;
     max-width: 80%;

@@ -3,7 +3,12 @@
 {% block title %}Gitbox | Drive {% endblock %}
 
 {% block content_inner %}
-	<h1>Welcome to the Drive:NewDriveItem page</h1>
+<div class="row home-page-container">
+    <div class="module-logo-outer">
+        <a href="#gitblog-logo">
+            <img id="gitblog-logo" class="module-logo" src="{{ asset('images/logo/GitDrive_logo.png') }}" style="height: 50px;">
+        </a>
+    </div>
     {% include "GitboxCoreBundle:Drive:_form.html.twig" %}
 {% endblock %}
 

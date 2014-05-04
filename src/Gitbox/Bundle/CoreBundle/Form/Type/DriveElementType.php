@@ -17,6 +17,7 @@ class DriveElementType extends AbstractType {
                 ),
                 'required' => true,
                 'max_length' => 50,
+                'label' => "Tytuł",
                 'trim' => true
             ))
 
@@ -24,11 +25,12 @@ class DriveElementType extends AbstractType {
                 'attr' => array (
                     'class'        => 'post-editor',
                 ),
+                'label' => "Opis",
                 'required' => true
             ))
 
             ->add('save', 'submit', array(
-                'label' => 'Dodaj wpis',
+                'label' => 'Dodaj element',
                 'attr' => array (
                     'class' => 'btn btn-primary btn-stretched'
                 )
