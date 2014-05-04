@@ -274,7 +274,7 @@ class UserAccountController extends Controller
 
 		$userAccount = new UserAccount();
 
-		$form = $this->createForm(new UserForgottenPasswordType(), $userAccount);
+		$form = $this->createForm(new UserForgottenPasswordType(), $userAccount, array('csrf_protection' => false));
 
 		$form->handleRequest($request);
 		if($form->isValid()) {
