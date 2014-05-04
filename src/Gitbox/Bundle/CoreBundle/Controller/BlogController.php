@@ -58,6 +58,7 @@ class BlogController extends Controller
      * Walidacja dostępu do aktywności użytkownika np. dodawanie/edycja wpisu.
      *
      * @param $login
+     * @return mixed
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     private function checkAccess($login) {

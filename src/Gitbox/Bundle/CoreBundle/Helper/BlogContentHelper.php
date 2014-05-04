@@ -41,6 +41,7 @@ class BlogContentHelper extends ContentHelper {
             ->from('GitboxCoreBundle:Content', 'c')
             ->innerJoin('c.idMenu', 'm') // automaticaly join keys, upon relation
             ->where('c.idUser = :user_id AND m.idModule = :module_id')
+            ->orderBy('c.createDate', 'DESC')
             ->setParameters(array(
                 'user_id' => $userId,
                 'module_id' => $moduleId
