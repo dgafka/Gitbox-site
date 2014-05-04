@@ -171,7 +171,7 @@ class UserProfileController extends Controller
 		return array('user' => $this->getUserByLogin($login));
 	}
 
-	/**
+	/** Aktywuje modul
 	 * @Route("/user/{login}/{module}/active", name="user_profile_module_active")
 	 */
 	public function activeModule($login, $module) {
