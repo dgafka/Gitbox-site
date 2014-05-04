@@ -37,14 +37,38 @@ class MailerController extends Controller
 	    $mailerHelper->sendMessage();
 
 	    return array("login" => $user->getLogin());
+
     }
 
     /** Odzyskuje hasło użytkownika, poprzez wysłanie maila
      * @Template()
      */
-    public function recoveryPasswordAction()
+    public function recoveryPasswordAction($user, $password)
     {
-	    array('tmp' => 'tmp');
+	    /**
+	     * @var $mailerHelper \Gitbox\Bundle\CoreBundle\Helper\MailerHelper
+	     */
+	    $mailerHelper = $this->get('mailer_helper')
+		    ->createMessage(
+			    "Odzyskiwanie hasła dla Gitbox",
+			    $this->renderView(
+				    'GitboxCoreBundle:Mailer:recoveryPasswordMail.html.twig',
+				    array(
+					    'password' => $password,
+				    )
+			    ),
+			    $user->getEmail()
+		    );
+
+	    $mailerHelper->sendMessage();
+
+	    $information = array();
+	    $information['type']    = 'success';
+	    $information['content'] = 'Email z nowym hasłem został wysłany.';
+
+	    return array('information' => $information);
+
+	    return array();
     }
 
     /** Aktywuje konto poprzez token, który wcześniej był wysłany na maila użytkownika

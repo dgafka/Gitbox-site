@@ -5,6 +5,7 @@ namespace Gitbox\Bundle\CoreBundle\Controller;
 use Doctrine\ORM\EntityNotFoundException;
 use Gitbox\Bundle\CoreBundle\Entity\UserAccount;
 use Gitbox\Bundle\CoreBundle\Entity\UserDescription;
+use Gitbox\Bundle\CoreBundle\Form\Type\UserForgottenPasswordType;
 use Gitbox\Bundle\CoreBundle\Form\Type\UserLoginType;
 use Gitbox\Bundle\CoreBundle\Form\Type\UserRegisterType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -265,8 +266,36 @@ class UserAccountController extends Controller
 	 * @Route("password_recovery", name="user_recover_password_url")
 	 * @Template()
 	 */
-	public function forgottenPasswordAction() {
-		return array();
+	public function forgottenPasswordAction(Request $request) {
+		$session = $this->container->get('session');
+		if(!is_null($session->get('username'))){
+			throw $this->createNotFoundException("Nie możesz odzyskać hasła bedąc zalogowanym");
+		}
+
+		$userAccount = new UserAccount();
+
+		$form = $this->createForm(new UserForgottenPasswordType(), $userAccount);
+
+		$form->handleRequest($request);
+		if($form->isValid()) {
+			$userHelper = $this->container->get('user_helper');
+			$user       = $userHelper->findByEmail($userAccount->getEmail());
+
+			if(!($user instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount)) {
+				$information = array();
+				$information['type']    = 'warning';
+				$information['content'] = 'Nie istnieje taki email w bazie.';
+
+				return array('form' => $form->createView(), 'information' => $information);
+			}
+			$password = uniqid(mt_rand(), true);
+			$user->setPassword(md5($password));
+			$this->getDoctrine()->getManager()->persist($user);
+			$this->getDoctrine()->getManager()->flush();
+
+			return $this->forward('GitboxCoreBundle:Mailer:recoveryPassword', array('user' => $user, 'password' => $password));
+		}
+		return array('form' => $form->createView());
 	}
 
 }
