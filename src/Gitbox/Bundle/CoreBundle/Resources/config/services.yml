@@ -1,10 +1,12 @@
 parameters:
     user_helper.class: Gitbox\Bundle\CoreBundle\Helper\UserAccountHelper
+    user_description.class: Gitbox\Bundle\CoreBundle\Helper\UserDescriptionHelper
     mailer_helper.class: Gitbox\Bundle\CoreBundle\Helper\MailerHelper
     module_helper.class: Gitbox\Bundle\CoreBundle\Helper\ModuleHelper
     blog_content_helper.class: Gitbox\Bundle\CoreBundle\Helper\BlogContentHelper
     tube_content_helper.class: Gitbox\Bundle\CoreBundle\Helper\TubeContentHelper
     permissions_helper.class: Gitbox\Bundle\CoreBundle\Helper\PermissionsHelper
+    rating_helper.class: Gitbox\Bundle\CoreBundle\Helper\RatingHelper
     cache_helper.class: Gitbox\Bundle\CoreBundle\Helper\CacheHelper
     cache_helper.host: localhost
     cache_helper.port: 11211
@@ -12,6 +14,9 @@ parameters:
 services:
     user_helper:
         class:        "%user_helper.class%"
+        arguments:    ["@doctrine.orm.entity_manager", , "@cache_helper"]
+    user_description_helper:
+        class:        "%user_description.class%"
         arguments:    ["@doctrine.orm.entity_manager", , "@cache_helper"]
     mailer_helper:
         class:        "%mailer_helper.class%"
@@ -28,6 +33,9 @@ services:
     permissions_helper:
         class:        "%permissions_helper.class%"
         arguments:    ["@session"]
+    rating_helper:
+        class:        "%rating_helper.class%"
+        arguments:    ["@doctrine.orm.entity_manager", "@cache_helper"]
     cache_helper:
         class:        "%cache_helper.class%"
         arguments:    ["@doctrine.orm.entity_manager", "%cache_helper.host%", "%cache_helper.port%"]

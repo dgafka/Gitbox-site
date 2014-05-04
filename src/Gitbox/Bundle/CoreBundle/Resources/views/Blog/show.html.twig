@@ -2,6 +2,11 @@
 
 {% block title %}{{ parent() }} | „{{ post.title }}”{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/rating-system.css') }}" />
+{% endblock %}
+
 {% block content_inner %}
 <div class="row">
     {% for flashMessage in app.session.flashbag.get('success') %}
@@ -16,8 +21,8 @@
         {# post #}
         <div class="post-in-the-box">
             <h1>{{ post.title }}</h1>
-            <p><span class="glyphicon glyphicon-time"></span> <b>Utworzono</b> {{ post.createDate | date("D j/m/Y H:i:s") }}</p>
-            <p><span class="glyphicon glyphicon-time"></span> <b>Ostatnio edytowano</b> {{ post.lastModificationDate | date("D j/m/Y H:i:s") }}</p>
+            <p><span class="glyphicon glyphicon-time"></span> <b>Utworzono</b> {{ post.createDate | date("D d/m/Y H:i:s") }}</p>
+            <p><span class="glyphicon glyphicon-time"></span> <b>Ostatnio edytowano</b> {{ post.lastModificationDate | date("D d/m/Y H:i:s") }}</p>
             {% if hasAccess == true %}
                 <a class="btn-float-left"
                    href="{{ path('user_edit_post', {'login': user.login, 'id': post.id, 'calledBy': 'showAction'}) }}"
@@ -29,9 +34,32 @@
                    title="Usuń wpis" data-toggle="tooltip" data-placement="bottom">
                     <span class="glyphicon glyphicon-trash"></span> Usuń
                 </a>
+                <hr style="margin-top: 40px;">
+            {% else %}
+                <div class="ratings">
+                    <div class="rating-up">
+                        {% if app.request.cookies.get('vote_' ~ post.id) is not null %}
+                            <div class="score-up">{{ post.voteUp }}</div>
+                        {% else %}
+                            <div class="score-up" style="display: none;">{# wypełniane po głosowaniu #}</div>
+                            <a class="btn btn-sm btn-vote-up" href="{{ path('user_content_vote', {'module': 'blog', 'type': 'up', 'login': user.login, 'id': post.id}) }}">
+                                <span class="glyphicon glyphicon-thumbs-up"></span>
+                            </a>
+                        {% endif %}
+                    </div>
+                    <div class="rating-down">
+                        {% if app.request.cookies.get('vote_' ~ post.id) is not null %}
+                            <div class="score-down">{{ post.voteDown }}</div>
+                        {% else %}
+                            <div class="score-down" style="display: none;">{# wypełniane po głosowaniu #}</div>
+                            <a class="btn btn-sm btn-vote-down" href="{{ path('user_content_vote', {'module': 'blog', 'type': 'down', 'login': user.login, 'id': post.id}) }}">
+                                <span class="glyphicon glyphicon-thumbs-down"></span>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <hr>
             {% endif %}
-            {# TODO: rating #}
-            <hr style="margin-top: 40px;">
 
             <div class="post-content">
                 {{ post.description | raw }}
@@ -77,4 +105,9 @@
 <hr>
 
 </div>
+{% endblock %}
+
+{% block lazy_javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/ratingSystem.js') }}"></script>
 {% endblock %}

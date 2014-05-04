@@ -10,6 +10,7 @@
     <field name="hit" type="integer" column="hit" nullable="false"/>
     <field name="token" type="string" column="token" length="32" nullable="true"/>
     <field name="content" type="text" column="content" nullable="true"/>
-    <field name="totalRating" type="integer" column="total_rating" nullable="false"/>
+    <field name="ratingScore" type="integer" column="rating_score" nullable="false"/>
+    <field name="ratingQuantity" type="integer" column="rating_quantity" nullable="false"/>
   </entity>
 </doctrine-mapping>

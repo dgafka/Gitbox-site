@@ -39,7 +39,7 @@ abstract class ContentHelper extends EntityHelper implements CRUDHelper {
      * @throws Exception
      */
     public function find($entity) {
-        $repository = $this->instance()->getRepository('GitboxCoreBundle:UserAccount');
+        $repository = $this->instance()->getRepository('GitboxCoreBundle:Content');
 
         if ($entity instanceof Content) {
             $content = $repository->find($entity->getId());

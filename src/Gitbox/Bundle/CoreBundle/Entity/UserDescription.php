@@ -67,9 +67,16 @@ class UserDescription
     /**
      * @var integer
      *
-     * @ORM\Column(name="total_rating", type="integer", nullable=false)
+     * @ORM\Column(name="rating_score", type="integer", nullable=false)
      */
-    private $totalRating = '0';
+    private $ratingScore = '0';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="rating_quantity", type="integer", nullable=false)
+     */
+    private $ratingQuantity = '0';
 
 
 
@@ -212,26 +219,49 @@ class UserDescription
     }
 
     /**
-     * Set totalRating
+     * Set ratingScore
      *
-     * @param integer $totalRating
+     * @param integer $ratingScore
      * @return UserDescription
      */
-    public function setTotalRating($totalRating)
+    public function setRatingScore($ratingScore)
     {
-        $this->totalRating = $totalRating;
+        $this->ratingScore = $ratingScore;
 
         return $this;
     }
 
     /**
-     * Get totalRating
+     * Get ratingScore
      *
      * @return integer 
      */
-    public function getTotalRating()
+    public function getRatingScore()
     {
-        return $this->totalRating;
+        return $this->ratingScore;
+    }
+
+    /**
+     * Set ratingQuantity
+     *
+     * @param integer $ratingQuantity
+     * @return UserDescription
+     */
+    public function setRatingQuantity($ratingQuantity)
+    {
+        $this->ratingQuantity = $ratingQuantity;
+
+        return $this;
+    }
+
+    /**
+     * Get ratingQuantity
+     *
+     * @return integer 
+     */
+    public function getRatingQuantity()
+    {
+        return $this->ratingQuantity;
     }
 
     /**

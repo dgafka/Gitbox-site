@@ -1,7 +1,9 @@
 imports:
     - { resource: config.yml }
 
-#framework:
+framework:
+    session:
+        cookie_domain:  localhost # TODO: zmienić na prawidłową domenę
 #    validation:
 #        cache: apc
 

@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Gitbox\Bundle\CoreBundle\Entity\Content;
 use Gitbox\Bundle\CoreBundle\Entity\Menu;
 use Gitbox\Bundle\CoreBundle\Form\Type\BlogPostType;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 
 class BlogController extends Controller
@@ -235,18 +234,21 @@ class BlogController extends Controller
      * Usunięcie wpisu o id = {id}
      *
      * @Route("/user/{login}/blog/{id}/remove", name="user_remove_post")
-     * @Method({"POST", "GET"})
+     * @Method({"GET"})
      */
-    public function removeAction(Request $request, $id, $login) {
+    public function removeAction($id, $login) {
         // walidacja dostępu
         $this->checkAccess($login);
 
         $contentHelper = $this->container->get('blog_content_helper');
+
+        $postTitle = $contentHelper->find(intval($id))->getTitle();
+
         $contentHelper->remove(intval($id));
 
         // inicjalizacja flash baga
         $session = $this->container->get('session');
-        $session->getFlashBag()->add('success', 'Usunięto wpis <b>' . $request->get('postTitle') . '</b>');
+        $session->getFlashBag()->add('success', 'Usunięto wpis <b>' . $postTitle . '</b>');
 
         return $this->redirect(
             $this->generateUrl('user_blog', array(
