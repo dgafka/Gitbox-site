@@ -43,7 +43,7 @@ class RatingController extends Controller
 
         // ustawienie `ciasteczka` z wartością id content-u
         if ($result['success'] == true) {
-            $cookie = new Cookie('vote_' . $id, $type, time() + 3600 * 24 * 365);
+            $cookie = new Cookie('vote_' . $id, $type, time() + 3600 * 24 * 30);
             $response->headers->setCookie($cookie);
             $response->sendHeaders(); // wyślij same nagłówki
         }

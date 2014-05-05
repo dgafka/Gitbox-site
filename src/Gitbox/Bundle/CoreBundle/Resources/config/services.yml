@@ -3,7 +3,7 @@ parameters:
     user_description.class: Gitbox\Bundle\CoreBundle\Helper\UserDescriptionHelper
     mailer_helper.class: Gitbox\Bundle\CoreBundle\Helper\MailerHelper
     module_helper.class: Gitbox\Bundle\CoreBundle\Helper\ModuleHelper
-    blog_content_helper.class: Gitbox\Bundle\CoreBundle\Helper\BlogContentHelper
+#    blog_content_helper.class: Gitbox\Bundle\CoreBundle\Helper\BlogContentHelper
     tube_content_helper.class: Gitbox\Bundle\CoreBundle\Helper\TubeContentHelper
     permissions_helper.class: Gitbox\Bundle\CoreBundle\Helper\PermissionsHelper
     rating_helper.class: Gitbox\Bundle\CoreBundle\Helper\RatingHelper
@@ -14,19 +14,21 @@ parameters:
 services:
     user_helper:
         class:        "%user_helper.class%"
-        arguments:    ["@doctrine.orm.entity_manager", , "@cache_helper"]
+        arguments:    ["@doctrine.orm.entity_manager", "@cache_helper"]
     user_description_helper:
         class:        "%user_description.class%"
-        arguments:    ["@doctrine.orm.entity_manager", , "@cache_helper"]
+        arguments:    ["@doctrine.orm.entity_manager", "@cache_helper"]
     mailer_helper:
         class:        "%mailer_helper.class%"
         arguments:    ["@mailer"]
     module_helper:
         class:        "%module_helper.class%"
-        arguments:    ["@doctrine.orm.entity_manager", , "@cache_helper"]
+        arguments:    ["@doctrine.orm.entity_manager", "@cache_helper"]
     blog_content_helper:
-        class:        "%blog_content_helper.class%"
-        arguments:    ["@doctrine.orm.entity_manager", , "@cache_helper"]
+        class:        Gitbox\Bundle\CoreBundle\Helper\BlogContentHelper
+        arguments:    ["@doctrine.orm.entity_manager", "@cache_helper"]
+        tags:
+            - { name: knp_paginator.injectable, paginator: knp_paginator }
     tube_content_helper:
         class:        "%tube_content_helper.class%"
         arguments:    ["@doctrine.orm.entity_manager", "@cache_helper"]

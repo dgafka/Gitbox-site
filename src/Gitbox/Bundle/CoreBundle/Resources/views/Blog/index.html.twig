@@ -17,12 +17,18 @@
     {% endfor %}
 
     <div class="col-lg-8 main-content">
+        {# ADD BUTTON #}
         {% if hasAccess == true %}
             <a href="{{ url('user_new_post', {'login' : user.login}) }}"
                class="btn btn-primary btn-need-some-space" style="margin-bottom: 20px;">
                 <span class="glyphicon glyphicon-file"></span> Dodaj nowy wpis
             </a>
         {% endif %}
+
+        {# PAGINACJA #}
+        <div class="pagination-creation">
+            {{ knp_pagination_render(posts) }}
+        </div>
 
         {# POSTS #}
         {% for post in posts %}

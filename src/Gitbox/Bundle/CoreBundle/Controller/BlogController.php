@@ -94,12 +94,12 @@ class BlogController extends Controller
 
         $contentHelper = $this->container->get('blog_content_helper');
 
-        // TODO: paginacja
-        // pobranie wszystkich wpisów z bazy
-        $posts = $contentHelper->getContents($login);
-
-        // pobieranie żądania
+        // pobieranie żądania // TODO: pobranie parametrów GET `żądania` [wyszukiwarka]
         $request = $this->get('request');
+
+        // pobranie wszystkich wpisów z bazy
+        $posts = $contentHelper->getContents($login, 5, $request);
+
         // inicjalizacja odpowiedzi serwera
         $response = new Response();
 

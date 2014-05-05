@@ -1,7 +1,8 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
-    - { resource: "@GitboxCoreBundle/Resources/config/services.yml" }
+
+    - { resource: "@GitboxCoreBundle/Resources/config/config.yml" }
 framework:
     #esi:             ~
     #translator:      { fallback: "%locale%" }
