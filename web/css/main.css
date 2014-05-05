@@ -1,6 +1,6 @@
 body {
     background-color: lightblue;
-    color: red;
+    color: #333333;
 }
 
 
@@ -318,3 +318,9 @@ a.badge-button:focus {
     font-size: 15px;
 }
 
+.drive-show-description{
+    background-color: #EEE;
+    margin: 1px;
+    padding: 8px;
+    border-radius: 4px;
+}
