@@ -87,7 +87,6 @@ class BlogContentHelper extends ContentHelper implements PaginatorAwareInterface
         if ($perPage > 0 && $request instanceof Request) {
             $query = $queryBuilder->getQuery();
 
-//            $this->paginator = $this->get('knp_paginator'); //TODO: add paginator dependency [PaginatorHelper]
             $posts = $this->paginator->paginate($query, $request->query->get('page', 1), $perPage);
 
             return $posts;
@@ -138,8 +137,7 @@ class BlogContentHelper extends ContentHelper implements PaginatorAwareInterface
         if ($perPage > 0 && $request instanceof Request) {
             $query = $queryBuilder->getQuery();
 
-            $paginator  = $this->get('knp_paginator'); //TODO: add paginator dependency [PaginatorHelper]
-            $posts = $paginator->paginate($query, $request->query->get('page', 1), $perPage);
+            $posts = $this->paginator->paginate($query, $request->query->get('page', 1), $perPage);
 
             return $posts;
         } else {
