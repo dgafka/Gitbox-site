@@ -98,6 +98,26 @@ abstract class ContentHelper extends EntityHelper implements CRUDHelper {
     }
 
     /**
+     * @param array $entities
+     * @throws \Symfony\Component\Config\Definition\Exception\Exception
+     */
+    public function updateArray($entities) {
+        if (is_array($entities) && !empty($entities)) {
+            for ($i = 0; $i < count($entities); $i++) {
+                if ($entities[$i] instanceof Content) {
+                    $this->instance()->persist($entities[$i]);
+                } else {
+                    throw new Exception('Niepoprawny typ parametru przy indeksie [' . $i . '].');
+                }
+            }
+
+            $this->instance()->flush($entities);
+        } else {
+            throw new Exception('Niepoprawny typ parametru.');
+        }
+    }
+
+    /**
      * @param $content Content
      * @throws Exception
      */
@@ -107,38 +127,6 @@ abstract class ContentHelper extends EntityHelper implements CRUDHelper {
             $this->instance()->flush();
         } else {
             throw new Exception('Niepoprawny typ parametru.');
-        }
-    }
-
-    /**
-     * @param int $id
-     */
-    public function updateOneHits($id) {
-        if (is_int($id)) {
-            $queryBuilder = $this->instance()->createQueryBuilder();
-
-            $queryBuilder
-                ->update('GitboxCoreBundle:Content', 'c')
-                ->set('c.hit', 'c.hit + 1')
-                ->where('c.id = :id')
-                ->setParameter('id', $id)
-                ->getQuery()->execute();
-        }
-    }
-
-    /**
-     * @param array $ids
-     */
-    public function updateHits($ids) {
-        if (!empty($ids)) {
-            $queryBuilder = $this->instance()->createQueryBuilder();
-
-            $queryBuilder
-                ->update('GitboxCoreBundle:Content', 'c')
-                ->set('c.hit', 'c.hit + 1')
-                ->where('c.id IN (:ids)')
-                ->setParameter('ids', $ids)
-                ->getQuery()->execute();
         }
     }
 }

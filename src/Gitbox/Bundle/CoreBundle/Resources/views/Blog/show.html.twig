@@ -23,6 +23,7 @@
             <h1>{{ post.title }}</h1>
             <p><span class="glyphicon glyphicon-time"></span> <b>Utworzono</b> {{ post.createDate | date("D d/m/Y H:i:s") }}</p>
             <p><span class="glyphicon glyphicon-time"></span> <b>Ostatnio edytowano</b> {{ post.lastModificationDate | date("D d/m/Y H:i:s") }}</p>
+            <p><span class="glyphicon glyphicon-eye-open"></span> <b>Wyświetleń</b> <span class="badge">{{ post.hit }}</span></p>
             {% if hasAccess == true %}
                 <a class="btn-float-left"
                    href="{{ path('user_edit_post', {'login': user.login, 'id': post.id, 'calledBy': 'showAction'}) }}"

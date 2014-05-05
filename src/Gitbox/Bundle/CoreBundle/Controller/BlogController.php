@@ -108,14 +108,15 @@ class BlogController extends Controller
             $hitCookie = $request->cookies->get('hit_' . $posts[$i]->getId());
 
             if (!isset($hitCookie)) {
-                $postsToHit[] = $posts[$i]->getId();
+                $postsToUpdate[] =& $posts[$i];
+                $posts[$i]->setHit($posts[$i]->getHit() + 1);
 
-                $cookie = new Cookie('hit_' . $posts[$i]->getId(), true, time() + 3600 * 24);
+                $cookie = new Cookie('hit_' . $posts[$i]->getId(), true, time() + 3600 * 3);
                 $response->headers->setCookie($cookie);
             }
         }
-        if (isset($postsToHit)) {
-            $contentHelper->updateHits($postsToHit);
+        if (isset($postsToUpdate)) {
+            $contentHelper->updateArray($postsToUpdate);
         }
 
         $response->send();
@@ -255,10 +256,11 @@ class BlogController extends Controller
         $hitCookie = $request->cookies->get('hit_' . $postContent->getId());
 
         if (!isset($hitCookie)) {
-            $cookie = new Cookie('hit_' . $postContent->getId(), true, time() + 3600 * 24);
-            $response->headers->setCookie($cookie);
+            $postContent->setHit($postContent->getHit() + 1);
+            $contentHelper->update($postContent);
 
-            $contentHelper->updateOneHits($postContent->getId());
+            $cookie = new Cookie('hit_' . $postContent->getId(), true, time() + 3600 * 3);
+            $response->headers->setCookie($cookie);
         }
 
         $response->send();
