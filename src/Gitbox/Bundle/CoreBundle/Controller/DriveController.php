@@ -80,9 +80,9 @@ class DriveController extends Controller
 
         // walidacja dostępu
         $user = $this->validateURL($login);
-    $form = $this->createForm(new DriveElementType());
+
      return array(
-        'form' => $form->createView()
+        'user' => $user
     );
     }
 
@@ -120,10 +120,10 @@ class DriveController extends Controller
     }
 
     /**
-     * @Route("/user/{login}/drive/show")
+     * @Route("/user/{login}/drive/{element}")
      * @Template()
      */
-    public function DriveShowAction($login)
+    public function DriveShowAction($login, $element)
     {
 
         $form = $this->createForm(new DriveElementType());
