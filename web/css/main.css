@@ -1,7 +1,8 @@
 body {
     background-color: lightblue;
-    color: #333333;
+    color: red;
 }
+
 
 .main-window {
     /*height: 500px;*/
@@ -316,3 +317,4 @@ a.badge-button:focus {
 .list-group.blog a.list-group-item .list-group-item-heading{
     font-size: 15px;
 }
+
