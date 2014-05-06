@@ -2,6 +2,11 @@
 
 {% block title %}Gitbox | Drive {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/drive.css') }}" />
+{% endblock %}
+
 {% block content_inner %}
     <h2>Tytuł</h2>
     <div class="drive-show-description">

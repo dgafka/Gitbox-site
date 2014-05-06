@@ -103,9 +103,7 @@ a.badge-button:focus {
     max-width: 500px;
 }
 
-.register-form textarea{
-    width: 100%;
-}
+
 
 .centered-form {
     margin: 0px auto;
@@ -317,9 +315,3 @@ a.badge-button:focus {
     font-size: 15px;
 }
 
-.drive-show-description{
-    background-color: #EEE;
-    margin: 1px;
-    padding: 8px;
-    border-radius: 4px;
-}
