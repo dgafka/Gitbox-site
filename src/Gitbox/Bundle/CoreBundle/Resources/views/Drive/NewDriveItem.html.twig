@@ -2,8 +2,12 @@
 
 {% block title %}Gitbox | Drive {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/drive.css') }}" />
+{% endblock %}
+
 {% block content_inner %}
-	<h1>Welcome to the Drive:NewDriveItem page</h1>
     {% include "GitboxCoreBundle:Drive:_form.html.twig" %}
 {% endblock %}
 

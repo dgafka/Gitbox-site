@@ -38,6 +38,10 @@
             <td>11-04-2014</td>
         </tr>
     </table>
+    <a href="{{ url('user_new_post', {'login' : user.login}) }}"
+       class="btn btn-primary btn-need-some-space" style="margin-bottom: 20px;">
+        <span class="glyphicon glyphicon-file"></span> Dodaj element
+    </a>
     </div>
         </div>
     {% include "GitboxCoreBundle:UserSidebar:render.html.twig" %}

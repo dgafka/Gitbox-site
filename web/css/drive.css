@@ -8,3 +8,8 @@
 .register-form textarea{
     width: 100%;
 }
+
+#driveElement_save{
+    width: 200px;
+    max-width: 200px;
+}
