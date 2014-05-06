@@ -24,6 +24,7 @@ class RatingHelper extends EntityHelper {
      * @param $contentId
      * @param $type
      * @param $userId
+     *
      * @return array
      */
     public function doVote($contentId, $type, $userId) {
@@ -83,6 +84,7 @@ class RatingHelper extends EntityHelper {
 
     /**
      * @param $contentId
+     *
      * @return mixed
      */
     private function getInitialData($contentId) {

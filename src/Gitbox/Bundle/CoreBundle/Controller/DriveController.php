@@ -80,9 +80,9 @@ class DriveController extends Controller
 
         // walidacja dostępu
         $user = $this->validateURL($login);
-    $form = $this->createForm(new DriveElementType());
+
      return array(
-        'form' => $form->createView()
+        'user' => $user
     );
     }
 
@@ -100,6 +100,7 @@ class DriveController extends Controller
         $postContent = new Content();
 	$form = $this->createForm(new DriveElementType());
 	 return array(
+         'user' => $user,
 		'form' => $form->createView()
 	);
     }
@@ -120,15 +121,35 @@ class DriveController extends Controller
     }
 
     /**
-     * @Route("/user/{login}/drive/show")
+     * @Route("/user/{login}/drive/{element}")
      * @Template()
      */
-    public function DriveShowAction($login)
+    public function DriveShowAction($login, $element)
     {
 
+        $userHelper = $this->container->get('user_helper');
+        $user = $userHelper->findByLogin($login);
         $form = $this->createForm(new DriveElementType());
         return array(
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'user' => $user
+        );
+    }
+
+    /**
+     * @Route("/edit/drive/{element}")
+     * @Template()
+     */
+    public function DriveEditAction($element)
+    {
+
+        $userHelper = $this->container->get('user_helper');
+        $user = $userHelper->findByLogin("kakaka");
+        $form = $this->createForm(new DriveElementType());
+        return array(
+            'form' => $form->createView(),
+            'user' => $user
+
         );
     }
 

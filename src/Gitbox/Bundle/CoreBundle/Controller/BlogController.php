@@ -94,9 +94,32 @@ class BlogController extends Controller
 
         $contentHelper = $this->container->get('blog_content_helper');
 
-        // TODO: paginacja
+        // pobieranie żądania // TODO: pobranie parametrów GET `żądania` [wyszukiwarka]
+        $request = $this->get('request');
+
         // pobranie wszystkich wpisów z bazy
-        $posts = $contentHelper->getContents($login);
+        $posts = $contentHelper->getContents($login, 5, $request);
+
+        // inicjalizacja odpowiedzi serwera
+        $response = new Response();
+
+        // aktualizacja licznika odwiedzin na podstawie `ciasteczek`
+        for ($i = 0; $i < count($posts); $i++) {
+            $hitCookie = $request->cookies->get('hit_' . $posts[$i]->getId());
+
+            if (!isset($hitCookie)) {
+                $postsToUpdate[] =& $posts[$i];
+                $posts[$i]->setHit($posts[$i]->getHit() + 1);
+
+                $cookie = new Cookie('hit_' . $posts[$i]->getId(), true, time() + 3600 * 3);
+                $response->headers->setCookie($cookie);
+            }
+        }
+        if (isset($postsToUpdate)) {
+            $contentHelper->updateArray($postsToUpdate);
+        }
+
+        $response->send();
 
         // pobieranie żądania
         $request = $this->get('request');
@@ -255,10 +278,12 @@ class BlogController extends Controller
         $hitCookie = $request->cookies->get('hit_' . $postContent->getId());
 
         if (!isset($hitCookie)) {
+
             $cookie = new Cookie('hit_' . $postContent->getId(), true, time() + 3600 * 24);
             $response->headers->setCookie($cookie);
 
             $contentHelper->updateOneHits($postContent->getId());
+
         }
 
         $response->send();

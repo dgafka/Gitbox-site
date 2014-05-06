@@ -1,15 +1,45 @@
-{% extends "::base.html.twig" %}
+{% extends "GitboxCoreBundle:Drive:DriveBase.html.twig" %}
 
-{% block title %}Gitbox | Drive {% endblock %}
 
 {% block content_inner %}
+<div class="row">
+    <div class="col-lg-8 main-content">
 <div class="row home-page-container">
     <div class="module-logo-outer">
         <a href="#gitblog-logo">
             <img id="gitblog-logo" class="module-logo" src="{{ asset('images/logo/GitDrive_logo.png') }}" style="height: 50px;">
         </a>
     </div>
-    {% include "GitboxCoreBundle:Drive:_form.html.twig" %}
+    <table class="table table-striped">
+        <tr>
+            <th>Tytuł</th>
+            <th>ilość plików</th>
+            <th>Data utworzenia</th>
+        </tr>
+        <tr>
+            <td>Item 1</td>
+            <td>12</td>
+            <td>21-02-2014</td>
+        </tr>
+        <tr>
+            <td>Item 2</td>
+            <td>2</td>
+            <td>23-02-2014</td>
+        </tr>
+        <tr>
+            <td>Item 3</td>
+            <td>1</td>
+            <td>11-04-2014</td>
+        </tr>
+    </table>
+    <a href="{{ url('user_new_post', {'login' : user.login}) }}"
+       class="btn btn-primary btn-need-some-space" style="margin-bottom: 20px;">
+        <span class="glyphicon glyphicon-file"></span> Dodaj element
+    </a>
+    </div>
+        </div>
+    {% include "GitboxCoreBundle:UserSidebar:render.html.twig" %}
+    </div>
 {% endblock %}
 
 

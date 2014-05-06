@@ -20,17 +20,18 @@
         <a href="{{ path('user_blog', {'login': user.login}) }}" class="btn btn-info btn-need-some-space"><i class="glyphicon glyphicon-arrow-left"></i> Powrót do wpisów</a>
         {# post #}
         <div class="post-in-the-box">
-            <h1>{{ post.title }}</h1>
+            <h1 class="post-title">{{ post.title }}</h1>
             <p><span class="glyphicon glyphicon-time"></span> <b>Utworzono</b> {{ post.createDate | date("D d/m/Y H:i:s") }}</p>
             <p><span class="glyphicon glyphicon-time"></span> <b>Ostatnio edytowano</b> {{ post.lastModificationDate | date("D d/m/Y H:i:s") }}</p>
+            <p><span class="glyphicon glyphicon-eye-open"></span> <b>Wyświetleń</b> <span class="badge">{{ post.hit }}</span></p>
             {% if hasAccess == true %}
                 <a class="btn-float-left"
                    href="{{ path('user_edit_post', {'login': user.login, 'id': post.id, 'calledBy': 'showAction'}) }}"
                    title="Edytuj wpis" data-toggle="tooltip" data-placement="bottom">
                     <span class="glyphicon glyphicon-pencil"></span> Edytuj
                 </a>
-                <a class="btn-float-left"
-                   href="{{ path('user_remove_post', {'id': post.id, 'postTitle': post.title, 'login': user.login}) }}"
+                <a class="btn-float-left btn-post-remove" href="#"
+                   data-link="{{ path('user_remove_post', {'id': post.id, 'login': user.login}) }}"
                    title="Usuń wpis" data-toggle="tooltip" data-placement="bottom">
                     <span class="glyphicon glyphicon-trash"></span> Usuń
                 </a>
@@ -101,6 +102,31 @@
 
     {# USER SIDEBAR #}
     {% include "GitboxCoreBundle:UserSidebar:render.html.twig" %}
+
+    {# POST REMOVE MODAL #}
+    <div id="postRemoveModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="postRemove" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">{# Usuń wpis `post.title` #}</h4>
+                </div>
+                <div class="modal-body">
+                    {#
+                        Czy na pewno chcesz usunąć wpis `post.title`?
+                        Usunięte zostaną również jego komentarze, twoje oceny oraz ogólna zawartość.
+                    #}
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-default" data-dismiss="modal">Zamknij</a>
+                    <a class="btn btn-danger btn-remove-confirm" href="#"{# <- path(...) #} title="Usuń wpis">
+                        <span class="glyphicon glyphicon-trash"></span> Usuń wpis
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 <hr>
 

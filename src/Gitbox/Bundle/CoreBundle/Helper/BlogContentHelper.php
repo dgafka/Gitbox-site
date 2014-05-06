@@ -5,29 +5,66 @@ namespace Gitbox\Bundle\CoreBundle\Helper;
 use Gitbox\Bundle\CoreBundle\Entity\Content;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query;
+use Knp\Component\Pager\Paginator;
+use Symfony\Component\HttpFoundation\Request;
+use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
+
+
 
 /**
  * Class BlogContentHelper
  * @package Gitbox\Bundle\CoreBundle\Helper
  */
-class BlogContentHelper extends ContentHelper {
+class BlogContentHelper extends ContentHelper implements PaginatorAwareInterface {
+
+    /**
+     * @var Paginator
+     */
+    protected $paginator;
 
     protected $module = 'GitBlog';
+
 
     public function __construct($entityManager, $cacheHelper) {
         parent::__construct($entityManager, $cacheHelper);
     }
 
     /**
+     * Sets the KnpPaginator instance.
+     *
+     * @param Paginator $paginator
+     *
+     * @return PaginatorAware
+     */
+    public function setPaginator(Paginator $paginator)
+    {
+        $this->paginator = $paginator;
+
+        return $this;
+    }
+
+    /**
+     * Returns the KnpPaginator instance.
+     *
+     * @return Paginator
+     */
+    public function getPaginator()
+    {
+        return $this->paginator;
+    }
+
+    /**
      * Pobranie wpisów z bloga użytkownika
      *
      * @param $userLogin
+     * @param int $perPage
+     * @param Request $request
      *
-     * @return Content | null
+     * @return array | null
      *
      * @throws Exception
      */
-    public function getContents($userLogin) {
+    public function getContents($userLogin, $perPage = 0, Request & $request = null) {
         if (!isset($this->module)) {
             throw new Exception("Nie zainicjalizowano instancji.");
         }
@@ -48,10 +85,18 @@ class BlogContentHelper extends ContentHelper {
                 'module_id' => $moduleId
             ));
 
-        try {
-            return $queryBuilder->getQuery()->getResult();
-        } catch (NoResultException $e) {
-            return null;
+        if ($perPage > 0 && $request instanceof Request) {
+            $query = $queryBuilder->getQuery();
+
+            $posts = $this->paginator->paginate($query, $request->query->get('page', 1), $perPage);
+
+            return $posts;
+        } else {
+            try {
+                return $queryBuilder->getQuery()->getResult();
+            } catch (NoResultException $e) {
+                return null;
+            }
         }
     }
 
@@ -60,12 +105,14 @@ class BlogContentHelper extends ContentHelper {
      *
      * @param $userLogin
      * @param $categoryName
+     * @param int $perPage
+     * @param Request $request
      *
-     * @return Content | null
+     * @return array | null
      *
      * @throws Exception
      */
-    public function getContentsByCategory($userLogin, $categoryName = null) {
+    public function getContentsByCategory($userLogin, $categoryName, $perPage = 0, Request & $request = null) {
         if (!isset($this->module)) {
             throw new Exception("Nie zainicjalizowano instancji.");
         }
@@ -88,10 +135,18 @@ class BlogContentHelper extends ContentHelper {
                 'category_name' => $categoryName
             ));
 
-        try {
-            return $queryBuilder->getQuery()->getResult();
-        } catch (NoResultException $e) {
-            return null;
+        if ($perPage > 0 && $request instanceof Request) {
+            $query = $queryBuilder->getQuery();
+
+            $posts = $this->paginator->paginate($query, $request->query->get('page', 1), $perPage);
+
+            return $posts;
+        } else {
+            try {
+                return $queryBuilder->getQuery()->getResult();
+            } catch (NoResultException $e) {
+                return null;
+            }
         }
     }
 

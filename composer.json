@@ -22,7 +22,9 @@
         "yiisoft/jquery": "2.1.0",
         "twbs/bootstrap": "3.0.*@dev",
         "excelwebzone/recaptcha-bundle": "v1.0.0",
-        "braincrafted/bootstrap-bundle": "~2.0"
+        "braincrafted/bootstrap-bundle": "~2.0",
+        "knplabs/knp-components": "1.2.5",
+        "knplabs/knp-paginator-bundle": "~2.4"
     },
     "scripts": {
         "post-install-cmd": [
