@@ -1,11 +1,4 @@
-{% extends "::base.html.twig" %}
-
-{% block title %}Gitbox | Drive {% endblock %}
-
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/drive.css') }}" />
-{% endblock %}
+{% extends "GitboxCoreBundle:Drive:DriveBase.html.twig" %}
 
 {% block content_inner %}
     <h2>Tytuł</h2>

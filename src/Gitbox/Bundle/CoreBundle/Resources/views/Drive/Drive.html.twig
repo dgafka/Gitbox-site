@@ -1,11 +1,5 @@
-{% extends "::base.html.twig" %}
+{% extends "GitboxCoreBundle:Drive:DriveBase.html.twig" %}
 
-{% block title %}Gitbox | GitDrive {% endblock %}
-
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/blog.css') }}" />
-{% endblock %}
 
 {% block content_inner %}
 <div class="row">
@@ -48,8 +42,4 @@
     </div>
 {% endblock %}
 
-{% block lazy_javascripts %}
-    {{ parent() }}
-    <script type="text/javascript" src="{{ asset('js/blog.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/slideCollapser.js') }}"></script>
-{% endblock %}
+
