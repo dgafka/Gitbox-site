@@ -2,12 +2,14 @@
 
 namespace Gitbox\Bundle\CoreBundle\Controller;
 
+use Gitbox\Bundle\CoreBundle\Entity\Attachment;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Gitbox\Bundle\CoreBundle\Entity\Content;
 use Symfony\Component\HttpFoundation\Request;
 use Gitbox\Bundle\CoreBundle\Form\Type\TubePostType;
+use Gitbox\Bundle\CoreBundle\Entity\Menu;
 
 class TubeController extends Controller
 {
@@ -81,4 +83,69 @@ class TubeController extends Controller
         );
     }
 
+    /**
+     * Dodawanie nowego filmu
+     *
+     * @Route("/user/{login}/tube/new", name="user_new_tube")
+     * @Template()
+     */
+    public function newAction(Request $request, $login)
+    {
+        // walidacja dostępu
+        $user = $this->validateURL($login);
+        //$this->checkAccess($login);
+
+        // utworzenie instancji wpisu
+        //$postContent = new Content();
+        $newAttachment = new Attachment();
+        $newContent = new Content();
+
+        // formularz nowego wpisu
+        $form = $this->createForm(new TubePostType(), $newAttachment, array('csrf_protection' => true));
+        $form->handleRequest($request);
+
+        // walidacja formularza
+        if ($form->isValid()) {
+            $contentHelper = $this->container->get('tube_content_helper');
+            $em = $this->getDoctrine()->getManager();
+            $repository = $em->getRepository('GitboxCoreBundle:Menu');
+
+            //$newContent->setIdUser($user->getId());
+            //$newContent->setCreateDate(new \DateTime('now'));
+            //$newContent->setLastModificationDate(new \DateTime('now'));
+            //$newContent->setIdMenu($repository->findOneByTitle('GitTube'));
+
+
+            $newAttachment->setCreateDate(new \DateTime('now'));
+            $newAttachment->setDescription('Description');
+            $newAttachment->setTitle('Title');
+            $newAttachment->setStatus('A');
+            $newAttachment->setIdContent(5);
+
+
+            $newAttachment->setFilename($contentHelper->getFilename($request));
+
+
+            //$newContent = $contentHelper->insertIntoContent($newContent);
+            //$newAttachment->setIdContent($newContent->getId());
+            $contentHelper->insertIntoAttachment($newAttachment);
+
+            // inicjalizacja flash baga
+            $session = $this->container->get('session');
+            $session->getFlashBag()->add('success', 'Dodano wpis <b>' . $newAttachment->getFilename() . '</b>');
+
+            return $this->redirect(
+                $this->generateUrl('tube_index', array(
+                    'login' => $user->getLogin(),
+                    //'id' => $newContent->getId()
+                ))
+            );
+        }
+
+        return array(
+            'user' => $user,
+            'form' => $form->createView(),
+            'btnLabel' => 'Dodaj wpis'
+        );
+    }
 }

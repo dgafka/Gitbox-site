@@ -119,4 +119,17 @@ class DriveController extends Controller
         );
     }
 
+    /**
+     * @Route("/user/{login}/drive/show")
+     * @Template()
+     */
+    public function DriveShowAction($login)
+    {
+
+        $form = $this->createForm(new DriveElementType());
+        return array(
+            'form' => $form->createView()
+        );
+    }
+
 }

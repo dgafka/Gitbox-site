@@ -8,6 +8,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Cookie;
 use Gitbox\Bundle\CoreBundle\Entity\Content;
 use Gitbox\Bundle\CoreBundle\Entity\Menu;
 use Gitbox\Bundle\CoreBundle\Form\Type\BlogPostType;
@@ -88,7 +90,6 @@ class BlogController extends Controller
     {
         // walidacja dostępu
         $user = $this->validateURL($login);
-
         $hasAccess = $this->getAccess($login);
 
         $contentHelper = $this->container->get('blog_content_helper');
@@ -96,6 +97,28 @@ class BlogController extends Controller
         // TODO: paginacja
         // pobranie wszystkich wpisów z bazy
         $posts = $contentHelper->getContents($login);
+
+        // pobieranie żądania
+        $request = $this->get('request');
+        // inicjalizacja odpowiedzi serwera
+        $response = new Response();
+
+        // aktualizacja licznika odwiedzin na podstawie `ciasteczek`
+        for ($i = 0; $i < count($posts); $i++) {
+            $hitCookie = $request->cookies->get('hit_' . $posts[$i]->getId());
+
+            if (!isset($hitCookie)) {
+                $postsToHit[] = $posts[$i]->getId();
+
+                $cookie = new Cookie('hit_' . $posts[$i]->getId(), true, time() + 3600 * 24);
+                $response->headers->setCookie($cookie);
+            }
+        }
+        if (isset($postsToHit)) {
+            $contentHelper->updateHits($postsToHit);
+        }
+
+        $response->send();
 
         return array(
             'user' => $user,
@@ -212,7 +235,6 @@ class BlogController extends Controller
     {
         // walidacja dostępu
         $user = $this->validateURL($login);
-
         $hasAccess = $this->getAccess($login);
 
         $contentHelper = $this->container->get('blog_content_helper');
@@ -220,9 +242,26 @@ class BlogController extends Controller
         $postContent = $contentHelper->getOneContent($id, $login);
         // TODO: pobieranie treści komentarzy
 
+        // pobieranie żądania
+        $request = $this->get('request');
+        // inicjalizacja odpowiedzi serwera
+        $response = new Response();
+
         if (!$postContent) {
             throw $this->createNotFoundException('Niestety nie znaleziono wpisu.');
         }
+
+        // aktualizacja licznika odwiedzin na podstawie `ciasteczka`
+        $hitCookie = $request->cookies->get('hit_' . $postContent->getId());
+
+        if (!isset($hitCookie)) {
+            $cookie = new Cookie('hit_' . $postContent->getId(), true, time() + 3600 * 24);
+            $response->headers->setCookie($cookie);
+
+            $contentHelper->updateOneHits($postContent->getId());
+        }
+
+        $response->send();
 
         return array(
             'user' => $user,

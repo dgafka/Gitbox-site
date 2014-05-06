@@ -4,6 +4,7 @@ namespace Gitbox\Bundle\CoreBundle\Helper;
 
 use Gitbox\Bundle\CoreBundle\Entity\Content;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query;
 
 /**
  * Class BlogContentHelper
@@ -80,6 +81,7 @@ class BlogContentHelper extends ContentHelper {
             ->innerJoin('c.idMenu', 'm') // automaticaly join keys, upon relation
             ->innerJoin('c.idCategory', 'cat') // same here
             ->where('c.idUser = :user_id AND m.idModule = :module_id AND cat.name = :category_name')
+            ->orderBy('c.createDate', 'DESC')
             ->setParameters(array(
                 'user_id' => $userId,
                 'module_id' => $moduleId,

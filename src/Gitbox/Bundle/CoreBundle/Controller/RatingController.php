@@ -48,7 +48,7 @@ class RatingController extends Controller
             $response->sendHeaders(); // wyślij same nagłówki
         }
 
-        return new JsonResponse($result);
+        return $response;
     }
 
 }
