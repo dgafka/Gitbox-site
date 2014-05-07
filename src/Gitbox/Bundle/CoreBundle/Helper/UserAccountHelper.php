@@ -161,4 +161,25 @@ class UserAccountHelper extends EntityHelper implements CRUDHelper {
 		return $object;
 	}
 
+	/** Wyszukuje użytkownika po loginie
+	 * @param $loginPart
+	 * @return array
+	 */
+	public function searchUser($loginPart) {
+		/**
+		 * @var $queryBuilder \Doctrine\ORM\QueryBuilder
+		 */
+		$queryBuilder = $this->instance()->createQueryBuilder();
+
+		$results = $queryBuilder
+			->select('ua.login')
+			->from('GitboxCoreBundle:UserAccount', 'ua')
+			->where('lower( ua.login ) LIKE :login')
+			->setParameter('login', '%' . trim(strtolower($loginPart)) . '%')
+			->setMaxResults(10)
+			->getQuery()
+			->execute();
+
+		return $results;
+	}
 } 

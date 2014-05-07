@@ -9,6 +9,9 @@
         {# @TODO Wyłączyć ja jako osobna templatka i zaincludować w head. Sprawdzić czy śmiga. #}
 
         {% block stylesheets %}
+            {# jQuery ui#}
+            <link rel="stylesheet" href="{{ asset('css/jquery/jquery-ui.min.css') }}" />
+
             {# Bootstrap styles #}
             <link rel="stylesheet" href="{{ asset('css/bootstrap/bootstrap.min.css') }}" />
 
@@ -54,8 +57,9 @@
                         <li class="search-engine">
                             <form role="search" class="navbar-form">
                                 <div class="form-group">
-                                    <input class="search-engine-input" type="text" placeholder="Wyszukaj globalnie na stronie">
-                                    <button class="btn"><span class="glyphicon glyphicon-search"></span></button>
+                                    <select id="selectGlobalSearch">
+                                    </select>
+                                    <button class="btn" data="{{  path('search_global', {"loginPart": "*"}) }}" target="{{ path('user_profile_index', {'login': "*"}) }}"><span class="glyphicon glyphicon-search"></span></button>
                                 </div>
                             </form>
                         </li>
@@ -96,14 +100,30 @@
 
         {# Load after DOM document fully loads #}
         {% block lazy_javascripts %}
+
             {# jQuery #}
             <script type="text/javascript" src="{{ asset('js/jquery/jquery.min.js') }}"></script>
+
+            {# jQuery ui #}
+            <script type="text/javascript" src="{{ asset('js/jquery/jquery-ui.min.js') }}"></script>
+
+            {# Combobox #}
+            <script type="text/javascript" src="{{ asset('js/widgets/combobox/combobox.js') }}"></script>
 
             {# Bootstrap scripts #}
             <script type="text/javascript" src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
 
             {# Global scripts #}
             <script type="text/javascript" src="{{ asset('js/main.js') }}"></script>
+
+            {# Ajax #}
+            <script type="text/javascript" src="{{ asset('js/Ajax.js') }}"></script>
+
+            {# Search class #}
+            <script type="text/javascript" src="{{ asset('js/Search/Search.js') }}"></script>
+
+            {# Search Events #}
+            <script type="text/javascript" src="{{ asset('js/Search/searchEvents.js') }}"></script>
 
         {% endblock %}
     </body>
