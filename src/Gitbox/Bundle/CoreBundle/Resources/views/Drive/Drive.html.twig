@@ -1,15 +1,8 @@
 {% extends "GitboxCoreBundle:Drive:DriveBase.html.twig" %}
 
 
-{% block content_inner %}
-<div class="row">
-    <div class="col-lg-8 main-content">
-<div class="row home-page-container">
-    <div class="module-logo-outer">
-        <a href="#gitblog-logo">
-            <img id="gitblog-logo" class="module-logo" src="{{ asset('images/logo/GitDrive_logo.png') }}" style="height: 50px;">
-        </a>
-    </div>
+{% block drive_r_panel %}
+
     <table class="table table-striped">
         <tr>
             <th>Tytuł</th>
@@ -36,10 +29,7 @@
        class="btn btn-primary btn-need-some-space" style="margin-bottom: 20px;">
         <span class="glyphicon glyphicon-file"></span> Dodaj element
     </a>
-    </div>
-        </div>
-    {% include "GitboxCoreBundle:UserSidebar:render.html.twig" %}
-    </div>
+
 {% endblock %}
 
 

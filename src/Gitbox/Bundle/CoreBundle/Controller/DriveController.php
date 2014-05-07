@@ -87,14 +87,14 @@ class DriveController extends Controller
     }
 
     /**
-     * @Route("/user/{login}/drive/new")
+     * @Route("/new/drive")
      * @Template()
      */
-    public function NewDriveItemAction($login)
+    public function NewDriveItemAction()
     {
         // walidacja dostępu
-        $user = $this->validateURL($login);
-        $this->checkAccess($login);
+        $user = $this->validateURL("kakaka");
+        $this->checkAccess("kakaka");
 
         // utworzenie instancji wpisu
         $postContent = new Content();
@@ -103,6 +103,26 @@ class DriveController extends Controller
          'user' => $user,
 		'form' => $form->createView()
 	);
+    }
+
+
+    /**
+     * @Route("new/drive/contener")
+     * @Template()
+     */
+    public function NewDriveContenerAction()
+    {
+        // walidacja dostępu
+        $user = $this->validateURL("kakaka");
+        $this->checkAccess("kakaka");
+
+        // utworzenie instancji wpisu
+        $postContent = new Content();
+        $form = $this->createForm(new DriveElementType());
+        return array(
+            'user' => $user,
+            'form' => $form->createView()
+        );
     }
 
 
