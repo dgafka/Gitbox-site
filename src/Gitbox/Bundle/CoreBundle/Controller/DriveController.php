@@ -71,6 +71,23 @@ class DriveController extends Controller
         return $hasAccess;
     }
 
+    private function checkUser() {
+        $session = $this->container->get('session');
+        $userId = $session->get('userId');
+        $login=$session->get('username');
+
+
+
+            if (!isset($userId)) {
+                throw $this->createNotFoundException('Zaloguj się, aby mieć dostęp do tej aktywności.');
+            }else
+            {
+                $user=$this->validateURl($login);
+            }
+
+            return $user;
+    }
+
     /**
      * @Route("/user/{login}/drive")
      * @Template()
@@ -93,11 +110,10 @@ class DriveController extends Controller
     public function NewDriveItemAction()
     {
         // walidacja dostępu
-        $user = $this->validateURL("kakaka");
-        $this->checkAccess("kakaka");
+        $user=$this->checkUser();
 
         // utworzenie instancji wpisu
-        $postContent = new Content();
+        $xContent = new Content();
 	$form = $this->createForm(new DriveElementType());
 	 return array(
          'user' => $user,
@@ -113,11 +129,10 @@ class DriveController extends Controller
     public function NewDriveContenerAction()
     {
         // walidacja dostępu
-        $user = $this->validateURL("kakaka");
-        $this->checkAccess("kakaka");
+        $user=$this->checkUser();
 
         // utworzenie instancji wpisu
-        $postContent = new Content();
+        $xContent = new Content();
         $form = $this->createForm(new DriveElementType());
         return array(
             'user' => $user,
@@ -163,8 +178,8 @@ class DriveController extends Controller
     public function DriveEditAction($element)
     {
 
-        $userHelper = $this->container->get('user_helper');
-        $user = $userHelper->findByLogin("kakaka");
+
+        $user = $this->checkUser();
         $form = $this->createForm(new DriveElementType());
         return array(
             'form' => $form->createView(),
