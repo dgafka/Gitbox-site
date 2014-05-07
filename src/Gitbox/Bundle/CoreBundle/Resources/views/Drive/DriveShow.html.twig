@@ -2,20 +2,21 @@
 
 {% block content_inner %}
     <div class="row">
-        <div class="col-md-4 lp">
+        <div class="col-lg-3 col-md-4 col-sm-6 lp col-xs-6">
             <div class="module-logo-outer">
                 <a href="#gitdrive-logo">
                     <img id="gitblog-logo" class="module-logo" src="{{ asset('images/logo/GitDrive_logo.png') }}" >
                 </a>
             </div>
-            <div>{% block drive_menu %}Menu{% endblock %}</div>
+
             <div>{% block user_panel %}
-                    {# include "GitboxCoreBundle:UserSidebar:render.html.twig" #}
+                    {%   include "GitboxCoreBundle:Drive:userDriveBadge.html.twig" %}
                 {% endblock %}
             </div>
+            <div>{% block drive_menu %}Menu{% endblock %}</div>
 
         </div>
-        <div class="col-md-8">{% block drive_r_panel %}
+        <div class="col-md-8 col-sm-6 col-xs-6">{% block drive_r_panel %}
 
                     <h2>Tytuł</h2>
                     <div class="drive-show-description">

@@ -1,0 +1,16 @@
+{% block user_badge %}
+    <div class="mainBadge">
+        <a class="no-decoration keep-color" href="{{ path('user_profile_index', {'login': user.login}) }}">
+        <div class="avatar-box-badge">
+            <div class="no-decoration keep-color" >
+                <img class="pic img-circle" src="{{ user.email | getGravatarImage(160)}}" alt="avatar">
+            </div>
+        </div>
+        <div class="prof_info">
+            <div class="us_login">{{user.login}}</div>
+            <div class="us_menus">Foldery: </div>
+            <div class="us_menus">Pliki: </div>
+        </div>
+        </a>
+    </div>
+{% endblock %}

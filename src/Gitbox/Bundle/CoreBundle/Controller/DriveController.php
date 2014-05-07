@@ -82,7 +82,7 @@ class DriveController extends Controller
                 throw $this->createNotFoundException('Zaloguj się, aby mieć dostęp do tej aktywności.');
             }else
             {
-                $user=$this->validateURl($login);
+                $user=$this->validateURL($login);
             }
 
             return $user;
@@ -142,18 +142,7 @@ class DriveController extends Controller
 
 
 
-    /**
-     * @Route("/user/{login}/drive/test")
-     * @Template("GitboxCoreBundle:Drive:Drive.html.twig")
-     */
-    public function DriveFormTestAction($login)
-    {
 
-        $form = $this->createForm(new DriveElementType());
-        return array(
-            'form' => $form->createView()
-        );
-    }
 
     /**
      * @Route("/user/{login}/drive/{element}")
