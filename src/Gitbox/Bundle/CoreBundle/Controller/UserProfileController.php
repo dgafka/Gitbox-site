@@ -33,7 +33,7 @@ class UserProfileController extends Controller
 		$permissionHelper = $this->container->get('permissions_helper');
 		$owner            = $permissionHelper->checkPermission($login);
 
-		return array('login' => $user->getLogin(), 'email' => $user->getEmail(), 'userGroup' => $user->getIdGroup()->getDescription(),'description' => $userDescription->getContent(), 'registerDate' => $userDescription->getRegistrationDate()->format('Y-m-d H:m:s'), 'isOwner' => $owner);
+		return array('login' => $user->getLogin(), 'email' => $user->getEmail(), 'userGroup' => $user->getIdGroup()->getDescription(),'description' => $userDescription->getContent(), 'registerDate' => $userDescription->getRegistrationDate()->format('Y-m-d H:i:s'), 'isOwner' => $owner);
 	}
 
     /**
