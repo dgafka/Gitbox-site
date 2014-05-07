@@ -1,0 +1,4 @@
+parameters:
+    knp_disqus.api_key:    htP70kfztqlTcbLztThUthvKhVHmMcwEHw53t6CbMF2BWjw66r0RkIhkTS5o5Pb3
+    knp_disqus.secret_key: 4d56Xb0X0Zpg6jYc4tfZv8LVPMlI6Oer4wuoaZuSiFvQwSKgZpcHZMzHDg7lS56l
+    knp_disqus.gitbox.shortname: "gitbox"

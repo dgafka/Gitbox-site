@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="{{ asset('css/rating-system.css') }}" />
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/disqusCounter.js') }}"></script>
+{% endblock %}
+
 {% block content_inner %}
 <div class="row">
     {% for flashMessage in app.session.flashbag.get('success') %}
@@ -92,8 +97,10 @@
 
                     <div class="comments-link-container" title="Skomentuj „{{ post.title }}”">
                         <h5 style="display: inline-block;">
-                            <a class="comments-link no-decoration" href="{{ path('user_show_post', {'login': user.login, 'id': post.id}) }}#comments">Komentarze
-                                <span class="badge">999+</span>
+                            <a class="comments-link no-decoration"
+                                href="{{ path('user_show_post', {'login': user.login, 'id': post.id}) }}#comments"
+                                data-disqus-identifier="{{ 'gitblog/' ~ user.login ~ '/' ~ post.id }}">
+                                {# ILOŚC KOMENTARZY `Komentarze <span class="badge">{num}</span>` #}
                             </a>
                         </h5>
                         {% if hasAccess == false %}

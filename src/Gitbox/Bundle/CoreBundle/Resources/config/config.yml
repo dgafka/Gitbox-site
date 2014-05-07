@@ -1,4 +1,5 @@
 imports:
+    - { resource: "@GitboxCoreBundle/Resources/config/parameters.yml" }
     - { resource: "@GitboxCoreBundle/Resources/config/services.yml" }
 
 knp_paginator:
@@ -9,3 +10,10 @@ knp_paginator:
         sort_direction_name: direction # sort direction query parameter name
     template:
         pagination: GitboxCoreBundle:Pagination:twbs_v3_pagination.html.twig
+
+knp_disqus:
+    api_key:    %knp_disqus.api_key%
+    secret_key: %knp_disqus.secret_key%
+    forums:
+        gitbox:
+            shortname: %knp_disqus.gitbox.shortname%

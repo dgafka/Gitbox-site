@@ -80,33 +80,7 @@
 
         {# komentarze #}
         <div id="comments-content">
-            <div id="add-comment" class="well">
-                <h4>Napisz komentarz:</h4>
-                <form role="form">
-                    <div class="form-group">
-                        <textarea class="form-control" rows="3"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-            </div>
-            <hr>
-
-            <div id="comments">
-                <div class="comment">
-                    <h3>
-                        <a class="no-decoration keep-color comment-link" href="{{ path('user_profile_index', {'login': user.login}) }}">user #1</a>
-                        <small>Wed 23, 04 2014  15:48:48</small>
-                    </h3>
-                    <p>Śmierdź</p>
-                </div>
-                <div class="comment">
-                    <h3>
-                        <a class="no-decoration keep-color comment-link" href="{{ path('user_profile_index', {'login': user.login}) }}">user #2</a>
-                        <small>Thu 24, 04 2014  14:29:59</small>
-                    </h3>
-                </div>
-            </div>
-            <p>Uff! Zdążyliśmy...</p>
+            {{ knp_disqus_render('gitbox', {'identifier': 'gitblog/' ~ user.login ~ '/' ~ post.id, 'limit': 10}) }}
         </div>
     </div>
 
