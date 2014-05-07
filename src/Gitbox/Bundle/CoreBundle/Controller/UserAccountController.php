@@ -299,7 +299,7 @@ class UserAccountController extends Controller
 		return array('form' => $form->createView());
 	}
 
-	/** Akcja dla odzyskania hasła
+	/** Akcja dla wyszukiwania użytkownika
 	 * @Route("/search/user/{loginPart}", name="search_global")
 	 */
 	public function searchUser($loginPart) {
