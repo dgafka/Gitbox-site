@@ -57,6 +57,10 @@ a.badge-button:focus {
     background-color: lightgreen;
 }
 
+.inner-badge-sub {
+    font-size: 8pt;
+}
+
 /* ------------------------------------- */
 #main_logo {
     position: relative;
