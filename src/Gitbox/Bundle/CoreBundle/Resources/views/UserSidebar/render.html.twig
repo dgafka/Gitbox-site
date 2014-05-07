@@ -4,27 +4,37 @@
     </div>
     <div class="col-lg-3 col-md-8 sidebar">
         <div class="avatar-box">
+            <input type="hidden" class="sidebar-update" data-link="{{ path('user_sidebar_update', {'login': user.login}) }}">
             <a class="no-decoration keep-color" href="{{ path('user_profile_index', {'login': user.login}) }}">
                 <img class="pic img-circle" src="{{ user.email | getGravatarImage(160)}}" alt="avatar">
-                <div class="name">{{ user.login }}</div>
+                <div class="username">{{ user.login }}</div>
             </a>
             <div class="profile-info">
-                {#<h6><b>Dołączył </b>{{ userDescription.registrationDate | date("D d/m/Y H:i:s") }}</h6>#}
+                <h6><b>Dołączył </b>{{ userDescription.registrationDate | date("D d/m/Y H:i:s") }}</h6>
                 <h6><b>Odwiedziny </b>{{ userDescription.hit }}</h6>
                 <h6>
                     <b>Suma głosów </b>
-                    <span class="badge
-                        {% if userDescription.ratingScore > 0 %}
-                            {{ 'badge-lightgreen' }}
-                        {% elseif userDescription.ratingScore < 0 %}
-                            {{ 'badge-lightpink' }}
-                        {% endif %}">
-                        {{ userDescription.ratingScore }}
-                        <span class="inner-badge-sub">({{ userDescription.ratingQuantity }})</span>
-                    </span>
+                    {% if userDescription.ratingScore > 0 %}
+                        <span class="badge badge-score badge-lightgreen">
+                            {{ userDescription.ratingScore }}
+                            <span class="inner-badge-sub">({{ userDescription.ratingQuantity }})</span>
+                        </span>
+                    {% elseif userDescription.ratingScore < 0 %}
+                        <span class="badge badge-score badge-lightpink">
+                            {{ userDescription.ratingScore }}
+                            <span class="inner-badge-sub">({{ userDescription.ratingQuantity }})</span>
+                        </span>
+                    {% else %}
+                        <span class="badge badge-score">
+                            {{ userDescription.ratingScore }}
+                            <span class="inner-badge-sub">({{ userDescription.ratingQuantity }})</span>
+                        </span>
+                    {% endif %}
                 </h6>
                 <h6><b>Ilość postów </b>{{ userModule.totalContents }}</h6>
-                {# TODO: ban_date if status == 'B' #}
+                {% if user.status == 'B' %}
+                    <h6 class="banned-date"><b>Zbanowany </b>{{ userDescription.banDate | date("D d/m/Y H:i:s") }}</h6>
+                {% endif %}
             </div>
         </div>
 

@@ -1,6 +1,6 @@
 $(document).ready(function () {
     /* Tooltips-y `Feel soo dipsy~` */
-    $('.btn-float-left').tooltip();
+    $('.option-left').tooltip();
 
     /* Post remove modal - wypełniany treścią po kliknięciu na button `Usuń` */
     $(function () {
@@ -12,7 +12,7 @@ $(document).ready(function () {
 
         $('.btn-post-remove').click(function () {
             var removalLink = $(this).attr('data-link');
-            var postTitle = $(this).parent('.post-in-the-box').find('.post-title').first().html();
+            var postTitle = $(this).closest('.post-in-the-box').find('.post-title').first().html();
 
             $(modalTitle).html('Usuń wpis <b>' + postTitle + '</b>');
             $(modalBody).html(

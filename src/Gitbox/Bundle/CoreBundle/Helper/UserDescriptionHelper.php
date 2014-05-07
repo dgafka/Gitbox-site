@@ -156,4 +156,38 @@ class UserDescriptionHelper extends EntityHelper implements CRUDHelper {
             throw new Exception('Niepoprawny typ parametru.');
         }
     }
+
+    /**
+     * Aktualizacja oceny oraz sumy głosów
+     *
+     * @param int|string $user
+     * @param $ratingUp
+     * @param $ratingDown
+     *
+     * @throws \Symfony\Component\Config\Definition\Exception\Exception
+     */
+    public function updateUserScore($user, $ratingUp, $ratingDown) {
+        // walidacja parametrów
+        if (is_string($user)) {
+            $userId = $this->instanceCache()->getUserIdByLogin($user);
+        } else if (is_int($user)) {
+            $userId = $user;
+        } else {
+            throw new Exception('Niepoprawny typ parametru.');
+        }
+
+        if (!(is_int($ratingUp) && is_int($ratingDown))) {
+            throw new Exception('Niepoprawny typ parametru.');
+        }
+
+        $userDesc = $this->findByUserId($userId);
+
+        $ratingScore = ($ratingUp - $ratingDown) * -1;
+        $ratingTotal = $ratingUp + $ratingDown;
+
+        $userDesc->setRatingScore($userDesc->getRatingScore() + $ratingScore);
+        $userDesc->setRatingQuantity($userDesc->getRatingQuantity() - $ratingTotal);
+
+        $this->update($userDesc);
+    }
 }

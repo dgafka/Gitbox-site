@@ -1,4 +1,5 @@
 $(document).ready(function() {
+
     function voteRequest(url, target) {
         var postContainer = $(target).closest('.post-in-the-box');
 
@@ -8,6 +9,8 @@ $(document).ready(function() {
             type: 'POST',
             url: url,
             success: function(data) {
+                fireVoteEvent($('.sidebar'));
+
                 $(postContainer).find('.btn-vote-up, .btn-vote-down').removeAttr('disabled');
 
                 $(postContainer).find('.score-up').html(data.votesUp);
@@ -46,10 +49,19 @@ $(document).ready(function() {
         });
     }
 
+    function fireVoteEvent(target) {
+        if ($(target).length > 0) {
+            var voteEvent = $.Event('vote');
+
+            $(target).trigger(voteEvent);
+        }
+    }
+
     $('.btn-vote-up, .btn-vote-down').on('click', function (event) {
         event.preventDefault(); // same as `return false`
         event.stopPropagation();
 
         voteRequest($(this).attr('href'), $(this));
     });
+
 });
