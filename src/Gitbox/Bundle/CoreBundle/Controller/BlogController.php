@@ -169,13 +169,13 @@ class BlogController extends Controller
         // walidacja formularza
         if ($form->isValid()) {
             $contentHelper = $this->container->get('blog_content_helper');
-            $em = $this->getDoctrine()->getManager();
-            $repository = $em->getRepository('GitboxCoreBundle:Menu');
+            $menuHelper = $this->container->get('menu_helper');
+            $menu = $menuHelper->findByUserAndModule($user->getId(), 'GitBlog');
 
             $postContent->setIdUser($user->getId());
             $postContent->setCreateDate(new \DateTime('now'));
             $postContent->setLastModificationDate(new \DateTime('now'));
-            $postContent->setIdMenu($repository->findOneByTitle('GitBlog')); // TODO: user has own menu
+            $postContent->setIdMenu($menu);
 
             $contentHelper->insert($postContent);
 

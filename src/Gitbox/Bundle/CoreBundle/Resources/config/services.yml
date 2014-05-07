@@ -5,6 +5,7 @@ parameters:
     module_helper.class: Gitbox\Bundle\CoreBundle\Helper\ModuleHelper
 #    blog_content_helper.class: Gitbox\Bundle\CoreBundle\Helper\BlogContentHelper
     tube_content_helper.class: Gitbox\Bundle\CoreBundle\Helper\TubeContentHelper
+    menu_helper.class: Gitbox\Bundle\CoreBundle\Helper\MenuHelper
     permissions_helper.class: Gitbox\Bundle\CoreBundle\Helper\PermissionsHelper
     rating_helper.class: Gitbox\Bundle\CoreBundle\Helper\RatingHelper
     cache_helper.class: Gitbox\Bundle\CoreBundle\Helper\CacheHelper
@@ -31,6 +32,9 @@ services:
             - { name: knp_paginator.injectable, paginator: knp_paginator }
     tube_content_helper:
         class:        "%tube_content_helper.class%"
+        arguments:    ["@doctrine.orm.entity_manager", "@cache_helper"]
+    menu_helper:
+        class:        "%menu_helper.class%"
         arguments:    ["@doctrine.orm.entity_manager", "@cache_helper"]
     permissions_helper:
         class:        "%permissions_helper.class%"
