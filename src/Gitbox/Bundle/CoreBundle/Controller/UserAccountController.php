@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -296,6 +297,16 @@ class UserAccountController extends Controller
 			return $this->forward('GitboxCoreBundle:Mailer:recoveryPassword', array('user' => $user, 'password' => $password));
 		}
 		return array('form' => $form->createView());
+	}
+
+	/** Akcja dla odzyskania hasła
+	 * @Route("/search/user/{loginPart}", name="search_global")
+	 */
+	public function searchUser($loginPart) {
+		$userHelper = $this->container->get('user_helper');
+		$results    = json_encode($userHelper->searchUser($loginPart));
+
+		return new Response($results, 200, array('Content-Type'=>'application/json'));
 	}
 
 }
