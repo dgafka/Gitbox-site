@@ -278,12 +278,11 @@ class BlogController extends Controller
         $hitCookie = $request->cookies->get('hit_' . $postContent->getId());
 
         if (!isset($hitCookie)) {
+            $postContent->setHit($postContent->getHit() + 1);
+            $contentHelper->update($postContent);
 
-            $cookie = new Cookie('hit_' . $postContent->getId(), true, time() + 3600 * 24);
+            $cookie = new Cookie('hit_' . $postContent->getId(), true, time() + 3600 * 3);
             $response->headers->setCookie($cookie);
-
-            $contentHelper->updateOneHits($postContent->getId());
-
         }
 
         $response->send();
