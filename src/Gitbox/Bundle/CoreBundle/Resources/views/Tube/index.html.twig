@@ -21,9 +21,9 @@
                     {% for post in posts %}
                     <li class="span3">
                         <div class="thumbnail">
-                            <img src="{{ post.filename }}" alt="300x200">
+                            <img src="http://www.personal.psu.edu/afr3/blogs/siowfa13/BlueOcean.jpg" alt="300x200">
                             <div class="caption">
-                                <h6><a href="">{{ post.title }}</a></h6>
+                                <h6><a href="#/user/tube/">{{ post.title }}</a></h6>
                                 <p>{{ post.description }}</p>
                             </div>
                         </div>
@@ -44,7 +44,9 @@
         </div>
 
         {# USER SIDEBAR #}
+{#
         {% include "GitboxCoreBundle:UserSidebar:render.html.twig" %}
+#}
     </div>
 
 {% endblock %}
