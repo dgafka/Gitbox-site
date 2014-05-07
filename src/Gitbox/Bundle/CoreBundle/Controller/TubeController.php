@@ -3,7 +3,7 @@
 namespace Gitbox\Bundle\CoreBundle\Controller;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Gitbox\Bundle\CoreBundle\Form\TubePostType;
+use Gitbox\Bundle\CoreBundle\Form\Type\TubePostType;
 use Gitbox\Bundle\CoreBundle\Entity\Attachment;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Gitbox\Bundle\CoreBundle\Entity\Content;
 use Symfony\Component\HttpFoundation\Request;
 use Gitbox\Bundle\CoreBundle\Entity\Menu;
+use Symfony\Component\Filesystem\Filesystem;
 
 class TubeController extends Controller
 {
@@ -77,15 +78,16 @@ class TubeController extends Controller
 
         // utworzenie instancji wpisu
         $newAttachment = new Attachment();
-        $newContent = new Content();
+        $newContent = new Content();//iduser, idmenu, status, title, header->file, description,
+                                    //createdate, hit, lastModDate,type, id_category,
 
         // formularz nowego wpisu
         //$form = $this->createForm(new TubePostType(), $newAttachment, array('csrf_protection' => true));
         //Tu wrzucam generowanie formularza bo wywala błąd na ścieżkę do TubePostType wtf?
-        $form = $this->createFormBuilder($newAttachment)
-            ->add('description', 'text')
+        $form = $this->createFormBuilder($newContent)
             ->add('title', 'text')
-            ->add('filename', 'file')
+            ->add('description', 'text')
+            ->add('header', 'file')
             ->add('save', 'submit')
             ->getForm();
         $form->handleRequest($request);
@@ -98,36 +100,51 @@ class TubeController extends Controller
             $repository = $em->getRepository('GitboxCoreBundle:Menu');
 
             $newContent->setIdUser($user->getId());
-            //$newContent->setCreateDate(new \DateTime('now'));
-            //$newContent->setLastModificationDate(new \DateTime('now'));
-            //$newContent->setIdMenu($repository->findOneByTitle('GitTube'));
+            $newContent->setCreateDate(new \DateTime('now'));
+            $newContent->setLastModificationDate(new \DateTime('now'));
+            $newContent->setIdMenu($repository->findOneByTitle('GitTube'));
+            $newContent->setStatus('A');
+            $newContent->setHit(5);
+            $newContent->setType('1');
+//iduser, idmenu, status, title, header->file, description,
+//createdate, hit, lastModDate,type, id_category,
 
-
-
-            $newAttachment->setCreateDate(new \DateTime('now'));
-            //$newAttachment->setDescription('Description');
-            //$newAttachment->setTitle('Title');
-            $newAttachment->setStatus('A');
-            $newAttachment->setIdContent($newContent);
             //$newAttachment->setFilename($contentHelper->getFilename($request));
 
 
-            //$dir = __DIR__%kernel.root_dir%/../uploads; --- yy nie ogarniam
-            $file = $form['filename']->getData();
+            /*$fs = new Filesystem();
+            if (!$fs->exists('/src/Gitbox/Bundle/CoreBundle/Resources/Uploads/Tube/'.%login))
+            {
+                try {
+                    $fs->mkdir('/src/Gitbox/Bundle/CoreBundle/Resources/Uploads/Tube/'.$login);
+                } catch (IOExceptionInterface $e) {
+                    echo "An error occurred while creating your directory at ".$e->getPath();
+                }
+            }*/
+            $strId = __ToString($user->$this->getId());
+            $dir =  __DIR__.'/../../../../../web/uploads/tube/'.$strId.'/';
+            $file = $form['header']->getData();
+
             $extension = $file->guessExtension();
             if (!$extension) {
                 // extension cannot be guessed
                 $extension = 'bin';
             }
             $filename = rand(1, 99999).'.'.$extension;
-            //$file->move($dir, $filename);
-
+            $file->move($dir, $filename);
+            $dir = $user->$this->getId()->toString().'/'.$filename;
             $newAttachment->setFilename($filename);
-            $newAttachment->setMime($extension);
+            //$newAttachment->setMime($extension);
+            $newContent->setHeader($dir);
 
-            $em->persist($newAttachment);
+            $em->persist($newContent);
             $em->flush();
 
+            $newAttachment->setCreateDate($newContent->getCreateDate());
+            $newAttachment->setDescription($newContent->getDescription());
+            $newAttachment->setTitle($newContent->getTitle());
+            $newAttachment->setStatus($newContent->getStatus());
+            //$newAttachment->setIdContent($newContent);
 
             //$newContent = $contentHelper->insertIntoContent($newContent);
             //$newAttachment->setIdContent($newContent->getId());
