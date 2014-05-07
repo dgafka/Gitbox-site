@@ -17,7 +17,7 @@ $(document).ready(function () {
             $(modalTitle).html('Usuń wpis <b>' + postTitle + '</b>');
             $(modalBody).html(
                 '<p>Czy na pewno chcesz usunąć wpis <b>' + postTitle + '</b></p>' +
-                    '<p>Usunięte zostaną również jego komentarze, twoje oceny oraz ogólna zawartość.</p>'
+                '<p>Usunięte zostaną również komentarze, oceny oraz ogólna zawartość wpisu.</p>'
             );
             $(confirmBtn).attr('href', removalLink);
 

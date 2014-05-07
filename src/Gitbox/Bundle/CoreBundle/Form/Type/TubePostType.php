@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ContentType extends AbstractType
+class TubePostType extends AbstractType
 {
         /**
      * @param FormBuilderInterface $builder
@@ -15,19 +15,11 @@ class ContentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('idUser')
-            ->add('status')
-            ->add('title')
-            ->add('header')
-            ->add('description')
-            ->add('createDate')
-            ->add('hit')
-            ->add('expire')
-            ->add('lastModificationDate')
-            ->add('rate')
-            ->add('type')
-            ->add('idCategory')
-            ->add('idMenu')
+            ->add('description', 'text')
+            ->add('title', 'text')
+            ->add('filename', 'file')
+            ->add('save', 'submit')
+            ->getForm();
         ;
     }
     
@@ -37,7 +29,7 @@ class ContentType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Gitbox\Bundle\CoreBundle\Entity\Content'
+            'data_class' => 'Gitbox\Bundle\CoreBundle\Entity\Attachment'
         ));
     }
 
@@ -46,6 +38,6 @@ class ContentType extends AbstractType
      */
     public function getName()
     {
-        return 'gitbox_bundle_corebundle_content';
+        return 'tubePost';
     }
 }

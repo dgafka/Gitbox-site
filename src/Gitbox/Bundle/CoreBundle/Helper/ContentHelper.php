@@ -129,4 +129,5 @@ abstract class ContentHelper extends EntityHelper implements CRUDHelper {
             throw new Exception('Niepoprawny typ parametru.');
         }
     }
+
 }

@@ -50,7 +50,10 @@ $(document).ready(function() {
     };
 
     var switchLeave = function () {
-        $('.sidebar').animate({opacity: 1}, 'fast');
+        // TODO: throw event ON SHOW and catch it
+        $('.sidebar').animate({opacity: 1}, 'fast', function () {
+            // TODO: throw event ON SHOWN and catch it
+        });
     };
 
     /** EVENTS **/

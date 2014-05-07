@@ -3,6 +3,11 @@
 namespace Gitbox\Bundle\CoreBundle\Helper;
 
 use Gitbox\Bundle\CoreBundle\Entity\Content;
+use Gitbox\Bundle\CoreBundle\Entity\Attachment;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Doctrine\ORM\Query\Expr\Join;
 
 /**
@@ -91,5 +96,21 @@ class TubeContentHelper extends ContentHelper {
         }
     }
 
+    /**
+     * @param $object \Gitbox\Bundle\CoreBundle\Entity\Attachment
+     * @return null|\Gitbox\Bundle\CoreBundle\Entity\Attachment
+     * @throws \Exception
+     */
+    public function insertIntoAttachment($object) {
 
+            if($object instanceof \Gitbox\Bundle\CoreBundle\Entity\Attachment) {
+                $newAttachemnt = $this->instance()->persist($object);
+                $this->instance()->flush();
+            }else {
+                throw new Exception("Błąd podczas dodawania obiektu.");
+            }
+
+            return $object;
+
+    }
 }

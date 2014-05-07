@@ -5,6 +5,7 @@ namespace Gitbox\Bundle\CoreBundle\Helper;
 use Gitbox\Bundle\CoreBundle\Entity\UserDescription;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query;
 
 /**
  * Klasa wspomagająca pobieranie dodatkowych informacji o użytkowniku z bazy
@@ -51,8 +52,8 @@ class UserDescriptionHelper extends EntityHelper implements CRUDHelper {
 
             $queryBuilder
                 ->select('ud')
-                ->from('GitboxCoreBundle:UserAccount', 'u')
-                ->innerJoin('GitboxCoreBundle:UserDescription', 'ud', JOIN::WITH, 'u.idDescription = ud.id')
+                ->from('GitboxCoreBundle:UserDescription', 'ud')
+                ->innerJoin('GitboxCoreBundle:UserAccount', 'u', JOIN::WITH, 'u.idDescription = ud.id')
                 ->where('u.id = :user_id')
                 ->setParameters(array(
                     'user_id' => $userId,
@@ -62,7 +63,7 @@ class UserDescriptionHelper extends EntityHelper implements CRUDHelper {
         }
 
         try {
-            return $queryBuilder->getQuery()->getResult();
+            return $queryBuilder->getQuery()->getSingleResult();
         } catch (NoResultException $e) {
             return null;
         }
@@ -81,8 +82,8 @@ class UserDescriptionHelper extends EntityHelper implements CRUDHelper {
 
             $queryBuilder
                 ->select('ud')
-                ->from('GitboxCoreBundle:UserAccount', 'u')
-                ->innerJoin('GitboxCoreBundle:UserDescription', 'ud', JOIN::WITH, 'u.idDescription = ud.id')
+                ->from('GitboxCoreBundle:UserDescription', 'ud')
+                ->innerJoin('GitboxCoreBundle:UserAccount', 'u', JOIN::WITH, 'u.idDescription = ud.id')
                 ->where('u.login = :user_login')
                 ->setParameters(array(
                     'user_login' => $login,
@@ -92,7 +93,7 @@ class UserDescriptionHelper extends EntityHelper implements CRUDHelper {
         }
 
         try {
-            return $queryBuilder->getQuery()->getResult();
+            return $queryBuilder->getQuery()->getSingleResult();
         } catch (NoResultException $e) {
             return null;
         }
