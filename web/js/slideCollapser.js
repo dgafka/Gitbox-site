@@ -16,6 +16,8 @@ $(document).ready(function() {
             width = '66.6%';
         }
 
+        fireEvent($(this), 'show');
+
         // run simultaneously 2 effects
         $('.main-content').animate({ width: width }, {
             duration: speed,
@@ -41,6 +43,8 @@ $(document).ready(function() {
                 if ($('.collapse-slider-switch').is(':hover')) {
                     switchLeave();
                 }
+
+                fireEvent($(this), 'shown');
             }
         });
     };
@@ -50,11 +54,16 @@ $(document).ready(function() {
     };
 
     var switchLeave = function () {
-        // TODO: throw event ON SHOW and catch it
-        $('.sidebar').animate({opacity: 1}, 'fast', function () {
-            // TODO: throw event ON SHOWN and catch it
-        });
+        $('.sidebar').animate({opacity: 1}, 'fast');
     };
+
+    function fireEvent(target, type) {
+        if ($(target).length > 0) {
+            var shownEvent = $.Event(type);
+
+            $(target).trigger(shownEvent);
+        }
+    }
 
     /** EVENTS **/
     $('.collapse-slider-switch').hover(switchHover, switchLeave);
@@ -68,5 +77,9 @@ $(document).ready(function() {
         sliderActive = true;
 
         collapseSidebar('slow', 'linear', this);
+    });
+
+    $('.sidebar').on('show shown', function (event) {
+//        switchLeave();
     });
 });

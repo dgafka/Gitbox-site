@@ -185,4 +185,45 @@ class ModuleHelper extends EntityHelper {
 		return;
 	}
 
+    /**
+     * Aktualizuje sumę Content-ów w module użytkownika
+     *
+     * @param int|string $user
+     * @param string $modifier +|-
+     *
+     * @throws Exception
+     */
+    public function setTotalContents($user, $modifier) {
+        if (!isset($this->module)) {
+            throw new Exception("Brak zdefiniowanej nazwy modułu.");
+        }
+
+        // walidacja parametrów
+        if (is_string($user)) {
+            $userId = $this->instanceCache()->getUserIdByLogin($user);
+        } else if (is_int($user)) {
+            $userId = $user;
+        } else {
+            throw new Exception('Niepoprawny typ parametru.');
+        }
+
+        $moduleId = $this->instanceCache()->getModuleIdByName($this->module);
+
+        if ($modifier != '+' && $modifier != '-') {
+            throw new Exception('Niepoprawny typ parametru.');
+        }
+
+        $queryBuilder = $this->instance()->createQueryBuilder();
+
+        $queryBuilder
+            ->update('GitboxCoreBundle:UserModules', 'um')
+            ->set('um.totalContents', 'um.totalContents ' . $modifier . ' 1')
+            ->where('um.idUser = :user AND um.idModule = :module')
+            ->setParameters(array(
+                'module' => $moduleId,
+                'user'   => $userId
+            ))
+            ->getQuery()->execute();
+    }
+
 }

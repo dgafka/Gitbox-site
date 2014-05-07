@@ -10,8 +10,7 @@
     padding: 8px;
 }
 
-.btn-float-left {
-    float: left;
+.option-left {
     margin-left: 5px;
     color: lightgray;
 }
@@ -53,4 +52,8 @@
 
 .comment-link:hover {
     color: dimgray;
+}
+
+.user-options {
+    margin-top: 10px;
 }

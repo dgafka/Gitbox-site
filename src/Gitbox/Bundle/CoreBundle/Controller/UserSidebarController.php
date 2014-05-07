@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Gitbox\Bundle\CoreBundle\Entity\UserAccount;
 
 class UserSidebarController extends Controller
@@ -29,13 +30,32 @@ class UserSidebarController extends Controller
         $moduleHelper = $this->container->get('module_helper');
         $userModule = $moduleHelper->findUserModule($userId);
 
-        // TODO: pass $moduleName to search for module stats like `quantity of posts`
-
         return array(
             'user' => $user,
             'userDescription' => $userDescription,
             'userModule' => $userModule
         );
+    }
+
+    /**
+     * @Route("/user/{login}/sidebar/update", name="user_sidebar_update")
+     */
+    public function updateAction($login) {
+        // pobieranie żądania
+        $request = $this->get('request');
+        // inicjalizacja odpowiedzi serwera
+        $response = new JsonResponse();
+
+        // pobranie oceny i sumy głosów użytkownika
+        $userDescHelper = $this->container->get('user_description_helper');
+        $userDescription = $userDescHelper->findByLogin($login);
+
+        $response->setData(array(
+            'ratingScore' => $userDescription->getRatingScore(),
+            'ratingQuantity' => $userDescription->getRatingQuantity()
+        ));
+
+        return $response;
     }
 
 }

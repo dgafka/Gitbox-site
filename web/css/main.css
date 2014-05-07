@@ -106,8 +106,6 @@ a.badge-button:focus {
     max-width: 500px;
 }
 
-
-
 .centered-form {
     margin: 0px auto;
     max-width: 80%;
@@ -188,6 +186,10 @@ a.badge-button:focus {
 
 .btn-need-some-space {
     margin: 10px 0px 20px 0px;
+}
+
+.banned-date {
+    color: lightcoral;
 }
 
 .collapse-slider-switch {

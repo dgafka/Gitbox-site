@@ -32,28 +32,45 @@ class BlogController extends Controller
         return $hasAccess;
     }
 
-	/**
-     * Walidacja poprawności URL-a. <br />
-     * Zwraca dane użytkownika z bazy, w przypadku gdy istnieje użytkownik o podanej nazwie oraz gdy posiada aktywowany moduł.
+    /**
+     * Walidacja poprawności loginu użytkownika.
+     * Zwraca dane użytkownika z bazy, w przypadku gdy istnieje użytkownik o nazwie podanej w URL.
+     * W innym przypadku zwraca błąd 404.
      *
      * @param $login
      * @return mixed
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    private function validateURL($login) {
+    private function validateUser($login) {
         $userHelper = $this->container->get('user_helper');
-        $moduleHelper = $this->container->get('module_helper');
-        $moduleHelper->init('GitBlog');
 
         $user = $userHelper->findByLogin($login);
 
         if (!$user) {
             throw $this->createNotFoundException('Nie znaleziono użytkownika o nazwie <b>' . $login . '</b>.');
-        } else if (!$moduleHelper->isModuleActivated($login)) {
-            throw $this->createNotFoundException('Użytkownik <b>' . $login . '</b> nie posiada aktywowanego modułu.');
         }
 
         return $user;
+    }
+
+    /**
+     * Walidacja statusu modułu użytkownika.
+     * Zwraca instancję moduleHelper-a w przypadku, gdy użytkownik posiada aktywowany moduł.
+     * W innym przypadku zwraca błąd 404.
+     *
+     * @param $login
+     * @return object
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    private function validateUserModule($login) {
+        $moduleHelper = $this->container->get('module_helper');
+        $moduleHelper->init('GitBlog');
+
+        if (!$moduleHelper->isModuleActivated($login)) {
+            throw $this->createNotFoundException('Użytkownik <b>' . $login . '</b> nie posiada aktywowanego modułu.');
+        }
+
+        return $moduleHelper;
     }
 
     /**
@@ -89,7 +106,8 @@ class BlogController extends Controller
     public function indexAction($login)
     {
         // walidacja dostępu
-        $user = $this->validateURL($login);
+        $user = $this->validateUser($login);
+        $this->validateUserModule($login);
         $hasAccess = $this->getAccess($login);
 
         $contentHelper = $this->container->get('blog_content_helper');
@@ -121,28 +139,6 @@ class BlogController extends Controller
 
         $response->send();
 
-        // pobieranie żądania
-        $request = $this->get('request');
-        // inicjalizacja odpowiedzi serwera
-        $response = new Response();
-
-        // aktualizacja licznika odwiedzin na podstawie `ciasteczek`
-        for ($i = 0; $i < count($posts); $i++) {
-            $hitCookie = $request->cookies->get('hit_' . $posts[$i]->getId());
-
-            if (!isset($hitCookie)) {
-                $postsToHit[] = $posts[$i]->getId();
-
-                $cookie = new Cookie('hit_' . $posts[$i]->getId(), true, time() + 3600 * 24);
-                $response->headers->setCookie($cookie);
-            }
-        }
-        if (isset($postsToHit)) {
-            $contentHelper->updateHits($postsToHit);
-        }
-
-        $response->send();
-
         return array(
             'user' => $user,
             'posts' => $posts,
@@ -159,7 +155,8 @@ class BlogController extends Controller
     public function newAction(Request $request, $login)
     {
         // walidacja dostępu
-        $user = $this->validateURL($login);
+        $user = $this->validateUser($login);
+        $moduleHelper = $this->validateUserModule($login);
         $this->checkAccess($login);
 
         // utworzenie instancji wpisu
@@ -178,9 +175,12 @@ class BlogController extends Controller
             $postContent->setIdUser($user->getId());
             $postContent->setCreateDate(new \DateTime('now'));
             $postContent->setLastModificationDate(new \DateTime('now'));
-            $postContent->setIdMenu($repository->findOneByTitle('GitBlog'));
+            $postContent->setIdMenu($repository->findOneByTitle('GitBlog')); // TODO: user has own menu
 
             $contentHelper->insert($postContent);
+
+            // aktualizacja statystyk
+            $moduleHelper->setTotalContents($user->getId(), '+');
 
             // inicjalizacja flash baga
             $session = $this->container->get('session');
@@ -210,7 +210,8 @@ class BlogController extends Controller
     public function editAction(Request $request, $login, $id)
     {
         // walidacja dostępu
-        $user = $this->validateURL($login);
+        $user = $this->validateUser($login);
+        $this->validateUserModule($login);
         $this->checkAccess($login);
 
         $contentHelper = $this->container->get('blog_content_helper');
@@ -257,7 +258,8 @@ class BlogController extends Controller
     public function showAction($login, $id)
     {
         // walidacja dostępu
-        $user = $this->validateURL($login);
+        $user = $this->validateUser($login);
+        $this->validateUserModule($login);
         $hasAccess = $this->getAccess($login);
 
         $contentHelper = $this->container->get('blog_content_helper');
@@ -306,9 +308,19 @@ class BlogController extends Controller
 
         $contentHelper = $this->container->get('blog_content_helper');
 
-        $postTitle = $contentHelper->find(intval($id))->getTitle();
+        $post = $contentHelper->getOneContent(intval($id), $login);
+
+        $postTitle = $post->getTitle();
 
         $contentHelper->remove(intval($id));
+
+        $moduleHelper = $this->container->get('module_helper');
+        $moduleHelper->init('GitBlog');
+        $userDescHelper = $this->container->get('user_description_helper');
+
+        // aktualizacja statystyk
+        $moduleHelper->setTotalContents($login, '-');
+        $userDescHelper->updateUserScore($login, $post->getVoteUp(), $post->getVoteDown());
 
         // inicjalizacja flash baga
         $session = $this->container->get('session');

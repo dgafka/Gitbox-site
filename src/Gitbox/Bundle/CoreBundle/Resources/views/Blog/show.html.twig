@@ -25,17 +25,27 @@
             <p><span class="glyphicon glyphicon-time"></span> <b>Ostatnio edytowano</b> {{ post.lastModificationDate | date("D d/m/Y H:i:s") }}</p>
             <p><span class="glyphicon glyphicon-eye-open"></span> <b>Wyświetleń</b> <span class="badge">{{ post.hit }}</span></p>
             {% if hasAccess == true %}
-                <a class="btn-float-left"
-                   href="{{ path('user_edit_post', {'login': user.login, 'id': post.id, 'calledBy': 'showAction'}) }}"
-                   title="Edytuj wpis" data-toggle="tooltip" data-placement="bottom">
-                    <span class="glyphicon glyphicon-pencil"></span> Edytuj
-                </a>
-                <a class="btn-float-left btn-post-remove" href="#"
-                   data-link="{{ path('user_remove_post', {'id': post.id, 'login': user.login}) }}"
-                   title="Usuń wpis" data-toggle="tooltip" data-placement="bottom">
-                    <span class="glyphicon glyphicon-trash"></span> Usuń
-                </a>
-                <hr style="margin-top: 40px;">
+                <div class="ratings">
+                    <div class="rating-up">
+                        <div class="score-up">{{ post.voteUp }}</div>
+                    </div>
+                    <div class="rating-down">
+                        <div class="score-down">{{ post.voteDown }}</div>
+                    </div>
+                </div>
+                <div class="user-options">
+                    <a class="option-left"
+                       href="{{ path('user_edit_post', {'login': user.login, 'id': post.id, 'calledBy': 'showAction'}) }}"
+                       title="Edytuj wpis" data-toggle="tooltip" data-placement="bottom">
+                        <span class="glyphicon glyphicon-pencil"></span> Edytuj
+                    </a>
+                    <a class="option-left btn-post-remove" href="#"
+                       data-link="{{ path('user_remove_post', {'id': post.id, 'login': user.login}) }}"
+                       title="Usuń wpis" data-toggle="tooltip" data-placement="bottom">
+                        <span class="glyphicon glyphicon-trash"></span> Usuń
+                    </a>
+                    <hr style="margin-top: 5px;">
+                </div>
             {% else %}
                 <div class="ratings">
                     <div class="rating-up">
@@ -136,4 +146,5 @@
 {% block lazy_javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('js/ratingSystem.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/sidebarUpdater.js') }}"></script>
 {% endblock %}

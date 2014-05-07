@@ -25,14 +25,14 @@ class UserDescription
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="registration_date", type="date", nullable=false)
+     * @ORM\Column(name="registration_date", type="datetime", nullable=false)
      */
     private $registrationDate = '1970-01-01';
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="ban_date", type="date", nullable=true)
+     * @ORM\Column(name="ban_date", type="datetime", nullable=true)
      */
     private $banDate;
 
