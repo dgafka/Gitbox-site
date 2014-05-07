@@ -104,7 +104,7 @@ class DriveController extends Controller
     }
 
     /**
-     * @Route("/new/drive")
+     * @Route("/new/drive",name="drive_item_new")
      * @Template()
      */
     public function NewDriveItemAction()
@@ -123,7 +123,7 @@ class DriveController extends Controller
 
 
     /**
-     * @Route("new/drive/contener")
+     * @Route("new/drive/contener",name="drive_contener_new")
      * @Template()
      */
     public function NewDriveContenerAction()
