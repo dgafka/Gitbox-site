@@ -3,7 +3,6 @@ body {
     color: #333333;
 }
 
-
 .main-window {
     /*height: 500px;*/
 }
@@ -58,6 +57,9 @@ a.badge-button:focus {
     background-color: lightgreen;
 }
 
+.inner-badge-sub {
+    font-size: 8pt;
+}
 /* ------------------------------------- */
 #main_logo {
     position: relative;
@@ -301,7 +303,7 @@ a.badge-button:focus {
 }
 
 .flash-messages {
-  display: block;
+    display: block;
 }
 
 .modules-logo {
@@ -315,13 +317,3 @@ a.badge-button:focus {
 .list-group.blog a.list-group-item .list-group-item-heading{
     font-size: 15px;
 }
-
-<<<<<<< HEAD
-.drive-show-description{
-    background-color: #EEE;
-    margin: 1px;
-    padding: 8px;
-    border-radius: 4px;
-}
-=======
->>>>>>> edebbcbf4f89e38663b2ff2b1e4573716c2e1d1e

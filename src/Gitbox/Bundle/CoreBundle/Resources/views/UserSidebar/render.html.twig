@@ -9,10 +9,21 @@
                 <div class="name">{{ user.login }}</div>
             </a>
             <div class="profile-info">
-                <h6><b>Dołączył </b>Wed 23, 04 2014  15:48:48</h6>
-                <h6><b>Wejścia </b>123</h6>
-                <h6><b>Średnia ocen </b>4.99</h6>
-                <h6><b>Ilość postów </b>6</h6>
+                {#<h6><b>Dołączył </b>{{ userDescription.registrationDate | date("D d/m/Y H:i:s") }}</h6>#}
+                <h6><b>Odwiedziny </b>{{ userDescription.hit }}</h6>
+                <h6>
+                    <b>Suma głosów </b>
+                    <span class="badge
+                        {% if userDescription.ratingScore > 0 %}
+                            {{ 'badge-lightgreen' }}
+                        {% elseif userDescription.ratingScore < 0 %}
+                            {{ 'badge-lightpink' }}
+                        {% endif %}">
+                        {{ userDescription.ratingScore }}
+                        <span class="inner-badge-sub">({{ userDescription.ratingQuantity }})</span>
+                    </span>
+                </h6>
+                <h6><b>Ilość postów </b>{{ userModule.totalContents }}</h6>
                 {# TODO: ban_date if status == 'B' #}
             </div>
         </div>

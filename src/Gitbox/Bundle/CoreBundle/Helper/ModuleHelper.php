@@ -63,6 +63,30 @@ class ModuleHelper extends EntityHelper {
         return false;
     }
 
+    public function findUserModule($userId) {
+        if (!isset($this->module)) {
+            throw new Exception("Brak zdefiniowanej nazwy modułu.");
+        }
+
+        $moduleId = $this->instanceCache()->getModuleIdByName($this->module);
+
+        $queryBuilder = $this->instance()->createQueryBuilder();
+        $queryBuilder
+            ->select('um')
+            ->from('GitboxCoreBundle:UserModules', 'um')
+            ->where('um.idUser = :user_id AND um.idModule = :module_id')
+            ->setParameters(array(
+                'user_id' => $userId,
+                'module_id' => $moduleId
+            ));
+
+        try {
+            return $queryBuilder->getQuery()->getSingleResult();
+        } catch (NoResultException $e) {
+            return false;
+        }
+    }
+
     /**
      * Sprawdza czy podany użytkownik posiada aktywowany moduł
      *

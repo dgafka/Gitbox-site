@@ -101,7 +101,7 @@
     </div>
 
     {# USER SIDEBAR #}
-    {% include "GitboxCoreBundle:UserSidebar:render.html.twig" %}
+    {% render controller("GitboxCoreBundle:UserSidebar:render", {'user': user}) %}
 
     {# POST REMOVE MODAL #}
     <div id="postRemoveModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="postRemove" aria-hidden="true">
