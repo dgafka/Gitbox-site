@@ -1,0 +1,15 @@
+{% extends "::base.html.twig" %}
+
+{% block title %} {{ user.login }} | GitDrive {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/drive.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/blog.css') }}" />
+{% endblock %}
+
+{% block lazy_javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/blog.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/slideCollapser.js') }}"></script>
+{% endblock %}

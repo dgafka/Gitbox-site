@@ -3,6 +3,7 @@ body {
     color: #333333;
 }
 
+
 .main-window {
     /*height: 500px;*/
 }
@@ -107,9 +108,7 @@ a.badge-button:focus {
     max-width: 500px;
 }
 
-.register-form textarea{
-    width: 100%;
-}
+
 
 .centered-form {
     margin: 0px auto;
@@ -321,9 +320,12 @@ a.badge-button:focus {
     font-size: 15px;
 }
 
+<<<<<<< HEAD
 .drive-show-description{
     background-color: #EEE;
     margin: 1px;
     padding: 8px;
     border-radius: 4px;
 }
+=======
+>>>>>>> edebbcbf4f89e38663b2ff2b1e4573716c2e1d1e

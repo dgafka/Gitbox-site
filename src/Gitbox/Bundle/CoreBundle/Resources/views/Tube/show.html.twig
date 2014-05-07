@@ -1,14 +1,24 @@
 {% extends "GitboxCoreBundle:Tube:layout.html.twig" %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/tube.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/video-default.css') }}" />
+    <script type="text/javascript" src="{{ asset('js/jquery-1.8.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jquery.video-ui.js') }}"></script>
+{% endblock %}
 
-{% block body %}
-    <h1>Content</h1>
-    {#<div class="thumbnail">
-        <img src="http://www.aspenfashionweek.com/2012/wp-content/uploads/2011/10/video-Aspen_Fashion_Week_Preview.png" alt="600x400">
-        <div class="caption">
-            <h6><a href="">{{ post.title }}</a></h6>
-            <p>{{ post.description }}</p>
-        </div>
-    </div>
-    </div>#}
-    Zawartość?
+{% block title %}{% endblock %}
+
+{% block content_inner %}
+<div class="videoUiWrapper thumbnail">
+    <video width="640" height="480" id="demo1">
+        <source src="/src/Gitbox/Bundle/CoreBundle/Resources/Uploads/Tube/MOV_0325.mp4" type="video/mp4">
+
+        Your browser does not support the video tag.
+    </video>
+</div>
+
+{#https://github.com/html5-ninja/Bootstrap-video-player-jQuery-plugin#}
+
 {% endblock %}

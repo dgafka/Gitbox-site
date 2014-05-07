@@ -121,6 +121,28 @@ class BlogController extends Controller
 
         $response->send();
 
+        // pobieranie żądania
+        $request = $this->get('request');
+        // inicjalizacja odpowiedzi serwera
+        $response = new Response();
+
+        // aktualizacja licznika odwiedzin na podstawie `ciasteczek`
+        for ($i = 0; $i < count($posts); $i++) {
+            $hitCookie = $request->cookies->get('hit_' . $posts[$i]->getId());
+
+            if (!isset($hitCookie)) {
+                $postsToHit[] = $posts[$i]->getId();
+
+                $cookie = new Cookie('hit_' . $posts[$i]->getId(), true, time() + 3600 * 24);
+                $response->headers->setCookie($cookie);
+            }
+        }
+        if (isset($postsToHit)) {
+            $contentHelper->updateHits($postsToHit);
+        }
+
+        $response->send();
+
         return array(
             'user' => $user,
             'posts' => $posts,
@@ -256,11 +278,12 @@ class BlogController extends Controller
         $hitCookie = $request->cookies->get('hit_' . $postContent->getId());
 
         if (!isset($hitCookie)) {
-            $postContent->setHit($postContent->getHit() + 1);
-            $contentHelper->update($postContent);
 
-            $cookie = new Cookie('hit_' . $postContent->getId(), true, time() + 3600 * 3);
+            $cookie = new Cookie('hit_' . $postContent->getId(), true, time() + 3600 * 24);
             $response->headers->setCookie($cookie);
+
+            $contentHelper->updateOneHits($postContent->getId());
+
         }
 
         $response->send();

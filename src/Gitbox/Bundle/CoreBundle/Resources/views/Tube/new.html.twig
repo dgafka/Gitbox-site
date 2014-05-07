@@ -1,15 +1,21 @@
-{% extends '::base.html.twig' %}
+{% extends "GitboxCoreBundle:Tube:layout.html.twig" %}
 
-{% block body -%}
-    <h1>Content creation</h1>
+{% block title %}{% endblock %}
 
-    Zawartość?
+{% block content_inner %}
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('content') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
+    <div class="row">
+        <div class="col-lg-8">
+
+
+            {{ form(form) }}
+
+
+        </div>
+
+        {# USER SIDEBAR #}
+
+    </div>
+
 {% endblock %}
+

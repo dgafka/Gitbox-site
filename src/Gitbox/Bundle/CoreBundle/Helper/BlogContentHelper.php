@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 
 
+
 /**
  * Class BlogContentHelper
  * @package Gitbox\Bundle\CoreBundle\Helper
