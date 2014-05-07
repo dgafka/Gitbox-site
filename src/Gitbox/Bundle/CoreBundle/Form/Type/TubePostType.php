@@ -15,10 +15,9 @@ class TubePostType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('status')
-            ->add('description')
-            ->add('createDate')
-            ->add('file')
+            ->add('status', 'string')
+            ->add('description', 'string')
+            ->add('filename', 'file')
         ;
     }
     
