@@ -1,0 +1,36 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Panel administratora{% endblock %}
+
+{% block content_inner %}
+<script>
+    $(function() {
+        $( "#tabs" ).tabs({ active: 0, heightStyle: "fill", show: { effect: "blind", duration: 800 } });
+    });
+</script>
+
+<div id="tabs">
+    <ul>
+        <li><a href="#tabs-1">Użytkownicy</a></li>
+        <li><a href="#tabs-2">Ban IP</a></li>
+        <li><a href="#tabs-3">Zarządzanie stroną główną</a></li>
+    </ul>
+    <div id="tabs-1">
+        <div id="userManagment">
+            {% block tab1 %}
+                {% render controller('GitboxCoreBundle:Admin:userManagment', { 'page' : 1}) %}
+            {% endblock %}
+        </div>
+    </div>
+    <div id="tabs-2">
+        {% block tab2 %}
+            {% render controller('GitboxCoreBundle:Admin:ipManagment', { 'page' : 1}) %}
+        {% endblock %}
+    </div>
+    <div id="tabs-3">
+        {% block tab3 %}
+            {% render controller('GitboxCoreBundle:Admin:mainSiteManagment') %}
+        {% endblock %}
+     </div>
+</div>
+{% endblock %}
