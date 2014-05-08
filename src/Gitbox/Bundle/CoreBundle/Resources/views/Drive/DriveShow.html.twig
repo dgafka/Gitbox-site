@@ -34,8 +34,34 @@
                             <th>plik</th>
                             <th>tytuł</th>
                             <th>opis</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td>a.pdf</td>
+                            <td>Aaaaa</td>
+                            <td>lalaala</td>
+                            <td>
+                                <a type="button" class="btn btn-warning" href="{{ path('drive_contener_new') }}">
+                                    <span class="glyphicon glyphicon-trash"></span> edytuj
+                                </a>
+                            </td>
+                            <td>
+                                <a type="button" class="btn btn-danger" href="{{ path('drive_contener_new') }}">
+                                    <span class="glyphicon glyphicon-cog"></span>usuń
+                                </a>
+                            </td>
+
                         </tr>
                     </table>
+                <div class="driveButtonPanel">
+                    <a type="button" class="btn btn-default" href="{{ path('drive_contener_new') }}">
+                        Dodaj kontener
+                    </a>
+                    <a type="button" class="btn btn-default" href="{{ path('drive_item_new') }}">
+                        Dodaj element
+                    </a>
+                </div>
 
             {% endblock %}
         </div>

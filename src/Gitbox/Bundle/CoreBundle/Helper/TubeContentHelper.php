@@ -43,9 +43,9 @@ class TubeContentHelper extends ContentHelper {
         $queryBuilder = $this->instance()->createQueryBuilder();
 
 	    $queryBuilder
-		    ->select('a')
+		    ->select('c')
 		    ->from('GitboxCoreBundle:Content', 'c')
-		    ->innerJoin('GitboxCoreBundle:Attachment', 'a', 'WITH', 'a.idContent = c.id')
+		    /*->innerJoin('GitboxCoreBundle:Attachment', 'a', 'WITH', 'a.idContent = c.id')*/
 		    ->innerJoin('GitboxCoreBundle:Menu', 'm', 'WITH','m.id = c.idMenu')
 		    ->where('m.idUser = :userId')
 		    ->andWhere('m.idModule = :moduleId')
@@ -112,5 +112,12 @@ class TubeContentHelper extends ContentHelper {
 
             return $object;
 
+    }
+    public function findIdMenuByName($name) {
+        if (!isset($this->module)) {
+            throw new Exception("Nie zainicjalizowano instancji.");
+        }
+        $gitTubeId = $this->instanceCache()->getModuleIdByName($name);
+        return $gitTubeId;
     }
 }

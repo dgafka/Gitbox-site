@@ -58,7 +58,7 @@ class TubeController extends Controller
 
 	    $posts = $contentHelper->getContents($login);
 
-//        print_r($posts[1]);
+
         return array('user' => $user, 'posts' => $posts);
     }
 
@@ -85,10 +85,42 @@ class TubeController extends Controller
         //$form = $this->createForm(new TubePostType(), $newAttachment, array('csrf_protection' => true));
         //Tu wrzucam generowanie formularza bo wywala błąd na ścieżkę do TubePostType wtf?
         $form = $this->createFormBuilder($newContent)
-            ->add('title', 'text')
-            ->add('description', 'text')
-            ->add('header', 'file')
-            ->add('save', 'submit')
+            ->add('title', 'text', array(
+                'label'  => 'Tytuł',
+                'attr'=> array (
+                    'class'       => 'form-control',
+                    'placeholder' => ''
+                ),
+                'label_attr'    => array(
+                    'class'     => 'control-label'
+                ),
+                'required'     => true,
+                'max_length'   => 50,
+                'trim'         => true,
+            ))
+            ->add('description', 'text', array(
+                'label'  => 'Opis',
+                'attr'=> array (
+                    'class'       => 'form-control',
+                    'placeholder' => ''
+                ),
+                'label_attr'    => array(
+                    'class'     => 'control-label'
+                ),
+                'required'     => true,
+                'max_length'   => 150,
+                'trim'         => true,
+            ))
+            ->add('header', 'file', array(
+                'label' => 'Dodaj film',
+
+            ))
+            ->add('save', 'submit', array(
+                'label'  => 'Zapisz',
+                'attr'=> array (
+                    'class' => 'btn btn-default'
+                )
+            ))
             ->getForm();
         $form->handleRequest($request);
 
@@ -102,27 +134,13 @@ class TubeController extends Controller
             $newContent->setIdUser($user->getId());
             $newContent->setCreateDate(new \DateTime('now'));
             $newContent->setLastModificationDate(new \DateTime('now'));
-            $newContent->setIdMenu($repository->findOneByTitle('GitTube'));
+            $newContent->setIdMenu($repository->findOneByTitle('GitTube '.$login));
             $newContent->setStatus('A');
             $newContent->setHit(5);
             $newContent->setType('1');
-//iduser, idmenu, status, title, header->file, description,
-//createdate, hit, lastModDate,type, id_category,
+            //$newContent->setIdCategory(1);
 
-            //$newAttachment->setFilename($contentHelper->getFilename($request));
-
-
-            /*$fs = new Filesystem();
-            if (!$fs->exists('/src/Gitbox/Bundle/CoreBundle/Resources/Uploads/Tube/'.%login))
-            {
-                try {
-                    $fs->mkdir('/src/Gitbox/Bundle/CoreBundle/Resources/Uploads/Tube/'.$login);
-                } catch (IOExceptionInterface $e) {
-                    echo "An error occurred while creating your directory at ".$e->getPath();
-                }
-            }*/
-            $strId = __ToString($user->$this->getId());
-            $dir =  __DIR__.'/../../../../../web/uploads/tube/'.$strId.'/';
+            $dir =  __DIR__.'/../../../../../web/uploads/tube/'.$user->getId().'/';
             $file = $form['header']->getData();
 
             $extension = $file->guessExtension();
@@ -130,31 +148,28 @@ class TubeController extends Controller
                 // extension cannot be guessed
                 $extension = 'bin';
             }
-            $filename = rand(1, 99999).'.'.$extension;
+            $filename = uniqid();
             $file->move($dir, $filename);
-            $dir = $user->$this->getId()->toString().'/'.$filename;
-            $newAttachment->setFilename($filename);
-            //$newAttachment->setMime($extension);
-            $newContent->setHeader($dir);
+            $newContent->setHeader($filename);
 
             $em->persist($newContent);
             $em->flush();
 
+            //id_content,status,filename,title,description,create_date,mime
+            $newAttachment->setFilename($newContent->getHeader());
+            $newAttachment->setMime($extension);
             $newAttachment->setCreateDate($newContent->getCreateDate());
             $newAttachment->setDescription($newContent->getDescription());
             $newAttachment->setTitle($newContent->getTitle());
             $newAttachment->setStatus($newContent->getStatus());
-            //$newAttachment->setIdContent($newContent);
+            $newAttachment->setIdContent($newContent);
 
-            //$newContent = $contentHelper->insertIntoContent($newContent);
-            //$newAttachment->setIdContent($newContent->getId());
-            //$contentHelper->insertIntoAttachment($newAttachment);
+            $em->persist($newAttachment);
+            $em->flush();
 
             // inicjalizacja flash baga
             $session = $this->container->get('session');
             $session->getFlashBag()->add('success', 'Dodano wpis <b>' . $newAttachment->getFilename() . '</b>');
-
-
 
             return $this->redirect(
                 $this->generateUrl('tube_new_file', array(
