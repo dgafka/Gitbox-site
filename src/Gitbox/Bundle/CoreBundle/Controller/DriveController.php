@@ -14,26 +14,8 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class DriveController extends Controller
 {
+  
     /**
-     * Zwraca informację o uprawnieniach użytkownika.
-     *
-     * @param $login
-     * @return mixed
-     */
-    private function getAccess($login) {
-        $permissionsHelper = $this->container->get('permissions_helper');
-
-        $hasAccess = $permissionsHelper->checkPermission($login);
-
-        return $hasAccess;
-    }
-
-
-
-    /**
-     * Walidacja poprawności URL-a. <br />
-     * Zwraca dane użytkownika z bazy, w przypadku gdy istnieje użytkownik o podanej nazwie oraz gdy posiada aktywowany moduł.
-     *
      * @param $login
      * @return mixed
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
@@ -54,22 +36,6 @@ class DriveController extends Controller
         return $user;
     }
 
-    private function checkAccess($login) {
-        $hasAccess = $this->getAccess($login);
-
-        if (!$hasAccess) {
-            $session = $this->container->get('session');
-            $userId = $session->get('userId');
-
-            if (!isset($userId)) {
-                throw $this->createNotFoundException('Zaloguj się, aby mieć dostęp do tej aktywności.');
-            }
-
-            throw $this->createNotFoundException('Nie masz dostępu do tej aktywności.');
-        }
-
-        return $hasAccess;
-    }
 
     private function checkUser() {
         $session = $this->container->get('session');
@@ -128,10 +94,8 @@ class DriveController extends Controller
      */
     public function NewDriveContenerAction()
     {
-        // walidacja dostępu
         $user=$this->checkUser();
 
-        // utworzenie instancji wpisu
         $xContent = new Content();
         $form = $this->createForm(new DriveElementType());
         return array(
