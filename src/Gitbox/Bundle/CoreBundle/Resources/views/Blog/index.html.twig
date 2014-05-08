@@ -9,7 +9,7 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('js/disqusCounter.js') }}"></script>
+    {% include "GitboxCoreBundle:Comments:disqusCounter.html.twig" %}
 {% endblock %}
 
 {% block content_inner %}
@@ -98,7 +98,7 @@
                     <div class="comments-link-container" title="Skomentuj „{{ post.title }}”">
                         <h5 style="display: inline-block;">
                             <a class="comments-link no-decoration"
-                                href="{{ path('user_show_post', {'login': user.login, 'id': post.id}) }}#comments"
+                                href="{{ path('user_show_post', {'login': user.login, 'id': post.id}) }}#comments-content"
                                 data-disqus-identifier="{{ 'gitblog/' ~ user.login ~ '/' ~ post.id }}">
                                 {# ILOŚC KOMENTARZY `Komentarze <span class="badge">{num}</span>` #}
                             </a>
