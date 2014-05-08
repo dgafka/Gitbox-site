@@ -1,0 +1,1 @@
+UPDATE user_group set description = 'Użytkownik' WHERE permissions = 1;

@@ -53,6 +53,7 @@ class AdminController extends Controller
 		    $user['status']      = $result->getStatus();
 		    $user['email']       = $result->getEmail();
 		    $user['admin_level'] = $result->getIdGroup()->getPermissions();
+		    $user['admin_type']  = $result->getIdGroup()->getDescription();
 		    $user['ip']          = $result->getIdDescription()->getIp();
 			$user['ban_date']    = is_null($result->getIdDescription()->getBanDate()) ? '' : $result->getIdDescription()->getBanDate()->format('Y-m-d H:i:s');
 		    $user['registration_date'] = $result->getIdDescription()->getRegistrationDate()->format('Y-m-d H:i:s');
@@ -94,7 +95,7 @@ class AdminController extends Controller
 	 * Zmienia status użytkownika
 	 * @param $id
 	 * @param $status
-	 * @Route("/admin/userManagment/changestatus/{id}/{status}", name="admin_managment_status")
+	 * @Route("/admin/userManagment/change_status/{id}/{status}", name="admin_managment_status")
 	 * @return Response
 	 * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
 	 */
@@ -119,7 +120,7 @@ class AdminController extends Controller
 	/** Zmienia poziom administratora
 	 * @param $id
 	 * @param $permission
-	 * @Route("/admin/userManagment/changestatus/{id}/{permission}", name="admin_managment_permission")
+	 * @Route("/admin/userManagment/change_permission/{id}/{permission}", name="admin_managment_permission")
 	 * @return Response
 	 * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
 	 */
@@ -143,7 +144,7 @@ class AdminController extends Controller
 	/** usuwa użytkownka
 	 * @param $id
 	 * @return Response
-	 * @Route("/admin/userManagment/changestatus/{id}", name="admin_managment_delete")
+	 * @Route("/admin/userManagment/change_delete/{id}", name="admin_managment_delete")
 	 * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
 	 */
 	public function deleteUser($id) {
