@@ -39,13 +39,13 @@
 
     height: 80px;
 
+
 }
 
 .prof_info{
-    width: 120px;
+    width: 70px;
     padding-left: 5px;
     padding-top: -2px;
-    height: 100%;
     float: left;
 }
 
@@ -57,4 +57,51 @@
 .us_menus{
     margin-left: 10px;
     margin-top: -10px;
+}
+
+.menu-panel ul
+{
+    list-style-type: none;
+    margin-left: 0;
+}
+
+
+
+.menu-panel{
+    margin-top: 20px;
+    padding-left: 0;
+    font-size: 18px;
+}
+
+
+img{
+
+}
+
+@media screen and (max-width: 500px)  {
+    #gitblog-logo{
+        display: none;
+    }
+
+    .mainBadge{
+        width: 100%;
+        height: auto;
+        background-color: #EEE;
+        margin: 1px;
+        padding: 10px;
+        text-align: center;
+        min-width: 100px;
+    }
+
+    .prof_info{
+        float: none;
+        text-align: center;
+    }
+
+    .avatar-box-badge{
+        float: none;
+        text-align: center;
+    }
+
+
 }

@@ -13,11 +13,19 @@
                     {%   include "GitboxCoreBundle:Drive:userDriveBadge.html.twig" %}
                 {% endblock %}
             </div>
-            <div>{% block drive_menu %}Menu{% endblock %}</div>
+
+            <div class="menu-panel">{% block menu_panel %}
+                    <ul>
+                    {% for menu in menus%}
+                        <li><span class="glyphicon glyphicon-folder-close"></span> {{ menu.title }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endblock %}
+            </div>
+
 
         </div>
         <div class="col-md-8 col-sm-6 col-xs-6">{% block drive_r_panel %}
-                    <div>{{ menus.login}}</div>
                     <h2>Tytuł</h2>
                     <div class="drive-show-description">
                         opis opis opis opis

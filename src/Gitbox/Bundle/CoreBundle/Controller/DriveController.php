@@ -154,17 +154,14 @@ class DriveController extends Controller
         $request = $this->get('request');
 
         $menus = $contentHelper->getMenuZero($login, $request);
-        $xmenu = new Menu();
-        $xmenu= $menus['0'];
-        $userek=$xmenu->getIdUser();
-        $lm = sizeof($menus);
+
 
         $userHelper = $this->container->get('user_helper');
         $user = $userHelper->findByLogin($login);
         $form = $this->createForm(new DriveElementType());
         return array(
             'user' => $user,
-            'menus' => $userek
+            'menus' => $menus
         );
     }
 
