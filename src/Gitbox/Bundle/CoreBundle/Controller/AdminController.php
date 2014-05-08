@@ -111,7 +111,7 @@ class AdminController extends Controller
 		$helper->changeStatus($id, $status);
 
 
-		$responseArray = array('answer' => 'Status został zmieniony.');
+		$responseArray = array('answer' => 'Status został zmieniony. Odświerz stronę, aby zobaczyć zmiany.');
 		$responseArray = json_encode($responseArray);
 		return new Response($responseArray, 200, array('Content-Type'=>'application/json'));
 
@@ -135,7 +135,7 @@ class AdminController extends Controller
 		$helper  = $this->container->get('user_helper');
 		$helper->changePermission($id, $permission);
 
-		$responseArray = array('answer' => 'Dostęp został zmieniony.');
+		$responseArray = array('answer' => 'Dostęp został zmieniony. Odświerz stronę, aby zobaczyć zmiany.');
 		$responseArray = json_encode($responseArray);
 		return new Response($responseArray, 200, array('Content-Type'=>'application/json'));
 
@@ -158,7 +158,7 @@ class AdminController extends Controller
 		$helper  = $this->container->get('user_helper');
 		$helper->remove($id);
 
-		$responseArray = array('answer' => 'Użytkownik został usunięty.');
+		$responseArray = array('answer' => 'Użytkownik został usunięty. Odświerz stronę, aby zobaczyć zmiany.');
 		$responseArray = json_encode($responseArray);
 		return new Response($responseArray, 200, array('Content-Type'=>'application/json'));
 
