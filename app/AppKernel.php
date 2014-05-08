@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+            new Knp\Bundle\DisqusBundle\KnpDisqusBundle(),
             new Gitbox\Bundle\CoreBundle\GitboxCoreBundle()
         );
 

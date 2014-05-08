@@ -27,8 +27,44 @@ class PermissionsHelper {
 		}
 
 		return false;
-
 	}
 
+	/** Sprawdza czy zalogowany użytkownik jest adminem
+	 * @return bool
+	 */
+	public function isAdmin() {
+
+		if((int)strtolower(trim($this->session->get('permission'))) >= 2) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/** Sprawdza czy zalogowany użytkownik jest głównym adminem
+	 * @return bool
+	 */
+	public function isMainAdmin() {
+		if(!$this->isLogged()) {
+			return false;
+		}
+
+		if((int)strtolower(trim($this->session->get('permission'))) > 2) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Czy użytkownik jest zalogowany
+	 * @return bool
+	 */
+	public function isLogged() {
+		if($this->session->get('username')) {
+			return true;
+		}
+		return false;
+	}
 
 } 

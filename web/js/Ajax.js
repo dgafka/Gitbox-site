@@ -1,4 +1,4 @@
-var Ajax = function() {
+var Ajax = function(dataType) {
 
     this.successCallBack = {};
 
@@ -7,7 +7,7 @@ var Ajax = function() {
             url: url,
             context: this,
             type: "GET",
-            dataType: "json",
+            dataType: typeof dataType === "undefined" ? 'json' : dataType,
             success: function(data) {
                 this.successCallBack(data);
             },

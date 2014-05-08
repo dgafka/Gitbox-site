@@ -51,6 +51,52 @@ class DriveContentHelper extends ContentHelper implements PaginatorAwareInterfac
     }
 
     /**
+     * Pobieranie menu
+     *
+     * @param $userLogin
+     * @param Request $request
+     *
+     * @return array | null
+     *
+     * @throws Exception
+     */
+    public function getMenuZero($userLogin,  Request & $request = null) {
+        if (!isset($this->module)) {
+            throw new Exception("Nie zainicjalizowano instancji.");
+        }
+
+        $userId = $this->instanceCache()->getUserIdByLogin($userLogin);
+        $moduleId = $this->instanceCache()->getModuleIdByName($this->module);
+
+        $queryBuilder = $this->instance()->createQueryBuilder();
+
+        $queryBuilder
+            ->select('c')
+            ->from('GitboxCoreBundle:Menu', 'c')
+            ->where('c.idUser = :user_id AND c.idModule = :module_id')
+            ->setParameters(array(
+                'user_id' => $userId,
+                'module_id' => $moduleId
+            ));
+
+        if ($request instanceof Request) {
+            $query = $queryBuilder->getQuery()->getResult();
+
+            $posts = $query;
+
+            return $posts;
+        } else {
+            try {
+                return $queryBuilder->getQuery()->getResult();
+            } catch (NoResultException $e) {
+                return null;
+            }
+        }
+    }
+
+
+
+    /**
      * Pobieranie contentow
      *
      * @param $userLogin
@@ -81,10 +127,10 @@ class DriveContentHelper extends ContentHelper implements PaginatorAwareInterfac
                 'module_id' => $moduleId
             ));
 
-        if ($perPage > 0 && $request instanceof Request) {
+        if ( $request instanceof Request) {
             $query = $queryBuilder->getQuery();
 
-            $posts = $this->paginator->paginate($query, $request->query->get('page', 1), $perPage);
+            $posts = $query;
 
             return $posts;
         } else {

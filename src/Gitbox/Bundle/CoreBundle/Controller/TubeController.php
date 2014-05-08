@@ -172,7 +172,7 @@ class TubeController extends Controller
             $session->getFlashBag()->add('success', 'Dodano wpis <b>' . $newAttachment->getFilename() . '</b>');
 
             return $this->redirect(
-                $this->generateUrl('tube_new_file', array(
+                $this->generateUrl('tube_index', array(
                     //'login' => $user->getLogin(),
                     'login' => $login
                     //'id' => $newContent->getId()

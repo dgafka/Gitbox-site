@@ -24,7 +24,9 @@
         "excelwebzone/recaptcha-bundle": "v1.0.0",
         "braincrafted/bootstrap-bundle": "~2.0",
         "knplabs/knp-components": "1.2.5",
-        "knplabs/knp-paginator-bundle": "~2.4"
+        "knplabs/knp-paginator-bundle": "~2.4",
+        "kriswallsmith/buzz": "~0.10",
+        "knplabs/knp-disqus-bundle": "1.1.*@dev"
     },
     "scripts": {
         "post-install-cmd": [

@@ -109,16 +109,16 @@ class UserAccountHelper extends EntityHelper implements CRUDHelper {
 		if($object instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount) {
 			$userAccount = $this->instance()->remove($object);
 		}else if(is_int($object)) {
-		    /**
-		     * @var $queryBuilder QueryBuilder
-		     */
-		    $queryBuilder = $this->instance()->createQueryBuilder();
-		    $queryBuilder
-			    ->delete('\Gitbox\Bundle\CoreBundle\Entity\UserAccount', 'ua')
+			/**
+			 * @var $queryBuilder QueryBuilder
+			 */
+			$queryBuilder = $this->instance()->createQueryBuilder();
+			$queryBuilder
+				->delete('\Gitbox\Bundle\CoreBundle\Entity\UserAccount', 'ua')
 				->where('ua.id = :id')
-			    ->setParameter('id', $object)
-			    ->getQuery()
-			    ->execute();
+				->setParameter('id', $object)
+				->getQuery()
+				->execute();
 		}else {
 			throw new Exception("Błąd podczas usuwania obiektu.");
 		}
@@ -161,7 +161,7 @@ class UserAccountHelper extends EntityHelper implements CRUDHelper {
 		return $object;
 	}
 
-	/** Wyszukuje użytkownika po loginie
+	/** Wyszukuje użytkowników po części loginu
 	 * @param $loginPart
 	 * @return array
 	 */
@@ -182,4 +182,67 @@ class UserAccountHelper extends EntityHelper implements CRUDHelper {
 
 		return $results;
 	}
+
+	/** Zwraca wszystkich userów w danym przedziale
+	 * @param $offset
+	 * @param $limit
+	 * @return mixed
+	 */
+	public function getUsersByLimit($offset, $limit) {
+		/**
+		 * @var $queryBuilder \Doctrine\ORM\QueryBuilder
+		 */
+		$queryBuilder = $this->instance()->createQueryBuilder();
+
+		$results = $queryBuilder
+			->select('ua')
+			->from('GitboxCoreBundle:UserAccount', 'ua')
+			->setFirstResult($offset)
+			->setMaxResults($limit)
+			->orderBy('ua.login')
+			->getQuery()
+			->execute();
+
+		return $results;
+	}
+
+
+	/** Zwraca ilość użytkowników w bazie
+	 * @return mixed
+	 */
+	public function getUsersAmount() {
+		/**
+		 * @var $queryBuilder \Doctrine\ORM\QueryBuilder
+		 */
+		$queryBuilder = $this->instance()->createQueryBuilder();
+
+		$amount = $queryBuilder
+			->select('count(ua.id)')
+			->from('GitboxCoreBundle:UserAccount', 'ua')
+			->getQuery()
+			->execute();
+
+		return $amount;
+	}
+
+	/** Zmienia status użytkownika
+	 * @param $id
+	 * @param $status
+	 */
+	public function changeStatus($id, $status) {
+		$user = $this->find($id)->setStatus($status);
+		$this->update($user);
+	}
+
+	/** Zmienia poziom adminsistratora
+	 * @param $id
+	 * @param $permission
+	 */
+	public function changePermission($id, $permission) {
+		$user = $this->find($id);
+		$user->getIdGroup()->setPermissions($permission);
+
+		$this->update($user);
+	}
+
 } 

@@ -25,6 +25,9 @@ services:
     module_helper:
         class:        "%module_helper.class%"
         arguments:    ["@doctrine.orm.entity_manager", "@cache_helper"]
+    drive_content_helper:
+        class:        Gitbox\Bundle\CoreBundle\Helper\DriveContentHelper
+        arguments:    ["@doctrine.orm.entity_manager", "@cache_helper"]
     blog_content_helper:
         class:        Gitbox\Bundle\CoreBundle\Helper\BlogContentHelper
         arguments:    ["@doctrine.orm.entity_manager", "@cache_helper"]

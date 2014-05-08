@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "c80bcbf3e9bce9d1d9228e6ce774fb0d",
+    "hash": "675d3184fc58f48cc937337b0e1fd8dc",
     "packages": [
         {
             "name": "braincrafted/bootstrap-bundle",
@@ -891,6 +891,62 @@
             "time": "2014-01-09 16:23:31"
         },
         {
+            "name": "knplabs/knp-disqus-bundle",
+            "version": "dev-master",
+            "target-dir": "Knp/Bundle/DisqusBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/KnpLabs/KnpDisqusBundle.git",
+                "reference": "1560b148a8b4e55445aed561a0dfcd711080f53c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/KnpLabs/KnpDisqusBundle/zipball/1560b148a8b4e55445aed561a0dfcd711080f53c",
+                "reference": "1560b148a8b4e55445aed561a0dfcd711080f53c",
+                "shasum": ""
+            },
+            "require": {
+                "kriswallsmith/buzz": "~0.7",
+                "php": ">=5.3.3",
+                "symfony/framework-bundle": "~2.0"
+            },
+            "require-dev": {
+                "symfony/yaml": "*"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Knp\\Bundle\\DisqusBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "KnpLabs Team",
+                    "homepage": "http://knplabs.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://github.com/KnpLabs/KnpDisqusBundle/contributors"
+                }
+            ],
+            "homepage": "http://github.com/KnpLabs/KnpDisqusBundle",
+            "keywords": [
+                "comments",
+                "disqus",
+                "forum"
+            ],
+            "time": "2013-12-23 22:16:02"
+        },
+        {
             "name": "knplabs/knp-paginator-bundle",
             "version": "2.4.0",
             "target-dir": "Knp/Bundle/PaginatorBundle",
@@ -1019,6 +1075,54 @@
                 "minification"
             ],
             "time": "2013-07-19 00:03:27"
+        },
+        {
+            "name": "kriswallsmith/buzz",
+            "version": "v0.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kriswallsmith/Buzz.git",
+                "reference": "759432d66387e3433d3b06cb6f773b97225b9b17"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kriswallsmith/Buzz/zipball/759432d66387e3433d3b06cb6f773b97225b9b17",
+                "reference": "759432d66387e3433d3b06cb6f773b97225b9b17",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "suggest": {
+                "ext-curl": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Buzz": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kris Wallsmith",
+                    "email": "kris.wallsmith@gmail.com",
+                    "homepage": "http://kriswallsmith.net/"
+                }
+            ],
+            "description": "Lightweight HTTP client",
+            "homepage": "https://github.com/kriswallsmith/Buzz",
+            "keywords": [
+                "curl",
+                "http client"
+            ],
+            "time": "2013-05-19 03:41:15"
         },
         {
             "name": "monolog/monolog",
@@ -1283,25 +1387,28 @@
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v5.1.0",
+            "version": "v5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "748c01c1144713ac0118396935d10b6ceec91b68"
+                "reference": "043e336b871f17a117f76ef8e190eddfc04c8d48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/748c01c1144713ac0118396935d10b6ceec91b68",
-                "reference": "748c01c1144713ac0118396935d10b6ceec91b68",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/043e336b871f17a117f76ef8e190eddfc04c8d48",
+                "reference": "043e336b871f17a117f76ef8e190eddfc04c8d48",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.4"
             },
+            "require-dev": {
+                "mockery/mockery": "~0.9.1"
+            },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.1-dev"
+                    "dev-master": "5.2-dev"
                 }
             },
             "autoload": {
@@ -1330,7 +1437,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2014-03-18 09:03:27"
+            "time": "2014-05-08 08:11:19"
         },
         {
             "name": "symfony/assetic-bundle",
@@ -1856,7 +1963,8 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "twbs/bootstrap": 20
+        "twbs/bootstrap": 20,
+        "knplabs/knp-disqus-bundle": 20
     },
     "platform": {
         "php": ">=5.3.3"
