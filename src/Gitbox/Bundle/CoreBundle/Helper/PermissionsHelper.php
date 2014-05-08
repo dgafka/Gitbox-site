@@ -33,6 +33,9 @@ class PermissionsHelper {
 	 * @return bool
 	 */
 	public function isAdmin() {
+		if(!$this->isLogged()) {
+			return false;
+		}
 
 		if((int)strtolower(trim($this->session->get('permission'))) >= 2) {
 			return true;

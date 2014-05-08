@@ -14,9 +14,11 @@
                 <li class="{% if(app.request.attributes.get('_route') == 'user_profile_index') %} active {% endif %}"><a href="{{ path('user_profile_index', {'login' : login}) }}"><i class="fa fa-user"></i> Profil</a></li>
                 <li class="{% if(app.request.attributes.get('_route') == 'user_profile_modules') %} active {% endif %}"><a href="{{ path('user_profile_modules', {'login' : login}) }}"><i class="fa fa-home"></i> Moduły</a></li>
                 {% if isOwner == true %}
-                <li class="{% if(app.request.attributes.get('_route') == 'user_profile_settings') %} active {% endif %}"><a href="{{ path('user_profile_settings', {'login' : login}) }}"><i class="fa fa-adn"></i> Ustawienia</a></li>
+                    <li class="{% if(app.request.attributes.get('_route') == 'user_profile_settings') %} active {% endif %}"><a href="{{ path('user_profile_settings', {'login' : login}) }}"><i class="fa fa-adn"></i> Ustawienia</a></li>
+                    {% if isAdmin == true %}
+                        <li class="{% if(app.request.attributes.get('_route') == 'user_profile_search') %} active {% endif %}"><a href="{{ path('admin_panel') }}"><i class="glyphicon glyphicon-eye-open"></i> Panel adminstratora</a></li>
+                    {% endif %}
                 {% endif %}
-                <li class="{% if(app.request.attributes.get('_route') == 'user_profile_search') %} active {% endif %}"><a href="{{ path('user_profile_search', {'login' : login}) }}"><i class="glyphicon glyphicon-search"></i> Wyszukaj</a></li>
             </ul>
         </div>
         <div class="col-md-10">

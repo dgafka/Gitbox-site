@@ -32,8 +32,9 @@ class UserProfileController extends Controller
 		 */
 		$permissionHelper = $this->container->get('permissions_helper');
 		$owner            = $permissionHelper->checkPermission($login);
+		$admin            = $permissionHelper->isAdmin();
 
-		return array('login' => $user->getLogin(), 'email' => $user->getEmail(), 'userGroup' => $user->getIdGroup()->getDescription(),'description' => $userDescription->getContent(), 'registerDate' => $userDescription->getRegistrationDate()->format('Y-m-d H:i:s'), 'isOwner' => $owner);
+		return array('login' => $user->getLogin(), 'email' => $user->getEmail(), 'userGroup' => $user->getIdGroup()->getDescription(),'description' => $userDescription->getContent(), 'registerDate' => $userDescription->getRegistrationDate()->format('Y-m-d H:i:s'), 'isOwner' => $owner, 'isAdmin' => $admin);
 	}
 
     /**
@@ -58,9 +59,9 @@ class UserProfileController extends Controller
 	     */
 	    $permissionHelper = $this->container->get('permissions_helper');
 		$owner            = $permissionHelper->checkPermission($login);
+	    $admin            = $permissionHelper->isAdmin();
 
-
-	    return array('login' => $user->getLogin(), 'email' => $user->getEmail(), 'module' => $availableModules, 'isOwner' => $owner);
+	    return array('login' => $user->getLogin(), 'email' => $user->getEmail(), 'module' => $availableModules, 'isOwner' => $owner, 'isAdmin' => $admin);
     }
 
     /**
@@ -75,8 +76,10 @@ class UserProfileController extends Controller
 	     */
 	    $permissionHelper = $this->container->get('permissions_helper');
 	    $owner            = $permissionHelper->checkPermission($login);
+	    $admin            = $permissionHelper->isAdmin();
+
 		if($owner) {
-			return array('login' => $user->getLogin(),'email' => $user->getEmail(), 'isOwner' => $owner);
+			return array('login' => $user->getLogin(),'email' => $user->getEmail(), 'isOwner' => $owner, 'isAdmin' =>$admin);
 		}else {
             throw $this->createNotFoundException('Zaloguj się, aby mieć dostęp do tej aktywności.');
 		}
@@ -100,6 +103,7 @@ class UserProfileController extends Controller
 		$owner            = $permissionHelper->checkPermission($login);
 		if($owner) {
 
+			$admin            = $permissionHelper->isAdmin();
 			$userAccount     = new UserAccount();
 			$form = $this->createForm(new \Gitbox\Bundle\CoreBundle\Form\Type\UserSettingsMainType(), $userAccount);
 			$form->handleRequest($request);
@@ -118,7 +122,7 @@ class UserProfileController extends Controller
 				);
 			}
 
-			return array('login' => $user->getLogin(),'email' => $user->getEmail(), 'isOwner' => $owner, 'form' => $form->createView());
+			return array('login' => $user->getLogin(),'email' => $user->getEmail(), 'isOwner' => $owner, 'form' => $form->createView(), 'isAdmin' => $admin);
 		}else {
             throw $this->createNotFoundException('Zaloguj się, aby mieć dostęp do tej aktywności.');
 		}
@@ -142,6 +146,7 @@ class UserProfileController extends Controller
 		$owner            = $permissionHelper->checkPermission($login);
 
 		if($owner) {
+			$admin            = $permissionHelper->isAdmin();
 			$userDescription = $user->getIdDescription();
 			$form = $this->createForm(new \Gitbox\Bundle\CoreBundle\Form\Type\UserSettingsDescriptionType(), $userDescription);
 			$form->handleRequest($request);
@@ -157,18 +162,10 @@ class UserProfileController extends Controller
 				);
 			}
 
-			return array('login' => $user->getLogin(),'email' => $user->getEmail(), 'isOwner' => $owner, 'form' => $form->createView());
+			return array('login' => $user->getLogin(),'email' => $user->getEmail(), 'isOwner' => $owner, 'form' => $form->createView(), 'isAdmin' => $admin);
 		}else {
             throw $this->createNotFoundException('Zaloguj się, aby mieć dostęp do tej aktywności.');
 		}
-	}
-
-	/**
-	 * @Route("/user/{login}/search", name="user_profile_search")
-	 * @Template()
-	 */
-	public function searchAction($login) {
-		return array('user' => $this->getUserByLogin($login));
 	}
 
 	/** Aktywuje modul

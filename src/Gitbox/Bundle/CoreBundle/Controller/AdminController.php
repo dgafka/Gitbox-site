@@ -13,7 +13,7 @@ class AdminController extends Controller
 {
 
 	/** Główny panel administratora
-	 * @Route("/admin")
+	 * @Route("/admin", name="admin_panel")
 	 * @Template()
 	 */
 	public function adminAction()
