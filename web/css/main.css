@@ -336,3 +336,12 @@ a.badge-button:focus {
 #selectGlobalSearch {
     width: 150px;
 }
+
+/*Accordin jquery ui fix*/
+.ui-accordion-content.ui-helper-reset.ui-widget-content.ui-corner-bottom.ui-accordion-content-active {
+    height: 100px;
+}
+
+.ui-tabs .ui-tabs-panel {
+    height: auto !important;
+}

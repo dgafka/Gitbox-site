@@ -1,130 +1,128 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}GitBox{% endblock %}</title>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}GitBox{% endblock %}</title>
 
-        {# @TODO - Darek zrobić porządek z assetami(te w dziale head również), bo zacznie robić się śmietnik #}
-        {# @TODO Wyłączyć ja jako osobna templatka i zaincludować w head. Sprawdzić czy śmiga. #}
+    {# @TODO - Darek zrobić porządek z assetami(te w dziale head również), bo zacznie robić się śmietnik #}
+    {# @TODO Wyłączyć ja jako osobna templatka i zaincludować w head. Sprawdzić czy śmiga. #}
 
-        {% block stylesheets %}
-            {# jQuery ui#}
-            <link rel="stylesheet" href="{{ asset('css/jquery/jquery-ui.min.css') }}" />
+    {% block stylesheets %}
+        {# jQuery ui#}
+        <link rel="stylesheet" href="{{ asset('css/jquery/jquery-ui.min.css') }}" />
 
-            {# Bootstrap styles #}
-            <link rel="stylesheet" href="{{ asset('css/bootstrap/bootstrap.min.css') }}" />
+        {# jQuery smoothness#}
+        <link rel="stylesheet" href="{{ asset('css/jquery/jquery-ui-smoothness.css') }}" />
 
-            {# Additionals #}
-            <link rel="stylesheet" href="{{ asset('css/additionals/animate.css') }}" />
-            <link rel="stylesheet" href="{{ asset('css/additionals/font-awesome.css') }}" />
+        {# Bootstrap styles #}
+        <link rel="stylesheet" href="{{ asset('css/bootstrap/bootstrap.min.css') }}" />
 
-            {# Global style #}
-            <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
-        {% endblock %}
-        {% block javascripts %}
-        {% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        {# Additionals #}
+        <link rel="stylesheet" href="{{ asset('css/additionals/animate.css') }}" />
+        <link rel="stylesheet" href="{{ asset('css/additionals/font-awesome.css') }}" />
 
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-        <![endif]-->
-    </head>
-    <body>
-        {# MENU #}
-        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-            <div class="container-fluid">
-                {# Brand and toggle get grouped for better mobile display #}
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="{{ path('home_url') }}"><img id="main_logo" src="{{ asset('images/logo/GitBox_logo.png') }}" alt="GitBox"></a>
-                </div>
+        {# jQuery #}
+        <script type="text/javascript" src="{{ asset('js/jquery/jquery.min.js') }}"></script>
 
-                {# Collect the nav links, forms, and other content for toggling #}
-                <div class="collapse navbar-collapse" id="main-navbar-collapse">
-                    <ul class="nav navbar-nav">
-                        <li class="{% if app.request.attributes.get('_route') == 'features_url' %}active{% endif %}"><a href="{{ path('features_url') }}"><b class="glyphicon glyphicon-eye-open"></b> Odkrywaj możliwości</a></li>
-                        <li class="{% if app.request.attributes.get('_route') == 'help_url' %}active{% endif %}"><a href="{{ path('help_url') }}"><b class="glyphicon glyphicon-question-sign"></b> Pomoc</a></li>
-                        <li class="{% if app.request.attributes.get('_route') == 'about_url' %}active{% endif %}"><a href="{{ path('about_url') }}"><b class="glyphicon glyphicon-fire"></b> O aplikacji</a></li>
-                        <li class="search-engine">
-                            <form role="search" class="navbar-form">
-                                <div class="form-group">
-                                    <select id="selectGlobalSearch">
-                                    </select>
-                                    <button class="btn" data="{{  path('search_global', {"loginPart": "*"}) }}" target="{{ path('user_profile_index', {'login': "*"}) }}"><span class="glyphicon glyphicon-search"></span></button>
-                                </div>
-                            </form>
-                        </li>
-                    </ul>
+        {# jQuery ui #}
+        <script type="text/javascript" src="{{ asset('js/jquery/jquery-ui.min.js') }}"></script>
 
-                    {# LOGIN FORM #}
-                    {% render controller("GitboxCoreBundle:UserAccount:index") %}
-                </div>
-            </div>
-        </nav>
+        {# Global style #}
+        <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
+    {% endblock %}
+    {% block javascripts %}
+    {% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 
-        {# OUTER #}
-        {% block outer %}
-        {% endblock %}
-
-        {# CONTENT #}
-        {% block content %}
-        <div class="container whitened main-window">
-            <div class="jumbojumba">
-                {% if information is defined %}
-                    {%  include 'GitboxCoreBundle:InformationBar:index.html.twig' %}
-                {% endif %}
-                {% block content_inner %}
-                {% endblock %}
-            </div>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+{# MENU #}
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        {# Brand and toggle get grouped for better mobile display #}
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ path('home_url') }}"><img id="main_logo" src="{{ asset('images/logo/GitBox_logo.png') }}" alt="GitBox"></a>
         </div>
-        {% endblock %}
 
-        <a id="back-to-top" href="#" class="btn btn-primary btn-lg back-to-top" role="button"
-           title="Powrót do początku strony" data-toggle="tooltip" data-placement="left">
-            <span class="glyphicon glyphicon-chevron-up"></span>
-        </a>
+        {# Collect the nav links, forms, and other content for toggling #}
+        <div class="collapse navbar-collapse" id="main-navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="{% if app.request.attributes.get('_route') == 'features_url' %}active{% endif %}"><a href="{{ path('features_url') }}"><b class="glyphicon glyphicon-eye-open"></b> Odkrywaj możliwości</a></li>
+                <li class="{% if app.request.attributes.get('_route') == 'help_url' %}active{% endif %}"><a href="{{ path('help_url') }}"><b class="glyphicon glyphicon-question-sign"></b> Pomoc</a></li>
+                <li class="{% if app.request.attributes.get('_route') == 'about_url' %}active{% endif %}"><a href="{{ path('about_url') }}"><b class="glyphicon glyphicon-fire"></b> O aplikacji</a></li>
+                <li class="search-engine">
+                    <form role="search" class="navbar-form">
+                        <div class="form-group">
+                            <select id="selectGlobalSearch">
+                            </select>
+                            <button class="btn" data="{{  path('search_global', {"loginPart": "*"}) }}" target="{{ path('user_profile_index', {'login': "*"}) }}"><span class="glyphicon glyphicon-search"></span></button>
+                        </div>
+                    </form>
+                </li>
+            </ul>
 
-        {# FOOTER #}
-        {#<div class="mastfoot">#}
-            {#<p class="inner">Stopka | <a href="#">GitBox INC</a></p>#}
-        {#</div>#}
+            {# LOGIN FORM #}
+            {% render controller("GitboxCoreBundle:UserAccount:index") %}
+        </div>
+    </div>
+</nav>
 
-        {# Load after DOM document fully loads #}
-        {% block lazy_javascripts %}
+{# OUTER #}
+{% block outer %}
+{% endblock %}
 
-            {# jQuery #}
-            <script type="text/javascript" src="{{ asset('js/jquery/jquery.min.js') }}"></script>
+{# CONTENT #}
+{% block content %}
+    <div class="container whitened main-window">
+        <div class="jumbojumba">
+            {% if information is defined %}
+                {%  include 'GitboxCoreBundle:InformationBar:index.html.twig' %}
+            {% endif %}
+            {% block content_inner %}
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}
 
-            {# jQuery ui #}
-            <script type="text/javascript" src="{{ asset('js/jquery/jquery-ui.min.js') }}"></script>
+<a id="back-to-top" href="#" class="btn btn-primary btn-lg back-to-top" role="button"
+   title="Powrót do początku strony" data-toggle="tooltip" data-placement="left">
+    <span class="glyphicon glyphicon-chevron-up"></span>
+</a>
 
-            {# Combobox #}
-            <script type="text/javascript" src="{{ asset('js/widgets/combobox/combobox.js') }}"></script>
+{# Load after DOM document fully loads #}
+{% block lazy_javascripts %}
 
-            {# Bootstrap scripts #}
-            <script type="text/javascript" src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
+    {# Combobox #}
+    <script type="text/javascript" src="{{ asset('js/widgets/combobox/combobox.js') }}"></script>
 
-            {# Global scripts #}
-            <script type="text/javascript" src="{{ asset('js/main.js') }}"></script>
+    {# Bootstrap scripts #}
+    <script type="text/javascript" src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
 
-            {# Ajax #}
-            <script type="text/javascript" src="{{ asset('js/Ajax.js') }}"></script>
+    {# Global scripts #}
+    <script type="text/javascript" src="{{ asset('js/main.js') }}"></script>
 
-            {# Search class #}
-            <script type="text/javascript" src="{{ asset('js/Search/Search.js') }}"></script>
+    {# Ajax #}
+    <script type="text/javascript" src="{{ asset('js/Ajax.js') }}"></script>
 
-            {# Search Events #}
-            <script type="text/javascript" src="{{ asset('js/Search/searchEvents.js') }}"></script>
+    {# Search class #}
+    <script type="text/javascript" src="{{ asset('js/Search/Search.js') }}"></script>
 
-        {% endblock %}
-    </body>
+    {# Search Events #}
+    <script type="text/javascript" src="{{ asset('js/Search/searchEvents.js') }}"></script>
+
+{% endblock %}
+</body>
 </html>
