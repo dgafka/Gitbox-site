@@ -1,6 +1,6 @@
 <?php
 
-namespace Gitbox\Bundle\CoreBundle\Form;
+namespace Gitbox\Bundle\CoreBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -15,12 +15,45 @@ class TubePostType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('description', 'text')
-            ->add('title', 'text')
-            ->add('filename', 'file')
-            ->add('save', 'submit')
-            ->getForm();
-        ;
+                      ->add('title', 'text', array(
+                          'label'  => 'Tytuł',
+                          'attr'=> array (
+                              'class'       => 'form-control',
+                              'placeholder' => ''
+                          ),
+                          'label_attr'    => array(
+                              'class'     => 'control-label'
+                          ),
+                          'required'     => true,
+                          'max_length'   => 50,
+                          'trim'         => true,
+                      ))
+                      ->add('description', 'text', array(
+                          'label'  => 'Opis',
+                          'attr'=> array (
+                              'class'       => 'form-control',
+                              'placeholder' => ''
+                          ),
+                          'label_attr'    => array(
+                              'class'     => 'control-label'
+                          ),
+                          'required'     => true,
+                          'max_length'   => 150,
+                          'trim'         => true,
+                      ))
+                      ->add('header', 'file', array(
+                          'label' => 'Dodaj film',
+                          'attr' => array(
+                              'maxbytes' => '7'
+                          )
+
+                      ))
+                      ->add('save', 'submit', array(
+                          'label'  => 'Zapisz',
+                          'attr'=> array (
+                              'class' => 'btn btn-default'
+                          )
+                      ));
     }
     
     /**

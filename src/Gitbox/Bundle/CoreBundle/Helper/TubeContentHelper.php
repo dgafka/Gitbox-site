@@ -74,19 +74,22 @@ class TubeContentHelper extends ContentHelper {
             throw new Exception("Nie zainicjalizowano instancji.");
         }
 
+        $userId    = $this->instanceCache()->getUserIdByLogin($userLogin);
+        $gitTubeId = $this->instanceCache()->getModuleIdByName('GitTube');
         $queryBuilder = $this->instance()->createQueryBuilder();
 
         $queryBuilder
-            ->select('c')
+            ->select('a')
             ->from('GitboxCoreBundle:Content', 'c')
-            ->innerJoin('GitboxCoreBundle:UserAccount', 'ua', JOIN::WITH, 'c.idUser = ua.id')
-            ->innerJoin('c.idMenu', 'menu')
-            ->innerJoin('menu.idModule', 'm')
-            ->where('c.id = :id AND ua.login = :login AND m.name = :module')
+            ->innerJoin('GitboxCoreBundle:Attachment', 'a', 'WITH', 'a.idContent = c.id')
+            ->innerJoin('GitboxCoreBundle:Menu', 'm', 'WITH','m.id = c.idMenu')
+            ->where('m.idUser = :userId')
+            ->andWhere('m.idModule = :moduleId')
+            ->andWhere('c.id = :contentId')
             ->setParameters(array(
-                'id' => $id,
-                'login' => $userLogin,
-                'module' => $this->module
+                'userId' => $userId,
+                'moduleId' => $gitTubeId,
+                'contentId' => $id
             ));
 
         try {

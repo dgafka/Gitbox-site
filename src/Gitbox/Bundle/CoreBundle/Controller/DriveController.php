@@ -14,26 +14,8 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class DriveController extends Controller
 {
-    /**
-     * Zwraca informację o uprawnieniach użytkownika.
-     *
-     * @param $login
-     * @return mixed
-     */
-    private function getAccess($login) {
-        $permissionsHelper = $this->container->get('permissions_helper');
-
-        $hasAccess = $permissionsHelper->checkPermission($login);
-
-        return $hasAccess;
-    }
-
-
 
     /**
-     * Walidacja poprawności URL-a. <br />
-     * Zwraca dane użytkownika z bazy, w przypadku gdy istnieje użytkownik o podanej nazwie oraz gdy posiada aktywowany moduł.
-     *
      * @param $login
      * @return mixed
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
@@ -54,38 +36,24 @@ class DriveController extends Controller
         return $user;
     }
 
-    private function checkAccess($login) {
-        $hasAccess = $this->getAccess($login);
+    /**
+     * @return mixed
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    private function userCheckContent(){
+        $userHelper = $this->container->get('user_helper');
+        $drivePermissionHelper = $this->container->get('dp_helper');
+        $username=$drivePermissionHelper->checkUser();
+        $moduleHelper = $this->container->get('module_helper');
+        $moduleHelper->init('GitDrive');
 
-        if (!$hasAccess) {
-            $session = $this->container->get('session');
-            $userId = $session->get('userId');
-
-            if (!isset($userId)) {
-                throw $this->createNotFoundException('Zaloguj się, aby mieć dostęp do tej aktywności.');
-            }
-
-            throw $this->createNotFoundException('Nie masz dostępu do tej aktywności.');
+        if (!isset($username)){
+            throw $this->createNotFoundException('Zaloguj się, aby mieć dostęp do tej aktywności.');
         }
-
-        return $hasAccess;
-    }
-
-    private function checkUser() {
-        $session = $this->container->get('session');
-        $userId = $session->get('userId');
-        $login=$session->get('username');
-
-
-
-            if (!isset($userId)) {
-                throw $this->createNotFoundException('Zaloguj się, aby mieć dostęp do tej aktywności.');
-            }else
-            {
-                $user=$this->validateURL($login);
-            }
-
-            return $user;
+        if (!$moduleHelper->isModuleActivated($username)) {
+            throw $this->createNotFoundException('Ten moduł nie jest włączony na twoim koncie');
+        }
+        return $userHelper->findByLogin($username);;
     }
 
     /**
@@ -109,11 +77,8 @@ class DriveController extends Controller
      */
     public function NewDriveItemAction()
     {
-        // walidacja dostępu
-        $user=$this->checkUser();
 
-        // utworzenie instancji wpisu
-        $xContent = new Content();
+        $user=$this->userCheckContent();
 	$form = $this->createForm(new DriveElementType());
 	 return array(
          'user' => $user,
@@ -128,10 +93,8 @@ class DriveController extends Controller
      */
     public function NewDriveContenerAction()
     {
-        // walidacja dostępu
-        $user=$this->checkUser();
+        $user=$this->userCheckContent();
 
-        // utworzenie instancji wpisu
         $xContent = new Content();
         $form = $this->createForm(new DriveElementType());
         return array(
@@ -173,7 +136,24 @@ class DriveController extends Controller
     {
 
 
-        $user = $this->checkUser();
+        $user=$this->userCheckContent();
+        $form = $this->createForm(new DriveElementType());
+        return array(
+            'form' => $form->createView(),
+            'user' => $user
+
+        );
+    }
+
+    /**
+     * @Route("/edit/drive/contener/{element}")
+     * @Template("GitboxCoreBundle:Drive:NewDriveItem.html.twig")
+     */
+    public function DriveEditContenerAction($element)
+    {
+
+
+        $user=$this->userCheckContent();
         $form = $this->createForm(new DriveElementType());
         return array(
             'form' => $form->createView(),

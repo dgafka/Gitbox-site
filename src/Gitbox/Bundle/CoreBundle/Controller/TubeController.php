@@ -58,8 +58,13 @@ class TubeController extends Controller
 
 	    $posts = $contentHelper->getContents($login);
 
+        $countPost = count($posts);
 
-        return array('user' => $user, 'posts' => $posts);
+        return array(
+            'user' => $user,
+            'posts' => $posts,
+            'countPosts' => $countPost
+        );
     }
 
 
@@ -82,46 +87,9 @@ class TubeController extends Controller
                                     //createdate, hit, lastModDate,type, id_category,
 
         // formularz nowego wpisu
-        //$form = $this->createForm(new TubePostType(), $newAttachment, array('csrf_protection' => true));
+        $form = $this->createForm(new TubePostType(), $newAttachment);
         //Tu wrzucam generowanie formularza bo wywala błąd na ścieżkę do TubePostType wtf?
-        $form = $this->createFormBuilder($newContent)
-            ->add('title', 'text', array(
-                'label'  => 'Tytuł',
-                'attr'=> array (
-                    'class'       => 'form-control',
-                    'placeholder' => ''
-                ),
-                'label_attr'    => array(
-                    'class'     => 'control-label'
-                ),
-                'required'     => true,
-                'max_length'   => 50,
-                'trim'         => true,
-            ))
-            ->add('description', 'text', array(
-                'label'  => 'Opis',
-                'attr'=> array (
-                    'class'       => 'form-control',
-                    'placeholder' => ''
-                ),
-                'label_attr'    => array(
-                    'class'     => 'control-label'
-                ),
-                'required'     => true,
-                'max_length'   => 150,
-                'trim'         => true,
-            ))
-            ->add('header', 'file', array(
-                'label' => 'Dodaj film',
 
-            ))
-            ->add('save', 'submit', array(
-                'label'  => 'Zapisz',
-                'attr'=> array (
-                    'class' => 'btn btn-default'
-                )
-            ))
-            ->getForm();
         $form->handleRequest($request);
 
 
@@ -150,6 +118,10 @@ class TubeController extends Controller
             }
             $filename = uniqid();
             $file->move($dir, $filename);
+
+            /*$fs = new Filesystem();
+            $fs->chmod($filename,0777);*/
+
             $newContent->setHeader($filename);
 
             $em->persist($newContent);
@@ -172,10 +144,9 @@ class TubeController extends Controller
             $session->getFlashBag()->add('success', 'Dodano wpis <b>' . $newAttachment->getFilename() . '</b>');
 
             return $this->redirect(
-                $this->generateUrl('tube_index', array(
-                    //'login' => $user->getLogin(),
-                    'login' => $login
-                    //'id' => $newContent->getId()
+                $this->generateUrl('tube_content_show', array(
+                    'login' => $login,
+                    'id' => $newContent->getId()
                 ))
             );
         }
@@ -187,28 +158,29 @@ class TubeController extends Controller
         );
     }
 
-
-
     /**
      * @Route("user/{login}/tube/{id}", name="tube_content_show")
      * @Template()
      */
     public function showAction($login, $id)
     {
-        // TODO: pobieranie treści posta i komentarzy
+
         $user = $this->validateURL($login);
 
         $contentHelper = $this->container->get('tube_content_helper');
 
-        //$postContent = $contentHelper->getOneContent($id, $login);
+        $attachment = $contentHelper->getOneContent($id, $login);
 
-        /*if (!$postContent) {
-            throw $this->createNotFoundException('Niestety nie znaleziono wpisu.');
-        }*/
+        if (!$attachment) {
+            throw $this->createNotFoundException('Niestety nie znaleziono filmu.');
+        }
+
+        $dir = '../../../../../web/uploads/tube/'.$user->getId().'/'.$attachment->getFilename();
 
         return array(
             'user' => $user,
-            //'post' => $postContent
+            'post' => $attachment,
+            'dir'  => $dir
         );
     }
 }
