@@ -2,12 +2,12 @@
     <div class="flash-messages">
         {% if information.type == 'success'  %}
             <p class="list-group-item list-group-item-success" id="flash-message-success">
-                {{ information.content }}
+                {{ information.content | raw }}
             </p>
         {% endif %}
         {% if information.type == 'warning'  %}
             <p class="list-group-item list-group-item-danger" id="flash-message-warning">
-                {{ information.content }}
+                {{ information.content | raw }}
             </p>
         {% endif %}
     </div>
