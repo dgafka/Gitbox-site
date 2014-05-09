@@ -7,6 +7,7 @@ use Gitbox\Bundle\CoreBundle\Entity\Attachment;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
+use Gitbox\Bundle\CoreBundle\Controller\TubeController;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Doctrine\ORM\Query\Expr\Join;
 
@@ -100,22 +101,57 @@ class TubeContentHelper extends ContentHelper {
     }
 
     /**
-     * @param $object \Gitbox\Bundle\CoreBundle\Entity\Attachment
-     * @return null|\Gitbox\Bundle\CoreBundle\Entity\Attachment
+     * @param $newContent \Gitbox\Bundle\CoreBundle\Entity\Content
+     * @return null|\Gitbox\Bundle\CoreBundle\Entity\Content
      * @throws \Exception
      */
-    public function insertIntoAttachment($object) {
+    public function insertIntoContent($newContent) {
+        //$em = $this->getDoctrine()->getManager();
 
-            if($object instanceof \Gitbox\Bundle\CoreBundle\Entity\Attachment) {
-                $newAttachemnt = $this->instance()->persist($object);
-                $this->instance()->flush();
+        $newContent->setCreateDate(new \DateTime('now'));
+        $newContent->setLastModificationDate(new \DateTime('now'));
+        $newContent->setStatus('A');
+        $newContent->setHit(5);
+        $newContent->setType('1');
+
+
+        if($newContent instanceof \Gitbox\Bundle\CoreBundle\Entity\Content) {
+            /*$em->persist($newContent);
+            $em->flush();*/
+            $newContent = $this->instance()->persist($newContent);
+            $this->instance()->flush();
             }else {
                 throw new Exception("Błąd podczas dodawania obiektu.");
             }
-
-            return $object;
-
+            return $newContent;
     }
+
+    /**
+     * @param $newAttachment \Gitbox\Bundle\CoreBundle\Entity\Attachment
+     * @param $content \Gitbox\Bundle\CoreBundle\Entity\Content
+     * @return null|\Gitbox\Bundle\CoreBundle\Entity\Attachment
+     * @throws \Exception
+     */
+    public function insertIntoAttachment($newAttachment, $content) {
+        //$em = $this->getDoctrine()->getManager();
+
+        $newAttachment->setCreateDate($content->getCreateDate());
+        $newAttachment->setStatus($content->getStatus());
+        $newAttachment->setIdContent($content);
+
+        if($newAttachment instanceof \Gitbox\Bundle\CoreBundle\Entity\Attachment) {
+           /* $em->persist($newAttachment);
+            $em->flush();*/
+            $newAttachment = $this->instance()->persist($newAttachment);
+            $this->instance()->flush();
+        }else {
+            throw new Exception("Błąd podczas dodawania obiektu.");
+        }
+
+
+        return $newAttachment;
+    }
+
     public function findIdMenuByName($name) {
         if (!isset($this->module)) {
             throw new Exception("Nie zainicjalizowano instancji.");

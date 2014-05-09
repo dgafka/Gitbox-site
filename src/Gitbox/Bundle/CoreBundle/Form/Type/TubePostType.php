@@ -41,10 +41,10 @@ class TubePostType extends AbstractType
                           'max_length'   => 150,
                           'trim'         => true,
                       ))
-                      ->add('header', 'file', array(
+                      ->add('filename', 'file', array(
                           'label' => 'Dodaj film',
                           'attr' => array(
-                              'maxbytes' => '7'
+                              //'maxbytes' => '7'
                           )
 
                       ))
