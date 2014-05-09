@@ -114,9 +114,11 @@ class BlogController extends Controller
 
         // pobieranie żądania // TODO: pobranie parametrów GET `żądania` [wyszukiwarka]
         $request = $this->get('request');
+        // pobranie parametrów GET
+        $title = $request->get('title');
 
         // pobranie wszystkich wpisów z bazy
-        $posts = $contentHelper->getContents($login, 5, $request);
+        $posts = $contentHelper->getContents($login, $title, 5, $request);
 
         // inicjalizacja odpowiedzi serwera
         $response = new Response();
@@ -138,6 +140,25 @@ class BlogController extends Controller
         }
 
         $response->send();
+
+        // inicjalizacja flash baga
+        if (isset($title)) {
+            $postCount = count($posts);
+
+            $session = $this->container->get('session');
+
+            if ($postCount == 0) {
+                $msg = 'Nie znaleziono wpisów.';
+            } else if ($postCount == 1) {
+                $msg = 'Znaleziono <b>' . $postCount . '</b> wpis.';
+            } else if ($postCount <= 4) {
+                $msg = 'Znaleziono <b>' . $postCount . '</b> wpisy.';
+            } else {
+                $msg = 'Znaleziono <b>' . $postCount . '</b> wpisów.';
+            }
+
+            $session->getFlashBag()->add('success', $msg);
+        }
 
         return array(
             'user' => $user,
@@ -163,7 +184,7 @@ class BlogController extends Controller
         $postContent = new Content();
 
         // formularz nowego wpisu
-        $form = $this->createForm(new BlogPostType(), $postContent, array('csrf_protection' => true));
+        $form = $this->createForm(new BlogPostType(), $postContent);
         $form->handleRequest($request);
 
         // walidacja formularza
@@ -219,7 +240,7 @@ class BlogController extends Controller
         // pobranie wpisu z bazy
         $postContent = $contentHelper->getOneContent($id, $login);
 
-        $form = $this->createForm(new BlogPostType(), $postContent, array('csrf_protection' => true));
+        $form = $this->createForm(new BlogPostType(), $postContent);
         $form->handleRequest($request);
 
         // walidacja formularza

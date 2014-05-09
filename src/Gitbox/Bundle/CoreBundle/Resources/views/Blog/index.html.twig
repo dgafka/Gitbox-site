@@ -95,13 +95,15 @@
                         {{ post.description | raw }}
                     </div>
 
-                    <div class="comments-link-container" title="Skomentuj „{{ post.title }}”">
+                    <div class="comments-link-container">
                         <h5 style="display: inline-block;">
-                            <a class="comments-link no-decoration"
-                                href="{{ path('user_show_post', {'login': user.login, 'id': post.id}) }}#comments-content"
-                                data-disqus-identifier="{{ 'gitblog/' ~ user.login ~ '/' ~ post.id }}">
-                                {# ILOŚC KOMENTARZY `Komentarze <span class="badge">{num}</span>` #}
-                            </a>
+                            <div class="comments-link-inner" title="Skomentuj „{{ post.title }}” "data-toggle="tooltip" data-placement="top">
+                                <a class="comments-link no-decoration"
+                                    href="{{ path('user_show_post', {'login': user.login, 'id': post.id}) }}#comments-content"
+                                    data-disqus-identifier="{{ 'gitblog/' ~ user.login ~ '/' ~ post.id }}">
+                                    {# ILOŚC KOMENTARZY `Komentarze <span class="badge">{num}</span>` #}
+                                </a>
+                            </div>
                         </h5>
                         {% if hasAccess == false %}
                             {% if app.request.cookies.get('vote_' ~ post.id) is not null %}
@@ -182,7 +184,7 @@
     </div>
 
     {# USER SIDEBAR #}
-    {% render controller("GitboxCoreBundle:UserSidebar:render", {'user': user}) %}
+    {% render controller("GitboxCoreBundle:UserSidebar:render", {'user': user, 'module': 'blog'}) %}
 
     {# POST REMOVE MODAL #}
     <div id="postRemoveModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="postRemove" aria-hidden="true">

@@ -56,6 +56,7 @@ class BlogContentHelper extends ContentHelper implements PaginatorAwareInterface
      * Pobranie wpisów z bloga użytkownika
      *
      * @param $userLogin
+     * @param null|string $title
      * @param int $perPage
      * @param Request $request
      *
@@ -63,7 +64,7 @@ class BlogContentHelper extends ContentHelper implements PaginatorAwareInterface
      *
      * @throws Exception
      */
-    public function getContents($userLogin, $perPage = 0, Request & $request = null) {
+    public function getContents($userLogin, $title = null, $perPage = 0, Request & $request = null) {
         if (!isset($this->module)) {
             throw new Exception("Nie zainicjalizowano instancji.");
         }
@@ -77,7 +78,14 @@ class BlogContentHelper extends ContentHelper implements PaginatorAwareInterface
             ->select('c')
             ->from('GitboxCoreBundle:Content', 'c')
             ->innerJoin('c.idMenu', 'm') // automaticaly join keys, upon relation
-            ->where('c.idUser = :user_id AND m.idModule = :module_id')
+            ->where('c.idUser = :user_id AND m.idModule = :module_id');
+
+        if (isset($title)) {
+            $queryBuilder
+                ->andWhere($queryBuilder->expr()->like('c.title', $queryBuilder->expr()->literal('%' . $title . '%')));
+        }
+
+        $queryBuilder
             ->orderBy('c.createDate', 'DESC')
             ->setParameters(array(
                 'user_id' => $userId,

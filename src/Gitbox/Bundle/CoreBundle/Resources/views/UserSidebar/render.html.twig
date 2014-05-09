@@ -1,3 +1,5 @@
+{% form_theme form 'GitboxCoreBundle:UserSidebar:form_template.html.twig' %}
+
 {% block user_sidebar %}
     <div class="collapse-slider-switch">
         <div class="collapse-slider-cell">»</div>
@@ -40,14 +42,17 @@
 
         <div class="well">
             <h4>Wyszukaj na blogu użytkownika</h4>
-            <div class="input-group">
-                <input type="text" class="form-control">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">
-                                <span class="glyphicon glyphicon-search"></span>
-                            </button>
-                        </span>
-            </div>
+            {{ form_start(form, {
+                'action': path('user_' ~ module, {'login': user.login}),
+                'method': 'GET'
+            }) }}
+                <div class="input-group">
+                    {{ form_widget(form.title) }}
+                    <span class="input-group-btn">
+                        {{ form_widget(form.submit) }}
+                    </span>
+                </div>
+            {{ form_end(form) }}
         </div>
 
         <div class="well">
