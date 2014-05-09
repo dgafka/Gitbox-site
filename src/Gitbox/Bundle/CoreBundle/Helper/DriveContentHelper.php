@@ -49,7 +49,8 @@ class DriveContentHelper extends ContentHelper  {
         $queryBuilder
             ->select('c')
             ->from('GitboxCoreBundle:Menu', 'c')
-            ->where('c.idUser = :user_id AND c.idModule = :module_id')
+            ->where('c.idUser = :user_id AND c.idModule = :module_id AND c.parent is null')
+            ->setMaxResults(1)
             ->setParameters(array(
                 'user_id' => $userId,
                 'module_id' => $moduleId
@@ -58,9 +59,9 @@ class DriveContentHelper extends ContentHelper  {
         if ($request instanceof Request) {
             $query = $queryBuilder->getQuery()->getResult();
 
-            $posts = $query;
+            $menu = $query;
 
-            return $posts;
+            return $menu;
         } else {
             try {
                 return $queryBuilder->getQuery()->getResult();
@@ -69,8 +70,5 @@ class DriveContentHelper extends ContentHelper  {
             }
         }
     }
-
-
-
 
 }
