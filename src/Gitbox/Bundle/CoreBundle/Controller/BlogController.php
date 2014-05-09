@@ -148,7 +148,7 @@ class BlogController extends Controller
             $session = $this->container->get('session');
 
             if ($postCount == 0) {
-                $msg = 'Nie znaleziono wpisów.';
+                $msg = 'Nie znaleziono żadnych wpisów.';
             } else if ($postCount == 1) {
                 $msg = 'Znaleziono <b>' . $postCount . '</b> wpis.';
             } else if ($postCount <= 4) {

@@ -19,7 +19,7 @@ class UserSidebarController extends Controller
         $request = $this->get('request');
 
         $user = $request->get('user');
-        $module = $request->get('module');
+        $actionUrl = $request->get('actionUrl');
         $userId = $user->getId();
 
         if (!isset($user) && $user instanceof UserAccount) {
@@ -56,7 +56,7 @@ class UserSidebarController extends Controller
             'userDescription' => $userDescription,
             'userModule' => $userModule,
             'form' => $form->createView(),
-            'module' => $module
+            'actionUrl' => $actionUrl
         );
     }
 

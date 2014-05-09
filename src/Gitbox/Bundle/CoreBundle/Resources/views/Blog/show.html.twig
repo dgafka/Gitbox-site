@@ -85,7 +85,7 @@
     </div>
 
     {# USER SIDEBAR #}
-    {% render controller("GitboxCoreBundle:UserSidebar:render", {'user': user, 'module': 'blog'}) %}
+    {% render controller("GitboxCoreBundle:UserSidebar:render", {'user': user, 'actionUrl': 'user_blog'}) %}
 
     {# POST REMOVE MODAL #}
     <div id="postRemoveModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="postRemove" aria-hidden="true">
