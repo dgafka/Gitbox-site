@@ -20,6 +20,11 @@
                         <li><span class="glyphicon glyphicon-folder-close"></span> {{ menu.title }}</li>
                     {% endfor %}
                     </ul>
+                    <ul>
+                        {% for content in contents %}
+                            <li><span class="glyphicon glyphicon-hdd"></span> {{ content.title }}</li>
+                        {% endfor %}
+                    </ul>
 
                 {% endblock %}
             </div>

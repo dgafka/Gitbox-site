@@ -54,7 +54,7 @@ class DriveController extends Controller
         if (!$moduleHelper->isModuleActivated($username)) {
             throw $this->createNotFoundException('Ten moduł nie jest włączony na twoim koncie');
         }
-        return $userHelper->findByLogin($username);;
+        return $userHelper->findByLogin($username);
     }
 
     /**
@@ -116,16 +116,18 @@ class DriveController extends Controller
     {
         $contentHelper = $this->container->get('drive_content_helper');
         $request = $this->get('request');
-
-        $menus = $contentHelper->getMenuZero($login, $request);
-
+        $menuRoot= $contentHelper->getMenuZero($login, $request);
+        $menuId = $menuRoot->getId();
+        $menus = $contentHelper->getMenus($menuId, $request);
+        $menu_contents = $contentHelper->getMenuContent($menuId, $request);
 
         $userHelper = $this->container->get('user_helper');
         $user = $userHelper->findByLogin($login);
-        $form = $this->createForm(new DriveElementType());
+
         return array(
             'user' => $user,
-            'menus' => $menus
+            'menus' => $menus,
+            'contents' => $menu_contents
         );
     }
 
