@@ -118,9 +118,6 @@ class UserAccountController extends Controller
 		if($form->isValid()) {
 
 			$message = '';
-			$userAccount->setEmail(strtolower($userAccount->getEmail()));
-			$userAccount->setLogin(strtolower($userAccount->getLogin()));
-			$userAccount->setPassword(md5($userAccount->getPassword()));
 
 			/**
 			 * @var $helper \Gitbox\Bundle\CoreBundle\Helper\UserAccountHelper
@@ -130,12 +127,20 @@ class UserAccountController extends Controller
 			$loginUser = $helper->findByLogin($userAccount->getLogin());
 
 			if($emailUser instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount) {
-				$message .= 'Użytkownik o podanym emailu już istnieje. ';
+				$message .= 'Użytkownik o podanym emailu już istnieje. <br/>';
 			}
 			if($loginUser instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount) {
-				$message .= ' Użytkownik o podanym loginie już istnieje ';
+				$message .= ' Użytkownik o podanym loginie już istnieje. <br/>';
 			}
-
+			if(strlen($userAccount->getLogin()) < 4) {
+				$message .= ' Login powinien posiadać przynajmniej 4 znaki. <br/>';
+			}
+			if(!preg_match('/^[a-zA-Z0-9]+$/', $userAccount->getLogin())) {
+				$message .= ' Login nie powinien posiadać polskich znaków.<br/>';
+			}
+			if(strlen($userAccount->getPassword()) < 6) {
+				$message .= ' Hasło powinno składać się przynajmniej z 6 znaków. <br/>';
+			}
 			if($message != '') {
 				$information['type']    = 'warning';
 				$information['content'] = $message;
@@ -146,6 +151,10 @@ class UserAccountController extends Controller
 					'information'   => $information,
 				));
 			}
+
+			$userAccount->setEmail(strtolower($userAccount->getEmail()));
+			$userAccount->setLogin(strtolower($userAccount->getLogin()));
+			$userAccount->setPassword(md5($userAccount->getPassword()));
 
 			/**
 			 * @var $helper \Gitbox\Bundle\CoreBundle\Helper\UserAccountHelper

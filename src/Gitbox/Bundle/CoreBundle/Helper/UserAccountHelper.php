@@ -258,4 +258,30 @@ class UserAccountHelper extends EntityHelper implements CRUDHelper {
 		$this->update($user);
 	}
 
+	/** Zwraca detaliczny opis użytkownika
+	 * @param $userAccount \Gitbox\Bundle\CoreBundle\Entity\UserAccount|int
+	 * @return array
+	 */
+	public function getUserDetails($userAccount) {
+		if(is_int($userAccount)) {
+			$userAccount = $this->find($userAccount);
+		}
+
+		if(!$userAccount instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount) {
+			return false;
+		}
+
+		$user = array();
+		$user['id']          = $userAccount->getId();
+		$user['login']       = $userAccount->getLogin();
+		$user['status']      = $userAccount->getStatus();
+		$user['email']       = $userAccount->getEmail();
+		$user['admin_level'] = $userAccount->getIdGroup()->getPermissions();
+		$user['admin_type']  = $userAccount->getIdGroup()->getDescription();
+		$user['ip']          = $userAccount->getIdDescription()->getIp();
+		$user['ban_date']    = is_null($userAccount->getIdDescription()->getBanDate()) ? '' : $userAccount->getIdDescription()->getBanDate()->format('Y-m-d H:i:s');
+		$user['registration_date'] = $userAccount->getIdDescription()->getRegistrationDate()->format('Y-m-d H:i:s');
+
+		return $user;
+	}
 } 

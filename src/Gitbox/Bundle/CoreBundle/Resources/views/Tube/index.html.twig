@@ -12,7 +12,7 @@
                     <option>Popular</option>
                     <option>Highest Rating</option>
                     <option>Lowest Rating</option>
-                </select><span><strong>12,487</strong> Titles Found</span>
+                </select><span><strong>{{ countPosts }}</strong> pozycji</span>
             </div>
 
             <div class="row-fluid">
@@ -21,7 +21,7 @@
                     {% for post in posts %}
                     <li class="span3">
                         <div class="thumbnail">
-                            <img src="http://www.personal.psu.edu/afr3/blogs/siowfa13/BlueOcean.jpg" alt="300x200">
+                            <a href="tube/{{ post.id }}"><img src="http://www.personal.psu.edu/afr3/blogs/siowfa13/BlueOcean.jpg" alt="300x200"></a>
                             <div class="caption">
                                 <h6><a href="tube/{{ post.id }}">{{ post.title }}</a></h6>
                                 <p>{{ post.description }}</p>
