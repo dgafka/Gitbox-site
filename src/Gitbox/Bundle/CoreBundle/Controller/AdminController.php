@@ -12,6 +12,7 @@ use Symfony\Component\Security\Acl\Exception\Exception;
 class AdminController extends Controller
 {
 
+    
 	/** Główny panel administratora
 	 * @Route("/admin", name="admin_panel")
 	 * @Template()
