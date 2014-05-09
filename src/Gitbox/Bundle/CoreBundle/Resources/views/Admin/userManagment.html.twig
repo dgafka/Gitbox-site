@@ -8,14 +8,15 @@
 </script>
 <div id="accordion">
     {% for user in users %}
-        <h3><span style="color: #009933"><b>{{ user.login }}</b></span>,
+        <h3 id="header-{{ user.id }}">
+            <span style="color: #009933"><b>{{ user.login }}</b></span>,
             <span style="color: #550000"><b>{{ user.admin_type }}</b></span>,
             {% if user.status == 'A' %} <span style="color: blue">Aktywny</span>
             {% elseif user.status == 'B' %} <span style="color: red">Zbanowany</span>
             {% else %} <span style="color: darkorange">Nieaktywny</span>
             {% endif %}
         </h3>
-        <div>
+        <div id="content-{{ user.id }}">
             <p>
                 {# Podstawowe informacje o użytkowniku #}
                 <p>Data rejestracji: <b>{{ user.registration_date }}</b></p>

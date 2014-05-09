@@ -1,0 +1,30 @@
+<h3  id="header-{{ uniqueId }}">
+    <span style="color: #009933"><b>{{ user.login }}</b></span>,
+    <span style="color: #550000"><b>{{ user.admin_type }}</b></span>,
+    {% if user.status == 'A' %} <span style="color: blue">Aktywny</span>
+    {% elseif user.status == 'B' %} <span style="color: red">Zbanowany</span>
+    {% else %} <span style="color: darkorange">Nieaktywny</span>
+    {% endif %}
+</h3>
+<div  id="content-{{ uniqueId }}">
+    <p>
+        {# Podstawowe informacje o użytkowniku #}
+    <p>Data rejestracji: <b>{{ user.registration_date }}</b></p>
+    <p>Email: <b>{{ user.email }}</b></p>
+    <p>Poziom administratora: <b>{{ user.admin_level }}</b></p>
+    <p>IP: <b>{{ user.ip }}</b></p>
+
+    {# aktywacja dezaktywacja użytkownika #}
+    {% if user.status == 'A' %} <button class="btn btn-warning" message="Czy na pewno chcesz zbanować użytkownika?" link_target="{{ path('admin_managment_status', {'id' : user.id, 'status' : 'B' }) }}">Zbanuj</button>
+    {% else %} <button class="btn btn-success" message="Czy na pewno chcesz aktywować użytkownika?" link_target="{{ path('admin_managment_status', {'id' : user.id, 'status' : 'A' }) }}">Aktywuj</button>
+    {% endif %}
+
+    {# Nadawanie uprawnień #}
+    {% if user.admin_level < 2 %} <button class="btn btn-primary" message="Czy na pewno chcesz uczynić użytkownika, administratorem?" link_target="{{ path('admin_managment_permission', {'id' : user.id, 'permission' : 2 }) }}">Uczyń adminem</button>
+    {% else %} <button class="btn btn-primary" message="Czy na pewno chcesz uczynić administratora, użytkownikiem?" link_target="{{ path('admin_managment_permission', {'id' : user.id, 'permission' : 1 }) }}">Uczyń użytkownikiem</button>
+    {% endif %}
+
+    {#usuwanie użytkownika#}
+    <button class="btn btn-danger" message="Czy na pewno chcesz usunąc konto? Nie będzie możliwość jego przywrócenia!" link_target="{{ path('admin_managment_delete', {'id' : user.id }) }}">Usuń konto</button>
+    </p>
+</div>

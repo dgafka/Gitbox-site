@@ -47,17 +47,7 @@ class AdminController extends Controller
 	    $users   = array();
 
 	    foreach($results as $result) {
-		    $user = array();
-		    $user['id']          = $result->getId();
-		    $user['login']       = $result->getLogin();
-		    $user['status']      = $result->getStatus();
-		    $user['email']       = $result->getEmail();
-		    $user['admin_level'] = $result->getIdGroup()->getPermissions();
-		    $user['admin_type']  = $result->getIdGroup()->getDescription();
-		    $user['ip']          = $result->getIdDescription()->getIp();
-			$user['ban_date']    = is_null($result->getIdDescription()->getBanDate()) ? '' : $result->getIdDescription()->getBanDate()->format('Y-m-d H:i:s');
-		    $user['registration_date'] = $result->getIdDescription()->getRegistrationDate()->format('Y-m-d H:i:s');
-
+		    $user = $helper->getUserDetails($result);
 		    $users[] = $user;
 	    }
 
@@ -111,7 +101,16 @@ class AdminController extends Controller
 		$helper->changeStatus($id, $status);
 
 
-		$responseArray = array('answer' => 'Status został zmieniony. Odświerz stronę, aby zobaczyć zmiany.');
+		/**
+		 * @var $helper \Gitbox\Bundle\CoreBundle\Helper\UserAccountHelper
+		 */
+		$helper      = $this->container->get('user_helper');
+		$user        = $helper->getUserDetails((int)$id);
+
+		$uniqueId    = uniqid(md5($id));
+		$viewHtml    = $this->render('GitboxCoreBundle:Admin:singleUserManagment.html.twig', array('user' => $user, 'uniqueId' => $uniqueId));
+
+		$responseArray = array('answer' => 'Status został zmieniony. Odświerz stronę, aby zobaczyć zmiany.', 'content' => $viewHtml->getContent());
 		$responseArray = json_encode($responseArray);
 		return new Response($responseArray, 200, array('Content-Type'=>'application/json'));
 
@@ -134,8 +133,12 @@ class AdminController extends Controller
 		 */
 		$helper  = $this->container->get('user_helper');
 		$helper->changePermission($id, $permission);
+		$user        = $helper->getUserDetails((int)$id);
 
-		$responseArray = array('answer' => 'Dostęp został zmieniony. Odświerz stronę, aby zobaczyć zmiany.');
+		$uniqueId    = uniqid(md5($id));
+		$viewHtml    = $this->render('GitboxCoreBundle:Admin:singleUserManagment.html.twig', array('user' => $user, 'uniqueId' => $uniqueId));
+
+		$responseArray = array('answer' => 'Dostęp został zmieniony. Odświerz stronę, aby zobaczyć zmiany.', 'content' => $viewHtml->getContent());
 		$responseArray = json_encode($responseArray);
 		return new Response($responseArray, 200, array('Content-Type'=>'application/json'));
 
