@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class DriveController extends Controller
 {
-  
+
     /**
      * @param $login
      * @return mixed
@@ -36,22 +36,24 @@ class DriveController extends Controller
         return $user;
     }
 
+    /**
+     * @return mixed
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    private function userCheckContent(){
+        $userHelper = $this->container->get('user_helper');
+        $drivePermissionHelper = $this->container->get('dp_helper');
+        $username=$drivePermissionHelper->checkUser();
+        $moduleHelper = $this->container->get('module_helper');
+        $moduleHelper->init('GitDrive');
 
-    private function checkUser() {
-        $session = $this->container->get('session');
-        $userId = $session->get('userId');
-        $login=$session->get('username');
-
-
-
-            if (!isset($userId)) {
-                throw $this->createNotFoundException('Zaloguj się, aby mieć dostęp do tej aktywności.');
-            }else
-            {
-                $user=$this->validateURL($login);
-            }
-
-            return $user;
+        if (!isset($username)){
+            throw $this->createNotFoundException('Zaloguj się, aby mieć dostęp do tej aktywności.');
+        }
+        if (!$moduleHelper->isModuleActivated($username)) {
+            throw $this->createNotFoundException('Ten moduł nie jest włączony na twoim koncie');
+        }
+        return $userHelper->findByLogin($username);;
     }
 
     /**
@@ -75,11 +77,8 @@ class DriveController extends Controller
      */
     public function NewDriveItemAction()
     {
-        // walidacja dostępu
-        $user=$this->checkUser();
 
-        // utworzenie instancji wpisu
-        $xContent = new Content();
+        $user=$this->userCheckContent();
 	$form = $this->createForm(new DriveElementType());
 	 return array(
          'user' => $user,
@@ -94,7 +93,7 @@ class DriveController extends Controller
      */
     public function NewDriveContenerAction()
     {
-        $user=$this->checkUser();
+        $user=$this->userCheckContent();
 
         $xContent = new Content();
         $form = $this->createForm(new DriveElementType());
@@ -137,7 +136,24 @@ class DriveController extends Controller
     {
 
 
-        $user = $this->checkUser();
+        $user=$this->userCheckContent();
+        $form = $this->createForm(new DriveElementType());
+        return array(
+            'form' => $form->createView(),
+            'user' => $user
+
+        );
+    }
+
+    /**
+     * @Route("/edit/drive/contener/{element}")
+     * @Template("GitboxCoreBundle:Drive:NewDriveItem.html.twig")
+     */
+    public function DriveEditContenerAction($element)
+    {
+
+
+        $user=$this->userCheckContent();
         $form = $this->createForm(new DriveElementType());
         return array(
             'form' => $form->createView(),

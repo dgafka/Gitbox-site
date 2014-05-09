@@ -72,49 +72,5 @@ class DriveContentHelper extends ContentHelper  {
 
 
 
-    /**
-     * Pobieranie contentow
-     *
-     * @param $userLogin
-     * @param int $perPage
-     * @param Request $request
-     *
-     * @return array | null
-     *
-     * @throws Exception
-     */
-    public function getContents($userLogin, $perPage = 0, Request & $request = null) {
-        if (!isset($this->module)) {
-            throw new Exception("Nie zainicjalizowano instancji.");
-        }
 
-        $userId = $this->instanceCache()->getUserIdByLogin($userLogin);
-        $moduleId = $this->instanceCache()->getModuleIdByName($this->module);
-
-        $queryBuilder = $this->instance()->createQueryBuilder();
-
-        $queryBuilder
-            ->select('c')
-            ->from('GitboxCoreBundle:Content', 'c')
-            ->where('c.idUser = :user_id AND c.id_module = :module_id')
-            ->orderBy('c.createDate', 'DESC')
-            ->setParameters(array(
-                'user_id' => $userId,
-                'module_id' => $moduleId
-            ));
-
-        if ( $request instanceof Request) {
-            $query = $queryBuilder->getQuery();
-
-            $posts = $query;
-
-            return $posts;
-        } else {
-            try {
-                return $queryBuilder->getQuery()->getResult();
-            } catch (NoResultException $e) {
-                return null;
-            }
-        }
-    }
 }

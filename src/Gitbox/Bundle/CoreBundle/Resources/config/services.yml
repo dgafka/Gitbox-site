@@ -42,6 +42,9 @@ services:
     permissions_helper:
         class:        "%permissions_helper.class%"
         arguments:    ["@session"]
+    dp_helper:
+            class:        Gitbox\Bundle\CoreBundle\Helper\DrivePermissionHelper
+            arguments:    ["@session"]
     rating_helper:
         class:        "%rating_helper.class%"
         arguments:    ["@doctrine.orm.entity_manager", "@cache_helper"]
