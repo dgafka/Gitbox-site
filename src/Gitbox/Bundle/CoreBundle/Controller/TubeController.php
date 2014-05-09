@@ -128,13 +128,15 @@ class TubeController extends Controller
         // walidacja formularza
         if ($form->isValid()) {
             $contentHelper = $this->container->get('tube_content_helper');
+            $menuHelper = $this->container->get('menu_helper');
             $em = $this->getDoctrine()->getManager();
             $repository = $em->getRepository('GitboxCoreBundle:Menu');
 
             $newContent->setIdUser($user->getId());
             $newContent->setCreateDate(new \DateTime('now'));
             $newContent->setLastModificationDate(new \DateTime('now'));
-            $newContent->setIdMenu($repository->findOneByTitle('GitTube '.$login));
+            $menu = $menuHelper->findByUserAndModule($user->getId(), 'GitTube');
+            $newContent->setIdMenu($menu);
             $newContent->setStatus('A');
             $newContent->setHit(5);
             $newContent->setType('1');
