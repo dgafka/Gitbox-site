@@ -150,6 +150,10 @@ class TubeController extends Controller
             }
             $filename = uniqid();
             $file->move($dir, $filename);
+
+            /*$fs = new Filesystem();
+            $fs->chmod($filename,0777);*/
+
             $newContent->setHeader($filename);
 
             $em->persist($newContent);
@@ -172,10 +176,9 @@ class TubeController extends Controller
             $session->getFlashBag()->add('success', 'Dodano wpis <b>' . $newAttachment->getFilename() . '</b>');
 
             return $this->redirect(
-                $this->generateUrl('tube_index', array(
-                    //'login' => $user->getLogin(),
-                    'login' => $login
-                    //'id' => $newContent->getId()
+                $this->generateUrl('tube_content_show', array(
+                    'login' => $login,
+                    'id' => $newContent->getId()
                 ))
             );
         }
@@ -187,28 +190,29 @@ class TubeController extends Controller
         );
     }
 
-
-
     /**
      * @Route("user/{login}/tube/{id}", name="tube_content_show")
      * @Template()
      */
     public function showAction($login, $id)
     {
-        // TODO: pobieranie treści posta i komentarzy
+
         $user = $this->validateURL($login);
 
         $contentHelper = $this->container->get('tube_content_helper');
 
-        //$postContent = $contentHelper->getOneContent($id, $login);
+        $attachment = $contentHelper->getOneContent($id, $login);
 
-        /*if (!$postContent) {
-            throw $this->createNotFoundException('Niestety nie znaleziono wpisu.');
-        }*/
+        if (!$attachment) {
+            throw $this->createNotFoundException('Niestety nie znaleziono filmu.');
+        }
+
+        $dir = '../../../../../web/uploads/tube/'.$user->getId().'/'.$attachment->getFilename();
 
         return array(
             'user' => $user,
-            //'post' => $postContent
+            'post' => $attachment,
+            'dir'  => $dir
         );
     }
 }

@@ -2,28 +2,24 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/tube.css') }}" />
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('css/video-default.css') }}" />
-    <script type="text/javascript" src="{{ asset('js/jquery/jquery.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/jquery.video-ui.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('css/jquery/video-js.css') }}" />
 
 {% endblock %}
-
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('js/jquery/video.js') }}"></script>
+    <script videojs.options.flash.swf = "{{ asset('js/sfw/video-js.swf') }}"></script>
+{% endblock %}
 {% block title %}{% endblock %}
 
 {% block content_inner %}
-{#<div class="videoUiWrapper thumbnail">#}
-    <div class="row-fluid">
-        <video width="640" height="480" id="demo1">
-           {# <source src="../../../../../../../web/uploads/tube/test4/24723.mp4" type="video/mp4">
-           #} <source src="http://video-js.zencoder.com/oceans-clip.mp4" type="video/mp4">
-            {# <source src="http://ia700305.us.archive.org/18/items/CopyingIsNotTheft/CINT_Nik_H264_720_512kb.mp4" type="video/mp4">
-            #} Your browser does not support the video tag.
+<table class="table" style="max-width: 660px">
+    <tr class="success"><td><h4><strong>{{ post.title }}</strong></h4></td></tr>
+    <tr class="active"><td><strong>{{ post.description }}</strong></td></tr>
+    <tr class="success"><td><video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" width="640" height="264"
+               poster="{#tu mozna dac obrazek, ktrory bedzie wyswietlany przed nacisnieciem odtwórz#}"
+               data-setup="{}">
+            <source src="{{ asset('uploads/tube/12/536c0baf36a87') }}" type='video/{{ post.mime }}' />
+            </video></td></tr>
 
-        </video>
-    </div>
-{#</div>#}
-
-{#https://github.com/html5-ninja/Bootstrap-video-player-jQuery-plugin#}
-
+</table>
 {% endblock %}
