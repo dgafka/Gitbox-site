@@ -2,6 +2,7 @@
 
 namespace Gitbox\Bundle\CoreBundle\Controller;
 
+use Gitbox\Bundle\CoreBundle\Form\Type\DriveContenerType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -96,7 +97,7 @@ class DriveController extends Controller
         $user=$this->userCheckContent();
 
         $xContent = new Content();
-        $form = $this->createForm(new DriveElementType());
+        $form = $this->createForm(new DriveContenerType());
         return array(
             'user' => $user,
             'form' => $form->createView()
@@ -147,7 +148,7 @@ class DriveController extends Controller
 
     /**
      * @Route("/edit/drive/contener/{element}")
-     * @Template("GitboxCoreBundle:Drive:NewDriveItem.html.twig")
+     * @Template("GitboxCoreBundle:Drive:NewDriveContener.html.twig")
      */
     public function DriveEditContenerAction($element)
     {
