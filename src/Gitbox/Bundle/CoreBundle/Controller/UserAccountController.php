@@ -253,7 +253,8 @@ class UserAccountController extends Controller
 			$session->clear();
 		}
 
-		$this->redirect($this->generateUrl('home_url'));
+        // TODO: alert - bezpiecznie wylogowano
+        return $this->redirect($this->generateUrl('home_url'));
 	}
 
 	/** Akcja dla okna potwierdzającego rejestrację
