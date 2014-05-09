@@ -9,12 +9,6 @@
 
 {% block content_inner %}
 <div class="row">
-    {% for flashMessage in app.session.flashbag.get('success') %}
-        <div class="alert alert-success alert-dismissable alert-message">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            {{ flashMessage | raw }}
-        </div>
-    {% endfor %}
 
     <div class="col-lg-8 main-content">
         <a href="{{ path('user_blog', {'login': user.login}) }}" class="btn btn-info btn-need-some-space"><i class="glyphicon glyphicon-arrow-left"></i> Powrót do wpisów</a>
@@ -110,6 +104,7 @@
             </div>
         </div>
     </div>
+
 </div>
 <hr>
 {% endblock %}

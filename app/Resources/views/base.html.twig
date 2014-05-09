@@ -87,9 +87,8 @@
 {% block content %}
     <div class="container whitened main-window">
         <div class="jumbojumba">
-            {% if information is defined %}
-                {%  include 'GitboxCoreBundle:InformationBar:index.html.twig' %}
-            {% endif %}
+            {% include 'GitboxCoreBundle:InformationBar:index.html.twig' %}
+
             {% block content_inner %}
             {% endblock %}
         </div>

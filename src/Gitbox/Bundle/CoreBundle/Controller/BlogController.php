@@ -112,7 +112,7 @@ class BlogController extends Controller
 
         $contentHelper = $this->container->get('blog_content_helper');
 
-        // pobieranie żądania // TODO: pobranie parametrów GET `żądania` [wyszukiwarka]
+        // pobieranie żądania
         $request = $this->get('request');
         // pobranie parametrów GET
         $title = $request->get('title');
@@ -143,27 +143,35 @@ class BlogController extends Controller
 
         // inicjalizacja flash baga
         if (isset($title)) {
+            $isQuery = true;
             $postCount = count($posts);
 
             $session = $this->container->get('session');
 
             if ($postCount == 0) {
+                $type = 'warning';
                 $msg = 'Nie znaleziono żadnych wpisów.';
             } else if ($postCount == 1) {
+                $type = 'success';
                 $msg = 'Znaleziono <b>' . $postCount . '</b> wpis.';
             } else if ($postCount <= 4) {
+                $type = 'success';
                 $msg = 'Znaleziono <b>' . $postCount . '</b> wpisy.';
             } else {
+                $type = 'success';
                 $msg = 'Znaleziono <b>' . $postCount . '</b> wpisów.';
             }
 
-            $session->getFlashBag()->add('success', $msg);
+            $session->getFlashBag()->add($type, $msg);
+        } else {
+            $isQuery = false;
         }
 
         return array(
             'user' => $user,
             'posts' => $posts,
-            'hasAccess' => $hasAccess
+            'hasAccess' => $hasAccess,
+            'is_query' => $isQuery
         );
     }
 
@@ -286,7 +294,6 @@ class BlogController extends Controller
         $contentHelper = $this->container->get('blog_content_helper');
 
         $postContent = $contentHelper->getOneContent($id, $login);
-        // TODO: pobieranie treści komentarzy
 
         // pobieranie żądania
         $request = $this->get('request');
