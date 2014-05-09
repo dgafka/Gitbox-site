@@ -58,8 +58,13 @@ class TubeController extends Controller
 
 	    $posts = $contentHelper->getContents($login);
 
+        $countPost = count($posts);
 
-        return array('user' => $user, 'posts' => $posts);
+        return array(
+            'user' => $user,
+            'posts' => $posts,
+            'countPosts' => $countPost
+        );
     }
 
 
@@ -82,46 +87,9 @@ class TubeController extends Controller
                                     //createdate, hit, lastModDate,type, id_category,
 
         // formularz nowego wpisu
-        //$form = $this->createForm(new TubePostType(), $newAttachment, array('csrf_protection' => true));
+        $form = $this->createForm(new TubePostType(), $newAttachment);
         //Tu wrzucam generowanie formularza bo wywala błąd na ścieżkę do TubePostType wtf?
-        $form = $this->createFormBuilder($newContent)
-            ->add('title', 'text', array(
-                'label'  => 'Tytuł',
-                'attr'=> array (
-                    'class'       => 'form-control',
-                    'placeholder' => ''
-                ),
-                'label_attr'    => array(
-                    'class'     => 'control-label'
-                ),
-                'required'     => true,
-                'max_length'   => 50,
-                'trim'         => true,
-            ))
-            ->add('description', 'text', array(
-                'label'  => 'Opis',
-                'attr'=> array (
-                    'class'       => 'form-control',
-                    'placeholder' => ''
-                ),
-                'label_attr'    => array(
-                    'class'     => 'control-label'
-                ),
-                'required'     => true,
-                'max_length'   => 150,
-                'trim'         => true,
-            ))
-            ->add('header', 'file', array(
-                'label' => 'Dodaj film',
 
-            ))
-            ->add('save', 'submit', array(
-                'label'  => 'Zapisz',
-                'attr'=> array (
-                    'class' => 'btn btn-default'
-                )
-            ))
-            ->getForm();
         $form->handleRequest($request);
 
 
