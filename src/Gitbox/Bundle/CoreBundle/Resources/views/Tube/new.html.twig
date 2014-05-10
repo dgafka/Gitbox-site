@@ -15,13 +15,14 @@
 
 
             </div>
+            {% if success  %}
+                <a href="tube/{{ post.id }}"><button type="button" class="btn btn-info">Poka</button></a>
 
+            {% endif %}
             {# USER SIDEBAR #}
 
         </div>
+
     </div>
-    {% if success %}
-        
-    {% endif %}
 {% endblock %}
 

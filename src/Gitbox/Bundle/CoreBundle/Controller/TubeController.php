@@ -90,6 +90,7 @@ class TubeController extends Controller
         $form = $this->createForm(new TubePostType(), $newAttachment);
 
         $form->handleRequest($request);
+        $success = false;
 
 
         // walidacja formularza
@@ -100,7 +101,6 @@ class TubeController extends Controller
             // inicjalizacja flash baga
             $session = $this->container->get('session');
             $dir =  __DIR__.'/../../../../../web/uploads/tube/'.$user->getId().'/';
-            $success = false;
 
             $file = $form['filename']->getData();
             $extension = $file->guessExtension();
@@ -130,9 +130,9 @@ class TubeController extends Controller
             $success = true;
             }
             return $this->redirect(
-                $this->generateUrl('tube_new_file', array(
+                $this->generateUrl('tube_index', array(
                     'login' => $login,
-                    'id' => $newContent->getId(),
+                    //'id' => $newContent->getId(),
                     'success' => $success
                 ))
             );
@@ -141,6 +141,7 @@ class TubeController extends Controller
         return array(
             'user' => $login,
             'form' => $form->createView(),
+            'success' => $success,
             'btnLabel' => 'Dodaj wpis'
         );
     }
