@@ -15,6 +15,10 @@
                 </select><span><strong>{{ countPosts }}</strong> pozycji</span>
             </div>
 
+            <div class="container">
+                <a href="tube/new"><button type="button" class="btn btn-info">Nowy</button></a>
+
+
             <div class="row-fluid">
                 <ul class="thumbnails">
 
@@ -31,7 +35,7 @@
                 {% endfor %}
                 </ul>
             </div>
-
+            </div>
             <ul class="pagination">
                 <li><a href="#">&laquo;</a></li>
                 <li><a href="#">1</a></li>
@@ -45,7 +49,7 @@
 
         {# USER SIDEBAR #}
 {#
-        {% include "GitboxCoreBundle:UserSidebar:render.html.twig" %}
+        {% render controller("GitboxCoreBundle:UserSidebar:render", {'user': user, 'actionUrl': 'tube_index'}) %}
 #}
     </div>
 
