@@ -100,13 +100,18 @@ class TubeController extends Controller
             // inicjalizacja flash baga
             $session = $this->container->get('session');
             $dir =  __DIR__.'/../../../../../web/uploads/tube/'.$user->getId().'/';
+            $success = false;
 
             $file = $form['filename']->getData();
             $extension = $file->guessExtension();
-            if (!$extension) {
-                // extension cannot be guessed
-                $extension = 'bin';
-            }
+
+            $allowed = array('mp4','wmv','asf');
+            if (!in_array($extension, $allowed)) {
+                $session->getFlashBag()->add('warning', 'Nieprawidłowy format pliku video.');
+                //throw $this->createNotFoundException("Nieprawidłowy format pliku video. Podano=".$extension);
+            }else if ($file->getClientSize() > 83886080) {
+                $session->getFlashBag()->add('warning', 'Rozmiar pliku musi być mniejszy niż 80Mb.');
+            }else{
             $filename = uniqid();
             $file->move($dir, $filename);
 
@@ -121,12 +126,14 @@ class TubeController extends Controller
             $contentHelper->insertIntoContent($newContent);
             $contentHelper->insertIntoAttachment($newAttachment,$newContent);
 
-            $session->getFlashBag()->add('success', 'Dodano film <b>' . $newAttachment->getFilename() . '</b>');
-
+            $session->getFlashBag()->add('success', 'Dodano film <b>' . $newAttachment->getTitle() . '</b>');
+            $success = true;
+            }
             return $this->redirect(
-                $this->generateUrl('tube_content_show', array(
+                $this->generateUrl('tube_new_file', array(
                     'login' => $login,
-                    'id' => $newContent->getId()
+                    'id' => $newContent->getId(),
+                    'success' => $success
                 ))
             );
         }
