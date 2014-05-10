@@ -246,7 +246,11 @@ class BlogController extends Controller
         $contentHelper = $this->container->get('blog_content_helper');
 
         // pobranie wpisu z bazy
-        $postContent = $contentHelper->getOneContent($id, $login);
+        $postContent = $contentHelper->getOneContent(intval($id), $login);
+
+        if (!$postContent) {
+            throw $this->createNotFoundException('Niestety, nie znaleziono takiego wpisu.');
+        }
 
         $form = $this->createForm(new BlogPostType(), $postContent);
         $form->handleRequest($request);
@@ -293,7 +297,7 @@ class BlogController extends Controller
 
         $contentHelper = $this->container->get('blog_content_helper');
 
-        $postContent = $contentHelper->getOneContent($id, $login);
+        $postContent = $contentHelper->getOneContent(intval($id), $login);
 
         // pobieranie żądania
         $request = $this->get('request');
@@ -301,7 +305,7 @@ class BlogController extends Controller
         $response = new Response();
 
         if (!$postContent) {
-            throw $this->createNotFoundException('Niestety nie znaleziono wpisu.');
+            throw $this->createNotFoundException('Niestety, nie znaleziono takiego wpisu.');
         }
 
         // aktualizacja licznika odwiedzin na podstawie `ciasteczka`

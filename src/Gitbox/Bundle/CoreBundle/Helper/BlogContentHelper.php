@@ -172,6 +172,10 @@ class BlogContentHelper extends ContentHelper implements PaginatorAwareInterface
             throw new Exception("Nie zainicjalizowano instancji.");
         }
 
+        if (!is_int($id)) {
+            return false;
+        }
+
         $userId = $this->instanceCache()->getUserIdByLogin($userLogin);
         $moduleId = $this->instanceCache()->getModuleIdByName($this->module);
 

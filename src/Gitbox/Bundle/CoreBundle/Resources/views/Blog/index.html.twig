@@ -31,87 +31,86 @@
 
         {# POSTS #}
         {% for post in posts %}
-            <div class="post-in-the-box">
-                <a class="no-decoration keep-color" href="{{ path('user_show_post', {'login': user.login, 'id': post.id}) }}">
-                    <h1 class="post-title">{{ post.title }}</h1>
-                    <p><span class="glyphicon glyphicon-time"></span> <b>Utworzono</b> {{ post.createDate | date("D d/m/Y H:i:s") }}</p>
-                    <p><span class="glyphicon glyphicon-time"></span> <b>Ostatnio edytowano</b> {{ post.lastModificationDate | date("D d/m/Y H:i:s") }}</p>
-                    <p><span class="glyphicon glyphicon-eye-open"></span> <b>Wyświetleń</b> <span class="badge">{{ post.hit }}</span></p>
-                    {% if hasAccess == true %}
-                        <div class="ratings">
-                            <div class="rating-up">
-                                <div class="score-up">{{ post.voteUp }}</div>
-                            </div>
-                            <div class="rating-down">
-                                <div class="score-down">{{ post.voteDown }}</div>
-                            </div>
+            <div class="post-in-the-box box-pointer">
+                <a class="hidden-link" href="{{ path('user_show_post', {'login': user.login, 'id': post.id}) }}"></a>
+                <h1 class="post-title">{{ post.title }}</h1>
+                <p><span class="glyphicon glyphicon-time"></span> <b>Utworzono</b> {{ post.createDate | date("D d/m/Y H:i:s") }}</p>
+                <p><span class="glyphicon glyphicon-time"></span> <b>Ostatnio edytowano</b> {{ post.lastModificationDate | date("D d/m/Y H:i:s") }}</p>
+                <p><span class="glyphicon glyphicon-eye-open"></span> <b>Wyświetleń</b> <span class="badge">{{ post.hit }}</span></p>
+                {% if hasAccess == true %}
+                    <div class="ratings">
+                        <div class="rating-up">
+                            <div class="score-up">{{ post.voteUp }}</div>
                         </div>
-                        <div class="user-options">
-                            <a class="option-left"
-                               href="{{ path('user_edit_post', {'login': user.login, 'id': post.id}) }}"
-                               title="Edytuj wpis" data-toggle="tooltip" data-placement="bottom">
-                                <span class="glyphicon glyphicon-pencil"></span> Edytuj
-                            </a>
-                            <a class="option-left btn-post-remove" href="#"
-                               data-link="{{ path('user_remove_post', {'id': post.id, 'login': user.login}) }}"
-                               title="Usuń wpis" data-toggle="tooltip" data-placement="bottom">
-                                <span class="glyphicon glyphicon-trash"></span> Usuń
-                            </a>
-                            <hr style="margin-top: 5px;">
+                        <div class="rating-down">
+                            <div class="score-down">{{ post.voteDown }}</div>
                         </div>
-                    {% else %}
-                        <div class="ratings">
-                            <div class="rating-up">
-                                {% if app.request.cookies.get('vote_' ~ post.id) is not null %}
-                                    <div class="score-up">{{ post.voteUp }}</div>
-                                {% else %}
-                                    <div class="score-up" style="display: none;">{# wypełniane po głosowaniu #}</div>
-                                    <a class="btn btn-sm btn-vote-up" href="{{ path('user_content_vote', {'module': 'blog', 'type': 'up', 'login': user.login, 'id': post.id}) }}">
-                                        <span class="glyphicon glyphicon-thumbs-up"></span>
-                                    </a>
-                                {% endif %}
-                            </div>
-                            <div class="rating-down">
-                                {% if app.request.cookies.get('vote_' ~ post.id) is not null %}
-                                    <div class="score-down">{{ post.voteDown }}</div>
-                                {% else %}
-                                    <div class="score-down" style="display: none;">{# wypełniane po głosowaniu #}</div>
-                                    <a class="btn btn-sm btn-vote-down" href="{{ path('user_content_vote', {'module': 'blog', 'type': 'down', 'login': user.login, 'id': post.id}) }}">
-                                        <span class="glyphicon glyphicon-thumbs-down"></span>
-                                    </a>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <hr>
-                    {% endif %}
-
-                    <div class="post-content">
-                        {{ post.description | raw }}
                     </div>
-
-                    <div class="comments-link-container">
-                        <h5 style="display: inline-block;">
-                            <div class="comments-link-inner" title="Skomentuj „{{ post.title }}” "data-toggle="tooltip" data-placement="top">
-                                <a class="comments-link no-decoration"
-                                    href="{{ path('user_show_post', {'login': user.login, 'id': post.id}) }}#comments-content"
-                                    data-disqus-identifier="{{ 'gitblog/' ~ user.login ~ '/' ~ post.id }}">
-                                    {# ILOŚC KOMENTARZY `Komentarze <span class="badge">{num}</span>` #}
-                                </a>
-                            </div>
-                        </h5>
-                        {% if hasAccess == false %}
+                    <div class="user-options">
+                        <a class="option-left"
+                           href="{{ path('user_edit_post', {'login': user.login, 'id': post.id}) }}"
+                           title="Edytuj wpis" data-toggle="tooltip" data-placement="bottom">
+                            <span class="glyphicon glyphicon-pencil"></span> Edytuj
+                        </a>
+                        <a class="option-left btn-post-remove" href="#"
+                           data-link="{{ path('user_remove_post', {'id': post.id, 'login': user.login}) }}"
+                           title="Usuń wpis" data-toggle="tooltip" data-placement="bottom">
+                            <span class="glyphicon glyphicon-trash"></span> Usuń
+                        </a>
+                        <hr style="margin-top: 5px;">
+                    </div>
+                {% else %}
+                    <div class="ratings">
+                        <div class="rating-up">
                             {% if app.request.cookies.get('vote_' ~ post.id) is not null %}
-                                {% if app.request.cookies.get('vote_' ~ post.id) == 'up' %}
-                                    <b class="smiley-see-you fa fa-smile-o"></b>
-                                {% else %}
-                                    <b class="smiley-see-you fa fa-frown-o"></b>
-                                {% endif %}
+                                <div class="score-up">{{ post.voteUp }}</div>
                             {% else %}
-                                <b class="smiley-see-you fa fa-meh-o"></b>
+                                <div class="score-up" style="display: none;">{# wypełniane po głosowaniu #}</div>
+                                <a class="btn btn-sm btn-vote-up" href="{{ path('user_content_vote', {'module': 'blog', 'type': 'up', 'login': user.login, 'id': post.id}) }}">
+                                    <span class="glyphicon glyphicon-thumbs-up"></span>
+                                </a>
                             {% endif %}
-                        {% endif %}
+                        </div>
+                        <div class="rating-down">
+                            {% if app.request.cookies.get('vote_' ~ post.id) is not null %}
+                                <div class="score-down">{{ post.voteDown }}</div>
+                            {% else %}
+                                <div class="score-down" style="display: none;">{# wypełniane po głosowaniu #}</div>
+                                <a class="btn btn-sm btn-vote-down" href="{{ path('user_content_vote', {'module': 'blog', 'type': 'down', 'login': user.login, 'id': post.id}) }}">
+                                    <span class="glyphicon glyphicon-thumbs-down"></span>
+                                </a>
+                            {% endif %}
+                        </div>
                     </div>
-                </a>
+                    <hr>
+                {% endif %}
+
+                <div class="post-content">
+                    {{ post.description | raw }}
+                </div>
+
+                <div class="comments-link-container">
+                    <h5 style="display: inline-block;">
+                        <div class="comments-link-inner" title="Skomentuj „{{ post.title }}” "data-toggle="tooltip" data-placement="top">
+                            <a class="comments-link no-decoration"
+                                href="{{ path('user_show_post', {'login': user.login, 'id': post.id}) }}#comments-content"
+                                data-disqus-identifier="{{ 'gitblog/' ~ user.login ~ '/' ~ post.id }}">
+                                {# ILOŚC KOMENTARZY `Komentarze <span class="badge">{num}</span>` #}
+                            </a>
+                        </div>
+                    </h5>
+                    {% if hasAccess == false %}
+                        {% if app.request.cookies.get('vote_' ~ post.id) is not null %}
+                            {% if app.request.cookies.get('vote_' ~ post.id) == 'up' %}
+                                <b class="smiley-see-you fa fa-smile-o"></b>
+                            {% else %}
+                                <b class="smiley-see-you fa fa-frown-o"></b>
+                            {% endif %}
+                        {% else %}
+                            <b class="smiley-see-you fa fa-meh-o"></b>
+                        {% endif %}
+                    {% endif %}
+                </div>
             </div>
             {% if not loop.last %}
                 <hr class="divider">
@@ -219,4 +218,19 @@
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('js/ratingSystem.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/sidebarUpdater.js') }}"></script>
+    <script type="text/javascript">
+        $('.post-in-the-box').click(function (event) {
+            var target = $(event.target);
+
+            if (target.is(':not(a)') && target.is(':not(button)') && target.is(':not(img[src])')) {
+                var url = $(this).find('.hidden-link').first().attr('href');
+
+                if (url) {
+                    window.location = url;
+                }
+
+                return false;
+            }
+        });
+    </script>
 {% endblock %}
