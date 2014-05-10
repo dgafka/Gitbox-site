@@ -58,14 +58,14 @@ class DriveContentHelper extends ContentHelper  {
             ));
 
         if ($request instanceof Request) {
-            $query = $queryBuilder->getQuery()->getOneOrNullResult();;
+            $query = $queryBuilder->getQuery()->getOneOrNullResult();
 
             $menu = $query;
 
             return $menu;
         } else {
             try {
-                return $queryBuilder->getQuery()->getOneOrNullResult();;
+                return $queryBuilder->getQuery()->getOneOrNullResult();
             } catch (NoResultException $e) {
                 return null;
             }
@@ -132,6 +132,90 @@ class DriveContentHelper extends ContentHelper  {
             ->where(' c.idMenu = :menu_id')
             ->setParameters(array(
                 'menu_id' => $menuId,
+
+            ));
+
+        if ($request instanceof Request) {
+            $query = $queryBuilder->getQuery()->getResult();
+
+            $content= $query;
+
+            return $content;
+        } else {
+            try {
+                return $queryBuilder->getQuery()->getResult();
+            } catch (NoResultException $e) {
+                return null;
+            }
+        }
+
+    }
+
+    /**
+     * Pobieranie contentu
+     *
+     * @param $contentId
+     * @param Request $request
+     *
+     * @return Content
+     *
+     * @throws Exception
+     */
+
+    public function getContent($contentId,  Request & $request = null) {
+
+
+        $queryBuilder = $this->instance()->createQueryBuilder();
+
+        $queryBuilder
+            ->select('c')
+            ->from('GitboxCoreBundle:Content', 'c')
+            ->where(' c.id = :content_id')
+            ->setMaxResults(1)
+            ->setParameters(array(
+                'content_id' => $contentId,
+
+            ));
+
+        if ($request instanceof Request) {
+            $query = $queryBuilder->getQuery()->getOneOrNullResult();
+
+            $content= $query;
+
+            return $content;
+        } else {
+            try {
+                return $queryBuilder->getQuery()->getOneOrNullResult();
+            } catch (NoResultException $e) {
+                return null;
+            }
+        }
+
+    }
+
+
+    /**
+     * Pobieranie contentu
+     *
+     * @param $contentId
+     * @param Request $request
+     *
+     * @return array/null
+     *
+     * @throws Exception
+     */
+
+    public function getAttachments($contentId,  Request & $request = null) {
+
+
+        $queryBuilder = $this->instance()->createQueryBuilder();
+
+        $queryBuilder
+            ->select('c')
+            ->from('GitboxCoreBundle:Attachment', 'c')
+            ->where(' c.idContent = :content_id')
+            ->setParameters(array(
+                'content_id' => $contentId,
 
             ));
 
