@@ -164,11 +164,13 @@ class TubeController extends Controller
         }
 
         $dir = '../../../../../web/uploads/tube/'.$user->getId().'/'.$attachment->getFilename();
+        $dirToDemoCaptions = '../../../../../web/videoPlayer/demo.captions.vtt';
 
         return array(
             'user' => $user,
             'post' => $attachment,
-            'dir'  => $dir
+            'dir'  => $dir,
+            'captions' => $dirToDemoCaptions
         );
     }
 }

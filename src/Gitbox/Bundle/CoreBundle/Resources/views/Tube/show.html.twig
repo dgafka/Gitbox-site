@@ -2,12 +2,12 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/tube.css') }}" />
-    <link rel="stylesheet" href="{{ asset('css/jquery/video-js.css') }}" />
+    <link rel="stylesheet" href="{{ asset('videoPlayer/video-js.css') }}" />
 
 {% endblock %}
 {% block javascripts %}
-    <script type="text/javascript" src="{{ asset('js/jquery/video.js') }}"></script>
-    <script videojs.options.flash.swf = "{{ asset('js/sfw/video-js.swf') }}"></script>
+    <script type="text/javascript" src="{{ asset('videoPlayer/video.js') }}"></script>
+    {#<script videojs.options.flash.swf = "{{ asset('videoPlayer/video-js.swf') }}"></script>#}
 {% endblock %}
 {% block title %}{% endblock %}
 
@@ -15,10 +15,13 @@
 <table class="table" style="max-width: 660px">
     <tr class="success"><td><h4><strong>{{ post.title }}</strong></h4></td></tr>
     <tr class="active"><td><strong>{{ post.description }}</strong></td></tr>
-    <tr class="success"><td><video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" width="640" height="264"
-               poster="{#tu mozna dac obrazek, ktrory bedzie wyswietlany przed nacisnieciem odtwórz#}"
-               data-setup="{}">
-            <source src="{{ dir }}" type='video/{{ post.mime }}' />
+    <tr class="success"><td>
+
+            <video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" width="640" height="364"        poster="{#tu mozna dac obrazek, ktrory bedzie wyswietlany przed nacisnieciem odtwórz#}"
+                   data-setup="{}">
+                <source src="{{ dir }}" type='video/{{ post.mime }}' />
+                <track kind="captions" src="{{ captions }}" srclang="en" label="English"></track>
+                <track kind="subtitles" src="{{ captions }}" srclang="en" label="English"></track>
             </video></td></tr>
 
 </table>
