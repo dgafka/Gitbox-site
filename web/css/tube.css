@@ -98,3 +98,6 @@ div {
 .keep-color:hover {
     color: inherit;
 }
+
+/* videoPlayer css */
+.vjs-default-skin .vjs-control-bar { font-size: 100% }
