@@ -44,7 +44,7 @@ class TubePostType extends AbstractType
                       ->add('filename', 'file', array(
                           'label' => 'Dodaj film',
                           'attr' => array(
-                              //'maxbytes' => '7'
+                              'maxSize' => '7'
                           )
 
                       ))
