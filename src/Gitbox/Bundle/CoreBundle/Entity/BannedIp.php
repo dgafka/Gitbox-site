@@ -13,16 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 class BannedIp
 {
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="banned_ip_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="ip", type="string", length=15, nullable=false)
@@ -32,23 +22,19 @@ class BannedIp
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="create_date", type="date", nullable=false)
+     * @ORM\Column(name="create_date", type="datetime", nullable=false)
      */
     private $createDate;
 
     /**
-     * @var \DateTime
+     * @var integer
      *
-     * @ORM\Column(name="expire_date", type="date", nullable=false)
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="banned_ip_id_seq", allocationSize=1, initialValue=1)
      */
-    private $expireDate;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="text", nullable=false)
-     */
-    private $description;
+    private $id;
 
 
 
@@ -99,52 +85,6 @@ class BannedIp
     }
 
     /**
-     * Set expireDate
-     *
-     * @param \DateTime $expireDate
-     * @return BannedIp
-     */
-    public function setExpireDate($expireDate)
-    {
-        $this->expireDate = $expireDate;
-
-        return $this;
-    }
-
-    /**
-     * Get expireDate
-     *
-     * @return \DateTime 
-     */
-    public function getExpireDate()
-    {
-        return $this->expireDate;
-    }
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     * @return BannedIp
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string 
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
      * Get id
      *
      * @return integer 
@@ -153,4 +93,16 @@ class BannedIp
     {
         return $this->id;
     }
+
+	/** Set id
+	 * @param $id
+	 * @return $this
+	 */
+	public function setId($id)
+	{
+		$this->id = $id;
+
+		return $this;
+	}
+
 }

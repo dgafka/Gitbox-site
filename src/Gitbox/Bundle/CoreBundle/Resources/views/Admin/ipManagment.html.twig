@@ -9,7 +9,7 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">IP</h3>
                     <div class="pull-right">
-                        <button class="btn btn-default btn-xs btn-filter" id="addIp"><span class="glyphicon glyphicon-filter"></span>Dodaj nowy wpis</button>
+                        <button class="btn btn-default btn-xs btn-filter" id="addIp" url="{{ path('ip_managment_add') }}"><span class="glyphicon glyphicon-filter"></span>Dodaj nowy wpis</button>
                     </div>
                 </div>
                 <table class="table">
@@ -20,24 +20,13 @@
                     </tr>
                     </thead>
                     <tbody id="ip-content">
-                    <tr>
-                        <td>1</td>
-                        <td>Mark</td>
-                        <td><button class="btn btn-default">Usuń</button></td>
-                        <td style="display:none">id</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Jacob</td>
-                        <td><button class="btn btn-default">Usuń</button></td>
-                        <td style="display:none">id</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Larry</td>
-                        <td><button class="btn btn-default">Usuń</button></td>
-                        <td style="display:none">id</td>
-                    </tr>
+                    {% for result in results %}
+                        <tr>
+                            <td class="date">{{ result.createDate }}</td>
+                            <td class="ip">{{ result.ip }}</td>
+                            <td><button class="btn btn-default" url="{{ path('ip_managment_remove', {'id' : result.id}) }}">Usuń</button></td>
+                        </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
             </div>

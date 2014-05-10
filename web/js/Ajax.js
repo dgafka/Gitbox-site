@@ -3,13 +3,14 @@ var Ajax = function(dataType, async) {
     this.successCallBack = {};
     this.successCallBack2;
 
-    this.sendAjax = function(url) {
+    this.sendAjax = function(url, data) {
         $.ajax({
             url: url,
             context: this,
             async: typeof async === "undefined" ? true : async,
             type: "GET",
             dataType: typeof dataType === "undefined" ? 'json' : dataType,
+            data: typeof data === "undefined" ? {} : data,
             success: function(data) {
                 this.successCallBack(data);
                 if(!(typeof this.successCallBack2 === "undefined")) {
