@@ -100,4 +100,14 @@ div {
 }
 
 /* videoPlayer css */
+.vjs-default-skin { color: #e0eee5; }
+.vjs-default-skin .vjs-play-progress,
+.vjs-default-skin .vjs-volume-level { background-color: #3965bd }
+.vjs-default-skin .vjs-control-bar,
+.vjs-default-skin .vjs-big-play-button { background: rgba(3,3,3,0.28) }
+.vjs-default-skin .vjs-slider { background: rgba(3,3,3,0.09333333333333334) }
+
 .vjs-default-skin .vjs-control-bar { font-size: 100% }
+
+/*
+progresss bar*/

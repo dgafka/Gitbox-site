@@ -44,14 +44,18 @@ class TubePostType extends AbstractType
                       ->add('filename', 'file', array(
                           'label' => 'Dodaj film',
                           'attr' => array(
-                              'maxSize' => '7'
+                              'id' => 'tubePost_filename',
+                              'name' => 'tubePost[filename]'
+
                           )
 
                       ))
                       ->add('save', 'submit', array(
                           'label'  => 'Zapisz',
                           'attr'=> array (
-                              'class' => 'btn btn-default'
+                              'class' => 'btn btn-default',
+                              'id' => 'tubePost_save',
+                              'name' => 'tubePost[save]'
                           )
                       ));
     }

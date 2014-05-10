@@ -1,6 +1,34 @@
 {% extends "GitboxCoreBundle:Tube:layout.html.twig" %}
 {% block stylesheets %}
     {{ parent() }}
+    <link href="{{ asset('progresBar/css.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('progresBar/DruSans.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('css/tube.css') }}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{{ asset('progresBar/jquery.fileupload-ui.css') }}">
+    <script src="{{ asset('progresBar/html5.js') }}"></script>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('js/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('progresBar/jquery.ui.widget.js') }}"></script>
+    <script src="{{ asset('progresBar/jquery.iframe-transport.js') }}"></script>
+    <script src="{{ asset('progresBar/jquery.fileupload-ui.js') }}"></script>
+    <script src="{{ asset('progresBar/jquery.fileupload.js') }}"></script>
+    <script>
+        $(document).ready(function(){
+            $(function () {
+                $('#tubePost_filename').fileupload({
+                    progressall: function (e, data) {
+                        $('#progress .bar').css(
+                                'width',
+                                '100%'
+                        );
+                        $('#tubePost_save').click();
+                    }
+                });
+            });
+        });
+
+    </script>
 {% endblock %}
 {% block title %}{% endblock %}
 
@@ -13,16 +41,23 @@
 
                 {{ form(form) }}
 
-
-            </div>
-            {% if success  %}
+                <p>Routine progress..</p>
+                <!-- The global progress information -->
+                <div class="span5 fileupload-progress">
+                    <!-- The global progress bar -->
+                    <div id="progress" class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                        <div class="bar" style="width: 0%;"></div>
+                    </div>
+                    <!-- The extended global progress information -->
+                    <div class="progress-extended">&nbsp;</div>
+                </div>
+                {% if success  %}
                 <a href="tube/{{ post.id }}"><button type="button" class="btn btn-info">Poka</button></a>
 
-            {% endif %}
-            {# USER SIDEBAR #}
-
-        </div>
-
+                {% endif %}
+                {# USER SIDEBAR #}
+{#                http://symfony2forum.org/threads/100-Symfony2-File-Upload-Progress-Bar#}
+            </div>
     </div>
 {% endblock %}
 
