@@ -22,7 +22,7 @@ var ipManagmentClass = function() {
         var ip   = $(this).parent().parent().children('.ip').children('input').val();
         var date = $(this).parent().parent().children('.date').html();
 
-        if(ip.length < 10) {
+        if(ip.length < 9) {
             alert('Podaj prawidłowe ip');
         }else {
             var ajax = new Ajax();
