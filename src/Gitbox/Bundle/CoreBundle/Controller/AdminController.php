@@ -6,8 +6,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Acl\Exception\Exception;
+use Symfony\Component\Validator\Constraints\Date;
 
 class AdminController extends Controller
 {
@@ -26,7 +28,7 @@ class AdminController extends Controller
 		return array();
 	}
 
-    /**
+    /** Akcja pobierania i wyświetlania użytkowników dla user managment
      * @Route("/admin/userManagment/{page}", name="admin_managment")
      * @Template()
      */
@@ -36,6 +38,7 @@ class AdminController extends Controller
 		    throw $this->createNotFoundException("Strona nie istnieje lub brak dostępu");
 	    }
 
+	    //Obliczenie ilości wynikow na stronie
 		$offset = ($page - 1) * 10;
 	    $limit  = $page * 10;
 
@@ -52,13 +55,15 @@ class AdminController extends Controller
 		    $users[] = $user;
 	    }
 
+	    //amount of pages
 	    $amount = $helper->getUsersAmount();
 		$pages  = ceil($amount[0][1] / 10);
 
 	    return array('page' => $page, 'users' => $users, 'pages' => $pages);
     }
 
-    /**
+    /** Akcja odpowiedzialna za wyświetlanie ip-ów z bazy
+     * @Route("/admin/ipManagment/{page}", name="admin_ips")
      * @Template()
      */
     public function ipManagmentAction($page)
@@ -67,7 +72,31 @@ class AdminController extends Controller
 		    throw $this->createNotFoundException("Strona nie istnieje lub brak dostępu");
 	    }
 
-	    return array();
+	    //Obliczenie ilości wynikow na stronie
+	    $offset = ($page - 1) * 10;
+	    $limit  = $page * 10;
+
+	    /**
+	     * @var $helper \Gitbox\Bundle\CoreBundle\Helper\IPHelper
+	     */
+	    $helper  = $this->container->get('ip_helper');
+	    $results = $helper->getIPsByLimit($offset, $limit);
+
+
+	    //amount of pages
+	    $amount = $helper->getIPsAmount();
+	    $pages  = ceil($amount[0][1] / 10);
+
+	    $ipArray = array();
+	    foreach($results as $result) {
+			$ipSingle = array();
+		    $ipSingle['id'] = $result->getId();
+		    $ipSingle['ip'] = $result->getIp();
+		    $ipSingle['createDate'] = $result->getCreateDate()->format('Y-m-d H:i:s');
+		    $ipArray[] = $ipSingle;
+	    }
+
+	    return array('page' => $page, 'results' => $ipArray, 'pages' => $pages);
     }
 
     /**
@@ -166,6 +195,56 @@ class AdminController extends Controller
 		$responseArray = json_encode($responseArray);
 		return new Response($responseArray, 200, array('Content-Type'=>'application/json'));
 
+	}
+
+	/** Dodaj ip
+	 * @Route("/admin/ipManagment/manage/add", name="ip_managment_add")
+	 */
+	public function addIP(Request $request) {
+		if(!$this->checkPermission(2)){
+			throw $this->createNotFoundException("Strona nie istnieje lub brak dostępu");
+		}
+		$ip   = $request->query->get('ip');
+//		$date = new \DateTime();
+//		$date = $date->createFromFormat('Y-m-d H:i:s', $request->query->get('date'));
+		$date = (new \DateTime());
+
+		if(!preg_match('#[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}#', $ip)) {
+			$response = array('error' => 'Podaj poprawne ip.');
+		}else {
+			$ipObject = new \Gitbox\Bundle\CoreBundle\Entity\BannedIp();
+			$ipObject->setCreateDate($date);
+			$ipObject->setIp($ip);
+
+			/**
+			 * @var $helper \Gitbox\Bundle\CoreBundle\Helper\IPHelper
+			 */
+			$helper   = $this->container->get('ip_helper');
+			$ipObject = $helper->insert($ipObject);
+
+			$ipSingle = array();
+			$ipSingle['id'] = $ipObject->getId();
+			$ipSingle['ip'] = $ipObject->getIp();
+			$ipSingle['createDate'] = $ipObject->getCreateDate()->format('Y-m-d H:i:s');
+
+			$viewHtml    = $this->render('GitboxCoreBundle:Admin:singleIpManagment.html.twig', array('result' => $ipSingle));
+
+			$response = array('data' => $viewHtml->getContent());
+		}
+
+		$response = json_encode($response);
+		return new Response($response, 200, array('Content-Type'=>'application/json'));
+	}
+
+	/** Usuwa ip
+	 * @Route("/admin/ipManagment/manage/remove/{id}", name="ip_managment_remove")
+	 */
+	public function removeIP($id, Request $request) {
+		if(!$this->checkPermission(2)){
+			throw $this->createNotFoundException("Strona nie istnieje lub brak dostępu");
+		}
+
+		return new Response('Works', 200, array('Content-Type'=>'application/json'));
 	}
 
 	/** Sprawdza dostęp do widoku

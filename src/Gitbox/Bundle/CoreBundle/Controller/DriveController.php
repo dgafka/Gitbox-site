@@ -115,6 +115,7 @@ class DriveController extends Controller
     public function DriveShowAction($login, $element)
     {
         $contentHelper = $this->container->get('drive_content_helper');
+        $permissionHelper = $this->container->get('permissions_helper');
         $request = $this->get('request');
         $menuRoot= $contentHelper->getMenuZero($login, $request);
         $menuId = $menuRoot->getId();
@@ -123,11 +124,17 @@ class DriveController extends Controller
 
         $userHelper = $this->container->get('user_helper');
         $user = $userHelper->findByLogin($login);
+        $logged = $permissionHelper -> checkPermission($login);
+        $pageContent = $contentHelper->getContent($element, $request);
+        $page_attachments = $contentHelper->getAttachments($element, $request);
 
         return array(
             'user' => $user,
             'menus' => $menus,
-            'contents' => $menu_contents
+            'contents' => $menu_contents,
+            'pageContent' => $pageContent,
+            'pageContentAttachments' => $page_attachments,
+            'logged' => $logged
         );
     }
 

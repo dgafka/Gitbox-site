@@ -19,8 +19,6 @@
                     {% for menu in menus%}
                         <li><span class="glyphicon glyphicon-folder-close"></span> {{ menu.title }}</li>
                     {% endfor %}
-                    </ul>
-                    <ul>
                         {% for content in contents %}
                             <li><span class="glyphicon glyphicon-hdd"></span> {{ content.title }}</li>
                         {% endfor %}
@@ -32,15 +30,9 @@
 
         </div>
         <div class="col-md-8 col-sm-6 col-xs-6">{% block drive_r_panel %}
-                    <h2>Tytuł</h2>
+                    <h2>{{ pageContent.title }}</h2>
                     <div class="drive-show-description">
-                        opis opis opis opis
-                        opis opis opis opis
-                        opis opis opis opis
-                        opis opis opis opis
-                        opis opis opis opis
-                        opis opis opis opis
-                        llelllellele
+                        {{ pageContent.description }}
                     </div>
                     <br>
                     <table class="table table-striped">
@@ -51,10 +43,13 @@
                             <th></th>
                             <th></th>
                         </tr>
+
+                            {% for att in pageContentAttachments %}
                         <tr>
-                            <td>a.pdf</td>
+                            <td>{{ att.filename }}</td>
                             <td>Aaaaa</td>
                             <td>lalaala</td>
+                            {% if logged == true %}
                             <td>
                                 <a type="button" class="btn btn-warning" href="{{ path('drive_contener_new') }}">
                                     <span class="glyphicon glyphicon-trash"></span> edytuj
@@ -65,8 +60,13 @@
                                     <span class="glyphicon glyphicon-cog"></span>usuń
                                 </a>
                             </td>
-
+                            {% else %}
+                                <td></td>
+                                <td></td>
+                            {% endif %}
                         </tr>
+                            {% endfor %}
+
                     </table>
                 <div class="driveButtonPanel">
                     <a type="button" class="btn btn-default" href="{{ path('drive_contener_new') }}">

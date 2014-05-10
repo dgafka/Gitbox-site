@@ -9,6 +9,7 @@ parameters:
     permissions_helper.class: Gitbox\Bundle\CoreBundle\Helper\PermissionsHelper
     rating_helper.class: Gitbox\Bundle\CoreBundle\Helper\RatingHelper
     cache_helper.class: Gitbox\Bundle\CoreBundle\Helper\CacheHelper
+    ip_helper.class: Gitbox\Bundle\CoreBundle\Helper\IPHelper
     cache_helper.host: localhost
     cache_helper.port: 11211
 
@@ -51,3 +52,6 @@ services:
     cache_helper:
         class:        "%cache_helper.class%"
         arguments:    ["@doctrine.orm.entity_manager", "%cache_helper.host%", "%cache_helper.port%"]
+    ip_helper:
+        class:        "%ip_helper.class%"
+        arguments:    ["@doctrine.orm.entity_manager", "@cache_helper"]
