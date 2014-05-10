@@ -1,0 +1,35 @@
+{% block tab2 %}
+    {# IP managment js helper #}
+    <script type="text/javascript" src="{{ asset('js/Admin/ipManagment.js') }}"></script>
+    <div class="container">
+        <h3>Tutaj możesz dodać ip, które chciałbyś, aby zostało zbanowane.</h3>
+        <hr>
+        <div class="row">
+            <div class="panel panel-primary filterable">
+                <div class="panel-heading">
+                    <h3 class="panel-title">IP</h3>
+                    <div class="pull-right">
+                        <button class="btn btn-default btn-xs btn-filter" id="addIp"><span class="glyphicon glyphicon-filter"></span>Dodaj nowy wpis</button>
+                    </div>
+                </div>
+                <table class="table">
+                    <thead>
+                    <tr class="filters">
+                        <th><input type="text" class="form-control" placeholder="Data dodania" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="IP" disabled></th>
+                    </tr>
+                    </thead>
+                    <tbody id="ip-content">
+                    {% for result in results %}
+                        <tr>
+                            <td>{{ result.createDate }}</td>
+                            <td>{{ result.ip }}</td>
+                            <td><button class="btn btn-default">Usuń</button></td>
+                            <td style="display:none">{{ result.id }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+{% endblock %}
