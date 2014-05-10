@@ -16,7 +16,7 @@ use Symfony\Component\Filesystem\Filesystem;
 class TubeController extends Controller
 {
 
-    private $dir = __DIR__;
+   // private $dir = __DIR__;
 
     /**
      * Walidacja poprawności URL-a. <br />
@@ -84,11 +84,10 @@ class TubeController extends Controller
         // utworzenie instancji wpisu
         $newAttachment = new Attachment();
         $newContent = new Content();//iduser, idmenu, status, title, header->file, description,
-                                    //createdate, hit, lastModDate,type, id_category,
+        //createdate, hit, lastModDate,type, id_category,
 
         // formularz nowego wpisu
         $form = $this->createForm(new TubePostType(), $newAttachment);
-        //Tu wrzucam generowanie formularza bo wywala błąd na ścieżkę do TubePostType wtf?
 
         $form->handleRequest($request);
 
@@ -96,21 +95,13 @@ class TubeController extends Controller
         // walidacja formularza
         if ($form->isValid()) {
             $contentHelper = $this->container->get('tube_content_helper');
+            $menuHelper = $this->container->get('menu_helper');
             $em = $this->getDoctrine()->getManager();
-            $repository = $em->getRepository('GitboxCoreBundle:Menu');
-
-            $newContent->setIdUser($user->getId());
-            $newContent->setCreateDate(new \DateTime('now'));
-            $newContent->setLastModificationDate(new \DateTime('now'));
-            $newContent->setIdMenu($repository->findOneByTitle('GitTube '.$login));
-            $newContent->setStatus('A');
-            $newContent->setHit(5);
-            $newContent->setType('1');
-            //$newContent->setIdCategory(1);
-
+            // inicjalizacja flash baga
+            $session = $this->container->get('session');
             $dir =  __DIR__.'/../../../../../web/uploads/tube/'.$user->getId().'/';
-            $file = $form['header']->getData();
 
+            $file = $form['filename']->getData();
             $extension = $file->guessExtension();
             if (!$extension) {
                 // extension cannot be guessed
@@ -119,29 +110,18 @@ class TubeController extends Controller
             $filename = uniqid();
             $file->move($dir, $filename);
 
-            /*$fs = new Filesystem();
-            $fs->chmod($filename,0777);*/
-
-            $newContent->setHeader($filename);
-
-            $em->persist($newContent);
-            $em->flush();
-
-            //id_content,status,filename,title,description,create_date,mime
-            $newAttachment->setFilename($newContent->getHeader());
+            $newAttachment->setFilename($filename);
             $newAttachment->setMime($extension);
-            $newAttachment->setCreateDate($newContent->getCreateDate());
-            $newAttachment->setDescription($newContent->getDescription());
-            $newAttachment->setTitle($newContent->getTitle());
-            $newAttachment->setStatus($newContent->getStatus());
-            $newAttachment->setIdContent($newContent);
+            $menu = $menuHelper->findByUserAndModule($user->getId(), 'GitTube');
+            $newContent->setIdMenu($menu);
+            $newContent->setIdUser($user->getId());
+            $newContent->setTitle($newAttachment->getTitle());
+            $newContent->setDescription($newAttachment->getDescription());
 
-            $em->persist($newAttachment);
-            $em->flush();
+            $contentHelper->insertIntoContent($newContent);
+            $contentHelper->insertIntoAttachment($newAttachment,$newContent);
 
-            // inicjalizacja flash baga
-            $session = $this->container->get('session');
-            $session->getFlashBag()->add('success', 'Dodano wpis <b>' . $newAttachment->getFilename() . '</b>');
+            $session->getFlashBag()->add('success', 'Dodano film <b>' . $newAttachment->getFilename() . '</b>');
 
             return $this->redirect(
                 $this->generateUrl('tube_content_show', array(

@@ -62,11 +62,8 @@ class MailerController extends Controller
 
 	    $mailerHelper->sendMessage();
 
-	    $information = array();
-	    $information['type']    = 'success';
-	    $information['content'] = 'Email z nowym hasłem został wysłany.';
-
-	    return array('information' => $information);
+        $session = $this->container->get('session');
+        $session->getFlashBag()->add('success', 'Email z nowym hasłem został wysłany.');
 
 	    return array();
     }
@@ -84,14 +81,16 @@ class MailerController extends Controller
 	    $userAccount = $helper->findByToken($token);
 
 	    if(!($userAccount instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount)) {
-		    $information['type']    = 'warning';
-		    $information['content'] = 'Podany token nie istnieje, czy na pewno nie aktywowałeś konta już wcześniej?';
-		    return $this->forward('GitboxCoreBundle:Main:index.html.twig', array('information' => $information));
+            $session = $this->container->get('session');
+            $session->getFlashBag()->add('warning', 'Podany token nie istnieje, czy na pewno nie aktywowałeś konta już wcześniej?');
+
+            return $this->render('GitboxCoreBundle:Main:index.html.twig');
 	    }
 		if($userAccount->getStatus() != 'D') {
-			$information['type']    = 'warning';
-			$information['content'] = 'Konto było już wcześniej aktywowane!';
-			return $this->render('GitboxCoreBundle:Main:index.html.twig', array('information' => $information));
+            $session = $this->container->get('session');
+            $session->getFlashBag()->add('warning', 'Konto było już wcześniej aktywowane!');
+
+            return $this->redirect('GitboxCoreBundle:Main:index.html.twig');
 		}
 
 	    $userAccount->setStatus('A');

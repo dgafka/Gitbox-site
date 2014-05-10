@@ -29,7 +29,7 @@
                     {% if information is defined %}
                         {%  include 'GitboxCoreBundle:InformationBar:index.html.twig' %}
                     {% endif %}
-                    {{ form_start(form) }}
+                    {{ form_start(form, {'action': path('home_url')}) }}
                     {{ form_errors(form) }}
                     <div class="form-group">
                         {{ form_widget(form.email) }}

@@ -22,16 +22,15 @@
         <link rel="stylesheet" href="{{ asset('css/additionals/animate.css') }}" />
         <link rel="stylesheet" href="{{ asset('css/additionals/font-awesome.css') }}" />
 
+        {# Global style #}
+        <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
+    {% endblock %}
+    {% block javascripts %}
         {# jQuery #}
         <script type="text/javascript" src="{{ asset('js/jquery/jquery.min.js') }}"></script>
 
         {# jQuery ui #}
         <script type="text/javascript" src="{{ asset('js/jquery/jquery-ui.min.js') }}"></script>
-
-        {# Global style #}
-        <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
-    {% endblock %}
-    {% block javascripts %}
     {% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 
@@ -88,9 +87,8 @@
 {% block content %}
     <div class="container whitened main-window">
         <div class="jumbojumba">
-            {% if information is defined %}
-                {%  include 'GitboxCoreBundle:InformationBar:index.html.twig' %}
-            {% endif %}
+            {% include 'GitboxCoreBundle:InformationBar:index.html.twig' %}
+
             {% block content_inner %}
             {% endblock %}
         </div>

@@ -40,7 +40,7 @@ class UserAccountController extends Controller
 			));
 		}
 
-		if($form->isValid()) {
+		if ($form->isValid()) {
 
 			$userAccount->setEmail(strtolower($userAccount->getEmail()));
 			$userAccount->setPassword(md5($userAccount->getPassword()));
@@ -54,7 +54,7 @@ class UserAccountController extends Controller
 			 */
 			$userAccount = $helper->instance()->getRepository('\Gitbox\Bundle\CoreBundle\Entity\UserAccount')->findOneBy(array('email' => $userAccount->getEmail(), 'password' => $userAccount->getPassword(), 'status' => 'A'));
 
-			if($userAccount instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount && $userAccount->getStatus() == 'A') {
+			if ($userAccount instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount && $userAccount->getStatus() == 'A') {
 
 				$session->set('username', $userAccount->getLogin());
 				$session->set('userId', $userAccount->getId());
@@ -72,23 +72,26 @@ class UserAccountController extends Controller
 				$helper->instance()->persist($userAccount);
 				$helper->instance()->flush();
 
-				return $this->forward('GitboxCoreBundle:Main:index');
-			}
-
-			$information['type']    = 'warning';
-			$information['content'] = 'Niestety podano błędny login / hasło.';
-
-			return $this->render('GitboxCoreBundle:UserAccount:index.html.twig', array(
-				'form'          => $form->createView(),
-				'session'       => false,
-				'information'   => $information,
-			));
+                return array(
+                    'session' => true,
+                    'username' => $userAccount->getLogin()
+                );
+			} else if (!$userAccount instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount) {
+                $session = $this->container->get('session');
+                $session->getFlashBag()->add('warning', 'Niestety podano błędny login / hasło.');
+            } else if ($userAccount->getStatus() != 'A') {
+                $session = $this->container->get('session');
+                $session->getFlashBag()->add('warning',
+                    'Konto nie zostało aktywowane.<br />'.
+                    'Aby je aktywować, wejdż na konto e-mail, które podałeś przy rejestracji konta i kliknij w aktywacyjny link.'
+                );
+            }
 		}
 
-		return $this->render('GitboxCoreBundle:UserAccount:index.html.twig', array(
-			'form'          => $form->createView(),
+		return array(
+            'form'          => $form->createView(),
 			'session'       => false,
-		));
+		);
 	}
 
 	/**
@@ -142,13 +145,12 @@ class UserAccountController extends Controller
 				$message .= ' Hasło powinno składać się przynajmniej z 6 znaków. <br/>';
 			}
 			if($message != '') {
-				$information['type']    = 'warning';
-				$information['content'] = $message;
+                $session = $this->container->get('session');
+                $session->getFlashBag()->add('warning', $message);
 
 				return $this->render('GitboxCoreBundle:UserAccount:register.html.twig', array(
 					'form'          => $form->createView(),
-					'session'       => false,
-					'information'   => $information,
+					'session'       => false
 				));
 			}
 
@@ -253,7 +255,6 @@ class UserAccountController extends Controller
 	}
 
 	/** Akcja odpwiedzialna za wylogowanie użytkownika
-	 * @Template()
 	 * @Route("logout", name="user_logout_url")
 	 */
 	public function logoutAction(Request $request) {
@@ -262,7 +263,8 @@ class UserAccountController extends Controller
 			$session->clear();
 		}
 
-		$this->redirect($this->generateUrl('home_url'));
+        // TODO: alert - bezpiecznie wylogowano
+        return $this->redirect($this->generateUrl('home_url'));
 	}
 
 	/** Akcja dla okna potwierdzającego rejestrację
@@ -293,11 +295,10 @@ class UserAccountController extends Controller
 			$user       = $userHelper->findByEmail($userAccount->getEmail());
 
 			if(!($user instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount)) {
-				$information = array();
-				$information['type']    = 'warning';
-				$information['content'] = 'Nie istnieje taki email w bazie.';
+                $session = $this->container->get('session');
+                $session->getFlashBag()->add('warning', 'Nie istnieje taki email w bazie.');
 
-				return array('form' => $form->createView(), 'information' => $information);
+				return array('form' => $form->createView());
 			}
 			$password = uniqid(mt_rand(), true);
 			$user->setPassword(md5($password));

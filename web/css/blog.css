@@ -15,7 +15,7 @@
     color: lightgray;
 }
 
-.post-in-the-box:hover > .btn-float-left {
+.post-in-the-box:hover > .user-options > .option-left {
     color: dimgray;
 }
 

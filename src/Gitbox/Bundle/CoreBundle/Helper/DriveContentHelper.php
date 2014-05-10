@@ -2,6 +2,7 @@
 namespace Gitbox\Bundle\CoreBundle\Helper;
 
 use Gitbox\Bundle\CoreBundle\Entity\Content;
+use Gitbox\Bundle\CoreBundle\Entity\Menu;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query;
 use Knp\Component\Pager\Paginator;
@@ -32,7 +33,7 @@ class DriveContentHelper extends ContentHelper  {
      * @param $userLogin
      * @param Request $request
      *
-     * @return array | null
+     * @return Menu
      *
      * @throws Exception
      */
@@ -49,18 +50,57 @@ class DriveContentHelper extends ContentHelper  {
         $queryBuilder
             ->select('c')
             ->from('GitboxCoreBundle:Menu', 'c')
-            ->where('c.idUser = :user_id AND c.idModule = :module_id')
+            ->where('c.idUser = :user_id AND c.idModule = :module_id AND c.parent is null')
+            ->setMaxResults(1)
             ->setParameters(array(
                 'user_id' => $userId,
                 'module_id' => $moduleId
             ));
 
         if ($request instanceof Request) {
+            $query = $queryBuilder->getQuery()->getOneOrNullResult();;
+
+            $menu = $query;
+
+            return $menu;
+        } else {
+            try {
+                return $queryBuilder->getQuery()->getOneOrNullResult();;
+            } catch (NoResultException $e) {
+                return null;
+            }
+        }
+    }
+    /**
+     * Pobieranie podmenu
+     *
+     * @param $menuId
+     * @param Request $request
+     *
+     * @return array | null
+     *
+     * @throws Exception
+     */
+    public function getMenus($menuId,  Request & $request = null) {
+
+
+        $queryBuilder = $this->instance()->createQueryBuilder();
+
+        $queryBuilder
+            ->select('c')
+            ->from('GitboxCoreBundle:Menu', 'c')
+            ->where(' c.parent = :menu_id')
+            ->setParameters(array(
+                'menu_id' => $menuId,
+
+            ));
+
+        if ($request instanceof Request) {
             $query = $queryBuilder->getQuery()->getResult();
 
-            $posts = $query;
+            $menu = $query;
 
-            return $posts;
+            return $menu;
         } else {
             try {
                 return $queryBuilder->getQuery()->getResult();
@@ -68,9 +108,47 @@ class DriveContentHelper extends ContentHelper  {
                 return null;
             }
         }
+
     }
 
+    /**
+     * Pobieranie contentu
+     *
+     * @param $menuId
+     * @param Request $request
+     *
+     * @return array | null
+     *
+     * @throws Exception
+     */
+    public function getMenuContent($menuId,  Request & $request = null) {
 
 
+        $queryBuilder = $this->instance()->createQueryBuilder();
+
+        $queryBuilder
+            ->select('c')
+            ->from('GitboxCoreBundle:Content', 'c')
+            ->where(' c.idMenu = :menu_id')
+            ->setParameters(array(
+                'menu_id' => $menuId,
+
+            ));
+
+        if ($request instanceof Request) {
+            $query = $queryBuilder->getQuery()->getResult();
+
+            $content= $query;
+
+            return $content;
+        } else {
+            try {
+                return $queryBuilder->getQuery()->getResult();
+            } catch (NoResultException $e) {
+                return null;
+            }
+        }
+
+    }
 
 }

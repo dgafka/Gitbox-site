@@ -1,0 +1,8 @@
+{% block submit_widget %}
+    {% spaceless %}
+        {% set type = type|default('submit') %}
+        <button type="{{ type }}" name="" {{ block('button_attributes') }}>
+            <span class="glyphicon glyphicon-search"></span>
+        </button>
+    {% endspaceless %}
+{% endblock submit_widget %}

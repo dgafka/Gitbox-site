@@ -1,6 +1,7 @@
 $(document).ready(function () {
     /* Tooltips-y `Feel soo dipsy~` */
     $('.option-left').tooltip();
+    $('.comments-link-inner').tooltip();
 
     /* Post remove modal - wypełniany treścią po kliknięciu na button `Usuń` */
     $(function () {

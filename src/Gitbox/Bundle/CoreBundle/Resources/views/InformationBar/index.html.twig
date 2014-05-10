@@ -1,14 +1,15 @@
 {% block information_bar %}
+    {% spaceless %}
     <div class="flash-messages">
-        {% if information.type == 'success'  %}
-            <p class="list-group-item list-group-item-success" id="flash-message-success">
-                {{ information.content | raw }}
-            </p>
-        {% endif %}
-        {% if information.type == 'warning'  %}
-            <p class="list-group-item list-group-item-danger" id="flash-message-warning">
-                {{ information.content | raw }}
-            </p>
-        {% endif %}
+        {# ALERT TYPES: danger | warning | info | success #}
+        {% for type, flashMessages in app.session.flashbag.all() %}
+            {% for flashMessage in flashMessages %}
+                <div class="alert alert-{{ type }} alert-dismissable alert-message">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ flashMessage | raw }}
+                </div>
+            {% endfor %}
+        {% endfor %}
     </div>
+    {% endspaceless %}
 {% endblock %}

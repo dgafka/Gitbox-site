@@ -9,6 +9,7 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Gitbox\Bundle\CoreBundle\Entity\UserAccount;
 
+
 class UserSidebarController extends Controller
 {
     /**
@@ -18,6 +19,7 @@ class UserSidebarController extends Controller
         $request = $this->get('request');
 
         $user = $request->get('user');
+        $actionUrl = $request->get('actionUrl');
         $userId = $user->getId();
 
         if (!isset($user) && $user instanceof UserAccount) {
@@ -30,10 +32,31 @@ class UserSidebarController extends Controller
         $moduleHelper = $this->container->get('module_helper');
         $userModule = $moduleHelper->findUserModule($userId);
 
+        // obsługa formularza
+        $form = $this->get('form.factory')->createNamedBuilder(null, 'form', array(), array('csrf_protection' => false))
+            ->add('title', 'text', array(
+                'label' => false,
+                'attr' => array (
+                    'class'       => 'form-control',
+                    'placeholder' => 'Wyszukaj po tytule'
+                ),
+                'required' => true,
+                'max_length' => 50,
+                'trim' => true
+            ))
+            ->add('submit', 'submit', array(
+                'attr' => array (
+                    'class' => 'btn btn-default'
+                )
+            ))
+            ->getForm();
+
         return array(
             'user' => $user,
             'userDescription' => $userDescription,
-            'userModule' => $userModule
+            'userModule' => $userModule,
+            'form' => $form->createView(),
+            'actionUrl' => $actionUrl
         );
     }
 

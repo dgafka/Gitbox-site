@@ -14,12 +14,6 @@
 
 {% block content_inner %}
 <div class="row">
-    {% for flashMessage in app.session.flashbag.get('success') %}
-        <div class="alert alert-success alert-dismissable alert-message">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            {{ flashMessage | raw }}
-        </div>
-    {% endfor %}
 
     <div class="col-lg-8 main-content">
         {# ADD BUTTON #}
@@ -95,13 +89,15 @@
                         {{ post.description | raw }}
                     </div>
 
-                    <div class="comments-link-container" title="Skomentuj „{{ post.title }}”">
+                    <div class="comments-link-container">
                         <h5 style="display: inline-block;">
-                            <a class="comments-link no-decoration"
-                                href="{{ path('user_show_post', {'login': user.login, 'id': post.id}) }}#comments-content"
-                                data-disqus-identifier="{{ 'gitblog/' ~ user.login ~ '/' ~ post.id }}">
-                                {# ILOŚC KOMENTARZY `Komentarze <span class="badge">{num}</span>` #}
-                            </a>
+                            <div class="comments-link-inner" title="Skomentuj „{{ post.title }}” "data-toggle="tooltip" data-placement="top">
+                                <a class="comments-link no-decoration"
+                                    href="{{ path('user_show_post', {'login': user.login, 'id': post.id}) }}#comments-content"
+                                    data-disqus-identifier="{{ 'gitblog/' ~ user.login ~ '/' ~ post.id }}">
+                                    {# ILOŚC KOMENTARZY `Komentarze <span class="badge">{num}</span>` #}
+                                </a>
+                            </div>
                         </h5>
                         {% if hasAccess == false %}
                             {% if app.request.cookies.get('vote_' ~ post.id) is not null %}
@@ -119,70 +115,77 @@
             </div>
             {% if not loop.last %}
                 <hr class="divider">
-            {% endif%}
+            {% endif %}
         {% else %}
-            <div class="post-in-the-box">
-                <h1>To jest przykładowy wpis.</h1>
-                <p><span class="glyphicon glyphicon-time"></span> <b>Utworzono</b> {{ "now"|date("D j/m/Y H:i:s") }}</p> {# date formats: D j/m/Y H:i:s || D j, F Y - H:i:s #}
-                <p><span class="glyphicon glyphicon-time"></span> <b>Ostatnio edytowano</b> {{ "now"|date("D j/m/Y H:i:s") }}</p>
-                {% if hasAccess == true %}
-                    <div class="ratings">
-                        <div class="rating-up">
-                            <div class="score-up">999</div>
+            {% if is_query == false %}
+                <div class="post-in-the-box">
+                    <h1>To jest przykładowy wpis.</h1>
+                    <p><span class="glyphicon glyphicon-time"></span> <b>Utworzono</b> {{ "now"|date("D d/m/Y H:i:s") }}</p> {# date formats: D j/m/Y H:i:s || D j, F Y - H:i:s #}
+                    <p><span class="glyphicon glyphicon-time"></span> <b>Ostatnio edytowano</b> {{ "now"|date("D d/m/Y H:i:s") }}</p>
+                    {% if hasAccess == true %}
+                        <div class="ratings">
+                            <div class="rating-up">
+                                <div class="score-up">999</div>
+                            </div>
+                            <div class="rating-down">
+                                <div class="score-down">999</div>
+                            </div>
                         </div>
-                        <div class="rating-down">
-                            <div class="score-down">999</div>
-                        </div>
-                    </div>
-                    <div class="user-options">
-                        <a class="option-left"
-                           href="#"
-                           title="Edytuj wpis" data-toggle="tooltip" data-placement="bottom">
-                            <span class="glyphicon glyphicon-pencil"></span> Edytuj
-                        </a>
-                        <a class="option-left" href="#"
-                           title="Usuń wpis" data-toggle="tooltip" data-placement="bottom">
-                            <span class="glyphicon glyphicon-trash"></span> Usuń
-                        </a>
-                        <hr style="margin-top: 5px;">
-                    </div>
-                {% else %}
-                    <div class="ratings">
-                        <div class="rating-up">
-                            <div class="score-up">999+</div>
-                            <a class="btn btn-sm btn-vote-up" href="#">
-                                <span class="glyphicon glyphicon-thumbs-up"></span>
+                        <div class="user-options">
+                            <a class="option-left"
+                               href="#"
+                               title="Edytuj wpis" data-toggle="tooltip" data-placement="bottom">
+                                <span class="glyphicon glyphicon-pencil"></span> Edytuj
                             </a>
-                        </div>
-                        <div class="rating-down">
-                            <div class="score-down">999+</div>
-                            <a class="btn btn-sm btn-vote-down" href="#">
-                                <span class="glyphicon glyphicon-thumbs-down"></span>
+                            <a class="option-left" href="#"
+                               title="Usuń wpis" data-toggle="tooltip" data-placement="bottom">
+                                <span class="glyphicon glyphicon-trash"></span> Usuń
                             </a>
+                            <hr style="margin-top: 5px;">
                         </div>
+                    {% else %}
+                        <div class="ratings">
+                            <div class="rating-up">
+                                <div class="score-up">999+</div>
+                                <a class="btn btn-sm btn-vote-up" href="#">
+                                    <span class="glyphicon glyphicon-thumbs-up"></span>
+                                </a>
+                            </div>
+                            <div class="rating-down">
+                                <div class="score-down">999+</div>
+                                <a class="btn btn-sm btn-vote-down" href="#">
+                                    <span class="glyphicon glyphicon-thumbs-down"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <hr>
+                    {% endif %}
+
+                    <p class="lead">Może warto by coś napisać?</p>
+                    <p>Jeśli chcesz dodać nowy wpis, przejdź do formularza, w którym dodasz nowy wpis.</p>
+                    <p>Zrobisz to poprzez kliknięcie przycisku `Dodaj nowy wpis`, który znajduje się nad tym postem.</p>
+                    <p>Możesz także dodawać posty z poziomu swojego profilu, w zakładce `Moduły`.</p>
+                    <p class="lead">Powodzenia! :-)</p>
+
+                    <div class="comments-link-container" title="Skomentuj „To jest przykładowy wpis.”">
+                        <h5>
+                            <a class="comments-link no-decoration" href="#">Komentarze
+                                <span class="badge">999+</span>
+                            </a>
+                        </h5>
                     </div>
-                    <hr>
-                {% endif %}
-
-                <p class="lead">Może warto by coś napisać?</p>
-                <p>Jeśli chcesz dodać nowy wpis, przejdź do formularza, w którym dodasz nowy wpis.</p>
-                <p>Zrobisz to poprzez kliknięcie przycisku `Dodaj nowy wpis`, który znajduje się nad tym postem.</p>
-                <p>Możesz także dodawać posty z poziomu swojego profilu, w zakładce `Moduły`.</p>
-                <p class="lead">Powodzenia! :-)</p>
-
-                <div class="comments-link-container" title="Skomentuj „To jest przykładowy wpis.”">
-                    <h5>
-                        <a class="comments-link no-decoration" href="#">Komentarze
-                            <span class="badge">999+</span>
-                        </a>
-                    </h5>
                 </div>
-            </div>
+            {% else %}
+                <a href="{{ path('user_blog', {'login': user.login}) }}" class="btn btn-info btn-need-some-space"><i class="glyphicon glyphicon-arrow-left"></i> Powrót do wpisów</a>
+                <h4>
+                    <em>Nic nie znaleziono.</em>
+                </h4>
+            {% endif %}
         {% endfor %}
     </div>
 
     {# USER SIDEBAR #}
-    {% render controller("GitboxCoreBundle:UserSidebar:render", {'user': user}) %}
+    {% render controller("GitboxCoreBundle:UserSidebar:render", {'user': user, 'actionUrl': 'user_blog'}) %}
 
     {# POST REMOVE MODAL #}
     <div id="postRemoveModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="postRemove" aria-hidden="true">
