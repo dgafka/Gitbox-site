@@ -105,7 +105,7 @@ class TubeController extends Controller
             $file = $form['filename']->getData();
             $extension = $file->guessExtension();
 
-            $allowed = array('mp4','wmv','asf');
+            $allowed = array('mp4','wmv','asf','avi');
             if (!in_array($extension, $allowed)) {
                 $session->getFlashBag()->add('warning', 'Nieprawidłowy format pliku video.');
                 //throw $this->createNotFoundException("Nieprawidłowy format pliku video. Podano=".$extension);
@@ -164,11 +164,13 @@ class TubeController extends Controller
         }
 
         $dir = '../../../../../web/uploads/tube/'.$user->getId().'/'.$attachment->getFilename();
+        $dirToDemoCaptions = '../../../../../web/videoPlayer/demo.captions.vtt';
 
         return array(
             'user' => $user,
             'post' => $attachment,
-            'dir'  => $dir
+            'dir'  => $dir,
+            'captions' => $dirToDemoCaptions
         );
     }
 }
