@@ -7,7 +7,7 @@ use Gitbox\Bundle\CoreBundle\Entity\Content;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
- * Abstrakcyjna klasa wspomagająca pobieranie content-ów z bazy
+ * Klasa wspomgająca tabele BannedIp
  *
  * Class ContentHelper
  * @package Gitbox\Bundle\CoreBundle\Helper
