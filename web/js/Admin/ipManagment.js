@@ -9,7 +9,7 @@ var ipManagmentClass = function() {
             '<tr>'              +
                 '<td class="date">' + date + '</td>'    +
                 '<td class="ip"><input type="text" class="form-control" placeholder="IP"></td>' +
-                '<td><button class="btn btn-default" id="'+ id + '-delete' +'">Usuń</button>  <button class="btn btn-primary" url="' + url + '" id="'+ id + '-save' +'">Zapisz</button></td>' +
+                '<td><button class="btn btn-default delete" id="'+ id + '-delete' +'">Usuń</button>  <button class="btn btn-primary save" url="' + url + '" id="'+ id + '-save' +'">Zapisz</button></td>' +
         '</tr>'
         );
 
@@ -28,31 +28,45 @@ var ipManagmentClass = function() {
             var ajax = new Ajax();
             ajax.setSuccessCallback(function(results) {
                 if(typeof results.error === "undefined") {
-                    var html = results.data;
-                    $('#ip-content').append(html);
+                    var result = results.data;
+                    //przypisanie wyników do rekordu
+                    $(this).parent().parent().children('.date').html(result.createDate);
+                    $(this).parent().parent().children('.ip').html(result.ip)
+                    $(this).parent().children('.delete').attr('url', results.url);
+                    $(this).remove();
+
                     return;
                 }
 
                 alert('Podano błędne ip');
-            })
+            }.bind(this))
             ajax.sendAjax($(this).attr('url'), {"ip": ip, "date": date});
-
         }
     },
 
 //        Usuwanie wpisu
     this.delete = function() {
-        alert('deletion');
+        if(!(typeof $(this).attr('url') === "undefined")) {
+            var ajax = new Ajax();
+            ajax.sendAjax($(this).attr('url'));
+        }
+
+        $(this).parent().parent().remove();
     },
 
 //        Obsługa paginacji
-    this.pagination = function() {
+    this.pagination = function(event) {
+        var ajax = new Ajax('html');
+        ajax.setSuccessCallback(function(results){
+            var managmentDiv = $('#ipManagment');
+            managmentDiv.empty();
+            managmentDiv.append(results);
+        });
 
-    }
+        var url = $(this).attr('link_target');
 
-//  Funkcja wysłana do callbacka ajaxa
-    this.ajaxCallBack = function() {
-
+        ajax.sendAjax(url);
+        event.preventDefault();
     }
 
 //    Dodanie listenerów
@@ -65,6 +79,16 @@ var ipManagmentClass = function() {
         }
     }
 
+    this.initalize = function() {
+
+        //binding listeners
+        $('#paginationIP a').on('click', this.pagination);
+        $('#ip-content button').each(function(index, button) {
+            this.addListener($(button), 'delete');
+        }.bind(this))
+    }
+
+    this.initalize();
 }
 
 

@@ -31,4 +31,14 @@
                 </table>
             </div>
         </div>
+
+    <ul class="pagination" id="paginationIP">
+        {% for i in 1..pages  %}
+            {% if i == page %}
+                <li class="active"><a href="#" link_target="{{ path('admin_ips', {'page' : i }) }}">{{ i }}</a></li>
+            {% else %}
+                <li><a href="#" link_target="{{ path('admin_ips', {'page' : i }) }}">{{ i }}</a></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
 {% endblock %}

@@ -205,8 +205,6 @@ class AdminController extends Controller
 			throw $this->createNotFoundException("Strona nie istnieje lub brak dostępu");
 		}
 		$ip   = $request->query->get('ip');
-//		$date = new \DateTime();
-//		$date = $date->createFromFormat('Y-m-d H:i:s', $request->query->get('date'));
 		$date = (new \DateTime());
 
 		if(!preg_match('#[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}#', $ip)) {
@@ -227,9 +225,10 @@ class AdminController extends Controller
 			$ipSingle['ip'] = $ipObject->getIp();
 			$ipSingle['createDate'] = $ipObject->getCreateDate()->format('Y-m-d H:i:s');
 
-			$viewHtml    = $this->render('GitboxCoreBundle:Admin:singleIpManagment.html.twig', array('result' => $ipSingle));
-
-			$response = array('data' => $viewHtml->getContent());
+			$response = array(
+				'data' => $ipSingle,
+				'url'  => $this->generateUrl('ip_managment_remove', array('id' => $ipSingle['id']))
+			);
 		}
 
 		$response = json_encode($response);
@@ -239,12 +238,17 @@ class AdminController extends Controller
 	/** Usuwa ip
 	 * @Route("/admin/ipManagment/manage/remove/{id}", name="ip_managment_remove")
 	 */
-	public function removeIP($id, Request $request) {
+	public function removeIP($id) {
 		if(!$this->checkPermission(2)){
 			throw $this->createNotFoundException("Strona nie istnieje lub brak dostępu");
 		}
+		/**
+		 * @var $helper \Gitbox\Bundle\CoreBundle\Helper\IPHelper
+		 */
+		$helper   = $this->container->get('ip_helper');
+		$helper->remove((int)$id);
 
-		return new Response('Works', 200, array('Content-Type'=>'application/json'));
+		return new Response('', 200, array('Content-Type'=>'application/json'));
 	}
 
 	/** Sprawdza dostęp do widoku

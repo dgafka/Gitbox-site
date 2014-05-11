@@ -73,7 +73,7 @@ var UserManagment = function(){
     this.initalization = function() {
 
         //binding listeners
-        $('.pagination a').on('click', this.pagination);
+        $('#paginationUser a').on('click', this.pagination);
         this.sendAction.prototype.scopeHere = this;
         $('#accordion button').on('click', this.sendAction);
     }

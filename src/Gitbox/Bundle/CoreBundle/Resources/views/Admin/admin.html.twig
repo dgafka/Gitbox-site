@@ -23,9 +23,11 @@
         </div>
     </div>
     <div id="tabs-2">
-        {% block tab2 %}
-            {% render controller('GitboxCoreBundle:Admin:ipManagment', { 'page' : 1}) %}
-        {% endblock %}
+        <div id="ipManagment">
+            {% block tab2 %}
+                {% render controller('GitboxCoreBundle:Admin:ipManagment', { 'page' : 1}) %}
+            {% endblock %}
+        </div>
     </div>
     <div id="tabs-3">
         {% block tab3 %}

@@ -41,13 +41,13 @@
     {% endfor %}
 </div>
 
-<ul class="pagination">
-{% for i in 1..pages  %}
-    {% if i == page %}
-        <li class="active"><a href="#" link_target="{{ path('admin_managment', {'page' : i }) }}">{{ i }}</a></li>
-    {% else %}
-        <li><a href="#" link_target="{{ path('admin_managment', {'page' : i }) }}">{{ i }}</a></li>
-    {% endif %}
-{% endfor %}
+<ul class="pagination" id="paginationUser">
+    {% for i in 1..pages  %}
+        {% if i == page %}
+            <li class="active"><a href="#" link_target="{{ path('admin_managment', {'page' : i }) }}">{{ i }}</a></li>
+        {% else %}
+            <li><a href="#" link_target="{{ path('admin_managment', {'page' : i }) }}">{{ i }}</a></li>
+        {% endif %}
+    {% endfor %}
 </ul>
 {% endblock %}
