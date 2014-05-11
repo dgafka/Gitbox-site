@@ -26,5 +26,12 @@ $kernel = new AppKernel('dev', true);
 $kernel->loadClassCache();
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
+//Sprawdzam czy ip nie jest zblokowane
+/**
+ * @var $permissionHelper \Gitbox\Bundle\CoreBundle\Helper\PermissionsHelper
+ */
+$permissionHelper = $kernel->getContainer()->get('permissions_helper');
+$permissionHelper->checkIfActualUserIpBanned();
+
 $response->send();
 $kernel->terminate($request, $response);

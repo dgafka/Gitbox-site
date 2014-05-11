@@ -45,7 +45,7 @@ class IPHelper extends EntityHelper implements CRUDHelper {
 	 */
 	public function remove($object)
 	{
-		$userAccount = null;
+
 		if($object instanceof \Gitbox\Bundle\CoreBundle\Entity\BannedIp) {
 			$this->instance()->remove($object);
 			$this->instance()->flush();
@@ -64,8 +64,6 @@ class IPHelper extends EntityHelper implements CRUDHelper {
 		}else {
 			throw new Exception("Błąd podczas wyszukiwania obiektu.");
 		}
-
-		return $userAccount;
 
 	}
 

@@ -42,7 +42,7 @@ services:
         arguments:    ["@doctrine.orm.entity_manager", "@cache_helper"]
     permissions_helper:
         class:        "%permissions_helper.class%"
-        arguments:    ["@session"]
+        arguments:    ["@session", "@doctrine.orm.entity_manager", "@cache_helper"]
     dp_helper:
             class:        Gitbox\Bundle\CoreBundle\Helper\DrivePermissionHelper
             arguments:    ["@session"]
