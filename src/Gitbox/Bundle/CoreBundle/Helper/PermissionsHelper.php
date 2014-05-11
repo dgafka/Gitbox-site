@@ -113,13 +113,6 @@ class PermissionsHelper {
 			header('HTTP/1.0 403 Forbidden');
 			exit('Przepraszamy, ale twoje ip jest zbanowane.');
 		}
-
-
-		/** easter egg  xaxa */
-//		if($ip == $ip) {
-//			header('HTTP/1.0 403 Forbidden');
-//			exit('ip');
-//		}
 	}
 
 } 

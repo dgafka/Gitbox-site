@@ -16,8 +16,10 @@
 {% block title %}{% endblock %}
 
 {% block content_inner %}
-<div class="pull-left">
-    <table class="table" style="max-width: 766px">
+
+    <div class="pull-left">
+        <a href="{{ path('tube_index', {'login': user.login}) }}"><button type="button"  class="btn btn-powrot" ><span class="glyphicon glyphicon-arrow-left"></span>Powrót do listy</button></a>
+        <table class="table" style="max-width: 50%">
 
         <tr class="bg-primary"><td>
 
@@ -27,8 +29,9 @@
 
         </video></td></tr>
     </table>
-</div>
-    <div class="pull-right" style=" width: 27%">
+    </div>
+
+    <div class="pull-right" style=" width: 27%; margin-top: 34px">
         <div class="panel-group" id="accordion">
             <div class="panel panel-default">
                 <div class="panel-heading">
