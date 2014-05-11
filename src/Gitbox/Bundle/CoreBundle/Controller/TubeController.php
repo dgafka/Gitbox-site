@@ -90,8 +90,6 @@ class TubeController extends Controller
         $form = $this->createForm(new TubePostType(), $newAttachment);
 
         $form->handleRequest($request);
-        $success = false;
-
 
         // walidacja formularza
         if ($form->isValid()) {
@@ -113,7 +111,7 @@ class TubeController extends Controller
                 $session->getFlashBag()->add('warning', 'Rozmiar pliku musi być mniejszy niż 80Mb.');
             }else{
             $filename = uniqid();
-            $file->move($dir, $filename);
+            $file->move($dir, $filename.''.$extension);
 
             $newAttachment->setFilename($filename);
             $newAttachment->setMime($extension);
@@ -127,13 +125,12 @@ class TubeController extends Controller
             $contentHelper->insertIntoAttachment($newAttachment,$newContent);
 
             $session->getFlashBag()->add('success', 'Dodano film <b>' . $newAttachment->getTitle() . '</b>');
-            $success = true;
+
             }
             return $this->redirect(
                 $this->generateUrl('tube_index', array(
                     'login' => $login,
-                    //'id' => $newContent->getId(),
-                    'success' => $success
+
                 ))
             );
         }
@@ -141,7 +138,6 @@ class TubeController extends Controller
         return array(
             'user' => $login,
             'form' => $form->createView(),
-            'success' => $success,
             'btnLabel' => 'Dodaj wpis'
         );
     }
@@ -163,7 +159,7 @@ class TubeController extends Controller
             throw $this->createNotFoundException('Niestety nie znaleziono filmu.');
         }
 
-        $dir = '../../../../../web/uploads/tube/'.$user->getId().'/'.$attachment->getFilename();
+        $dir = '../../../../../web/uploads/tube/'.$user->getId().'/'.$attachment->getFilename().''.$attachment->getMime();
         return array(
             'user' => $user,
             'post' => $attachment,

@@ -19,7 +19,7 @@ class TubePostType extends AbstractType
                           'label'  => 'Tytuł',
                           'attr'=> array (
                               'class'       => 'form-control',
-                              'placeholder' => ''
+                              'placeholder' => 'Tytuł...'
                           ),
                           'label_attr'    => array(
                               'class'     => 'control-label'
@@ -28,11 +28,11 @@ class TubePostType extends AbstractType
                           'max_length'   => 50,
                           'trim'         => true,
                       ))
-                      ->add('description', 'text', array(
+                      ->add('description', 'textarea', array(
                           'label'  => 'Opis',
                           'attr'=> array (
                               'class'       => 'form-control',
-                              'placeholder' => ''
+                              'placeholder' => 'Opis...'
                           ),
                           'label_attr'    => array(
                               'class'     => 'control-label'
@@ -45,7 +45,8 @@ class TubePostType extends AbstractType
                           'label' => 'Dodaj film',
                           'attr' => array(
                               'id' => 'tubePost_filename',
-                              'name' => 'tubePost[filename]'
+                              'name' => 'tubePost[filename]',
+                              'data-filename-placement'=>'inside'
 
                           )
 
@@ -53,7 +54,7 @@ class TubePostType extends AbstractType
                       ->add('save', 'submit', array(
                           'label'  => 'Zapisz',
                           'attr'=> array (
-                              'class' => 'btn btn-default',
+                              'class' => 'btn btn-success btn-sm',
                               'id' => 'tubePost_save',
                               'name' => 'tubePost[save]'
                           )

@@ -19,7 +19,9 @@ class AppKernel extends Kernel
             new EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Knp\Bundle\DisqusBundle\KnpDisqusBundle(),
-            new Gitbox\Bundle\CoreBundle\GitboxCoreBundle()
+            new Gitbox\Bundle\CoreBundle\GitboxCoreBundle(),
+            new EWZ\Bundle\UploaderBundle\EWZUploaderBundle(),
+
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
