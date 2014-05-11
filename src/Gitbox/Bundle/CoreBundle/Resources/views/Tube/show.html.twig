@@ -7,21 +7,76 @@
 {% endblock %}
 {% block javascripts %}
     <script type="text/javascript" src="{{ asset('videoPlayer/video.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jquery/jquery.min.js') }}"></script>
+
+    <script type="text/javascript" src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
+
     {#<script videojs.options.flash.swf = "{{ asset('videoPlayer/video-js.swf') }}"></script>#}
 {% endblock %}
 {% block title %}{% endblock %}
 
 {% block content_inner %}
-<table class="table" style="max-width: 660px">
-    <tr class="success"><td><h4><strong>{{ post.title }}</strong></h4></td></tr>
-    <tr class="active"><td><strong>{{ post.description }}</strong></td></tr>
-    <tr class="success"><td>
+<div class="pull-left">
+    <table class="table" style="max-width: 766px">
 
-            <video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" width="640" height="364"        poster="{#tu mozna dac obrazek, ktrory bedzie wyswietlany przed nacisnieciem odtwórz#}"
-                   data-setup="{}">
-                <source src="{{ dir }}" type='video/{{ post.mime }}' />
+        <tr class="bg-primary"><td>
 
-            </video></td></tr>
+        <video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" width="760" height="400"        poster="{#tu mozna dac obrazek, ktrory bedzie wyswietlany przed nacisnieciem odtwórz#}"
+        data-setup="{}">
+        <source src="{{ dir }}" type='video/{{ post.mime }}' />
 
-</table>
+        </video></td></tr>
+    </table>
+</div>
+    <div class="pull-right" style=" width: 27%">
+        <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="">
+                            <center>Tytuł</center>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse in" style="height: auto;">
+                    <div class="panel-body">
+                        eh
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapsed">
+                            <center>Informacje</center>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        hee
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" class="collapsed">
+                            <center>Reszta syfu</center>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseThree" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        Plik: <b>536f7f5f367f3</b>
+                            <br />
+                        Typ: <b>mp4</b>
+                            <br />
+                        (głosowanie)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}

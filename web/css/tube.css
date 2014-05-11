@@ -121,3 +121,30 @@ new.html.twig - layout*/
     border-color: rgb(53, 126, 189);
 }
 .glyphicon { margin-right:5px; }
+
+/*
+show.all - layout*/
+a.list-group-item {
+    height:auto;
+    min-height:220px;
+}
+a.list-group-item.active small {
+    color:#fff;
+}
+.stars {
+    margin:20px auto 1px;
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary {
+    color: #fff;
+    background-color: #3071a9;
+    border-color: #285e8e;
+    width: 120px;
+    margin-left: -15px;
+}
+.btn-primary{
+    color: #fff;
+    background-color: #428bca;
+    border-color: #357ebd;
+    width: 120px;
+    margin-left: -15px;
+}
