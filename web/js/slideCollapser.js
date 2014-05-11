@@ -1,25 +1,23 @@
 $(document).ready(function() {
     /** VARIABLES **/
+    var sidebarCollapsed = false;
     var sliderActive = false;
 
     /* FUNCTIONS */
     var collapseSidebar = function (speed, easing, target) {
-        var totalWidth = $('.jumbojumba').find('.row').width();
-        var totalMinusBtn = totalWidth - totalWidth*0.05;
-        var contentWidth = $('.main-content').width();
+        var totalWidth = $('.jumbojumba').find('.row').width(),
+            totalMinusBtn = totalWidth - totalWidth*0.05,
+            contentWidth = 0, sidebarWidth = 0;
 
-        var width = 0;
-
-        if (contentWidth <= totalWidth*(2/3)) {
-            width = totalMinusBtn;
+        if (sidebarCollapsed) {
+            contentWidth = '66.6%';
+            sidebarWidth = 'initial';
         } else {
-            width = '66.6%';
+            contentWidth = totalMinusBtn;
         }
 
-        fireEvent($(this), 'show');
-
-        // run simultaneously 2 effects
-        $('.main-content').animate({ width: width }, {
+        // run simultaneously 3 effects
+        $('.main-content').animate({ width: contentWidth }, {
             duration: speed,
             easing: easing,
             queue: false,
@@ -31,6 +29,20 @@ $(document).ready(function() {
                 } else {
                     cell.html('»');
                 }
+
+                sliderActive = false;
+            }
+        });
+        $('.sidebar').animate({ width: sidebarWidth }, {
+            duration: speed,
+            easing: easing,
+            queue: false,
+            complete: function () {
+                if (sidebarCollapsed) {
+                    sidebarCollapsed = false;
+                } else {
+                    sidebarCollapsed = true;
+                }
             }
         });
         $('.sidebar').toggle({
@@ -38,12 +50,6 @@ $(document).ready(function() {
             easing: easing,
             queue: false,
             complete: function () {
-                sliderActive = false;
-
-                if ($('.collapse-slider-switch').is(':hover')) {
-                    switchLeave();
-                }
-
                 fireEvent($(this), 'shown');
             }
         });
@@ -76,10 +82,10 @@ $(document).ready(function() {
         }
         sliderActive = true;
 
-        collapseSidebar('slow', 'linear', this);
+        collapseSidebar('slow', 'swing', this);
     });
 
     $('.sidebar').on('show shown', function (event) {
-//        switchLeave();
+        switchLeave();
     });
 });
