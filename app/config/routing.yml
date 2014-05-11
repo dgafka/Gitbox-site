@@ -2,6 +2,3 @@ gitbox_core:
     resource: "@GitboxCoreBundle/Controller/"
     type:     annotation
     prefix:   /
-ewz_uploader:
-    resource: "@EWZUploaderBundle/Resources/config/routing.xml"
-    prefix: /_uploader
