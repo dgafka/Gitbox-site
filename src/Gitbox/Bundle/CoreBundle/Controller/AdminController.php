@@ -207,7 +207,8 @@ class AdminController extends Controller
 		$ip   = $request->query->get('ip');
 		$date = (new \DateTime());
 
-		if(!preg_match('#[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}#', $ip)) {
+
+		if(!filter_var($ip,  FILTER_VALIDATE_IP)) {
 			$response = array('error' => 'Podaj poprawne ip.');
 		}else {
 			$ipObject = new \Gitbox\Bundle\CoreBundle\Entity\BannedIp();
