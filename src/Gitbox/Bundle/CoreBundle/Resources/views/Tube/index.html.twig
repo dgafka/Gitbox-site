@@ -16,7 +16,7 @@
                 <h1 class="text-center">Filmy użytkownika <i><code>{{ user.login }}</code></i></h1><div class="pull-right"><h6>{{ countPosts }} pozycji</h6></div>
                 <div class="list-group">
                     {% for post in posts %}
-                    <a href="tube/{{ post.id }}" class="list-group-item">
+                    <a href="{{ path('tube_content_show', {'login': user.login, 'id': post.id}) }}" class="list-group-item">
                         <div class="media col-md-3">
                             <figure class="pull-left">
                                 <img class="media-object img-rounded img-responsive"  src="http://www.personal.psu.edu/afr3/blogs/siowfa13/BlueOcean.jpg" alt="placehold.it/350x250" >
