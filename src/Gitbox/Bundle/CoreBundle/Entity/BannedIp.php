@@ -13,6 +13,16 @@ use Doctrine\ORM\Mapping as ORM;
 class BannedIp
 {
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="banned_ip_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $id;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="ip", type="string", length=15, nullable=false)
@@ -25,16 +35,6 @@ class BannedIp
      * @ORM\Column(name="create_date", type="datetime", nullable=false)
      */
     private $createDate;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="banned_ip_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
 
 
 
@@ -93,16 +93,4 @@ class BannedIp
     {
         return $this->id;
     }
-
-	/** Set id
-	 * @param $id
-	 * @return $this
-	 */
-	public function setId($id)
-	{
-		$this->id = $id;
-
-		return $this;
-	}
-
 }

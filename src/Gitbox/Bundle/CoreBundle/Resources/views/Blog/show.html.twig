@@ -15,8 +15,8 @@
         {# post #}
         <div class="post-in-the-box">
             <h1 class="post-title">{{ post.title }}</h1>
-            <p><span class="glyphicon glyphicon-time"></span> <b>Utworzono</b> {{ post.createDate | date("D d/m/Y H:i:s") }}</p>
-            <p><span class="glyphicon glyphicon-time"></span> <b>Ostatnio edytowano</b> {{ post.lastModificationDate | date("D d/m/Y H:i:s") }}</p>
+            <p class="time-box"><span class="glyphicon glyphicon-time"></span> <b>Utworzono</b> {{ post.createDate | date("D d/m/Y H:i:s") }}</p>
+            <p class="time-box"><span class="glyphicon glyphicon-time"></span> <b>Ostatnio edytowano</b> {{ post.lastModificationDate | date("D d/m/Y H:i:s") }}</p>
             <p><span class="glyphicon glyphicon-eye-open"></span> <b>Wyświetleń</b> <span class="badge">{{ post.hit }}</span></p>
             {% if hasAccess == true %}
                 <div class="ratings">
@@ -69,6 +69,17 @@
             <div class="post-content">
                 {{ post.description | raw }}
             </div>
+
+            <hr>
+
+            <div class="post-categories">
+                <span class="glyphicon glyphicon-list"></span> <b>Kategorie </b>
+                {% for category in post.idCategory %}
+                    <span class="label label-default label-border-default">{{ category.name }}</span>
+                {% else %}
+                    <em>brak</em>
+                {% endfor %}
+            </div>
         </div>
         <hr>
 
@@ -104,6 +115,7 @@
             </div>
         </div>
     </div>
+
 </div>
 <hr>
 {% endblock %}

@@ -1,4 +1,5 @@
-{% form_theme form 'GitboxCoreBundle:UserSidebar:form_template.html.twig' %}
+{% form_theme formTitle 'GitboxCoreBundle:UserSidebar:form_template.html.twig' %}
+{% form_theme formCategory 'GitboxCoreBundle:UserSidebar:form_template.html.twig' %}
 
 {% block user_sidebar %}
     <div class="collapse-slider-switch">
@@ -42,46 +43,39 @@
 
         <div class="well">
             <h4>Wyszukaj na stronie użytkownika</h4>
-            {{ form_start(form, {
+            {{ form_start(formTitle, {
                 'action': path(actionUrl, {'login': user.login}),
                 'method': 'GET'
             }) }}
                 <div class="input-group">
-                    {{ form_widget(form.title) }}
+                    {{ form_widget(formTitle.title) }}
                     <span class="input-group-btn">
-                        {{ form_widget(form.submit) }}
+                        {{ form_widget(formTitle.submit) }}
                     </span>
                 </div>
-            {{ form_end(form) }}
+            {{ form_end(formTitle) }}
         </div>
 
         <div class="well">
-            <h4>Popularne kategorie</h4>
+            <h4>Filtrowanie po kategorii</h4>
             <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <ul class="list-unstyled">
-                        <li><a href="#mama">Mama</a>
-                        </li>
-                        <li><a href="#tata">Tata</a>
-                        </li>
-                        <li><a href="#placki">Placki</a>
-                        </li>
-                        <li><a href="#kacper">Kacper ;]</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <ul class="list-unstyled">
-                        <li><a href="#konsole">Konsole</a>
-                        </li>
-                        <li><a href="#gry-komputerowe">Gry komputerowe</a>
-                        </li>
-                        <li><a href="#rozrywka">Rozrywka</a>
-                        </li>
-                        <li><a href="#podróże">Podróże</a>
-                        </li>
-                    </ul>
-                </div>
+                {{ form_start(formCategory, {
+                    'action': path(actionUrl, {'login': user.login}),
+                    'method': 'GET'
+                }) }}
+                    <div class="input-group">
+                        {{ form_widget(formCategory.category, {
+                            'attr': {
+                                'class': 'form-control selectpicker',
+                                'data-live-search': 'true',
+                                'data-selected-text-format': 'count>2'
+                            }
+                        }) }}
+                        <span class="input-group-btn">
+                            {{ form_widget(formCategory.submit) }}
+                        </span>
+                    </div>
+                {{ form_end(formCategory) }}
             </div>
         </div>
     </div>

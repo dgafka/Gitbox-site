@@ -18,10 +18,21 @@
     <div class="col-lg-8 main-content">
         {# ADD BUTTON #}
         {% if hasAccess == true %}
-            <a href="{{ url('user_new_post', {'login' : user.login}) }}"
-               class="btn btn-primary btn-need-some-space" style="margin-bottom: 20px;">
-                <span class="glyphicon glyphicon-file"></span> Dodaj nowy wpis
-            </a>
+            <div>
+                <a href="{{ url('user_new_post', {'login' : user.login}) }}"
+                   class="btn btn-primary btn-need-some-space" style="margin-bottom: 20px;">
+                    <span class="glyphicon glyphicon-file"></span> Dodaj nowy wpis
+                </a>
+            </div>
+        {% endif %}
+
+        {# POWRÓT DO WSZYSTKICH WPISÓW #}
+        {% if is_query == true %}
+            <div>
+                <a href="{{ path('user_blog', {'login': user.login}) }}" class="btn btn-info btn-need-some-space">
+                    <i class="glyphicon glyphicon-arrow-left"></i> Powrót do wszystkich wpisów
+                </a>
+            </div>
         {% endif %}
 
         {# PAGINACJA #}
@@ -34,8 +45,8 @@
             <div class="post-in-the-box box-pointer">
                 <a class="hidden-link" href="{{ path('user_show_post', {'login': user.login, 'id': post.id}) }}"></a>
                 <h1 class="post-title">{{ post.title }}</h1>
-                <p><span class="glyphicon glyphicon-time"></span> <b>Utworzono</b> {{ post.createDate | date("D d/m/Y H:i:s") }}</p>
-                <p><span class="glyphicon glyphicon-time"></span> <b>Ostatnio edytowano</b> {{ post.lastModificationDate | date("D d/m/Y H:i:s") }}</p>
+                <p class="time-box"><span class="glyphicon glyphicon-time"></span> <b>Utworzono</b> {{ post.createDate | date("D d/m/Y H:i:s") }}</p>
+                <p class="time-box"><span class="glyphicon glyphicon-time"></span> <b>Ostatnio edytowano</b> {{ post.lastModificationDate | date("D d/m/Y H:i:s") }}</p>
                 <p><span class="glyphicon glyphicon-eye-open"></span> <b>Wyświetleń</b> <span class="badge">{{ post.hit }}</span></p>
                 {% if hasAccess == true %}
                     <div class="ratings">
@@ -87,6 +98,17 @@
 
                 <div class="post-content">
                     {{ post.description | raw }}
+                </div>
+
+                <hr>
+
+                <div class="post-categories">
+                    <span class="glyphicon glyphicon-list"></span> <b>Kategorie </b>
+                    {% for category in post.idCategory %}
+                        <span class="label label-default label-border-default">{{ category.name }}</span>
+                    {% else %}
+                        <em>brak</em>
+                    {% endfor %}
                 </div>
 
                 <div class="comments-link-container">
@@ -175,7 +197,6 @@
                     </div>
                 </div>
             {% else %}
-                <a href="{{ path('user_blog', {'login': user.login}) }}" class="btn btn-info btn-need-some-space"><i class="glyphicon glyphicon-arrow-left"></i> Powrót do wpisów</a>
                 <h4>
                     <em>Nic nie znaleziono.</em>
                 </h4>
@@ -222,7 +243,7 @@
         $('.post-in-the-box').click(function (event) {
             var target = $(event.target);
 
-            if (target.is(':not(a)') && target.is(':not(button)') && target.is(':not(img[src])')) {
+            if (target.is(':not(a)') && target.is(':not(button)') && target.is(':not(img[src])') && target.parent().is(':not(a)')) {
                 var url = $(this).find('.hidden-link').first().attr('href');
 
                 if (url) {
