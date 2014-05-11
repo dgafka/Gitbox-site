@@ -26,4 +26,9 @@ $kernel->loadClassCache();
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
 $response->send();
+
+//Sprawdzam czy ip nie jest zblokowane
+$permissionHelper = $kernel->getContainer()->get('permissions_helper');
+$permissionHelper->checkIfActualUserIpBanned();
+
 $kernel->terminate($request, $response);

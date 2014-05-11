@@ -207,7 +207,8 @@ class AdminController extends Controller
 		$ip   = $request->query->get('ip');
 		$date = (new \DateTime());
 
-		if(!preg_match('#[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}#', $ip)) {
+
+		if(!filter_var($ip,  FILTER_VALIDATE_IP)) {
 			$response = array('error' => 'Podaj poprawne ip.');
 		}else {
 			$ipObject = new \Gitbox\Bundle\CoreBundle\Entity\BannedIp();
@@ -222,8 +223,14 @@ class AdminController extends Controller
 
 			$ipSingle = array();
 			$ipSingle['id'] = $ipObject->getId();
-			$ipSingle['ip'] = $ipObject->getIp();
+			$ipSingle['ip'] = trim($ipObject->getIp());
 			$ipSingle['createDate'] = $ipObject->getCreateDate()->format('Y-m-d H:i:s');
+
+			/**
+			 * @var $permissionHelper \Gitbox\Bundle\CoreBundle\Helper\CacheHelper
+			 */
+			$permissionHelper = $this->container->get('cache_helper');
+			$permissionHelper->instance()->set($ipSingle['ip'], 'banned');
 
 			$response = array(
 				'data' => $ipSingle,
@@ -242,10 +249,19 @@ class AdminController extends Controller
 		if(!$this->checkPermission(2)){
 			throw $this->createNotFoundException("Strona nie istnieje lub brak dostępu");
 		}
+
+
 		/**
 		 * @var $helper \Gitbox\Bundle\CoreBundle\Helper\IPHelper
 		 */
 		$helper   = $this->container->get('ip_helper');
+		$ip       = $helper->find($id);
+		/**
+		 * @var $permissionHelper \Gitbox\Bundle\CoreBundle\Helper\CacheHelper
+		 */
+		$permissionHelper = $this->container->get('cache_helper');
+		$permissionHelper->instance()->delete($ip->getIp());
+
 		$helper->remove((int)$id);
 
 		return new Response('', 200, array('Content-Type'=>'application/json'));
