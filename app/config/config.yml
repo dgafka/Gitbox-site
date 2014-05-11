@@ -93,16 +93,3 @@ ewz_recaptcha:
     private_key:  6Lc0e_ISAAAAAGx92IFgP-hXGIYos6PO7YotX4A8
     locale_key:   kernel.default_locale
     enabled:      true
-
-ewz_uploader:
-    auto_include: true
-    base_path: 'bundles/ewzuploader'
-    media:
-        max_size: 80120k
-        mime_types: ['video/mp4', 'audio/x-wav', 'audio/wave', 'audio/x-pn-wav']
-        dir: %kernel.root_dir%/../upload/
-        folder: tube
-    url:
-        upload: ewz_uploader_file_upload
-        remove: ewz_uploader_file_remove
-        download: false
