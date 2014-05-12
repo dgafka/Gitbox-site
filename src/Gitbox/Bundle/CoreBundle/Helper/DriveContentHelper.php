@@ -112,6 +112,90 @@ class DriveContentHelper extends ContentHelper  {
     }
 
     /**
+     * Liczenie menow
+     *
+     * @param $userId
+     * @param Request $request
+     *
+     * @return int
+     *
+     * @throws Exception
+     */
+    public function countMenus($userId, Request & $request = null) {
+        $moduleId = $this->instanceCache()->getModuleIdByName($this->module);
+
+        $queryBuilder = $this->instance()->createQueryBuilder();
+
+        $queryBuilder
+            ->select('count(c.id)')
+            ->from('GitboxCoreBundle:Menu', 'c')
+            ->where(' c.idUser = :user_id AND c.idModule = :module_id')
+            ->setParameters(array(
+                'user_id' => $userId,
+                'module_id'=>$moduleId
+
+            ));
+
+        if ($request instanceof Request) {
+            $query = $queryBuilder->getQuery()->getSingleScalarResult();
+
+            $count = $query;
+
+            return $count;
+        } else {
+            try {
+                return $queryBuilder->getQuery()->getSingleScalarResult();
+            } catch (NoResultException $e) {
+                return null;
+            }
+        }
+
+    }
+
+    /**
+     * Liczenie plikow
+     *
+     * @param $userId
+     * @param Request $request
+     *
+     * @return int
+     *
+     * @throws Exception
+     */
+    public function countAttachments($userId, Request & $request = null) {
+        $moduleId = $this->instanceCache()->getModuleIdByName($this->module);
+
+        $queryBuilder = $this->instance()->createQueryBuilder();
+
+        $queryBuilder
+            ->select('count(c.id)')
+            ->from('GitboxCoreBundle:Attachment', 'c')
+            ->innerJoin('c.idContent', 'm') // automaticaly join keys, upon relation
+            ->innerJoin('m.idMenu', 'r') // automaticaly join keys, upon relation
+            ->where(' m.idUser = :user_id AND r.idModule = :module_id')
+            ->setParameters(array(
+                'user_id' => $userId,
+                'module_id'=>$moduleId
+
+            ));
+
+        if ($request instanceof Request) {
+            $query = $queryBuilder->getQuery()->getSingleScalarResult();
+
+            $count = $query;
+
+            return $count;
+        } else {
+            try {
+                return $queryBuilder->getQuery()->getSingleScalarResult();
+            } catch (NoResultException $e) {
+                return null;
+            }
+        }
+
+    }
+
+    /**
      * Pobieranie contentu
      *
      * @param $menuId
