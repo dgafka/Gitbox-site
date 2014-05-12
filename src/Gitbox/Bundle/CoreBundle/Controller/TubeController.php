@@ -260,26 +260,27 @@ class TubeController extends Controller
     }
 
     /**
+     * Usuwa content o podanym id
+     *
      * @Route("/user/{login}/tube/{id}/remove", name="tube_remove_file")
      * @Method({"GET"})
      */
     public function removeAction($id, $login) {
         // walidacja dostępu
-        $this->checkAccess($login);
+        //$this->checkAccess($login);
 
-        $tubeContentHelper = $this->container->get('tube_content_helper');
-        $contentHelper = $this->container->get('content_helper');
-        $content = $contentHelper->find(intval($id));
+        $contentHelper = $this->container->get('tube_content_helper');
+        $content = $contentHelper->findOneContnt($id, $login);
 
         $contentTitle = $content->getTitle();
 
-        $attachment = $tubeContentHelper->getOneAttachment($content->getId(),$login);
+        //$attachment = $contentHelper->getOneAttachment($content->getId(),$login);
         //usuniecie contentu
-        $contentHelper->remove(intval($id));
+        //$contentHelper->remove(intval($id));
 
         //usuniecie attachmentu
-        $tubeContentHelper->removeAttachment($attachment);
-
+        //$contentHelper->removeAttachment($attachment);
+/*
         $moduleHelper = $this->container->get('module_helper');
         $moduleHelper->init('GitTube');
         $userDescHelper = $this->container->get('user_description_helper');
@@ -290,7 +291,7 @@ class TubeController extends Controller
 
         // inicjalizacja flash baga
         $session = $this->container->get('session');
-        $session->getFlashBag()->add('success', 'Usunięto wpis <b>' . $contentTitle . '</b>');
+        $session->getFlashBag()->add('success', 'Usunięto wpis <b>' . $contentTitle . '</b>');*/
 
         return $this->redirect(
             $this->generateUrl('tube_index', array(
@@ -307,7 +308,7 @@ class TubeController extends Controller
      */
     public function editAction(Request $request, $id, $login)
     {
-        // walidacja dostępu
+    /*    // walidacja dostępu
         $user = $this->validateUser($login);
         $this->validateUserModule($login);
         $this->checkAccess($login);
@@ -359,6 +360,6 @@ class TubeController extends Controller
             'form' => $form->createView(),
             'btnLabel' => 'Edytuj wpis',
             'post' => $editAttachment
-        );
+        );*/
     }
 }
