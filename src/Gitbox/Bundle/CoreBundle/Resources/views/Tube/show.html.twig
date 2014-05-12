@@ -11,7 +11,6 @@
 
     <script type="text/javascript" src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
 
-    {#<script videojs.options.flash.swf = "{{ asset('videoPlayer/video-js.swf') }}"></script>#}
 {% endblock %}
 {% block title %}{% endblock %}
 
@@ -22,7 +21,7 @@
     <div class="pull-left">
         <a href="{{ path('tube_index', {'login': user.login}) }}"><button type="button"  class="btn btn-powrot" ><span class="glyphicon glyphicon-arrow-left"></span>Powrót do listy</button></a>
         {% if hasAccess == true %}
-            <a href="{{ path('tube_remove_file', {'id': idContent, 'login': user.login}) }}"><button type="button"  class="btn btn-warning" ><span class="glyphicon glyphicon-pencil"></span>Edycja</button></a>
+            <a href="{{ path('tube_edit_file', {'id': idContent, 'login': user.login}) }}"><button type="button"  class="btn btn-warning" ><span class="glyphicon glyphicon-pencil"></span>Edycja</button></a>
             <a href="{{ path('tube_remove_file', {'id': idContent, 'login': user.login}) }}"><button type="button"  class="btn btn-danger" ><span class="glyphicon glyphicon-remove"></span>Skasuj</button></a>
         {% endif %}
         <table class="table" style="max-width: 50%">

@@ -100,6 +100,32 @@ class TubeContentHelper extends ContentHelper {
         return $results;
     }
     /**
+     * Pobranie jendgo attachmentu z bazy
+     *
+     * @param $userLogin
+     *
+     * @return Attachment | null
+     *
+     * @throws Exception
+     */
+    public function getOneAttachmentById($userLogin, $idAttachment) {
+
+        $queryBuilder = $this->instance()->createQueryBuilder();
+
+        $queryBuilder
+            ->select('a')
+            ->from('GitboxCoreBundle:Attachment', 'a')
+            ->where('a.id = :idAttachment')
+            ->setParameters(array(
+                'idAttachment' => $idAttachment
+            ));
+
+        $query = $queryBuilder->getQuery();
+        $results = $query->getResult();
+
+        return $results;
+    }
+    /**
      * Pobranie jednego filmu z bazy - tabela attachment
      *
      * @param int $id

@@ -4,6 +4,7 @@ namespace Gitbox\Bundle\CoreBundle\Controller;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Gitbox\Bundle\CoreBundle\Form\Type\TubePostType;
+use Gitbox\Bundle\CoreBundle\Form\Type\TubePostTypeEdit;
 use Gitbox\Bundle\CoreBundle\Entity\Attachment;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -295,6 +296,69 @@ class TubeController extends Controller
             $this->generateUrl('tube_index', array(
                 'login' => $login
             ))
+        );
+    }
+
+    /**
+     * Edytowanie filmu
+     *
+     * @Route("/user/{login}/tube/{id}/edit", name="tube_edit_file")
+     * @Template()
+     */
+    public function editAction(Request $request, $id, $login)
+    {
+        // walidacja dostępu
+        $user = $this->validateUser($login);
+        $this->validateUserModule($login);
+        $this->checkAccess($login);
+
+        $contentHelper = $this->container->get('tube_content_helper');
+
+        // pobranie wpisu z bazy
+
+        $editAttachment = $contentHelper->getOneAttachmentById($login, intval($id));
+
+        if (!$editAttachment) {
+            throw $this->createNotFoundException('Niestety, nie znaleziono takiego wpisu.');
+        }
+
+        $form = $this->createForm(new TubePostTypeEdit(), $editAttachment);
+        $form->handleRequest($request);
+
+        // walidacja formularza
+        if ($form->isValid()) {
+
+            //$contentHelper->update($editAttachment);
+            $this->instance()->persist($editAttachment);
+            $this->instance()->flush();
+
+            $contentHelperTheRealOne = $this->container->get('content_helper');
+            $editContent = $contentHelperTheRealOne->getOneContent(intval($editAttachment->getIdContent()));
+
+            $editContent->setTitle($editAttachment->getTitle());
+            $editContent->setDescription($editAttachment->getDescription());
+            $editContent->setLastModificationDate(new \DateTime('now'));
+
+            $this->instance()->persist($editContent);
+            $this->instance()->flush();
+
+            // inicjalizacja flash baga
+            $session = $this->container->get('session');
+            $session->getFlashBag()->add('success', 'Pomyślnie zaktualizowano wpis');
+
+            return $this->redirect(
+                $this->generateUrl('tube_index', array(
+                    'id' => $editAttachment->getId()
+                    //'login' => $user->getLogin()
+                ))
+            );
+        }
+
+        return array(
+            'user' => $user,
+            'form' => $form->createView(),
+            'btnLabel' => 'Edytuj wpis',
+            'post' => $editAttachment
         );
     }
 }
