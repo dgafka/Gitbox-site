@@ -70,7 +70,7 @@ class TubeContentHelper extends ContentHelper {
      *
      * @throws Exception
      */
-    public function getOneAttachment($id, $userLogin) {
+    public function getOneAttachment($idContent, $userLogin) {
         if (!isset($this->module)) {
             throw new Exception("Nie zainicjalizowano instancji.");
         }
@@ -90,14 +90,12 @@ class TubeContentHelper extends ContentHelper {
             ->setParameters(array(
                 'userId' => $userId,
                 'moduleId' => $gitTubeId,
-                'contentId' => $id
+                'contentId' => $idContent
             ));
 
-        try {
-            return $queryBuilder->getQuery()->getSingleResult();
-        } catch (NoResultException $e) {
-            return null;
-        }
+        $results = $queryBuilder->getQuery()->getResult();
+
+        return $results;
     }
 
     /**

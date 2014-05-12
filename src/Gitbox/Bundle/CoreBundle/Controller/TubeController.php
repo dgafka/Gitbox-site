@@ -115,13 +115,18 @@ class TubeController extends Controller
         //$helper = $this->container->get('user_helper');
         //$user = $helper->findByLogin($login);
 
-	    $posts = $contentHelper->getContents($login);
-
-        $countPost = count($posts);
+	    $contents = $contentHelper->getContents($login);
+/*        foreach($contents['id'] as $content){
+            $attachment = $contentHelper->getOneAttachment($content, $user['login']);
+            $contents['dir'] = '../../../../../web/uploads/tube/'.$user->getId().'/'.$attachment[1]['filename'];
+        }
+        $imgDir = '../../../../../web/uploads/tube/'.$user->getId().'/'.$attachment[1]->getFilename().'.jpg';
+        'imgDir' => $imgDir,*/
+        $countPost = count($contents);
 
         return array(
             'user' => $user,
-            'posts' => $posts,
+            'posts' => $contents,
             'countPosts' => $countPost,
             'hasAccess' => $hasAccess
         );
@@ -171,24 +176,33 @@ class TubeController extends Controller
             }else if ($file->getClientSize() > 83886080) {
                 $session->getFlashBag()->add('warning', 'Rozmiar pliku musi być mniejszy niż 80Mb.');
             }else{
-            $filename = uniqid();
-            $file->move($dir, $filename.'.'.$extension);
+                $filename = uniqid();
+                /////////////////generowanie thumbnail'a oO ///////////////////////////
+                $polecenie = 'ffmpeg -ss 00:00:01 -i '.$file.' -vframes 1 uploads/tube/'.$user->getId().'/'.$filename.'.'.$extension.'.jpg';
+                shell_exec($polecenie);
+                //////////////////////////////////////////////////////////////////////
+                $imageAttachment = new Attachment();
+                $imageAttachment->setMime('jpg');
+                $imageAttachment->setDescription('..');
+                $imageAttachment->setFilename($filename.'.'.$extension.'jpg');
+                $imageAttachment->setTitle('..');
 
-            $newAttachment->setFilename($filename);
-            $newAttachment->setMime($extension);
-            $menu = $menuHelper->findByUserAndModule($user->getId(), 'GitTube');
-            $newContent->setIdMenu($menu);
-            $newContent->setIdUser($user->getId());
-            $newContent->setTitle($newAttachment->getTitle());
-            $newContent->setDescription($newAttachment->getDescription());
+                $file->move($dir, $filename.'.'.$extension);
 
-            $contentHelper->insertIntoContent($newContent);
-            $contentHelper->insertIntoAttachment($newAttachment,$newContent);
+                $newAttachment->setFilename($filename.'.'.$extension);
+                $newAttachment->setMime($extension);
+                $menu = $menuHelper->findByUserAndModule($user->getId(), 'GitTube');
+                $newContent->setIdMenu($menu);
+                $newContent->setIdUser($user->getId());
+                $newContent->setTitle($newAttachment->getTitle());
+                $newContent->setDescription($newAttachment->getDescription());
 
-            $session->getFlashBag()->add('success', 'Dodano film <b>' . $newAttachment->getTitle() . '</b>');
+                $contentHelper->insertIntoContent($newContent);
+                $contentHelper->insertIntoAttachment($newAttachment,$newContent);
+                $contentHelper->insertIntoAttachment($imageAttachment,$newContent);
 
-             $polecenie = '   ffmpeg -i /home/gitbox/www/Projects/Gitbox-site/src/Gitbox/Bundle/CoreBundle/Controller/536fd7e30f58d.mp4 -r 1 -f image2 php-%3d.jpeg';
-             shell_exec($polecenie);
+                $session->getFlashBag()->add('success', 'Dodano film <b>' . $newAttachment->getTitle() . '</b>');
+
             }
 
             return $this->redirect(
@@ -227,11 +241,14 @@ class TubeController extends Controller
             throw $this->createNotFoundException('Niestety nie znaleziono filmu.');
         }
 
-        $dir = '../../../../../web/uploads/tube/'.$user->getId().'/'.$attachment->getFilename().''.$attachment->getMime();
+        $dir = '../../../../../web/uploads/tube/'.$user->getId().'/'.$attachment[0]->getFilename();
+        $imgDir = '../../../../../web/uploads/tube/'.$user->getId().'/'.$attachment[0]->getFilename().'.jpg';
+
         return array(
             'user' => $user,
-            'post' => $attachment,
+            'posts' => $attachment,
             'dir'  => $dir,
+            'imgDir' => $imgDir,
             'idContent' => $id,
             'hasAccess' => $hasAccess
         );

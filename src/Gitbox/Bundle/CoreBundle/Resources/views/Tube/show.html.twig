@@ -17,6 +17,8 @@
 
 {% block content_inner %}
 
+{% for post in posts %}
+{% if post.mime != 'jpg' %}
     <div class="pull-left">
         <a href="{{ path('tube_index', {'login': user.login}) }}"><button type="button"  class="btn btn-powrot" ><span class="glyphicon glyphicon-arrow-left"></span>Powrót do listy</button></a>
         {% if hasAccess == true %}
@@ -27,7 +29,8 @@
 
         <tr class="bg-primary"><td>
 
-        <video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" width="760" height="400"        poster="{#tu mozna dac obrazek, ktrory bedzie wyswietlany przed nacisnieciem odtwórz#}"
+        <video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" width="760" height="400"
+               poster="{{ imgDir }}"
         data-setup="{}">
         <source src="{{ dir }}" type='video/{{ post.mime }}' />
 
@@ -85,6 +88,7 @@
             </div>
         </div>
     </div>
-
+{% endif %}
+{% endfor %}
 
 {% endblock %}
