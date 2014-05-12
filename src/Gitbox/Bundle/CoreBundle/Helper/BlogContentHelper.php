@@ -137,11 +137,14 @@ class BlogContentHelper extends ContentHelper implements PaginatorAwareInterface
             ->innerJoin('c.idCategory', 'cc') // same here
             ->leftJoin('c.idCategory', 'cat') // same here
             ->where('c.idUser = :user_id AND m.idModule = :module_id AND cc.id IN(:categories)')
+            ->groupBy('c.id, cat.id')
             ->orderBy('c.createDate', 'DESC')
+            ->having('COUNT(cc.id) = :categories_count')
             ->setParameters(array(
                 'user_id' => $userId,
                 'module_id' => $moduleId,
-                'categories' => array_values($categories)
+                'categories' => array_values($categories),
+                'categories_count' => count($categories)
             ));
 
         if ($perPage > 0 && $request instanceof Request) {
