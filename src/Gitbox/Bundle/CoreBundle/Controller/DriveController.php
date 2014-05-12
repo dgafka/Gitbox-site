@@ -58,6 +58,23 @@ class DriveController extends Controller
     }
 
     /**
+     * @return mixed
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    private function getPageContent($userid, $element, $request){
+        $contentHelper = $this->container->get('drive_content_helper');
+        $pageContent = $contentHelper->getContent($element, $request);
+
+        if (!isset($pageContent)){
+            throw $this->createNotFoundException('Nie znaleziono elementu ');
+        }
+        if ($pageContent->getIdUser() != $userid) {
+            throw $this->createNotFoundException('Nie znaleziono elementu dla uzytkownika');
+        }
+        return $pageContent;
+    }
+
+    /**
      * @Route("/user/{login}/drive")
      * @Template()
      */
@@ -105,11 +122,18 @@ class DriveController extends Controller
     }
 
 
+    /**
+     * @Route("/user/{login}/drive/menu/{element}")
+     * @Template()
+     */
+    public function DriveShowMenuAction($login, $element)
+    {
+    }
 
 
 
     /**
-     * @Route("/user/{login}/drive/{element}")
+     * @Route("/user/{login}/drive/content/{element}")
      * @Template()
      */
     public function DriveShowAction($login, $element)
@@ -125,7 +149,9 @@ class DriveController extends Controller
         $userHelper = $this->container->get('user_helper');
         $user = $userHelper->findByLogin($login);
         $logged = $permissionHelper -> checkPermission($login);
-        $pageContent = $contentHelper->getContent($element, $request);
+
+
+        $pageContent = $this ->getPageContent($user->getId(), $element, $request);
         $page_attachments = $contentHelper->getAttachments($element, $request);
 
         return array(

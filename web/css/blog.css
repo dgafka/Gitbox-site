@@ -10,6 +10,21 @@
     padding: 8px;
 }
 
+.box-pointer {
+    cursor: pointer;
+}
+
+.time-box {
+    margin-bottom: 5px;
+}
+
+.label-border-default {
+    background-color: inherit;
+    border: 1px solid #999;
+    color: inherit;
+    font-size: 8pt;
+}
+
 .option-left {
     margin-left: 5px;
     color: lightgray;

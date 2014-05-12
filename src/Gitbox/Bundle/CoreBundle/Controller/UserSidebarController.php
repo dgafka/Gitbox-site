@@ -33,7 +33,7 @@ class UserSidebarController extends Controller
         $userModule = $moduleHelper->findUserModule($userId);
 
         // obsługa formularza
-        $form = $this->get('form.factory')->createNamedBuilder(null, 'form', array(), array('csrf_protection' => false))
+        $formTitle = $this->get('form.factory')->createNamedBuilder(null, 'form', array(), array('csrf_protection' => false))
             ->add('title', 'text', array(
                 'label' => false,
                 'attr' => array (
@@ -51,11 +51,27 @@ class UserSidebarController extends Controller
             ))
             ->getForm();
 
+        $formCategory = $this->get('form.factory')->createNamedBuilder(null, 'form', array(), array('csrf_protection' => false))
+            ->add('category', 'entity', array(
+                'empty_value' => 'Wybierz kategorię',
+                'class' => 'GitboxCoreBundle:Category',
+                'property' => 'name',
+                'expanded'  => false,
+                'multiple'  => true
+            ))
+            ->add('submit', 'submit', array(
+                'attr' => array (
+                    'class' => 'btn btn-default'
+                )
+            ))
+            ->getForm();
+
         return array(
             'user' => $user,
             'userDescription' => $userDescription,
             'userModule' => $userModule,
-            'form' => $form->createView(),
+            'formTitle' => $formTitle->createView(),
+            'formCategory' => $formCategory->createView(),
             'actionUrl' => $actionUrl
         );
     }

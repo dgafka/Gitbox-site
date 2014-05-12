@@ -27,6 +27,13 @@ class BlogPostType extends AbstractType {
                 'required' => true
             ))
 
+            ->add('idCategory', 'entity', array(
+                'class' => 'GitboxCoreBundle:Category',
+                'property' => 'name',
+                'expanded'  => true,
+                'multiple'  => true
+            ))
+
             ->add('save', 'submit', array(
                 'label' => 'OK',
                 'attr' => array (

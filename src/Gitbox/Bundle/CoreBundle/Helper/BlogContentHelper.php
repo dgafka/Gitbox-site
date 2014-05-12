@@ -75,9 +75,10 @@ class BlogContentHelper extends ContentHelper implements PaginatorAwareInterface
         $queryBuilder = $this->instance()->createQueryBuilder();
 
         $queryBuilder
-            ->select('c')
+            ->select('c, cat') //array('c', 'IDENTITY(c.idCategory)')
             ->from('GitboxCoreBundle:Content', 'c')
             ->innerJoin('c.idMenu', 'm') // automaticaly join keys, upon relation
+            ->leftJoin('c.idCategory', 'cat') // same here
             ->where('c.idUser = :user_id AND m.idModule = :module_id');
 
         if (isset($title)) {
@@ -111,7 +112,7 @@ class BlogContentHelper extends ContentHelper implements PaginatorAwareInterface
      * Pobranie wpisów z bloga użytkownika o podanej kategorii
      *
      * @param $userLogin
-     * @param $categoryName
+     * @param array $categories
      * @param int $perPage
      * @param Request $request
      *
@@ -119,7 +120,7 @@ class BlogContentHelper extends ContentHelper implements PaginatorAwareInterface
      *
      * @throws Exception
      */
-    public function getContentsByCategory($userLogin, $categoryName, $perPage = 0, Request & $request = null) {
+    public function getContentsByCategories($userLogin, $categories, $perPage = 0, Request & $request = null) {
         if (!isset($this->module)) {
             throw new Exception("Nie zainicjalizowano instancji.");
         }
@@ -130,16 +131,17 @@ class BlogContentHelper extends ContentHelper implements PaginatorAwareInterface
         $queryBuilder = $this->instance()->createQueryBuilder();
 
         $queryBuilder
-            ->select('c')
+            ->select('c, cat')
             ->from('GitboxCoreBundle:Content', 'c')
             ->innerJoin('c.idMenu', 'm') // automaticaly join keys, upon relation
-            ->innerJoin('c.idCategory', 'cat') // same here
-            ->where('c.idUser = :user_id AND m.idModule = :module_id AND cat.name = :category_name')
+            ->innerJoin('c.idCategory', 'cc') // same here
+            ->leftJoin('c.idCategory', 'cat') // same here
+            ->where('c.idUser = :user_id AND m.idModule = :module_id AND cc.id IN(:categories)')
             ->orderBy('c.createDate', 'DESC')
             ->setParameters(array(
                 'user_id' => $userId,
                 'module_id' => $moduleId,
-                'category_name' => $categoryName
+                'categories' => array_values($categories)
             ));
 
         if ($perPage > 0 && $request instanceof Request) {
@@ -185,6 +187,7 @@ class BlogContentHelper extends ContentHelper implements PaginatorAwareInterface
             ->select('c')
             ->from('GitboxCoreBundle:Content', 'c')
             ->innerJoin('c.idMenu', 'm') // automaticaly join keys, upon relation
+            ->leftJoin('c.idCategory', 'cc') // automaticaly join keys, upon relation
             ->where('c.id = :id AND c.idUser = :user_id AND m.idModule = :module_id')
             ->setParameters(array(
                 'id' => $id,

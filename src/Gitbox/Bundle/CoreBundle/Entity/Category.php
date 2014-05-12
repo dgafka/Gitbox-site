@@ -36,6 +36,20 @@ class Category
      */
     private $description;
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Content", mappedBy="idCategory")
+     */
+    private $idContent;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->idContent = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
 
     /**
@@ -92,5 +106,38 @@ class Category
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Add idContent
+     *
+     * @param \Gitbox\Bundle\CoreBundle\Entity\Content $idContent
+     * @return Category
+     */
+    public function addIdContent(\Gitbox\Bundle\CoreBundle\Entity\Content $idContent)
+    {
+        $this->idContent[] = $idContent;
+
+        return $this;
+    }
+
+    /**
+     * Remove idContent
+     *
+     * @param \Gitbox\Bundle\CoreBundle\Entity\Content $idContent
+     */
+    public function removeIdContent(\Gitbox\Bundle\CoreBundle\Entity\Content $idContent)
+    {
+        $this->idContent->removeElement($idContent);
+    }
+
+    /**
+     * Get idContent
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getIdContent()
+    {
+        return $this->idContent;
     }
 }

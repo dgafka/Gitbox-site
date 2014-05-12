@@ -116,9 +116,14 @@ class BlogController extends Controller
         $request = $this->get('request');
         // pobranie parametrów GET
         $title = $request->get('title');
+        $categories = $request->get('category');
 
         // pobranie wszystkich wpisów z bazy
-        $posts = $contentHelper->getContents($login, $title, 5, $request);
+        if (isset($categories)) {
+            $posts = $contentHelper->getContentsByCategories($login, $categories, 5, $request);
+        } else {
+            $posts = $contentHelper->getContents($login, $title, 5, $request);
+        }
 
         // inicjalizacja odpowiedzi serwera
         $response = new Response();
@@ -141,25 +146,50 @@ class BlogController extends Controller
 
         $response->send();
 
+        $GET['page'] = $request->query->get('page');
         // inicjalizacja flash baga
-        if (isset($title)) {
+        if ((isset($title) || isset($categories)) && !isset($GET['page'])) {
             $isQuery = true;
-            $postCount = count($posts);
+            $postCount = $posts->getTotalItemCount();
 
             $session = $this->container->get('session');
 
             if ($postCount == 0) {
                 $type = 'warning';
-                $msg = 'Nie znaleziono żadnych wpisów.';
+                $msg = 'Nie znaleziono żadnych wpisów';
             } else if ($postCount == 1) {
                 $type = 'success';
-                $msg = 'Znaleziono <b>' . $postCount . '</b> wpis.';
+                $msg = 'Znaleziono <b>' . $postCount . '</b> wpis';
             } else if ($postCount <= 4) {
                 $type = 'success';
-                $msg = 'Znaleziono <b>' . $postCount . '</b> wpisy.';
+                $msg = 'Znaleziono <b>' . $postCount . '</b> wpisy';
             } else {
                 $type = 'success';
-                $msg = 'Znaleziono <b>' . $postCount . '</b> wpisów.';
+                $msg = 'Znaleziono <b>' . $postCount . '</b> wpisów';
+            }
+            if (isset($title)) {
+                $msg .= ', o tytule zawierającym tekst <b><i>' . $title . '</i></b>.';
+            } else if (isset($categories)) {
+                if ($postCount == 0 || $postCount > 4) {
+                    $msg .= ' należących do kategorii<br />';
+                } else if ($postCount == 1) {
+                    $msg .= ' należący do kategorii<br />';
+                } else if ($postCount <= 4) {
+                    $msg .= ' należące do kategorii<br />';
+                }
+
+                $cacheHelper = $this->container->get('cache_helper');
+
+                for ($i = 0; $i < count($categories); $i++) {
+                    $categoryName = $cacheHelper->getCategoryName($categories[$i]);
+
+                    $msg .= '<em>' . $categoryName . '</em>';
+                    if ($i == count($categories) - 1) {
+                        $msg .= '.';
+                    } else {
+                        $msg .= ', ';
+                    }
+                }
             }
 
             $session->getFlashBag()->add($type, $msg);

@@ -3,14 +3,17 @@
 {% block title %}{% endblock %}
 {% block stylesheets %}
     {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/rating-system.css') }}" />
+
     <link rel="stylesheet" href="{{ asset('css/tube.css') }}" />
 {% endblock %}
 
 {% block content_inner %}
 
 
-    {#<div class="container">#}
+    {% if hasAccess == true %}
         <a href="tube/new"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-film"></span>Nowy</button></a>
+    {% endif %}
         <div class="row">
             <div class="well">
                 <h1 class="text-center">Filmy użytkownika <i><code>{{ user.login }}</code></i></h1><div class="pull-right"><h6>{{ countPosts }} pozycji</h6></div>
@@ -20,6 +23,7 @@
                         <div class="media col-md-3">
                             <figure class="pull-left">
                                 <img class="media-object img-rounded img-responsive"  src="http://www.personal.psu.edu/afr3/blogs/siowfa13/BlueOcean.jpg" alt="placehold.it/350x250" >
+
                             </figure>
                         </div>
                         <div class="col-md-6">
@@ -33,10 +37,10 @@
 
                             <div class="ratings">
                                 <div class="rating-up">
-                                    <div class="score-up">(+) {{ post.voteUp }}</div>
+                                    <div class="score-up">{{ post.voteUp }}</div>
                                 </div>
                                 <div class="rating-down">
-                                    <div class="score-down">(-) {{ post.voteDown }}</div>
+                                    <div class="score-down">{{ post.voteDown }}</div>
                                 </div>
                             </div>
 
@@ -47,7 +51,6 @@
                 </div>
             </div>
         </div>
-    {#</div>#}
 
 {% endblock %}
 

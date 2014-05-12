@@ -12,6 +12,7 @@ parameters:
     ip_helper.class: Gitbox\Bundle\CoreBundle\Helper\IPHelper
     cache_helper.host: localhost
     cache_helper.port: 11211
+    content_helper.class: Gitbox\Bundle\CoreBundle\Helper\ContentHelper
 
 services:
     user_helper:
@@ -54,4 +55,7 @@ services:
         arguments:    ["@doctrine.orm.entity_manager", "%cache_helper.host%", "%cache_helper.port%"]
     ip_helper:
         class:        "%ip_helper.class%"
+        arguments:    ["@doctrine.orm.entity_manager", "@cache_helper"]
+    content_helper:
+        class:        "%content_helper.class%"
         arguments:    ["@doctrine.orm.entity_manager", "@cache_helper"]

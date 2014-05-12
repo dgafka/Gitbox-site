@@ -1,4 +1,12 @@
 $(document).ready(function(){
+    // load checkbox component
+    $('.checkbox').checkbox();
+
+    // load select component
+    $('.selectpicker').selectpicker({
+        size: 8
+    });
+
     // reveal password
     $(".reveal").mousedown(function() {
         $(".password-input").replaceWith($('.password-input').clone().attr('type', 'text'));

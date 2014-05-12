@@ -1,3 +1,11 @@
+{#{% form_theme form _self %}#}
+
+{#{% block checkbox_widget %}#}
+    {#{% spaceless %}#}
+        {#<input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />#}
+    {#{% endspaceless %}#}
+{#{% endblock checkbox_widget %}#}
+
 {% block blog_form %}
 
     {# BACK BUTTON #}
@@ -16,10 +24,48 @@
 
                 {{ form_widget(form.description) }}
 
+                <hr class="divider">
+                <h4>Kategorie</h4>
+
+                <table class="table table-hover table-condensed content-categories"> {# table table-hover table-condensed #}
+                    <tbody>
+                    {% for category in form.idCategory %}
+                        {% if loop.index0 % 6 == 0 %}
+                            {% if not loop.first %}
+                                </tr>
+                            {% endif %}
+                            <tr>
+                        {% endif %}
+
+                        <td class="to-the-left">
+                            {{ form_widget(category, {'attr': {'class': 'checkbox'}}) }}
+                            {{ form_label(category, '', {'label_attr': {'class': 'box-pointer'}}) }}
+                        </td>
+
+                        {% if loop.last %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+
                 {{ form_widget(form.save, {
                     'label': btnLabel
                 }) }}
             </div>
         {{ form_end(form) }}
     </div>
+
+    {#<script type="text/javascript">#}
+        {#// przechwytuje zatwierdzenie formularza i wrzuca treść do pola textarea#}
+        {#$('[name="blogPost"]').submit(function (event) {#}
+            {#event.preventDefault();#}
+
+            {#var postContent = $('.froala-box').find('.froala-froala-element').html();#}
+
+            {#$('.post-editor').html(postContent);#}
+
+            {#return true;#}
+        {#});#}
+    {#</script>#}
 {% endblock %}

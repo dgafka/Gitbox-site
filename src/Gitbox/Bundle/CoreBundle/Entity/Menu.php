@@ -25,13 +25,6 @@ class Menu
     /**
      * @var integer
      *
-     * @ORM\Column(name="id_category", type="integer", nullable=true)
-     */
-    private $idCategory;
-
-    /**
-     * @var integer
-     *
      * @ORM\Column(name="parent", type="integer", nullable=true)
      */
     private $parent;
@@ -78,29 +71,6 @@ class Menu
     private $idUser;
 
 
-
-    /**
-     * Set idCategory
-     *
-     * @param integer $idCategory
-     * @return Menu
-     */
-    public function setIdCategory($idCategory)
-    {
-        $this->idCategory = $idCategory;
-
-        return $this;
-    }
-
-    /**
-     * Get idCategory
-     *
-     * @return integer 
-     */
-    public function getIdCategory()
-    {
-        return $this->idCategory;
-    }
 
     /**
      * Set parent

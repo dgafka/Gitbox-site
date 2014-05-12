@@ -2,6 +2,8 @@
 
 namespace Gitbox\Bundle\CoreBundle\Helper;
 
+use Gitbox\Bundle\CoreBundle\Entity\Category;
+
 
 class CacheHelper {
 
@@ -66,6 +68,30 @@ class CacheHelper {
 		return $moduleId;
 	}
 
+    /**
+     * Zwraca nazwę kategorii
+     *
+     * @param int $id
+     * @return string|null
+     */
+    public function getCategoryName($id) {
+        $key = $this->getCategoryKey($id);
+
+        $categoryName = self::$cache->get($key);
+
+        if (!$categoryName) {
+            $category = self::$entityManager->getRepository('GitboxCoreBundle:Category')->findOneBy(array('id' => $id));
+
+            if ($category instanceof Category) {
+                $categoryName = $category->getName();
+
+                self::$cache->set($key, $categoryName);
+            }
+        }
+
+        return $categoryName;
+    }
+
 	/** Zwraca nazwę dostępu do cache-a, dla usera
 	 * @param $name
 	 * @return String
@@ -73,5 +99,15 @@ class CacheHelper {
 	private function getUserCache($name) {
 		return 'user/' . $name;
 	}
+
+    /**
+     * Pełna nazwa klucza kategorii
+     *
+     * @param $id
+     * @return String
+     */
+    private function getCategoryKey($id) {
+        return 'category/' . $id;
+    }
 
 } 

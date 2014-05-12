@@ -28,7 +28,7 @@ class Attachment
      * @ORM\Column(name="status", type="string", length=1, nullable=false)
      */
     private $status;
-//@Assert\File(maxSize="6000000")
+
     /**
      * @var string
      *

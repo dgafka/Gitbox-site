@@ -29,7 +29,7 @@ class UserLoginType extends AbstractType {
 				'label' => 'Hasło',
                 'attr' => array(
                     'placeholder' => 'Hasło',
-                    'class' => 'form-control'
+                    'class' => 'form-control password-input'
                 ),
 				'label_attr'    => array(
 					'class'     => 'col-sm-2 control-label'

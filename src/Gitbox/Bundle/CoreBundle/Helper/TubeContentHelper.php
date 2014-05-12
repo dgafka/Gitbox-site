@@ -49,7 +49,7 @@ class TubeContentHelper extends ContentHelper {
 		    /*->innerJoin('GitboxCoreBundle:Attachment', 'a', 'WITH', 'a.idContent = c.id')*/
 		    ->innerJoin('GitboxCoreBundle:Menu', 'm', 'WITH','m.id = c.idMenu')
 		    ->where('m.idUser = :userId')
-		    ->andWhere('m.idModule = :moduleId')
+		    ->andWhere('m.idModule = :moduleId' )->orderby('c.createDate', 'DESC')
 
 		    ->setParameters(array(
 			   'userId'     => $userId,
@@ -61,7 +61,7 @@ class TubeContentHelper extends ContentHelper {
 	    return $results;
     }
     /**
-     * Pobranie jednego filmu z bazy
+     * Pobranie jednego filmu z bazy - tabela attachment
      *
      * @param int $id
      * @param $userLogin
@@ -70,7 +70,7 @@ class TubeContentHelper extends ContentHelper {
      *
      * @throws Exception
      */
-    public function getOneContent($id, $userLogin) {
+    public function getOneAttachment($id, $userLogin) {
         if (!isset($this->module)) {
             throw new Exception("Nie zainicjalizowano instancji.");
         }
@@ -101,6 +101,46 @@ class TubeContentHelper extends ContentHelper {
     }
 
     /**
+     * Pobranie contentu z bazy
+     *
+     * @param int $id
+     * @param $userLogin
+     *
+     * @return Content | null
+     *
+     * @throws Exception
+     */
+    public function getOneContent($id, $userLogin) {
+        if (!isset($this->module)) {
+            throw new Exception("Nie zainicjalizowano instancji.");
+        }
+
+        $userId    = $this->instanceCache()->getUserIdByLogin($userLogin);
+        $gitTubeId = $this->instanceCache()->getModuleIdByName('GitTube');
+        $queryBuilder = $this->instance()->createQueryBuilder();
+
+        $queryBuilder
+            ->select('c')
+            ->from('GitboxCoreBundle:Content', 'c')
+            ->innerJoin('GitboxCoreBundle:Attachment', 'a', 'WITH', 'a.idContent = c.id')
+            ->innerJoin('GitboxCoreBundle:Menu', 'm', 'WITH','m.id = c.idMenu')
+            ->where('m.idUser = :userId')
+            ->andWhere('m.idModule = :moduleId')
+            ->andWhere('c.id = :contentId')
+            ->setParameters(array(
+                'userId' => $userId,
+                'moduleId' => $gitTubeId,
+                'contentId' => $id
+            ));
+
+        try {
+            return $queryBuilder->getQuery()->getSingleResult();
+        } catch (NoResultException $e) {
+            return null;
+        }
+    }
+
+    /**
      * @param $newContent \Gitbox\Bundle\CoreBundle\Entity\Content
      * @return null|\Gitbox\Bundle\CoreBundle\Entity\Content
      * @throws \Exception
@@ -111,7 +151,7 @@ class TubeContentHelper extends ContentHelper {
         $newContent->setCreateDate(new \DateTime('now'));
         $newContent->setLastModificationDate(new \DateTime('now'));
         $newContent->setStatus('A');
-        $newContent->setHit(5);
+        $newContent->setHit(0);
         $newContent->setType('1');
 
 
@@ -158,5 +198,26 @@ class TubeContentHelper extends ContentHelper {
         }
         $gitTubeId = $this->instanceCache()->getModuleIdByName($name);
         return $gitTubeId;
+    }
+
+    /**
+     * @param mixed $content
+     * @throws Exception
+     */
+    public function removeAttachment($content) {
+        if ($content instanceof Attachment) {
+            $this->instance()->remove($content);
+            $this->instance()->flush();
+        } else if (is_int($content)) {
+            $queryBuilder = $this->instance()->createQueryBuilder();
+            $queryBuilder
+                ->delete('GitboxCoreBundle:Attachment', 'c')
+                ->where('c.id = :id')
+                ->setParameter('id', $content)
+                ->getQuery()
+                ->execute();
+        } else {
+            throw new Exception('Niepoprawny typ parametru.');
+        }
     }
 }

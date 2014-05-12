@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Content
  *
- * @ORM\Table(name="content", indexes={@ORM\Index(name="IDX_FEC530A9F6252691", columns={"id_menu"}), @ORM\Index(name="IDX_FEC530A95697F554", columns={"id_category"})})
+ * @ORM\Table(name="content", indexes={@ORM\Index(name="IDX_FEC530A9F6252691", columns={"id_menu"})})
  * @ORM\Entity
  */
 class Content
@@ -110,15 +110,27 @@ class Content
     private $idMenu;
 
     /**
-     * @var \Category
+     * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToOne(targetEntity="Category")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_category", referencedColumnName="id")
-     * })
+     * @ORM\ManyToMany(targetEntity="Category", inversedBy="idContent")
+     * @ORM\JoinTable(name="content_category",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="id_content", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="id_category", referencedColumnName="id")
+     *   }
+     * )
      */
     private $idCategory;
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->idCategory = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
 
     /**
@@ -385,29 +397,6 @@ class Content
     }
 
     /**
-     * Set idCategory
-     *
-     * @param \Gitbox\Bundle\CoreBundle\Entity\Category $idCategory
-     * @return Content
-     */
-    public function setIdCategory(\Gitbox\Bundle\CoreBundle\Entity\Category $idCategory = null)
-    {
-        $this->idCategory = $idCategory;
-
-        return $this;
-    }
-
-    /**
-     * Get idCategory
-     *
-     * @return \Gitbox\Bundle\CoreBundle\Entity\Category 
-     */
-    public function getIdCategory()
-    {
-        return $this->idCategory;
-    }
-
-    /**
      * Set idMenu
      *
      * @param \Gitbox\Bundle\CoreBundle\Entity\Menu $idMenu
@@ -428,5 +417,38 @@ class Content
     public function getIdMenu()
     {
         return $this->idMenu;
+    }
+
+    /**
+     * Add idCategory
+     *
+     * @param \Gitbox\Bundle\CoreBundle\Entity\Category $idCategory
+     * @return Content
+     */
+    public function addIdCategory(\Gitbox\Bundle\CoreBundle\Entity\Category $idCategory)
+    {
+        $this->idCategory[] = $idCategory;
+
+        return $this;
+    }
+
+    /**
+     * Remove idCategory
+     *
+     * @param \Gitbox\Bundle\CoreBundle\Entity\Category $idCategory
+     */
+    public function removeIdCategory(\Gitbox\Bundle\CoreBundle\Entity\Category $idCategory)
+    {
+        $this->idCategory->removeElement($idCategory);
+    }
+
+    /**
+     * Get idCategory
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getIdCategory()
+    {
+        return $this->idCategory;
     }
 }

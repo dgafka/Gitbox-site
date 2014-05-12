@@ -3,7 +3,6 @@
   <entity name="Gitbox\Bundle\CoreBundle\Entity\Content" table="content">
     <indexes>
       <index name="IDX_FEC530A9F6252691" columns="id_menu"/>
-      <index name="IDX_FEC530A95697F554" columns="id_category"/>
     </indexes>
     <id name="id" type="integer" column="id">
       <generator strategy="SEQUENCE"/>
@@ -19,15 +18,20 @@
     <field name="type" type="string" column="type" length="1" nullable="false"/>
     <field name="voteUp" type="integer" column="vote_up" nullable="false"/>
     <field name="voteDown" type="integer" column="vote_down" nullable="false"/>
-    <many-to-one field="idCategory" target-entity="Category">
-      <join-columns>
-        <join-column name="id_category" referenced-column-name="id"/>
-      </join-columns>
-    </many-to-one>
     <many-to-one field="idMenu" target-entity="Menu">
       <join-columns>
         <join-column name="id_menu" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
+    <many-to-many field="idCategory" target-entity="Category" inversed-by="idContent">
+      <join-table name="content_category">
+        <join-columns>
+          <join-column name="id_content" referenced-column-name="id"/>
+        </join-columns>
+        <inverse-join-columns>
+          <join-column name="id_category" referenced-column-name="id"/>
+        </inverse-join-columns>
+      </join-table>
+    </many-to-many>
   </entity>
 </doctrine-mapping>
