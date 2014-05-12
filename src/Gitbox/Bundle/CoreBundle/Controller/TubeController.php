@@ -63,7 +63,7 @@ class TubeController extends Controller
      */
     private function validateUserModule($login) {
         $moduleHelper = $this->container->get('module_helper');
-        $moduleHelper->init('GitBlog');
+        $moduleHelper->init('GitTube');
 
         if (!$moduleHelper->isModuleActivated($login)) {
             throw $this->createNotFoundException('Użytkownik <b>' . $login . '</b> nie posiada aktywowanego modułu.');
@@ -122,11 +122,14 @@ class TubeController extends Controller
         }
         $imgDir = '../../../../../web/uploads/tube/'.$user->getId().'/'.$attachment[1]->getFilename().'.jpg';
         'imgDir' => $imgDir,*/
+        $attachmentImages = $contentHelper->getAttachmentsImages($login);
+
         $countPost = count($contents);
 
         return array(
             'user' => $user,
             'posts' => $contents,
+            'attachments' => $attachmentImages,
             'countPosts' => $countPost,
             'hasAccess' => $hasAccess
         );
@@ -149,8 +152,7 @@ class TubeController extends Controller
 
         // utworzenie instancji wpisu
         $newAttachment = new Attachment();
-        $newContent = new Content();//iduser, idmenu, status, title, header->file, description,
-        //createdate, hit, lastModDate,type, id_category,
+        $newContent = new Content();
 
         // formularz nowego wpisu
         $form = $this->createForm(new TubePostType(), $newAttachment);
@@ -169,9 +171,9 @@ class TubeController extends Controller
             $file = $form['filename']->getData();
             $extension = $file->guessExtension();
 
-            $allowed = array('mp4','wmv','asf','avi');
+            $allowed = array('mp4','webm','ogg','mpeg');
             if (!in_array($extension, $allowed)) {
-                $session->getFlashBag()->add('warning', 'Nieprawidłowy format pliku video.');
+                $session->getFlashBag()->add('warning', 'Nieprawidłowy format pliku video. Dostępne: mp4, webm, ogg, mpeg.');
                 //throw $this->createNotFoundException("Nieprawidłowy format pliku video. Podano=".$extension);
             }else if ($file->getClientSize() > 83886080) {
                 $session->getFlashBag()->add('warning', 'Rozmiar pliku musi być mniejszy niż 80Mb.');
@@ -184,7 +186,7 @@ class TubeController extends Controller
                 $imageAttachment = new Attachment();
                 $imageAttachment->setMime('jpg');
                 $imageAttachment->setDescription('..');
-                $imageAttachment->setFilename($filename.'.'.$extension.'jpg');
+                $imageAttachment->setFilename($filename.'.'.$extension.'.jpg');
                 $imageAttachment->setTitle('..');
 
                 $file->move($dir, $filename.'.'.$extension);
@@ -200,6 +202,8 @@ class TubeController extends Controller
                 $contentHelper->insertIntoContent($newContent);
                 $contentHelper->insertIntoAttachment($newAttachment,$newContent);
                 $contentHelper->insertIntoAttachment($imageAttachment,$newContent);
+                // aktualizacja statystyk
+                $moduleHelper->setTotalContents($user->getId(), '+');
 
                 $session->getFlashBag()->add('success', 'Dodano film <b>' . $newAttachment->getTitle() . '</b>');
 

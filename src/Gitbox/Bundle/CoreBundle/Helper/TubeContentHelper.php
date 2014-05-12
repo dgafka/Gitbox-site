@@ -26,7 +26,7 @@ class TubeContentHelper extends ContentHelper {
     }
 
     /**
-     * Pobranie wpisów z bloga użytkownika
+     * Pobranie contentow uzytkownika dla modułu gitTube
      *
      * @param $userLogin
      *
@@ -38,27 +38,66 @@ class TubeContentHelper extends ContentHelper {
         if (!isset($this->module)) {
             throw new Exception("Nie zainicjalizowano instancji.");
         }
-		$userId    = $this->instanceCache()->getUserIdByLogin($userLogin);
-		$gitTubeId = $this->instanceCache()->getModuleIdByName('GitTube');
+        $userId    = $this->instanceCache()->getUserIdByLogin($userLogin);
+        $gitTubeId = $this->instanceCache()->getModuleIdByName('GitTube');
 
         $queryBuilder = $this->instance()->createQueryBuilder();
 
-	    $queryBuilder
-		    ->select('c')
-		    ->from('GitboxCoreBundle:Content', 'c')
-		    /*->innerJoin('GitboxCoreBundle:Attachment', 'a', 'WITH', 'a.idContent = c.id')*/
-		    ->innerJoin('GitboxCoreBundle:Menu', 'm', 'WITH','m.id = c.idMenu')
-		    ->where('m.idUser = :userId')
-		    ->andWhere('m.idModule = :moduleId' )->orderby('c.createDate', 'DESC')
+        $queryBuilder
+            ->select('c')
+            ->from('GitboxCoreBundle:Content', 'c')
+            /*->innerJoin('GitboxCoreBundle:Attachment', 'a', 'WITH', 'a.idContent = c.id')*/
+            ->innerJoin('GitboxCoreBundle:Menu', 'm', 'WITH','m.id = c.idMenu')
+            ->where('m.idUser = :userId')
+            ->andWhere('m.idModule = :moduleId' )->orderby('c.createDate', 'DESC')
 
-		    ->setParameters(array(
-			   'userId'     => $userId,
-			   'moduleId'   => $gitTubeId
-		    ));
+            ->setParameters(array(
+                'userId'     => $userId,
+                'moduleId'   => $gitTubeId
+            ));
 
-        $results = $queryBuilder->getQuery()->getResult();
+        $query = $queryBuilder->getQuery();
+        $results = $query->getResult();
 
-	    return $results;
+        return $results;
+    }
+    /**
+     * Pobranie attachmentów uzytkownika dla modułu gitTube
+     *
+     * @param $userLogin
+     *
+     * @return Attachment | null
+     *
+     * @throws Exception
+     */
+    public function getAttachmentsImages($userLogin) {
+        if (!isset($this->module)) {
+            throw new Exception("Nie zainicjalizowano instancji.");
+        }
+        $userId    = $this->instanceCache()->getUserIdByLogin($userLogin);
+        $gitTubeId = $this->instanceCache()->getModuleIdByName('GitTube');
+
+        $queryBuilder = $this->instance()->createQueryBuilder();
+        $mime = 'jpg';
+        $queryBuilder
+            ->select('a')
+            ->from('GitboxCoreBundle:Content', 'c')
+            ->innerJoin('GitboxCoreBundle:Attachment', 'a', 'WITH', 'a.idContent = c.id')
+            ->innerJoin('GitboxCoreBundle:Menu', 'm', 'WITH','m.id = c.idMenu')
+            ->where('m.idUser = :userId')
+            ->andWhere('m.idModule = :moduleId' )
+            ->andWhere('a.mime = :mime' )
+
+            ->setParameters(array(
+                'userId'     => $userId,
+                'moduleId'   => $gitTubeId,
+                'mime' => $mime
+            ));
+
+        $query = $queryBuilder->getQuery();
+        $results = $query->getResult();
+
+        return $results;
     }
     /**
      * Pobranie jednego filmu z bazy - tabela attachment

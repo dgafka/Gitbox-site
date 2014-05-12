@@ -19,10 +19,17 @@
                 <h1 class="text-center">Filmy użytkownika <i><code>{{ user.login }}</code></i></h1><div class="pull-right"><h6>{{ countPosts }} pozycji</h6></div>
                 <div class="list-group">
                     {% for post in posts %}
-                    <a href="{{ path('tube_content_show', {'login': user.login, 'id': post.id}) }}" class="list-group-item">
+                                                <a href="{{ path('tube_content_show', {'login': user.login, 'id': post.id}) }}" class="list-group-item">
                         <div class="media col-md-3">
-                            <figure class="pull-left">
-                                <img class="media-object img-rounded img-responsive" src="{#yyyyyyyyyyy wtf#}">
+                            <figure class="pull-left bg-primary">
+                                {% for attachment in attachments %}
+                                    {% if attachment.idContent == post %}
+                                        <img class="media-object img-rounded img-responsive" src="../../../../web/uploads/tube/{{ user.id }}/{{ attachment.filename }}">
+
+                                    {% endif %}
+
+                                {% endfor %}
+
 
                             </figure>
                         </div>
