@@ -15,15 +15,7 @@
             </div>
 
             <div class="menu-panel">{% block menu_panel %}
-                    <ul>
-                    {% for menu in menus%}
-                        <li><span class="glyphicon glyphicon-folder-close"></span> {{ menu.title }}</li>
-                    {% endfor %}
-                        {% for content in contents %}
-                            <li><span class="glyphicon glyphicon-hdd"></span> {{ content.title }}</li>
-                        {% endfor %}
-                    </ul>
-
+                    {% include "GitboxCoreBundle:Drive:_menu.html.twig" %}
                 {% endblock %}
             </div>
 
@@ -68,12 +60,14 @@
                             {% endfor %}
 
                     </table>
+            {% if logged == true %}
                 <div class="driveButtonPanel">
                     <a type="button" class="btn btn-default" href="{{ path('drive_contener_new') }}">
                         Dodaj kontener
                     </a>
                     <a type="button" class="btn btn-default" href="{{ path('drive_item_new') }}">
                         Dodaj element
+                        {%  endif %}
                     </a>
                 </div>
 

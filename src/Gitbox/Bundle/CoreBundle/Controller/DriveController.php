@@ -74,6 +74,29 @@ class DriveController extends Controller
         return $pageContent;
     }
 
+
+    /**
+     * @return mixed
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    private function getMenuStructure($menuId, $request){
+        $contentHelper = $this->container->get('drive_content_helper');
+        $menus = $contentHelper->getMenus($menuId, $request);
+        $menu_contents = $contentHelper->getMenuContent($menuId, $request);
+        $struktura="<ul>";
+        foreach($menus as $menuI)
+        {
+            $struktura=$struktura."<li><span class=\"glyphicon glyphicon-folder-close\"></span>".$menuI->getTitle();
+            $struktura=$struktura.$this->getMenuStructure($menuI->getId(), $request)."</li>";
+        }
+        foreach($menu_contents as $menuI)
+        {
+            $struktura=$struktura."<li><a href=\"{{ path('drive_contener_new') }}\"><span class=\"glyphicon glyphicon-hdd\"></span>".$menuI->getTitle()."</a></li>";
+        }
+        $struktura=$struktura."</ul>";
+        return $struktura;
+    }
+
     /**
      * @Route("/user/{login}/drive")
      * @Template()
@@ -123,7 +146,7 @@ class DriveController extends Controller
 
 
     /**
-     * @Route("/user/{login}/drive/menu/{element}")
+     * @Route("/user/{login}/drive/menu/{element}",name="drive_show_menu")
      * @Template()
      */
     public function DriveShowMenuAction($login, $element)
@@ -133,7 +156,7 @@ class DriveController extends Controller
 
 
     /**
-     * @Route("/user/{login}/drive/content/{element}")
+     * @Route("/user/{login}/drive/content/{element}",name="drive_show_content")
      * @Template()
      */
     public function DriveShowAction($login, $element)
@@ -154,13 +177,17 @@ class DriveController extends Controller
         $pageContent = $this ->getPageContent($user->getId(), $element, $request);
         $page_attachments = $contentHelper->getAttachments($element, $request);
 
+
+        $structure = $this ->  getMenuStructure($menuRoot, $request);
+
         return array(
             'user' => $user,
             'menus' => $menus,
             'contents' => $menu_contents,
             'pageContent' => $pageContent,
             'pageContentAttachments' => $page_attachments,
-            'logged' => $logged
+            'logged' => $logged,
+            'abc'=> $structure
         );
     }
 
