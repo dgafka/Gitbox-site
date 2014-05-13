@@ -151,6 +151,30 @@ class DriveController extends Controller
      */
     public function DriveShowMenuAction($login, $element)
     {
+        $contentHelper = $this->container->get('drive_content_helper');
+        $permissionHelper = $this->container->get('permissions_helper');
+        $request = $this->get('request');
+        $menuRoot= $contentHelper->getMenuZero($login, $request);
+        $menuId = $menuRoot->getId();
+        $menus = $contentHelper->getMenus($menuId, $request);
+        $menu_contents = $contentHelper->getMenuContent($menuId, $request);
+
+        $userHelper = $this->container->get('user_helper');
+        $user = $userHelper->findByLogin($login);
+        $logged = $permissionHelper -> checkPermission($login);
+        $countMenus = $contentHelper -> countMenus($user->getId(),$request);
+        $countMenus--;
+        $countAttachments = $contentHelper -> countAttachments($user->getId(),$request);
+
+
+        return array(
+            'user' => $user,
+            'menus' => $menus,
+            'contents' => $menu_contents,
+            'logged' => $logged,
+            'counter' => $countMenus,
+            'countatt' => $countAttachments
+        );
 
     }
 
