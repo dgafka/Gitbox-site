@@ -351,3 +351,7 @@ a.badge-button:focus {
 .ui-tabs .ui-tabs-panel {
     height: auto !important;
 }
+
+div.col-6.col-sm-6.col-lg-4 {
+    font-size: 14px;
+}
