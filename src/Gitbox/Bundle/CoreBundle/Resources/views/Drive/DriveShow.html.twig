@@ -30,12 +30,13 @@
                             {% endblock %}
                         </h2>
 
-
+                    {% block descpanel %}
                     <div class="drive-show-description">
-                        {% block descpanel %}
+
                             {{ pageContent.description }}
-                        {%  endblock %}
+
                     </div>
+                    {%  endblock %}
 
                     <br>
                     {% block tabelpanel %}

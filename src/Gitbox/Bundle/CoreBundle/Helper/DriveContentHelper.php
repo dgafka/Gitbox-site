@@ -71,6 +71,7 @@ class DriveContentHelper extends ContentHelper  {
             }
         }
     }
+
     /**
      * Pobieranie podmenu
      *
@@ -104,6 +105,51 @@ class DriveContentHelper extends ContentHelper  {
         } else {
             try {
                 return $queryBuilder->getQuery()->getResult();
+            } catch (NoResultException $e) {
+                return null;
+            }
+        }
+
+    }
+
+
+    /**
+     * Pobieranie podmenu
+     *
+     * @param $menuId
+     * @param Request $request
+     *
+     * @return Menu
+     *
+     * @throws Exception
+     */
+    public function getMenu($menuId,  Request & $request = null) {
+
+
+        $queryBuilder = $this->instance()->createQueryBuilder();
+        $moduleId = $this->instanceCache()->getModuleIdByName($this->module);
+
+
+
+        $queryBuilder
+            ->select('c')
+            ->from('GitboxCoreBundle:Menu', 'c')
+            ->where(' c.id = :menu_id AND c.idModule = :module AND c.parent IS NOT NULL')
+            ->setParameters(array(
+                'menu_id' => $menuId,
+                'module' => $moduleId,
+
+            ));
+
+        if ($request instanceof Request) {
+            $query = $queryBuilder->getQuery()->getOneOrNullResult();
+
+            $menu = $query;
+
+            return $menu;
+        } else {
+            try {
+                return $queryBuilder->getQuery()->getOneOrNullResult();
             } catch (NoResultException $e) {
                 return null;
             }

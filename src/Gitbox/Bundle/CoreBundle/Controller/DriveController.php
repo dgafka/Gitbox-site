@@ -74,6 +74,23 @@ class DriveController extends Controller
         return $pageContent;
     }
 
+    /**
+     * @return mixed
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    private function getMenuPageContent($userid, $element, $request){
+        $contentHelper = $this->container->get('drive_content_helper');
+        $pageContent = $contentHelper->getMenu($element, $request);
+
+        if (!isset($pageContent)){
+            throw $this->createNotFoundException('Nie znaleziono elementu ');
+        }
+        if ($pageContent->getIdUser()->getId() != $userid) {
+            throw $this->createNotFoundException('Nie znaleziono elementu dla uzytkownika');
+        }
+        return $pageContent;
+    }
+
 
     /**
      * @return mixed
@@ -166,6 +183,7 @@ class DriveController extends Controller
         $countMenus--;
         $countAttachments = $contentHelper -> countAttachments($user->getId(),$request);
 
+        $pageContent = $this ->getMenuPageContent($user->getId(), $element, $request);
 
         return array(
             'user' => $user,
@@ -173,7 +191,8 @@ class DriveController extends Controller
             'contents' => $menu_contents,
             'logged' => $logged,
             'counter' => $countMenus,
-            'countatt' => $countAttachments
+            'countatt' => $countAttachments,
+            'pageContent' => $pageContent
         );
 
     }
