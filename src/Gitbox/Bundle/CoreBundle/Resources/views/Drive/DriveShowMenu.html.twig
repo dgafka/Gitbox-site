@@ -9,6 +9,8 @@
             <th>data utworzenia</th>
             <th></th>
             <th></th>
+            <th></th>
+            <th></th>
         </tr>
             {% for menu in menuCon %}
                 <tr>
@@ -19,6 +21,21 @@
                     </td>
                     <td></td>
                     <td></td>
+                    {% if logged == true %}
+                        <td>
+                            <a type="button" class="btn btn-warning" href="{{ path('drive_contener_new') }}">
+                                <span class="glyphicon glyphicon-trash"></span> edytuj
+                            </a>
+                        </td>
+                        <td>
+                            <a type="button" class="btn btn-danger" href="{{ path('drive_contener_new') }}">
+                                <span class="glyphicon glyphicon-cog"></span>usuń
+                            </a>
+                        </td>
+                    {% else %}
+                        <td></td>
+                        <td></td>
+                    {% endif %}
                 </tr>
 
             {% endfor %}
@@ -29,14 +46,41 @@
                         <span class="glyphicon glyphicon-hdd"></span>{{ content.title }}
                         </a>
                     </td>
-                    <td>{{   render(controller('GitboxCoreBundle:Drive:test',{})) }}</td>
+                    <td></td>
                     <td>
                         {{ content.createDate|date('Y-m-d')}}
                     </td>
+                    {% if logged == true %}
+                        <td>
+                            <a type="button" class="btn btn-warning" href="{{ path('drive_contener_new') }}">
+                                <span class="glyphicon glyphicon-trash"></span> edytuj
+                            </a>
+                        </td>
+                        <td>
+                            <a type="button" class="btn btn-danger" href="{{ path('drive_contener_new') }}">
+                                <span class="glyphicon glyphicon-cog"></span>usuń
+                            </a>
+                        </td>
+                    {% else %}
+                        <td></td>
+                        <td></td>
+                    {% endif %}
                 </tr>
             {% endfor %}
         </ul>
-
-
     </table>
-{% endblock %}
+    {% endblock %}
+    {%  block buttpanel %}
+    {% if logged == true %}
+        <div class="driveButtonPanel">
+            <a type="button" class="btn btn-default" href="{{ path('drive_contener_new') }}">
+                Dodaj kontener
+            </a>
+            <a type="button" class="btn btn-default" href="{{ path('drive_item_new') }}">
+                Dodaj element
+            </a>
+        </div>
+
+
+    {%  endif %}
+    {% endblock %}
