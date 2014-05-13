@@ -1,0 +1,4 @@
+{% extends "GitboxCoreBundle:Drive:DriveShowMenu.html.twig" %}
+{% block titlepanel %}
+    Witaj na GitDrive użytkownika <a href="{{ path('user_profile_index',{'login': user.login})}}">{{ user.login }}</a>
+{% endblock %}

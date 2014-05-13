@@ -115,20 +115,113 @@ class DriveController extends Controller
         return $struktura;
     }
 
+
+    /**
+     * @Route("/drive")
+     * @Template()
+     */
+    public function DriveStartAction()
+    {
+
+        $drivePermissionHelper = $this->container->get('dp_helper');
+        $username = $drivePermissionHelper->checkUser();
+        if(isset($username))
+        {
+            $response = $this->forward('GitboxCoreBundle:Drive:DriveIndex', array(
+                'login'  => $username
+            ));
+
+
+            return $response;
+        }
+        else
+        {
+            throw $this->createNotFoundException('Jesteś niezalogowany');
+        }
+
+    }
+
+
     /**
      * @Route("/user/{login}/drive")
      * @Template()
      */
-    public function DriveAction($login)
+    public function DriveIndexAction($login)
     {
+        $user = $this -> validateURL($login);
 
-        // walidacja dostępu
-        $user = $this->validateURL($login);
+        $contentHelper = $this->container->get('drive_content_helper');
+        $permissionHelper = $this->container->get('permissions_helper');
+        $request = $this->get('request');
+        $menuRoot= $contentHelper->getMenuZero($login, $request);
+        $menuId = $menuRoot->getId();
+        $menus = $contentHelper->getMenus($menuId, $request);
+        $menu_contents = $contentHelper->getMenuContent($menuId, $request);
 
-     return array(
-        'user' => $user
-    );
+
+        $logged = $permissionHelper -> checkPermission($login);
+        $countMenus = $contentHelper -> countMenus($user->getId(),$request);
+        $countMenus--;
+        $countAttachments = $contentHelper -> countAttachments($user->getId(),$request);
+
+
+        $pageContent = $menuRoot;
+        $menuCon = $contentHelper ->getMenus($pageContent->getId(), $request);
+        $conCon = $contentHelper ->getMenuContent($pageContent->getId(), $request);
+
+        return array(
+            'user' => $user,
+            'menus' => $menus,
+            'contents' => $menu_contents,
+            'logged' => $logged,
+            'counter' => $countMenus,
+            'countatt' => $countAttachments,
+            'pageContent' => $pageContent,
+            'menuCon' => $menuCon,
+            'conCon' => $conCon
+        );
     }
+
+    /**
+     * @Route("/user/{login}/drive/menu/{element}",name="drive_show_menu")
+     * @Template()
+     */
+    public function DriveShowMenuAction($login, $element)
+    {
+        $user = $this -> validateURL($login);
+
+        $contentHelper = $this->container->get('drive_content_helper');
+        $permissionHelper = $this->container->get('permissions_helper');
+        $request = $this->get('request');
+        $menuRoot= $contentHelper->getMenuZero($login, $request);
+        $menuId = $menuRoot->getId();
+        $menus = $contentHelper->getMenus($menuId, $request);
+        $menu_contents = $contentHelper->getMenuContent($menuId, $request);
+
+        $logged = $permissionHelper -> checkPermission($login);
+        $countMenus = $contentHelper -> countMenus($user->getId(),$request);
+        $countMenus--;
+        $countAttachments = $contentHelper -> countAttachments($user->getId(),$request);
+
+
+        $pageContent = $this ->getMenuPageContent($user->getId(), $element, $request);
+        $menuCon = $contentHelper ->getMenus($pageContent->getId(), $request);
+        $conCon = $contentHelper ->getMenuContent($pageContent->getId(), $request);
+
+        return array(
+            'user' => $user,
+            'menus' => $menus,
+            'contents' => $menu_contents,
+            'logged' => $logged,
+            'counter' => $countMenus,
+            'countatt' => $countAttachments,
+            'pageContent' => $pageContent,
+            'menuCon' => $menuCon,
+            'conCon' => $conCon
+        );
+
+    }
+
 
     /**
      * @Route("/new/drive",name="drive_item_new")
@@ -163,46 +256,7 @@ class DriveController extends Controller
     }
 
 
-    /**
-     * @Route("/user/{login}/drive/menu/{element}",name="drive_show_menu")
-     * @Template()
-     */
-    public function DriveShowMenuAction($login, $element)
-    {
-        $contentHelper = $this->container->get('drive_content_helper');
-        $permissionHelper = $this->container->get('permissions_helper');
-        $request = $this->get('request');
-        $menuRoot= $contentHelper->getMenuZero($login, $request);
-        $menuId = $menuRoot->getId();
-        $menus = $contentHelper->getMenus($menuId, $request);
-        $menu_contents = $contentHelper->getMenuContent($menuId, $request);
 
-
-        $userHelper = $this->container->get('user_helper');
-        $user = $userHelper->findByLogin($login);
-        $logged = $permissionHelper -> checkPermission($login);
-        $countMenus = $contentHelper -> countMenus($user->getId(),$request);
-        $countMenus--;
-        $countAttachments = $contentHelper -> countAttachments($user->getId(),$request);
-
-
-        $pageContent = $this ->getMenuPageContent($user->getId(), $element, $request);
-        $menuCon = $contentHelper ->getMenus($pageContent->getId(), $request);
-        $conCon = $contentHelper ->getMenuContent($pageContent->getId(), $request);
-
-        return array(
-            'user' => $user,
-            'menus' => $menus,
-            'contents' => $menu_contents,
-            'logged' => $logged,
-            'counter' => $countMenus,
-            'countatt' => $countAttachments,
-            'pageContent' => $pageContent,
-            'menuCon' => $menuCon,
-            'conCon' => $conCon
-        );
-
-    }
 
 
 
