@@ -21,7 +21,7 @@ class DriveContenerType extends AbstractType {
                 'trim' => true
             ))
 
-            ->add('description', 'textarea', array(
+            ->add('parent', 'hidden', array(
                 'attr' => array (
                     'class'        => 'post-editor',
                 ),

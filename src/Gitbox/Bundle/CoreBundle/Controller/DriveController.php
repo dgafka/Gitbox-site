@@ -42,18 +42,22 @@ class DriveController extends Controller
      * @return mixed
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    private function userCheckContent(){
+    private function userCheckContent($menu){
         $userHelper = $this->container->get('user_helper');
         $drivePermissionHelper = $this->container->get('dp_helper');
         $username=$drivePermissionHelper->checkUser();
         $moduleHelper = $this->container->get('module_helper');
         $moduleHelper->init('GitDrive');
 
-        if (!isset($username)){
+          if (!isset($username)){
             throw $this->createNotFoundException('Zaloguj się, aby mieć dostęp do tej aktywności.');
         }
         if (!$moduleHelper->isModuleActivated($username)) {
             throw $this->createNotFoundException('Ten moduł nie jest włączony na twoim koncie');
+        }
+        if($menu->getUserId()->getLogin()!= $username)
+        {
+            throw $this->createNotFoundException('Nie mozesz edytowac cudzych elementtow');
         }
         return $userHelper->findByLogin($username);
     }
@@ -81,7 +85,7 @@ class DriveController extends Controller
      */
     private function getMenuPageContent($userid, $element, $request){
         $contentHelper = $this->container->get('drive_content_helper');
-        $pageContent = $contentHelper->getMenu($element, $request);
+        $pageContent = $contentHelper->getMenu(intval($element), $request);
 
         if (!isset($pageContent)){
             throw $this->createNotFoundException('Nie znaleziono elementu ');
@@ -143,7 +147,7 @@ class DriveController extends Controller
 
 
     /**
-     * @Route("/user/{login}/drive")
+     * @Route("/user/{login}/drive",name="drive_user_index")
      * @Template()
      */
     public function DriveIndexAction($login)
@@ -205,6 +209,10 @@ class DriveController extends Controller
 
 
         $pageContent = $this ->getMenuPageContent($user->getId(), $element, $request);
+        if($pageContent -> getParent() == null){
+            return $this->redirect($this->generateUrl('drive_user_index', array(
+                'login'=>$login ),true));
+        }
         $menuCon = $contentHelper ->getMenus($pageContent->getId(), $request);
         $conCon = $contentHelper ->getMenuContent($pageContent->getId(), $request);
 
@@ -220,6 +228,27 @@ class DriveController extends Controller
             'conCon' => $conCon
         );
 
+    }
+
+    /**
+     * @Route("user/{login}/drive/menu/{element}/new/contener",name="drive_contener_new")
+     * @Template()
+     */
+    public function NewDriveContenerAction($login, $element)
+    {
+        $user = $this -> validateURL($login);
+        $request = $this->get('request');
+        $this ->getMenuPageContent($user->getId(), $element, $request);
+
+
+
+        $newMenu = new Menu();
+        $newMenu -> setIdUser();
+        $form = $this->createForm(new DriveContenerType(), $newMenu);
+        return array(
+            'user' => $user,
+            'form' => $form->createView()
+        );
     }
 
 
@@ -239,21 +268,7 @@ class DriveController extends Controller
     }
 
 
-    /**
-     * @Route("new/drive/contener",name="drive_contener_new")
-     * @Template()
-     */
-    public function NewDriveContenerAction()
-    {
-        $user=$this->userCheckContent();
 
-        $xContent = new Content();
-        $form = $this->createForm(new DriveContenerType());
-        return array(
-            'user' => $user,
-            'form' => $form->createView()
-        );
-    }
 
 
 
