@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 class DriveController extends Controller
 {
 
+
     /**
      * @param $login
      * @return mixed
@@ -176,6 +177,7 @@ class DriveController extends Controller
         $menus = $contentHelper->getMenus($menuId, $request);
         $menu_contents = $contentHelper->getMenuContent($menuId, $request);
 
+
         $userHelper = $this->container->get('user_helper');
         $user = $userHelper->findByLogin($login);
         $logged = $permissionHelper -> checkPermission($login);
@@ -183,7 +185,10 @@ class DriveController extends Controller
         $countMenus--;
         $countAttachments = $contentHelper -> countAttachments($user->getId(),$request);
 
+
         $pageContent = $this ->getMenuPageContent($user->getId(), $element, $request);
+        $menuCon = $contentHelper ->getMenus($pageContent->getId(), $request);
+        $conCon = $contentHelper ->getMenuContent($pageContent->getId(), $request);
 
         return array(
             'user' => $user,
@@ -192,7 +197,9 @@ class DriveController extends Controller
             'logged' => $logged,
             'counter' => $countMenus,
             'countatt' => $countAttachments,
-            'pageContent' => $pageContent
+            'pageContent' => $pageContent,
+            'menuCon' => $menuCon,
+            'conCon' => $conCon
         );
 
     }

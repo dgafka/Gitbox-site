@@ -10,14 +10,32 @@
             <th></th>
             <th></th>
         </tr>
-        <tr>
-            <td>
-                <span class="glyphicon glyphicon-folder-close"></span>test
-            </td>
-            <td></td>
-            <td></td>
+            {% for menu in menuCon %}
+                <tr>
+                    <td>
+                    <a href="{{ path('drive_show_menu', {'login': user.login, 'element': menu.id }) }}">
+                        <span class="glyphicon glyphicon-folder-close"></span>{{ menu.title }}
+                    </a>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
 
-        </tr>
+            {% endfor %}
+            {% for content in conCon %}
+                <tr>
+                    <td>
+                        <a href="{{ path('drive_show_content', {'login': user.login, 'element': content.id }) }}">
+                        <span class="glyphicon glyphicon-hdd"></span>{{ content.title }}
+                        </a>
+                    </td>
+                    <td>{{   render(controller('GitboxCoreBundle:Drive:test',{})) }}</td>
+                    <td>
+                        {{ content.createDate|date('Y-m-d')}}
+                    </td>
+                </tr>
+            {% endfor %}
+        </ul>
 
 
     </table>

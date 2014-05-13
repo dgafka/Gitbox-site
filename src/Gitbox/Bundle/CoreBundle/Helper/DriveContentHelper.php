@@ -242,6 +242,46 @@ class DriveContentHelper extends ContentHelper  {
     }
 
     /**
+     * Liczenie plikow
+     *
+     * @param $menuId
+     * @param Request $request
+     *
+     * @return int
+     *
+     * @throws Exception
+     */
+    public function countContentAttachments($menuId, Request & $request = null) {
+        $moduleId = $this->instanceCache()->getModuleIdByName($this->module);
+
+        $queryBuilder = $this->instance()->createQueryBuilder();
+
+        $queryBuilder
+            ->select('count(c.id)')
+            ->from('GitboxCoreBundle:Attachment', 'c')
+            ->where(' m.idMenu = :menu_id ')
+            ->setParameters(array(
+                'menu_id' => $menuId
+
+            ));
+
+        if ($request instanceof Request) {
+            $query = $queryBuilder->getQuery()->getSingleScalarResult();
+
+            $count = $query;
+
+            return $count;
+        } else {
+            try {
+                return $queryBuilder->getQuery()->getSingleScalarResult();
+            } catch (NoResultException $e) {
+                return null;
+            }
+        }
+
+    }
+
+    /**
      * Pobieranie contentu
      *
      * @param $menuId
