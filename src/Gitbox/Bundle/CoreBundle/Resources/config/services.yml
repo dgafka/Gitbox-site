@@ -7,7 +7,8 @@ parameters:
     tube_content_helper.class: Gitbox\Bundle\CoreBundle\Helper\TubeContentHelper
     menu_helper.class: Gitbox\Bundle\CoreBundle\Helper\MenuHelper
     permissions_helper.class: Gitbox\Bundle\CoreBundle\Helper\PermissionsHelper
-    rating_helper.class: Gitbox\Bundle\CoreBundle\Helper\RatingHelper
+    user_activities_helper.class: Gitbox\Bundle\CoreBundle\Helper\UserActivitiesHelper
+    fav_content_helper.class: Gitbox\Bundle\CoreBundle\Helper\FavContentHelper
     cache_helper.class: Gitbox\Bundle\CoreBundle\Helper\CacheHelper
     ip_helper.class: Gitbox\Bundle\CoreBundle\Helper\IPHelper
     cache_helper.host: localhost
@@ -44,10 +45,13 @@ services:
         class:        "%permissions_helper.class%"
         arguments:    ["@session", "@doctrine.orm.entity_manager", "@cache_helper"]
     dp_helper:
-            class:        Gitbox\Bundle\CoreBundle\Helper\DrivePermissionHelper
-            arguments:    ["@session"]
-    rating_helper:
-        class:        "%rating_helper.class%"
+        class:        Gitbox\Bundle\CoreBundle\Helper\DrivePermissionHelper
+        arguments:    ["@session"]
+    user_activities_helper:
+        class:        "%user_activities_helper.class%"
+        arguments:    ["@doctrine.orm.entity_manager", "@cache_helper", "@doctrine.dbal.default_connection"]
+    fav_content_helper:
+        class:        "%fav_content_helper.class%"
         arguments:    ["@doctrine.orm.entity_manager", "@cache_helper"]
     cache_helper:
         class:        "%cache_helper.class%"

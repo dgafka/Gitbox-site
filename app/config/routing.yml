@@ -1,3 +1,13 @@
+# Routing priority
+#_1:
+#    resource: "@GitboxCoreBundle/Controller/BlogController.php"
+#    type:     annotation
+#
+#_2:
+#    resource: "@GitboxCoreBundle/Controller/ActivitiesController.php"
+#    type:     annotation
+
+# GitboxCoreBundle
 gitbox_core:
     resource: "@GitboxCoreBundle/Controller/"
     type:     annotation

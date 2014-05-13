@@ -45,9 +45,20 @@
             <div class="post-in-the-box box-pointer">
                 <a class="hidden-link" href="{{ path('user_show_post', {'login': user.login, 'id': post.id}) }}"></a>
                 <h1 class="post-title">{{ post.title }}</h1>
-                <p class="time-box"><span class="glyphicon glyphicon-time"></span> <b>Utworzono</b> {{ post.createDate | date("D d/m/Y H:i:s") }}</p>
-                <p class="time-box"><span class="glyphicon glyphicon-time"></span> <b>Ostatnio edytowano</b> {{ post.lastModificationDate | date("D d/m/Y H:i:s") }}</p>
-                <p><span class="glyphicon glyphicon-eye-open"></span> <b>Wyświetleń</b> <span class="badge">{{ post.hit }}</span></p>
+                <p class="half-p"><span class="glyphicon glyphicon-time"></span> <b>Utworzono</b> {{ post.createDate | date("D d/m/Y H:i:s") }}</p>
+                <p class="half-p"><span class="glyphicon glyphicon-time"></span> <b>Ostatnio edytowano</b> {{ post.lastModificationDate | date("D d/m/Y H:i:s") }}</p>
+                <p>
+                    <span class="glyphicon glyphicon-eye-open"></span> <b>Wyświetleń</b> <span class="badge">{{ post.hit }}</span>
+                    {% if app.session.get('userId') is not null %}
+                        <a class="fav-btn" href="{{ path('user_content_fav', {'module': 'blog', 'login': user.login, 'id': post.id}) }}">
+                            <span class="glyphicon glyphicon-star fav-star {% spaceless %}
+                        {% for favPost in favPosts %}
+                            {{ favPost.idContent.id == post.id ? 'fav-star-active' : '' }}
+                        {% endfor %}
+                            {% endspaceless %}"></span>
+                        </a>
+                    {% endif %}
+                </p>
                 {% if hasAccess == true %}
                     <div class="ratings">
                         <div class="rating-up">
@@ -238,6 +249,7 @@
 {% block lazy_javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('js/ratingSystem.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/favSystem.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/sidebarUpdater.js') }}"></script>
     <script type="text/javascript">
         $('.post-in-the-box').click(function (event) {
