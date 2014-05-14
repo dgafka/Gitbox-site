@@ -422,3 +422,7 @@ div.col-6.col-sm-6.col-lg-4 {
 .thumbnail {
     border: 2px solid lightblue;
 }
+
+.help-email {
+    width: 400px;
+}

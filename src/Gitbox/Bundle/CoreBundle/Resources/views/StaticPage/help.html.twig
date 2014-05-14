@@ -1,9 +1,17 @@
 {% extends "::base.html.twig" %}
 
-{% block title %}{{ parent() }} | Pomoc{% endblock %}
+{% block title %}Pomoc{% endblock %}
 
 {% block content_inner %}
-<div class="row">
+    <div class="register-form">
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
 
-</div>
+        <h4>Jeśli masz jakiś problem, wyślij do nas maila, odpowiemy w przeciągu 24/h. Podaj prawdziwy e-mail, bo na niego wyślemy odpowiedź.</h4>
+        <div class="form-group">
+            {{ form_label(form) }}
+        </div>
+
+        {{ form_end(form) }}
+    </div>
 {% endblock %}

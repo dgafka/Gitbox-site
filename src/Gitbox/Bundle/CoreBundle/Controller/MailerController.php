@@ -102,4 +102,32 @@ class MailerController extends Controller
 	    return array('login' => $userAccount->getLogin());
     }
 
+	/** Wysyła maila do administratora z informacją o pomocy
+	 * @param $email
+	 * @param $content
+	 */
+	public function helpMailAction($email, $content) {
+		/**
+		 * @var $mailerHelper \Gitbox\Bundle\CoreBundle\Helper\MailerHelper
+		 */
+		$mailerHelper = $this->get('mailer_helper')
+			->createMessage(
+				"Pomoc - Gitbox",
+				$this->renderView(
+					'GitboxCoreBundle:Mailer:helpMail.html.twig',
+					array(
+						'email'   => $email,
+						'content' => $content
+					)
+				),
+				'gitboxswiftmailer@gmail.com'
+			);
+
+		$mailerHelper->sendMessage();
+
+		$session = $this->container->get('session');
+		$session->getFlashBag()->add('success', 'Email został wysyłany. Odpowiemy w przeciągu 24 godzin.');
+
+		return $this->redirect($this->generateUrl('home_url'));
+	}
 }
