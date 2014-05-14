@@ -376,3 +376,53 @@ a.badge-button:focus {
 div.col-6.col-sm-6.col-lg-4 {
     font-size: 14px;
 }
+
+.main-title-show {
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.main-description-show {
+    font-size: 15px;
+}
+
+.main-login-show {
+    float: right;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.main-movie-show {
+    max-height: 70px;
+}
+
+.main-movie-show-link {
+    margin-left: 35px;
+}
+
+.main-link-show {
+    float: right;
+    font-weight: bold;
+    font-size: 15px;
+    margin-top: 12px;
+}
+
+.main-header {
+    color: rgb(229, 112, 132);
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.main-article {
+    border: 2px solid lightblue;
+    text-decoration: underline;
+}
+
+.thumbnail {
+    border: 2px solid lightblue;
+}
+
+.help-email {
+    width: 400px;
+}

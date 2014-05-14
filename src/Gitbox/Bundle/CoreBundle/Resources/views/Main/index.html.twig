@@ -18,115 +18,80 @@
         </div>
     </div>
 </div>
-<div class="row row-offcanvas row-offcanvas-left">
 
-    {# SIDEBAR LEWY START #}
-    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
-        <p class="visible-xs">
-            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas"><i class="glyphicon glyphicon-chevron-left"></i></button>
-        </p>
-        <div class="well sidebar-nav">
-            <ul class="nav">
-                <li>Sidebar</li>
-                <li class="active"><a href="#">Link</a></li>
-                <li><a href="#">Link</a></li>
-                <li><a href="#">Link</a></li>
-                <li>Sidebar</li>
-                <li><a href="#">Link</a></li>
-                <li><a href="#">Link</a></li>
-                <li><a href="#">Link</a></li>
-                <li>Sidebar</li>
-                <li><a href="#">Link</a></li>
-                <li><a href="#">Link</a></li>
-            </ul>
+    <div class="container">
+
+        {% if isLogged == false %}
+            {% include 'GitboxCoreBundle:Main:about.html.twig' %}
+            <hr>
+        {% else %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="well text-center">
+                        <h1 class="main-header">Podziel się!</h1>
+                    </div>
+                </div>
+            </div>
+            {% include 'GitboxCoreBundle:Main:moduleManagment.html.twig' %}
+            <hr>
+        {% endif %}
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="well text-center">
+                    <h1 class="main-header">Ostatnio dodane</h1>
+                </div>
+            </div>
         </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <h3 class="main-header">GitBlog, ostatnio dodane wpisy:</h3>
+            </div>
+        </div>
+        {% render controller('GitboxCoreBundle:Main:lastCreatedGitBlog') %}
+
     </div>
-    {# SIDEBAR END #}
 
-    <div class="col-xs-12 col-sm-9">
+    <hr>
 
-        {# Karuzela START #}
-        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-            <!-- Indicators -->
-            <ol class="carousel-indicators">
-                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-                <li data-target="#carousel-example-generic" data-slide-to="3"></li>
-                <li data-target="#carousel-example-generic" data-slide-to="4"></li>
-            </ol>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3 class="main-header">GitTube, ostatnio dodane filmy:</h3>
+            </div>
+        </div>
+        {% render controller('GitboxCoreBundle:Main:lastCreatedGitTube') %}
+        <hr>
+    </div>
 
-            <!-- Wrapper for slides -->
-            <div class="carousel-inner">
-                <div class="item active">
-                    <img src="{{ asset('images/gitbox_preview/first.png') }}" alt="first">
-                    <div class="carousel-caption">Profil użytkownika</div>
-                </div>
-                <div class="item">
-                    <img src="{{ asset('images/gitbox_preview/second.png') }}" alt="second">
-                    <div class="carousel-caption">Moduły użytkownika</div>
-                </div>
-                <div class="item">
-                    <img src="{{ asset('images/gitbox_preview/third.png') }}" alt="third">
-                    <div class="carousel-caption">Dodawanie nowego wpisu do Gitbloga</div>
-                </div>
-                <div class="item">
-                    <img src="{{ asset('images/gitbox_preview/fourth.png') }}" alt="fourth">
-                    <div class="carousel-caption">Gitblog użytkownika</div>
-                </div>
-                <div class="item">
-                    <img src="{{ asset('images/gitbox_preview/fifth.png') }}" alt="fifth">
-                    <div class="carousel-caption">Wyświetlanie filmu w GitTubie</div>
+    {% if isLogged %}
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="well text-center">
+                        <h1 class="main-header">Najpopularniejsze wpisy</h1>
+                    </div>
                 </div>
             </div>
 
-            <!-- Controls -->
-            <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
-                <span class="glyphicon glyphicon-chevron-left"></span>
-            </a>
-            <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
-                <span class="glyphicon glyphicon-chevron-right"></span>
-            </a>
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="main-header">GitBlog, najlepiej oceniane wpisy:</h3>
+                </div>
+            </div>
+            {% render controller('GitboxCoreBundle:Main:topGitBlog') %}
+
+            <hr>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="main-header">GitTube, najlepiej oceniane filmy:</h3>
+                </div>
+            </div>
+            {% render controller('GitboxCoreBundle:Main:topGitTube') %}
+
+            <hr>
         </div>
-        {# Karuzela END #}
-
-        {# WPISY z panelu administratora START #}
-        <div class="row">
-            <div class="col-6 col-sm-6 col-lg-4">
-                <h2>Heading</h2>
-                <p>Bootstrap is a front-end framework that uses CSS and JavaScript to facilitate responsive Web design. Bootply is a playground for Bootstrap that enables developers and designers to test, prototype and create mockups using Bootstrap friendly HTML, CSS and Javascript.</p>
-                <p><a class="btn btn-default" href="#">View details »</a></p>
-            </div><!--/span-->
-            <div class="col-6 col-sm-6 col-lg-4">
-                <h2>Heading</h2>
-                <p>Bootply is a playground for Bootstrap that enables developers and designers to test, prototype and create mockups using Bootstrap friendly HTML, CSS and Javascript. Bootstrap is a front-end framework that uses CSS and JavaScript to facilitate responsive Web design. </p>
-                <p><a class="btn btn-default" href="#">View details »</a></p>
-            </div><!--/span-->
-            <div class="col-6 col-sm-6 col-lg-4">
-                <h2>Heading</h2>
-                <p>Bootstrap is a front-end framework that uses CSS and JavaScript to facilitate responsive Web design. Bootply is a playground for Bootstrap that enables developers and designers to test, prototype and create mockups using Bootstrap friendly HTML, CSS and Javascript.</p>
-                <p><a class="btn btn-default" href="#">View details »</a></p>
-            </div><!--/span-->
-            <div class="col-6 col-sm-6 col-lg-4">
-                <h2>Heading</h2>
-                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-                <p><a class="btn btn-default" href="#">View details »</a></p>
-            </div><!--/span-->
-            <div class="col-6 col-sm-6 col-lg-4">
-                <h2>Heading</h2>
-                <p>Bootstrap is a front-end framework that uses CSS and JavaScript to facilitate responsive Web design. Bootply is a playground for Bootstrap that enables developers and designers to test, prototype and create mockups using Bootstrap friendly HTML, CSS and Javascript.</p>
-                <p><a class="btn btn-default" href="#">View details »</a></p>
-            </div><!--/span-->
-            <div class="col-6 col-sm-6 col-lg-4">
-                <h2>Heading</h2>
-                <p>Bootstrap is a front-end framework that uses CSS and JavaScript to facilitate responsive Web design. Bootply is a playground for Bootstrap that enables developers and designers to test, prototype and create mockups using Bootstrap friendly HTML, CSS and Javascript.</p>
-                <p><a class="btn btn-default" href="#">View details »</a></p>
-            </div><!--/span-->
-        </div><!--/row-->
-    </div><!--/span-->
-    {# WPISY z panelu administratora END #}
-
-</div><!--/row-->
-
-<hr>
+    {% endif %}
 {% endblock %}

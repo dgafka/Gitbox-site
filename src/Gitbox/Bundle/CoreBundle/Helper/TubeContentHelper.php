@@ -46,7 +46,7 @@ class TubeContentHelper extends ContentHelper {
         $queryBuilder
             ->select('c')
             ->from('GitboxCoreBundle:Content', 'c')
-            /*->innerJoin('GitboxCoreBundle:Attachment', 'a', 'WITH', 'a.idContent = c.id')*/
+            ->innerJoin('GitboxCoreBundle:Attachment', 'a', 'WITH', 'a.idContent = c.id')
             ->innerJoin('GitboxCoreBundle:Menu', 'm', 'WITH','m.id = c.idMenu')
             ->where('m.idUser = :userId')
             ->andWhere('m.idModule = :moduleId' )->orderby('c.createDate', 'DESC')
@@ -70,7 +70,7 @@ class TubeContentHelper extends ContentHelper {
      *
      * @throws Exception
      */
-    public function getAttachmentsImages($userLogin) {
+    public function getAttachments($userLogin) {
         if (!isset($this->module)) {
             throw new Exception("Nie zainicjalizowano instancji.");
         }
@@ -78,7 +78,7 @@ class TubeContentHelper extends ContentHelper {
         $gitTubeId = $this->instanceCache()->getModuleIdByName('GitTube');
 
         $queryBuilder = $this->instance()->createQueryBuilder();
-        $mime = 'jpg';
+
         $queryBuilder
             ->select('a')
             ->from('GitboxCoreBundle:Content', 'c')
@@ -86,12 +86,10 @@ class TubeContentHelper extends ContentHelper {
             ->innerJoin('GitboxCoreBundle:Menu', 'm', 'WITH','m.id = c.idMenu')
             ->where('m.idUser = :userId')
             ->andWhere('m.idModule = :moduleId' )
-            ->andWhere('a.mime = :mime' )
 
             ->setParameters(array(
                 'userId'     => $userId,
-                'moduleId'   => $gitTubeId,
-                'mime' => $mime
+                'moduleId'   => $gitTubeId
             ));
 
         $query = $queryBuilder->getQuery();

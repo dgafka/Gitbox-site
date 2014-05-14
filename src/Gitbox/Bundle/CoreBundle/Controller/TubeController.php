@@ -117,13 +117,18 @@ class TubeController extends Controller
         //$user = $helper->findByLogin($login);
 
 	    $contents = $contentHelper->getContents($login);
+
+      /*  foreach ($contents as $content) {
+            var_dump($content);
+            die();
+        }
 /*        foreach($contents['id'] as $content){
             $attachment = $contentHelper->getOneAttachment($content, $user['login']);
             $contents['dir'] = '../../../../../web/uploads/tube/'.$user->getId().'/'.$attachment[1]['filename'];
         }
         $imgDir = '../../../../../web/uploads/tube/'.$user->getId().'/'.$attachment[1]->getFilename().'.jpg';
         'imgDir' => $imgDir,*/
-        $attachmentImages = $contentHelper->getAttachmentsImages($login);
+        $attachmentImages = $contentHelper->getAttachments($login);
 
         $countPost = count($contents);
 
@@ -162,6 +167,8 @@ class TubeController extends Controller
 
         // walidacja formularza
         if ($form->isValid()) {
+            $fs = new Filesystem();
+
             $contentHelper = $this->container->get('tube_content_helper');
             $menuHelper = $this->container->get('menu_helper');
             $em = $this->getDoctrine()->getManager();
@@ -184,30 +191,36 @@ class TubeController extends Controller
                 $polecenie = 'ffmpeg -ss 00:00:01 -i '.$file.' -vframes 1 uploads/tube/'.$user->getId().'/'.$filename.'.'.$extension.'.jpg';
                 shell_exec($polecenie);
                 //////////////////////////////////////////////////////////////////////
-                $imageAttachment = new Attachment();
-                $imageAttachment->setMime('jpg');
-                $imageAttachment->setDescription('..');
-                $imageAttachment->setFilename($filename.'.'.$extension.'.jpg');
-                $imageAttachment->setTitle('..');
+                if(!($fs->exists($dir.''.$filename.'.'.$extension.'.jpg'))){
+                    $session->getFlashBag()->add('warning', 'Dodanie filmu nie powiodło się - wystąpił błąd podczas tworzenia miniaturki do filmu. Spróbuj ponownie.');
+                }else{
+/*TODO: jak użytkownik nie ma katoalogu to nie utworzy się miniaturka, a jak najpierw
+                    utworzę katalog przenosząc plik, to nie ma dostępu do pliku oO*/
+                    $file->move($dir, $filename.'.'.$extension);
+                    /*$imageAttachment = new Attachment();
+                    $imageAttachment->setMime('jpg');
+                    $imageAttachment->setDescription('..');
+                    $imageAttachment->setFilename($filename.'.'.$extension.'.jpg');
+                    $imageAttachment->setTitle('..');*/
 
-                $file->move($dir, $filename.'.'.$extension);
 
-                $newAttachment->setFilename($filename.'.'.$extension);
-                $newAttachment->setMime($extension);
-                $menu = $menuHelper->findByUserAndModule($user->getId(), 'GitTube');
-                $newContent->setIdMenu($menu);
-                $newContent->setIdUser($user->getId());
-                $newContent->setTitle($newAttachment->getTitle());
-                $newContent->setDescription($newAttachment->getDescription());
 
-                $contentHelper->insertIntoContent($newContent);
-                $contentHelper->insertIntoAttachment($newAttachment,$newContent);
-                $contentHelper->insertIntoAttachment($imageAttachment,$newContent);
-                // aktualizacja statystyk
-                $moduleHelper->setTotalContents($user->getId(), '+');
+                    $newAttachment->setFilename($filename.'.'.$extension);
+                    $newAttachment->setMime($extension);
+                    $menu = $menuHelper->findByUserAndModule($user->getId(), 'GitTube');
+                    $newContent->setIdMenu($menu);
+                    $newContent->setIdUser($user->getId());
+                    $newContent->setTitle($newAttachment->getTitle());
+                    $newContent->setDescription($newAttachment->getDescription());
 
-                $session->getFlashBag()->add('success', 'Dodano film <b>' . $newAttachment->getTitle() . '</b>');
+                    $contentHelper->insertIntoContent($newContent);
+                    $contentHelper->insertIntoAttachment($newAttachment,$newContent);
+                    //$contentHelper->insertIntoAttachment($imageAttachment,$newContent);
+                    // aktualizacja statystyk
+                    $moduleHelper->setTotalContents($user->getId(), '+');
 
+                    $session->getFlashBag()->add('success', 'Dodano film <b>' . $newAttachment->getTitle() . '</b>');
+                }
             }
 
             return $this->redirect(
@@ -227,7 +240,7 @@ class TubeController extends Controller
 
     /**
      * to id które przychodzi to content
-     * @Route("user/{login}/tube/{id}", name="tube_content_show")
+     * @Route("user/{login}/tube/{id}", name="user_tube_show")
      * @Template()
      */
     public function showAction($login, $id)
@@ -236,7 +249,7 @@ class TubeController extends Controller
         // walidacja dostępu
         $user = $this->validateUser($login);
         $this->validateUserModule($login);
-        $hasAccess = $this->checkAccess($login);
+        //$hasAccess = $this->checkAccess($login);
 
         $contentHelper = $this->container->get('tube_content_helper');
 
@@ -255,7 +268,7 @@ class TubeController extends Controller
             'dir'  => $dir,
             'imgDir' => $imgDir,
             'idContent' => $id,
-            'hasAccess' => $hasAccess
+            //'hasAccess' => $hasAccess
         );
     }
 
@@ -270,7 +283,7 @@ class TubeController extends Controller
         //$this->checkAccess($login);
 
         $contentHelper = $this->container->get('tube_content_helper');
-        $content = $contentHelper->findOneContnt($id, $login);
+        $content = $contentHelper->getOneContent($id, $login);
 
         $contentTitle = $content->getTitle();
 

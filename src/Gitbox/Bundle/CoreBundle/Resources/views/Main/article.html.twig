@@ -1,0 +1,10 @@
+<div class="row">
+    {% for result in results %}
+    <div class="col-lg-4 main-article">
+        <a href="{{ path('user_show_post', {'login': result.login, 'id': result.id }) }}"><h2 class="main-title-show">{{ result.title | raw }}</h2></a>
+        <p class="main-description-show">{{ result.description | raw }}</p>
+        <p class="main-login-show">Autor: <a href="{{ path('user_profile_index', {'login' : result.login }) }}">{{ result.login }}</a></p>
+        <a class="btn btn-primary" href="{{ path('user_show_post', {'login': result.login, 'id': result.id }) }}">Czytaj...</a>
+    </div>
+    {% endfor %}
+</div>

@@ -52,17 +52,18 @@
                             {% for att in pageContentAttachments %}
                         <tr>
                             <td>{{ att.filename }}</td>
-                            <td>Aaaaa</td>
-                            <td>lalaala</td>
+                            <td>{{ att.title }}</td>
+                            <td>{{ att.description }}</td>
                             {% if logged == true %}
                             <td>
-                                <a type="button" class="btn btn-warning" href="{{ path('drive_contener_new') }}">
-                                    <span class="glyphicon glyphicon-trash"></span> edytuj
+                                <a type="button" class="btn btn-warning" href="">
+                                    <span class="glyphicon glyphicon-cog"></span>
+                                     edytuj
                                 </a>
                             </td>
                             <td>
-                                <a type="button" class="btn btn-danger" href="{{ path('drive_contener_new') }}">
-                                    <span class="glyphicon glyphicon-cog"></span>usuń
+                                <a type="button" class="btn btn-danger" href="">
+                                    <span class="glyphicon glyphicon-trash"></span>usuń
                                 </a>
                             </td>
                             {% else %}
@@ -77,11 +78,8 @@
                 {% block buttpanel %}
             {% if logged == true %}
                 <div class="driveButtonPanel">
-                    <a type="button" class="btn btn-default" href="{{ path('drive_contener_new') }}">
-                        Dodaj kontener
-                    </a>
-                    <a type="button" class="btn btn-default" href="{{ path('drive_item_new') }}">
-                        Dodaj element
+                    <a type="button" class="btn btn-default" href="">
+                        <span class="glyphicon glyphicon-plus"></span>Dodaj plik
                     </a>
                 </div>
 

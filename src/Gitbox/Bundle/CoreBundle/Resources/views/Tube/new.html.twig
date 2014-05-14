@@ -6,6 +6,7 @@
 {# load resources #}
 {% block javascripts %}
     <script type="text/javascript" src="{{ asset('js/jquery/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/bootstrap.file-input.js') }}"></script>
     <script>
         $(document).ready(function(){
@@ -24,12 +25,14 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                {#ACCORDION#}
                 <div class="panel-group" id="accordion">
                     <div class="panel panel-default">
+                        {#COLLAPSE 1#}
                         <div class="panel-heading">
                             <h4 class="panel-title">
                                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span class="glyphicon glyphicon-file">
-                            </span>DODAJ NOWY FILM</a>
+                            </span>UZUPEŁNIJ OPIS</a>
                             </h4>
                         </div>
                         <div id="collapseOne" class="panel-collapse collapse in">
@@ -38,59 +41,254 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             {{ form_start(form) }}
-
+                                            {{ form_errors(form) }}
                                             {{ form_row(form.title) }}
-
-
                                         </div>
-
                                         <div class="form-group">
                                             {{ form_row(form.description) }}
-                                        </div>
-                                        <div class="form-group">
-                                            {{ form_row(form.filename, {'attr': {'class': 'file-inputs'}}) }}
+
                                         </div>
                                     </div>
                                 </div>
                                 {#PROGRESS BAR#}
-                                {#<div class="progress progress-striped active">
-                                    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
-                                        <span class="sr-only">45% Complete</span>
-                                    </div>
-                                </div>#}
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="category">
-                                                Category</label>
-                                            <select class="form-control" id="category">
-                                                <option>hera</option>
-                                                <option>koka</option>
-                                                <option>hasz</option>
-                                                <option>rom rom rom</option>
-                                            </select>
-                                        </div>
-                                    </div>
+                                {#   <div class="progress progress-striped active">
+                                       <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+                                           <span class="sr-only">45% Complete</span>
+                                       </div>
+                                   </div>#}
 
-                                </div>
-                                <div class="row">
+                            </div>
+                        </div>
+                        {#COLLAPSE 2#}
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                    UZUPEŁNIJ KATEGORIE
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                {#TU#}
+                                KATEGORIE NIE SĄ OBSŁUŻONE
+                                <table class="table table-hover table-condensed content-categories">                     <tbody>
+                                    <tr>
 
-                                    <div class="col-md-6">
-                                        <div class="well well-sm well-primary">
+                                        <input type="checkbox" id="blogPost_idCategory_26" name="blogPost[idCategory][]" class="checkbox" value="26" />
+                                        <label class="box-pointer" for="blogPost_idCategory_26">Moda</label>
+                                        </td>
 
-                                            {{ form_row(form.save) }}
-                                            {{ form_end(form) }}
+
+                                        <input type="checkbox" id="blogPost_idCategory_27" name="blogPost[idCategory][]" class="checkbox" value="27" />
+                                        <label class="box-pointer" for="blogPost_idCategory_27">Biografia</label>
+                                        </td>
+
+
+                                        <input type="checkbox" id="blogPost_idCategory_28" name="blogPost[idCategory][]" class="checkbox" value="28" />
+                                        <label class="box-pointer" for="blogPost_idCategory_28">Kultura</label>
+                                        </td>
+
+
+                                        <input type="checkbox" id="blogPost_idCategory_29" name="blogPost[idCategory][]" class="checkbox" value="29" />
+                                        <label class="box-pointer" for="blogPost_idCategory_29">Sztuka</label>
+                                        </td>
+
+
+                                        <input type="checkbox" id="blogPost_idCategory_30" name="blogPost[idCategory][]" class="checkbox" value="30" />
+                                        <label class="box-pointer" for="blogPost_idCategory_30">Nauka</label>
+                                        </td>
+
+
+                                        <input type="checkbox" id="blogPost_idCategory_31" name="blogPost[idCategory][]" class="checkbox" value="31" />
+                                        <label class="box-pointer" for="blogPost_idCategory_31">Społeczeństwo</label>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+
+                                        <input type="checkbox" id="blogPost_idCategory_32" name="blogPost[idCategory][]" class="checkbox" value="32" />
+                                        <label class="box-pointer" for="blogPost_idCategory_32">Filmy</label>
+                                        </td>
+
+
+                                        <input type="checkbox" id="blogPost_idCategory_33" name="blogPost[idCategory][]" class="checkbox" value="33" />
+                                        <label class="box-pointer" for="blogPost_idCategory_33">Literatura</label>
+                                        </td>
+
+
+                                        <input type="checkbox" id="blogPost_idCategory_34" name="blogPost[idCategory][]" class="checkbox" value="34" />
+                                        <label class="box-pointer" for="blogPost_idCategory_34">Sport</label>
+                                        </td>
+
+
+                                        <input type="checkbox" id="blogPost_idCategory_35" name="blogPost[idCategory][]" class="checkbox" value="35" />
+                                        <label class="box-pointer" for="blogPost_idCategory_35">Komputery</label>
+                                        </td>
+
+
+                                        <input type="checkbox" id="blogPost_idCategory_36" name="blogPost[idCategory][]" class="checkbox" value="36" />
+                                        <label class="box-pointer" for="blogPost_idCategory_36">Informatyka</label>
+                                        </td>
+
+
+                                        <input type="checkbox" id="blogPost_idCategory_37" name="blogPost[idCategory][]" class="checkbox" value="37" />
+                                        <label class="box-pointer" for="blogPost_idCategory_37">Programowanie</label>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+
+                                        <input type="checkbox" id="blogPost_idCategory_38" name="blogPost[idCategory][]" class="checkbox" value="38" />
+                                        <label class="box-pointer" for="blogPost_idCategory_38">Technologie</label>
+                                        </td>
+
+
+                                        <input type="checkbox" id="blogPost_idCategory_39" name="blogPost[idCategory][]" class="checkbox" value="39" />
+                                        <label class="box-pointer" for="blogPost_idCategory_39">Filozofia</label>
+                                        </td>
+
+
+                                        <input type="checkbox" id="blogPost_idCategory_40" name="blogPost[idCategory][]" class="checkbox" value="40" />
+                                        <label class="box-pointer" for="blogPost_idCategory_40">Nauki ścisłe</label>
+                                        </td>
+
+
+                                        <input type="checkbox" id="blogPost_idCategory_41" name="blogPost[idCategory][]" class="checkbox" value="41" />
+                                        <label class="box-pointer" for="blogPost_idCategory_41">Gospodarka</label>
+                                        </td>
+
+
+                                        <input type="checkbox" id="blogPost_idCategory_42" name="blogPost[idCategory][]" class="checkbox" value="42" />
+                                        <label class="box-pointer" for="blogPost_idCategory_42">Religia</label>
+                                        </td>
+
+
+                                        <input type="checkbox" id="blogPost_idCategory_43" name="blogPost[idCategory][]" class="checkbox" value="43" />
+                                        <label class="box-pointer" for="blogPost_idCategory_43">Historia</label>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+
+                                        <input type="checkbox" id="blogPost_idCategory_44" name="blogPost[idCategory][]" class="checkbox" value="44" />
+                                        <label class="box-pointer" for="blogPost_idCategory_44">Geografia</label>
+                                        </td>
+
+
+                                        <input type="checkbox" id="blogPost_idCategory_45" name="blogPost[idCategory][]" class="checkbox" value="45" />
+                                        <label class="box-pointer" for="blogPost_idCategory_45">Rodzina</label>
+                                        </td>
+
+
+                                        <input type="checkbox" id="blogPost_idCategory_46" name="blogPost[idCategory][]" class="checkbox" value="46" />
+                                        <label class="box-pointer" for="blogPost_idCategory_46">Polityka</label>
+                                        </td>
+
+
+                                        <input type="checkbox" id="blogPost_idCategory_47" name="blogPost[idCategory][]" class="checkbox" value="47" />
+                                        <label class="box-pointer" for="blogPost_idCategory_47">Fantastyka</label>
+                                        </td>
+
+
+                                        <input type="checkbox" id="blogPost_idCategory_48" name="blogPost[idCategory][]" class="checkbox" value="48" />
+                                        <label class="box-pointer" for="blogPost_idCategory_48">Komiksy</label>
+                                        </td>
+
+
+                                        <input type="checkbox" id="blogPost_idCategory_49" name="blogPost[idCategory][]" class="checkbox" value="49" />
+                                        <label class="box-pointer" for="blogPost_idCategory_49">Miszmasz</label>
+                                        </td>
+
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+
+                                {#TU#}
+                            </div>
+                        </div>
+                        {#COLLAPSE 3#}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                        PRZEKAŻ PLIK
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseThree" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        {{ form_row(form.filename, {'attr': {'class': 'file-inputs'}}) }}
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="well well-sm well-primary">
+                                                    {{ form_row(form.save) }}
+                                                    {{ form_end(form) }}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                     </div>
 
+                </div>
+            </div>
+                {#ACCORDION#}
                 </div>
             </div>
         </div>
     </div>
 
 {% endblock %}
+
+{#
+<div class="panel-group" id="accordion">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                    Collapsible Group Item #1
+                </a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in">
+            <div class="panel-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                    Collapsible Group Item #2
+                </a>
+            </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse">
+            <div class="panel-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                    Collapsible Group Item #3
+                </a>
+            </h4>
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse">
+            <div class="panel-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+            </div>
+        </div>
+    </div>
+</div>
+#}
 

@@ -16,15 +16,15 @@
 {% block content_inner %}
 
 {% for post in posts %}
-{% if post.mime != 'jpg' %}
+
     <div class="pull-left">
         <div class="buttons" style="margin-bottom: 5px">
 
             <a href="{{ path('tube_index', {'login': user.login}) }}"><button type="button"  class="btn btn-powrot" ><span class="glyphicon glyphicon-arrow-left"></span>Powrót do listy</button></a>
-            {% if hasAccess == true %}
+            {#{% if hasAccess == true %}#}
                 <a href="{{ path('tube_edit_file', {'id': idContent, 'login': user.login}) }}"><button type="button"  class="btn btn-warning" ><span class="glyphicon glyphicon-pencil"></span>Edycja</button></a>
                 <a href="{{ path('tube_remove_file', {'id': idContent, 'login': user.login}) }}"><button type="button"  class="btn btn-danger" ><span class="glyphicon glyphicon-remove"></span>Skasuj</button></a>
-            {% endif %}
+            {#{% endif %}#}
         </div>
         <table class="table" style="max-width: 50%">
 
@@ -73,7 +73,7 @@
                 <div class="panel-heading">
                     <h4 class="panel-title">
                         <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" class="collapsed">
-                            <center>Reszta syfu</center>
+                            <center>Pozostałe informacje</center>
                         </a>
                     </h4>
                 </div>
@@ -89,7 +89,7 @@
             </div>
         </div>
     </div>
-{% endif %}
+
 {% endfor %}
 
 {% endblock %}

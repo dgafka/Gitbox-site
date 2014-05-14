@@ -49,6 +49,25 @@ class CacheHelper {
 		return $userId;
 	}
 
+	/** Zwraca login usera, wyszukując go po id
+	 * @param $id int
+	 * @return String|false
+	 */
+	public function getUserLoginById($id) {
+		$id = (int)($id);
+
+		$userLogin = self::$cache->get($this->getUserIdCache($id));
+		if(!$userLogin) {
+			$user = self::$entityManager->getRepository('\Gitbox\Bundle\CoreBundle\Entity\UserAccount')->findOneBy(array('id' => $id));
+			if($user instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount) {
+				self::$cache->set($this->getUserIdCache($id), $user->getLogin());
+				$userLogin = $user->getLogin();
+			}
+		}
+
+		return $userLogin;
+	}
+
 	/** Zwraca id modułu, wyszukując go po nazwie
 	 * @param $name String
 	 * @return int|false
@@ -98,6 +117,14 @@ class CacheHelper {
 	 */
 	private function getUserCache($name) {
 		return 'user/' . $name;
+	}
+
+	/** Zwraca nazwę dostępu do cache-a, dla usera
+	 * @param $name
+	 * @return String
+	 */
+	private function getUserIdCache($name) {
+		return 'userId/' . $name;
 	}
 
     /**

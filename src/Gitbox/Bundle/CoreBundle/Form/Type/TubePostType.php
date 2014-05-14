@@ -38,7 +38,7 @@ class TubePostType extends AbstractType
                               'class'     => 'control-label'
                           ),
                           'required'     => true,
-                          'max_length'   => 150,
+                          'max_length'   => 255,
                           'trim'         => true,
                       ))
                       ->add('filename', 'file', array(
@@ -47,10 +47,15 @@ class TubePostType extends AbstractType
                               'id' => 'tubePost_filename',
                               'name' => 'tubePost[filename]',
                               'data-filename-placement'=>'inside'
-
                           )
 
                       ))
+            /*->add('idCategory', 'entity', array(
+                'class' => 'GitboxCoreBundle:Category',
+                'property' => 'name',
+                'expanded'  => true,
+                'multiple'  => true
+            ))*/
                       ->add('save', 'submit', array(
                           'label'  => 'Zapisz',
                           'attr'=> array (

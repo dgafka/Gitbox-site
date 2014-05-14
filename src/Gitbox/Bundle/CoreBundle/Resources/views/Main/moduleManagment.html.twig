@@ -1,0 +1,34 @@
+<div class="row">
+        <div class="col-lg-4">
+            <a href="{{ url('user_new_post', {'login' : login}) }}" class="list-group-item">
+                <h4 class="list-group-item-heading"><i class="fa fa-quote-right"></i> Dodaj nowy wpis do GitBlog...</h4>
+            </a>
+        </div>
+        <div class="col-lg-4">
+            <a href="{{ url('tube_new_file', {'login' : login}) }}" class="list-group-item">
+                <h4 class="list-group-item-heading"><i class="fa fa-quote-right"></i> Dodaj nowy film do GitTube...</h4>
+            </a>
+        </div>
+        <div class="col-lg-4">
+            <a href="{{ url('drive_user_index', {'login' : login}) }}" class="list-group-item">
+                <h4 class="list-group-item-heading"><i class="fa fa-quote-right"></i> Dodaj nowy wpis do GitDrive...</h4>
+            </a>
+        </div>
+</div>
+<div class="row">
+    <div class="col-lg-4">
+        <a href="{{ url('user_blog', {'login' : login}) }}" class="list-group-item">
+            <h4 class="list-group-item-heading"><i class="fa fa-quote-right"></i> Wyświetl zawartość GitBlog-a</h4>
+        </a>
+    </div>
+    <div class="col-lg-4">
+        <a href="{{ url('tube_index', {'login' : login}) }}" class="list-group-item">
+            <h4 class="list-group-item-heading"><i class="fa fa-quote-right"></i> Wyświetl zawartość GitTube-a</h4>
+        </a>
+    </div>
+    <div class="col-lg-4">
+        <a href="{{ url('drive_user_index', {'login' : login}) }}" class="list-group-item">
+            <h4 class="list-group-item-heading"><i class="fa fa-quote-right"></i> Wyświetl zawartość GitDrive-a</h4>
+        </a>
+    </div>
+</div>
