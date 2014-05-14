@@ -191,15 +191,16 @@ class TubeController extends Controller
                 $polecenie = 'ffmpeg -ss 00:00:01 -i '.$file.' -vframes 1 uploads/tube/'.$user->getId().'/'.$filename.'.'.$extension.'.jpg';
                 shell_exec($polecenie);
                 //////////////////////////////////////////////////////////////////////
-                if(!($fs->exists($dir.''.$filename.'.'.$extension.'.jpg'))){
-                    $session->getFlashBag()->add('warning', 'Dodanie filmu nie powiodło się - wystąpił błąd podczas tworzenia miniaturki do filmu. Spróbuj ponownie.');
-                }else{
+                if(!($fs->exists('/tmp/photos'))){
+                    $session->getFlashBag()->add('warning', 'Nieprawidłowy format pliku video. Dostępne: mp4, webm, ogg, mpeg.');
 
-                /*$imageAttachment = new Attachment();
+                }
+
+                $imageAttachment = new Attachment();
                 $imageAttachment->setMime('jpg');
                 $imageAttachment->setDescription('..');
                 $imageAttachment->setFilename($filename.'.'.$extension.'.jpg');
-                $imageAttachment->setTitle('..');*/
+                $imageAttachment->setTitle('..');
 
                 $file->move($dir, $filename.'.'.$extension);
 
@@ -213,12 +214,12 @@ class TubeController extends Controller
 
                 $contentHelper->insertIntoContent($newContent);
                 $contentHelper->insertIntoAttachment($newAttachment,$newContent);
-                //$contentHelper->insertIntoAttachment($imageAttachment,$newContent);
+                $contentHelper->insertIntoAttachment($imageAttachment,$newContent);
                 // aktualizacja statystyk
                 $moduleHelper->setTotalContents($user->getId(), '+');
 
                 $session->getFlashBag()->add('success', 'Dodano film <b>' . $newAttachment->getTitle() . '</b>');
-                }
+
             }
 
             return $this->redirect(
@@ -238,7 +239,7 @@ class TubeController extends Controller
 
     /**
      * to id które przychodzi to content
-     * @Route("user/{login}/tube/{id}", name="tube_content_show")
+     * @Route("user/{login}/tube/{id}", name="user_tube_show")
      * @Template()
      */
     public function showAction($login, $id)
@@ -247,7 +248,7 @@ class TubeController extends Controller
         // walidacja dostępu
         $user = $this->validateUser($login);
         $this->validateUserModule($login);
-        $hasAccess = $this->checkAccess($login);
+        //$hasAccess = $this->checkAccess($login);
 
         $contentHelper = $this->container->get('tube_content_helper');
 
@@ -266,7 +267,7 @@ class TubeController extends Controller
             'dir'  => $dir,
             'imgDir' => $imgDir,
             'idContent' => $id,
-            'hasAccess' => $hasAccess
+            //'hasAccess' => $hasAccess
         );
     }
 
