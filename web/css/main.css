@@ -355,3 +355,26 @@ a.badge-button:focus {
 div.col-6.col-sm-6.col-lg-4 {
     font-size: 14px;
 }
+
+.main-title-show {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.main-description-show {
+    font-size: 15px;
+}
+
+.main-login-show {
+    float: right;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.main-movie-show {
+    max-height: 70px;
+}
+
+.main-link-show {
+    float: left;
+}
