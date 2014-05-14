@@ -14,7 +14,39 @@ class StaticPageController extends Controller
      */
     public function featuresAction()
     {
-        return array();
+	    /**
+	     * @var $helper \Gitbox\Bundle\CoreBundle\Helper\PermissionsHelper
+	     */
+	    $permissionHelper   = $this->container->get('permissions_helper');
+	    $isLogged = $permissionHelper->isLogged();
+	    $login    = '';
+
+	    if($isLogged) {
+		    $login = $this->container->get('session')->get('username');
+	    }else {
+		    return array();
+	    }
+
+
+		/**
+		 * @var $helper \Gitbox\Bundle\CoreBundle\Helper\UserAccountHelper
+		 */
+		$helper = $this->container->get('user_helper');
+        $user = $helper->findByLogin($login);
+
+	    /**
+	     * @var $moduleHelper ModuleHelper
+	     */
+	    $moduleHelper = $this->container->get('module_helper');
+	    $modules = $moduleHelper->getUserModules($login);
+	    $availableModules = array();
+
+		foreach($modules as $module) {
+			$availableModules[$module->getName()] = $module->getDescription();
+		}
+
+	    return array('login' => $user->getLogin(), 'email' => $user->getEmail(), 'module' => $availableModules);
+
     }
 
     /**

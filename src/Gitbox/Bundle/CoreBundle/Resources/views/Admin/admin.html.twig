@@ -13,7 +13,7 @@
     <ul>
         <li><a href="#tabs-1">Użytkownicy</a></li>
         <li><a href="#tabs-2">Ban IP</a></li>
-        <li><a href="#tabs-3">Zarządzanie stroną główną</a></li>
+        {#<li><a href="#tabs-3">Zarządzanie stroną główną</a></li>#}
     </ul>
     <div id="tabs-1">
         <div id="userManagment">
@@ -31,7 +31,7 @@
     </div>
     <div id="tabs-3">
         {% block tab3 %}
-            {% render controller('GitboxCoreBundle:Admin:mainSiteManagment') %}
+            {#{% render controller('GitboxCoreBundle:Admin:mainSiteManagment') %}#}
         {% endblock %}
      </div>
 </div>
