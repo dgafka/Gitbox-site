@@ -52,12 +52,12 @@
                     </td>
                     {% if logged == true %}
                         <td>
-                            <a type="button" class="btn btn-warning" href="{{ path('drive_contener_new', {'login': user.login, 'element': pageContent.id }) }}">
+                            <a type="button" class="btn btn-warning" href="{{ path('drive_content_edit', {'login': user.login, 'element': content.id }) }}">
                                 <span class="glyphicon glyphicon-cog"></span> edytuj
                             </a>
                         </td>
                         <td>
-                            <a type="button" class="btn btn-danger" href="{{ path('drive_contener_remove', {'login': user.login, 'element': pageContent.id }) }}">
+                            <a type="button" class="btn btn-danger" href="{{ path('drive_content_remove', {'login': user.login, 'element': content.id }) }}">
                                 <span class="glyphicon glyphicon-trash"></span>usuń
                             </a>
                         </td>

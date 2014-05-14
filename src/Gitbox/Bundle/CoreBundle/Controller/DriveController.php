@@ -291,8 +291,8 @@ class DriveController extends Controller
 
         return array(
             'user' => $user,
-            'form' => $form->createView()
-
+            'form' => $form->createView(),
+            'tytul' => "Nowy kontener"
         );
 
 
@@ -327,7 +327,8 @@ class DriveController extends Controller
 
         return array(
             'user' => $user,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'tytul' => "Edytuj kontener"
 
         );
 
@@ -448,7 +449,8 @@ class DriveController extends Controller
 
         return array(
             'user' => $user,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'tytul' => "Nowy element"
 
         );
 
@@ -485,37 +487,51 @@ class DriveController extends Controller
 
         return array(
             'user' => $user,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'tytul' => "Edytuj element"
 
         );
 
 
     }
-
-
-
-
-
-
 
 
 
 
     /**
-     * @Route("/edit/drive/contener/{element}")
-     * @Template("GitboxCoreBundle:Drive:NewDriveContener.html.twig")
+     * @Route("user/{login}/drive/content/{element}/remove",name="drive_content_remove")
+
      */
-    public function DriveEditContenerAction($element)
+    public function RemoveDriveItemAction($login, $element)
     {
+        $user = $this -> validateURL($login);
+        $request = $this->get('request');
+        $oldCon=$this ->getPageContent($user->getId(), $element, $request);
+
+        $parent= $oldCon->getIdMenu()->getId();
+        $form = $this->createForm(new DriveElementType(), $oldCon);
+        $form->handleRequest($request);
+        $pageContent = $this ->getPageContent($user->getId(), $element, $request);
+        $this->userCheckContentX($pageContent);
 
 
-        $user=$this->userCheckContent();
-        $form = $this->createForm(new DriveElementType());
-        return array(
-            'form' => $form->createView(),
-            'user' => $user
 
-        );
+            $contentHelper = $this->container->get('drive_content_helper');
+            $contentHelper -> remove($oldCon->getId());
+
+
+            return $this->redirect($this->generateUrl('drive_show_menu', array(
+                'login'=>$login,
+                'element' => $parent),true));
+
+
+
     }
+
+
+
+
+
+
 
 }
