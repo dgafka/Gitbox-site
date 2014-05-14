@@ -128,7 +128,7 @@ class TubeController extends Controller
         }
         $imgDir = '../../../../../web/uploads/tube/'.$user->getId().'/'.$attachment[1]->getFilename().'.jpg';
         'imgDir' => $imgDir,*/
-        $attachmentImages = $contentHelper->getAttachmentsImages($login);
+        $attachmentImages = $contentHelper->getAttachments($login);
 
         $countPost = count($contents);
 
@@ -191,35 +191,36 @@ class TubeController extends Controller
                 $polecenie = 'ffmpeg -ss 00:00:01 -i '.$file.' -vframes 1 uploads/tube/'.$user->getId().'/'.$filename.'.'.$extension.'.jpg';
                 shell_exec($polecenie);
                 //////////////////////////////////////////////////////////////////////
-                if(!($fs->exists('/tmp/photos'))){
-                    $session->getFlashBag()->add('warning', 'Nieprawidłowy format pliku video. Dostępne: mp4, webm, ogg, mpeg.');
+                if(!($fs->exists($dir.''.$filename.'.'.$extension.'.jpg'))){
+                    $session->getFlashBag()->add('warning', 'Dodanie filmu nie powiodło się - wystąpił błąd podczas tworzenia miniaturki do filmu. Spróbuj ponownie.');
+                }else{
+/*TODO: jak użytkownik nie ma katoalogu to nie utworzy się miniaturka, a jak najpierw
+                    utworzę katalog przenosząc plik, to nie ma dostępu do pliku oO*/
+                    $file->move($dir, $filename.'.'.$extension);
+                    /*$imageAttachment = new Attachment();
+                    $imageAttachment->setMime('jpg');
+                    $imageAttachment->setDescription('..');
+                    $imageAttachment->setFilename($filename.'.'.$extension.'.jpg');
+                    $imageAttachment->setTitle('..');*/
 
+
+
+                    $newAttachment->setFilename($filename.'.'.$extension);
+                    $newAttachment->setMime($extension);
+                    $menu = $menuHelper->findByUserAndModule($user->getId(), 'GitTube');
+                    $newContent->setIdMenu($menu);
+                    $newContent->setIdUser($user->getId());
+                    $newContent->setTitle($newAttachment->getTitle());
+                    $newContent->setDescription($newAttachment->getDescription());
+
+                    $contentHelper->insertIntoContent($newContent);
+                    $contentHelper->insertIntoAttachment($newAttachment,$newContent);
+                    //$contentHelper->insertIntoAttachment($imageAttachment,$newContent);
+                    // aktualizacja statystyk
+                    $moduleHelper->setTotalContents($user->getId(), '+');
+
+                    $session->getFlashBag()->add('success', 'Dodano film <b>' . $newAttachment->getTitle() . '</b>');
                 }
-
-                $imageAttachment = new Attachment();
-                $imageAttachment->setMime('jpg');
-                $imageAttachment->setDescription('..');
-                $imageAttachment->setFilename($filename.'.'.$extension.'.jpg');
-                $imageAttachment->setTitle('..');
-
-                $file->move($dir, $filename.'.'.$extension);
-
-                $newAttachment->setFilename($filename.'.'.$extension);
-                $newAttachment->setMime($extension);
-                $menu = $menuHelper->findByUserAndModule($user->getId(), 'GitTube');
-                $newContent->setIdMenu($menu);
-                $newContent->setIdUser($user->getId());
-                $newContent->setTitle($newAttachment->getTitle());
-                $newContent->setDescription($newAttachment->getDescription());
-
-                $contentHelper->insertIntoContent($newContent);
-                $contentHelper->insertIntoAttachment($newAttachment,$newContent);
-                $contentHelper->insertIntoAttachment($imageAttachment,$newContent);
-                // aktualizacja statystyk
-                $moduleHelper->setTotalContents($user->getId(), '+');
-
-                $session->getFlashBag()->add('success', 'Dodano film <b>' . $newAttachment->getTitle() . '</b>');
-
             }
 
             return $this->redirect(
