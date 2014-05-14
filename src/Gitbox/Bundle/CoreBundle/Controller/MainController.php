@@ -20,7 +20,12 @@ class MainController extends Controller
 	     */
 	    $helper   = $this->container->get('permissions_helper');
 	    $isLogged = $helper->isLogged();
-        return array('isLogged' => $isLogged);
+	    $login    = '';
+
+	    if($isLogged) {
+		    $login = $this->container->get('session')->get('username');
+	    }
+        return array('isLogged' => $isLogged, 'login' => $login);
     }
 
 	/**

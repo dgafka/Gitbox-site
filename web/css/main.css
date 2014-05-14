@@ -378,8 +378,9 @@ div.col-6.col-sm-6.col-lg-4 {
 }
 
 .main-title-show {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
+    text-decoration: underline;
 }
 
 .main-description-show {
@@ -405,4 +406,19 @@ div.col-6.col-sm-6.col-lg-4 {
     font-weight: bold;
     font-size: 15px;
     margin-top: 12px;
+}
+
+.main-header {
+    color: rgb(229, 112, 132);
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.main-article {
+    border: 2px solid lightblue;
+    text-decoration: underline;
+}
+
+.thumbnail {
+    border: 2px solid lightblue;
 }

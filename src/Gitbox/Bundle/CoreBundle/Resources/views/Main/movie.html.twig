@@ -5,11 +5,11 @@
             <div class="thumbnail">
                 <img class="main-movie-show" src="{{ asset('images/movie.png') }}" alt="">
                 <div class="caption">
-                    <h3 class="main-title-show">{{ result.title }}</h3>
+                    <a href="{{ path('tube_content_show', {'login': result.login, 'id': result.id }) }}"><h3 class="main-title-show">{{ result.title }}</h3></a>
                     <p class="main-description-show">{{ result.description }}</p>
                     <p>
                         <a href="{{ path('tube_content_show', {'login': result.login, 'id': result.id }) }}" class="btn btn-primary main-movie-show-link">Oglądaj...</a>
-                        <span class="main-link-show"><a href="{{ path('user_profile_index', {'login' : result.login }) }}">{{ result.login }}</a></span>
+                        <span class="main-link-show">Autor: <a href="{{ path('user_profile_index', {'login' : result.login }) }}">{{ result.login }}</a></span>
                     </p>
                 </div>
             </div>

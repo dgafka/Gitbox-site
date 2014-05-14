@@ -18,25 +18,35 @@
         </div>
     </div>
 </div>
-{#@TODO dodac sprawdzanie czy zalogowany #}
+
     <div class="container">
 
         {% if isLogged == false %}
             {% include 'GitboxCoreBundle:Main:about.html.twig' %}
+            <hr>
+        {% else %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="well text-center">
+                        <h1 class="main-header">Podziel się!</h1>
+                    </div>
+                </div>
+            </div>
+            {% include 'GitboxCoreBundle:Main:moduleManagment.html.twig' %}
             <hr>
         {% endif %}
 
         <div class="row">
             <div class="col-lg-12">
                 <div class="well text-center">
-                    <h3>Ostatnio dodane</h3>
+                    <h1 class="main-header">Ostatnio dodane</h1>
                 </div>
             </div>
         </div>
 
         <div class="row">
             <div class="col-lg-12">
-                <h3>GitBlog, ostatnio dodane wpisy:</h3>
+                <h3 class="main-header">GitBlog, ostatnio dodane wpisy:</h3>
             </div>
         </div>
         {% render controller('GitboxCoreBundle:Main:lastCreatedGitBlog') %}
@@ -48,7 +58,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <h3>GitTube, ostatnio dodane filmy:</h3>
+                <h3 class="main-header">GitTube, ostatnio dodane filmy:</h3>
             </div>
         </div>
         {% render controller('GitboxCoreBundle:Main:lastCreatedGitTube') %}
@@ -60,14 +70,14 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="well text-center">
-                        <h3>Najpopularniejsze wpisy</h3>
+                        <h1 class="main-header">Najpopularniejsze wpisy</h1>
                     </div>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-lg-12">
-                    <h3>GitBlog, najlepiej oceniane wpisy:</h3>
+                    <h3 class="main-header">GitBlog, najlepiej oceniane wpisy:</h3>
                 </div>
             </div>
             {% render controller('GitboxCoreBundle:Main:topGitBlog') %}
@@ -76,7 +86,7 @@
 
             <div class="row">
                 <div class="col-lg-12">
-                    <h3>GitTube, najlepiej oceniane filmy:</h3>
+                    <h3 class="main-header">GitTube, najlepiej oceniane filmy:</h3>
                 </div>
             </div>
             {% render controller('GitboxCoreBundle:Main:topGitTube') %}
