@@ -396,6 +396,13 @@ div.col-6.col-sm-6.col-lg-4 {
     max-height: 70px;
 }
 
+.main-movie-show-link {
+    margin-left: 35px;
+}
+
 .main-link-show {
-    float: left;
+    float: right;
+    font-weight: bold;
+    font-size: 15px;
+    margin-top: 12px;
 }

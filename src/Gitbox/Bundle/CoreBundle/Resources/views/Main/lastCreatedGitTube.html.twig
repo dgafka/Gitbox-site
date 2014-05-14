@@ -8,8 +8,8 @@
                     <h3 class="main-title-show">{{ result.title }}</h3>
                     <p class="main-description-show">{{ result.description }}</p>
                     <p>
-                        <a href="{{ path('tube_content_show', {'login': result.login, 'id': result.id }) }}" class="btn btn-primary">Oglądaj...</a>
-                        <span class="main-login-show"><a href="{{ path('user_profile_index', {'login' : result.login }) }}">{{ result.login }}</a></span>
+                        <a href="{{ path('tube_content_show', {'login': result.login, 'id': result.id }) }}" class="btn btn-primary main-movie-show-link">Oglądaj...</a>
+                        <span class="main-link-show"><a href="{{ path('user_profile_index', {'login' : result.login }) }}">{{ result.login }}</a></span>
                     </p>
                 </div>
             </div>

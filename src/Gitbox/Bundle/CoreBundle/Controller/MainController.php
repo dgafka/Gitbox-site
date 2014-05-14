@@ -84,7 +84,7 @@ class MainController extends Controller
 	}
 
 	/** Zwraca instancje rating helpera
-	 * @return \Gitbox\Bundle\CoreBundle\Helper\RatingHelper
+	 * @return \Gitbox\Bundle\CoreBundle\Helper\UserActivitiesHelper
 	 */
 	private function getRatingHelper() {
 		$helper = $this->container->get('user_activities_helper');
