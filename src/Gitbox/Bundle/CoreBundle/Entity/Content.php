@@ -149,7 +149,7 @@ class Content
     /**
      * Get idUser
      *
-     * @return integer 
+     * @return integer
      */
     public function getIdUser()
     {

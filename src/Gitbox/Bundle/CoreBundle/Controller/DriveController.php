@@ -55,7 +55,32 @@ class DriveController extends Controller
         if (!$moduleHelper->isModuleActivated($username)) {
             throw $this->createNotFoundException('Ten moduł nie jest włączony na twoim koncie');
         }
-        if($menu->getUserId()->getLogin()!= $username)
+        if($menu->getIdUser()->getLogin()!= $username)
+        {
+            throw $this->createNotFoundException('Nie mozesz edytowac cudzych elementtow');
+        }
+        return $userHelper->findByLogin($username);
+    }
+
+    /**
+     * @return mixed
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    private function userCheckContentX($menu){
+        $userHelper = $this->container->get('user_helper');
+        $user=$userHelper->find($menu->getIdUser());
+        $drivePermissionHelper = $this->container->get('dp_helper');
+        $username=$drivePermissionHelper->checkUser();
+        $moduleHelper = $this->container->get('module_helper');
+        $moduleHelper->init('GitDrive');
+
+        if (!isset($username)){
+            throw $this->createNotFoundException('Zaloguj się, aby mieć dostęp do tej aktywności.');
+        }
+        if (!$moduleHelper->isModuleActivated($username)) {
+            throw $this->createNotFoundException('Ten moduł nie jest włączony na twoim koncie');
+        }
+        if($user->getLogin()!= $username)
         {
             throw $this->createNotFoundException('Nie mozesz edytowac cudzych elementtow');
         }
@@ -243,7 +268,8 @@ class DriveController extends Controller
         $moduleHelper = $this->container->get('module_helper');
         $moduleHelper->init('GitDrive');
         $modulee = $moduleHelper -> findModule();
-
+        $pageContent = $this ->getMenuPageContent($user->getId(), $element, $request);
+        $this->userCheckContent($pageContent);
 
         $newMenu = new Menu();
         $newMenu->setIdUser($user);
@@ -286,6 +312,8 @@ class DriveController extends Controller
 
         $form = $this->createForm(new DriveContenerType(), $oldMenu);
         $form->handleRequest($request);
+        $pageContent = $this ->getMenuPageContent($user->getId(), $element, $request);
+        $this->userCheckContent($pageContent);
 
         if ($form->isValid()) {
             $menuHelper = $this->container->get('menu_helper');
@@ -307,7 +335,7 @@ class DriveController extends Controller
     }
 
     /**
-     * @Route("user/{login}/drive/menu/{element}/remove",name="drive_contener_edit")
+     * @Route("user/{login}/drive/menu/{element}/remove",name="drive_contener_remove")
 
      */
     public function RemoveDriveContenerAction($login, $element)
@@ -316,6 +344,8 @@ class DriveController extends Controller
         $request = $this->get('request');
         $oldMenu=$this ->getMenuPageContent($user->getId(), $element, $request);
         $parent = $oldMenu -> getParent();
+        $pageContent = $this ->getMenuPageContent($user->getId(), $element, $request);
+        $this->userCheckContent($pageContent);
 
 
         if($parent !=null)
@@ -336,29 +366,6 @@ class DriveController extends Controller
 
 
     }
-
-
-    /**
-     * @Route("/new/drive",name="drive_item_new")
-     * @Template()
-     */
-    public function NewDriveItemAction()
-    {
-
-        $user=$this->userCheckContent();
-	$form = $this->createForm(new DriveElementType());
-	 return array(
-         'user' => $user,
-		'form' => $form->createView()
-	);
-    }
-
-
-
-
-
-
-
 
 
     /**
@@ -402,22 +409,97 @@ class DriveController extends Controller
         );
     }
 
+
     /**
-     * @Route("/edit/drive/{element}")
+     * @Route("user/{login}/drive/menu/{element}/new/content",name="drive_item_new")
      * @Template()
      */
-    public function DriveEditAction($element)
+    public function NewDriveItemAction($login, $element)
     {
+        $user = $this -> validateURL($login);
+        $request = $this->get('request');
 
 
-        $user=$this->userCheckContent();
-        $form = $this->createForm(new DriveElementType());
+        $moduleHelper = $this->container->get('module_helper');
+        $moduleHelper->init('GitDrive');
+        $pageContent = $this ->getMenuPageContent($user->getId(), $element, $request);
+        $this->userCheckContent($pageContent);
+
+        $newContent = new Content();
+
+
+        $form = $this->createForm(new DriveElementType(), $newContent);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+
+            $newContent ->setIdUser($user->getId());
+            $newContent->setLastModificationDate(new \DateTime('now'));
+            $newContent -> setIdMenu($pageContent);
+            $newContent->setCreateDate(new \DateTime('now'));
+            $contentHelper = $this->container->get('drive_content_helper');
+            $contentHelper -> insert($newContent);
+            ;
+
+            return $this->redirect($this->generateUrl('drive_show_menu', array(
+                'login'=>$login,
+                'element' => $element),true));
+        }
+
         return array(
-            'form' => $form->createView(),
-            'user' => $user
+            'user' => $user,
+            'form' => $form->createView()
 
         );
+
+
     }
+
+
+    /**
+     * @Route("user/{login}/drive/content/{element}/edit",name="drive_content_edit")
+     * @Template("GitboxCoreBundle:Drive:NewDriveItem.html.twig")
+     */
+    public function EditDriveItemAction($login, $element)
+    {
+        $user = $this -> validateURL($login);
+        $request = $this->get('request');
+        $oldCon=$this ->getPageContent($user->getId(), $element, $request);
+
+
+        $form = $this->createForm(new DriveElementType(), $oldCon);
+        $form->handleRequest($request);
+        $pageContent = $this ->getPageContent($user->getId(), $element, $request);
+        $this->userCheckContentX($pageContent);
+
+        if ($form->isValid()) {
+            $oldCon->setLastModificationDate(new \DateTime('now'));
+            $dcHelper = $this->container->get('drive_content_helper');
+            $dcHelper -> update($oldCon);
+
+
+            return $this->redirect($this->generateUrl('drive_show_content', array(
+                'login'=>$login,
+                'element' => $element),true));
+        }
+
+        return array(
+            'user' => $user,
+            'form' => $form->createView()
+
+        );
+
+
+    }
+
+
+
+
+
+
+
+
+
 
     /**
      * @Route("/edit/drive/contener/{element}")
