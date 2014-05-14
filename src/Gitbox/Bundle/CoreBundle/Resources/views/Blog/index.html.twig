@@ -43,7 +43,7 @@
         {# POSTS #}
         {% for post in posts %}
             <div class="post-in-the-box box-pointer">
-                <a class="hidden-link" href="{{ path('user_show_post', {'login': user.login, 'id': post.id}) }}"></a>
+                <a class="hidden-link" href="{{ path('user_blog_show', {'login': user.login, 'id': post.id}) }}"></a>
                 <h1 class="post-title">{{ post.title }}</h1>
                 <p class="half-p"><span class="glyphicon glyphicon-time"></span> <b>Utworzono</b> {{ post.createDate | date("D d/m/Y H:i:s") }}</p>
                 <p class="half-p"><span class="glyphicon glyphicon-time"></span> <b>Ostatnio edytowano</b> {{ post.lastModificationDate | date("D d/m/Y H:i:s") }}</p>
@@ -126,7 +126,7 @@
                     <h5 style="display: inline-block;">
                         <div class="comments-link-inner" title="Skomentuj „{{ post.title }}” "data-toggle="tooltip" data-placement="top">
                             <a class="comments-link no-decoration"
-                                href="{{ path('user_show_post', {'login': user.login, 'id': post.id}) }}#comments-content"
+                                href="{{ path('user_blog_show', {'login': user.login, 'id': post.id}) }}#comments-content"
                                 data-disqus-identifier="{{ 'gitblog/' ~ user.login ~ '/' ~ post.id }}">
                                 {# ILOŚC KOMENTARZY `Komentarze <span class="badge">{num}</span>` #}
                             </a>

@@ -17,7 +17,16 @@
             <h1 class="post-title">{{ post.title }}</h1>
             <p class="half-p"><span class="glyphicon glyphicon-time"></span> <b>Utworzono</b> {{ post.createDate | date("D d/m/Y H:i:s") }}</p>
             <p class="half-p"><span class="glyphicon glyphicon-time"></span> <b>Ostatnio edytowano</b> {{ post.lastModificationDate | date("D d/m/Y H:i:s") }}</p>
-            <p><span class="glyphicon glyphicon-eye-open"></span> <b>Wyświetleń</b> <span class="badge">{{ post.hit }}</span></p>
+            <p>
+                <span class="glyphicon glyphicon-eye-open"></span> <b>Wyświetleń</b> <span class="badge">{{ post.hit }}</span>
+                {% if app.session.get('userId') is not null %}
+                    <a class="fav-btn" href="{{ path('user_content_fav', {'module': 'blog', 'login': user.login, 'id': post.id}) }}">
+                            <span class="glyphicon glyphicon-star fav-star {% spaceless %}
+                            {{ favPost.idContent is defined and favPost.idContent.id == post.id ? 'fav-star-active' : '' }}
+                            {% endspaceless %}"></span>
+                    </a>
+                {% endif %}
+            </p>
             {% if hasAccess == true %}
                 <div class="ratings">
                     <div class="rating-up">

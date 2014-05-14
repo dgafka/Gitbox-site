@@ -36,6 +36,13 @@ class Module
      */
     private $description;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="short_name", type="string", length=25, nullable=true)
+     */
+    private $shortName;
+
 
 
     /**
@@ -82,6 +89,29 @@ class Module
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set shortName
+     *
+     * @param string $shortName
+     * @return Module
+     */
+    public function setShortName($shortName)
+    {
+        $this->shortName = $shortName;
+
+        return $this;
+    }
+
+    /**
+     * Get shortName
+     *
+     * @return string 
+     */
+    public function getShortName()
+    {
+        return $this->shortName;
     }
 
     /**

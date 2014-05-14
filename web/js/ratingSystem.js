@@ -29,10 +29,23 @@ $(document).ready(function() {
                     smiley.addClass('fa-frown-o');
                 }
 
+                // alert bar
+                var msg = data.msg;
+                var type = data.success == true ? 'success' : 'warning';
+
+                if (type != 'success') {
+                    var alert = new AlertBar(data.msg, type, 10000);
+                    alert.render();
+                }
+
                 // obsługa `ciasteczek` znajduje się w wywoływanej akcji (GitboxCoreBundle:Rating:vote)
             },
             error: function() {
-                // TODO: voteAction - exception test
+                var msg = 'Wystąpił nieoczekiwany błąd! Odśwież stronę i spróbuj ponownie.';
+                var type = 'danger';
+
+                var alert = new AlertBar(msg, type);
+                alert.render();
             }
         });
     };

@@ -36,22 +36,32 @@ class FavContentHelper extends EntityHelper implements CRUDHelper {
         return $userFav;
     }
 
-
     /**
-     * Pobieranie dodatkowych informacji o użytkowniku po identyfikatorze
+     * Pobranie ulubionych Content-ów użytkownika
      *
      * @param int $userId
+     * @param bool $sortByModule
      * @return UserFavContent | null
      * @throws \Symfony\Component\Config\Definition\Exception\Exception
      */
-    public function findByUserId($userId) {
+    public function findByUserId($userId, $sortByModule = false) {
         if (is_int($userId)) {
             $queryBuilder = $this->instance()->createQueryBuilder();
 
             $queryBuilder
                 ->select('fav')
                 ->from('GitboxCoreBundle:UserFavContent', 'fav')
-                ->innerJoin('GitboxCoreBundle:UserAccount', 'u', JOIN::WITH, 'u.id = fav.idUser')
+                ->innerJoin('GitboxCoreBundle:UserAccount', 'u', JOIN::WITH, 'u.id = fav.idUser');
+
+            if ($sortByModule) {
+                $queryBuilder
+                    ->addSelect('module.id as moduleId, c')
+                    ->innerJoin('fav.idContent', 'c')
+                    ->innerJoin('c.idMenu', 'm')
+                    ->innerJoin('m.idModule', 'module');
+            }
+
+            $queryBuilder
                 ->where('u.id = :user_id')
                 ->setParameters(array(
                     'user_id' => $userId,
@@ -61,7 +71,33 @@ class FavContentHelper extends EntityHelper implements CRUDHelper {
         }
 
         try {
-            return $queryBuilder->getQuery()->getResult();
+            $favContents = $queryBuilder->getQuery()->getResult();
+
+            if ($sortByModule) {
+                $queryBuilder = $this->instance()->createQueryBuilder();
+
+                $queryBuilder
+                    ->select('mod')
+                    ->from('GitboxCoreBundle:Module', 'mod');
+
+                $modules = $queryBuilder->getQuery()->getArrayResult();
+
+                foreach ($modules as &$module) {
+                    $module['items'] = array();
+                }
+
+                foreach ($favContents as $favContent) {
+                    foreach ($modules as &$module) {
+                        if ($module['id'] === $favContent['moduleId']) {
+                            $module['items'][] = $favContent[0];
+                        }
+                    }
+                }
+
+                return $modules;
+            }
+
+            return $favContents;
         } catch (NoResultException $e) {
             return null;
         }

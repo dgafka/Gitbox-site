@@ -114,7 +114,12 @@ class UserActivitiesHelper extends EntityHelper {
             if (!isset($data)) {
                 return array('success' => false, 'msg' => 'Nie możesz głosować na nieistniejący atrykuł!');
             } else if ($data['user_id'] == $userId) {
-                return array('success' => false, 'msg' => 'Nie możesz głosować na swoje dzieło!');
+                return array(
+                    'success' => false,
+                    'msg' => 'Nie możesz głosować na swoje dzieło!',
+                    'votesUp' => $data['voteUp'],
+                    'votesDown' => $data['voteDown']
+                );
             }
 
             // zaktualizowanie liczby głosów dla rekordu w tabeli Content
@@ -148,7 +153,7 @@ class UserActivitiesHelper extends EntityHelper {
 
             return array(
                 'success' => true,
-                'msg' => 'Zagłosowałeś pomyślnie.',
+                'msg' => 'Dzięki za głos.',
                 'votesUp' => $data['voteUp'],
                 'votesDown' => $data['voteDown']
             );

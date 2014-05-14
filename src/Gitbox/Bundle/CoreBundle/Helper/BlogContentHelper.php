@@ -232,11 +232,22 @@ class BlogContentHelper extends ContentHelper implements PaginatorAwareInterface
                 'module_id' => $moduleId
             ));
 
-        return $queryBuilder->getQuery()->getOneOrNullResult();
+        $post = $queryBuilder->getQuery()->getOneOrNullResult();
+
+        if (isset($post)) {
+            $favPost = $this->getFavContent($post);
+
+            return array(
+                'post' => $post,
+                'favPost' => $favPost
+            );
+        }
+
+        return null;
     }
 
     /**
-     * @param $posts
+     * @param array $posts
      * @return UserFavContent | null
      */
     private function getFavContents($posts) {
@@ -261,5 +272,27 @@ class BlogContentHelper extends ContentHelper implements PaginatorAwareInterface
         }
 
         return null;
+    }
+
+    /**
+     * @param Content $post
+     * @return UserFavContent | null
+     */
+    private function getFavContent($post) {
+        $postId = $post->getId();
+
+        $queryBuilder = $this->instance()->createQueryBuilder();
+
+        $queryBuilder
+            ->select('fav')
+            ->from('GitboxCoreBundle:UserFavContent', 'fav')
+            ->where('fav.idContent = :content_id')
+            ->setParameters(array(
+                'content_id' => $postId
+            ));
+
+        $favPost = $queryBuilder->getQuery()->getOneOrNullResult();
+
+        return $favPost;
     }
 }

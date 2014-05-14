@@ -253,7 +253,7 @@ class BlogController extends Controller
             $session->getFlashBag()->add('success', 'Dodano wpis <b>' . $postContent->getTitle() . '</b>');
 
             return $this->redirect(
-                $this->generateUrl('user_show_post', array(
+                $this->generateUrl('user_blog_show', array(
                     'login' => $user->getLogin(),
                     'id' => $postContent->getId()
                 ))
@@ -268,7 +268,7 @@ class BlogController extends Controller
     }
 
     /**
-     * Edytowanie wpisu
+     * Edytowanie wpisu o id = {id}
      *
      * @Route("/user/{login}/blog/{id}/edit", name="user_edit_post")
      * @Template()
@@ -303,7 +303,7 @@ class BlogController extends Controller
             $session->getFlashBag()->add('success', 'Pomyślnie zaktualizowano wpis');
 
             return $this->redirect(
-                $this->generateUrl('user_show_post', array(
+                $this->generateUrl('user_blog_show', array(
                     'login' => $user->getLogin(),
                     'id' => $postContent->getId()
                 ))
@@ -322,7 +322,7 @@ class BlogController extends Controller
     /**
      * Wyświetlenie pojedynczego wpisu o id = {id}
      *
-     * @Route("/user/{login}/blog/{id}", name="user_show_post")
+     * @Route("/user/{login}/blog/{id}", name="user_blog_show")
      * @Template()
      */
     public function showAction($login, $id)
@@ -334,12 +334,15 @@ class BlogController extends Controller
 
         $contentHelper = $this->container->get('blog_content_helper');
 
-        $postContent = $contentHelper->getOneContent(intval($id), $login);
+        $postArr = $contentHelper->getOneContent(intval($id), $login);
 
         // pobieranie żądania
         $request = $this->get('request');
         // inicjalizacja odpowiedzi serwera
         $response = new Response();
+
+        $postContent = $postArr['post'];
+        $favPost = $postArr['favPost'];
 
         if (!$postContent) {
             throw $this->createNotFoundException('Niestety, nie znaleziono takiego wpisu.');
@@ -361,6 +364,7 @@ class BlogController extends Controller
         return array(
             'user' => $user,
             'post' => $postContent,
+            'favPost' => $favPost,
             'hasAccess' => $hasAccess
         );
     }

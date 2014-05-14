@@ -1,0 +1,62 @@
+{% extends 'GitboxCoreBundle:UserProfile:userProfile.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/rating-system.css') }}" />
+{% endblock %}
+
+{% block profileContent %}
+    <div id="accordion" class="panel panel-primary panel-group panel-favourites">
+        <div class="panel-heading">
+            <h3 class="panel-title">Ulubione treści</h3>
+        </div>
+        <div class="panel-body">
+            <div class="list-group">
+                {% for module in modules %}
+                    {% if module.name != 'none' or module.shortName is not null %}
+                        <a data-toggle="collapse" data-parent="#accordion" href="#{{ module.name }}" class="list-group-item fav-header">
+                            <div>
+                                <img class="modules-logo" src="{{ asset('images/logo/' ~ module.name ~ '_logo.png') }}"
+                                     {% spaceless %}
+                                        {% if module.name == 'GitTube' %}
+                                            style="max-height: 21px;"
+                                        {% elseif module.name == 'GitDrive' %}
+                                            style="max-height: 20px;"
+                                        {% else %}
+                                            style="max-height: 26px;"
+                                        {% endif %}
+                                     {% endspaceless %}>
+                            </div>
+                        </a>
+                        <div id="{{ module.name }}" class="fav-content {{ loop.last ? 'fav-last-content' : '' }} panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class="list-group">
+                                    {% for favItem in module.items %}
+                                        <a href="{{ path('user_' ~ module.shortName ~ '_show', {'login': favItem.idContent.idMenu.idUser.login, 'id': favItem.idContent.id}) }}" class="list-group-item content-item">
+                                            <b>{{ favItem.idContent.title }}</b>
+                                            <div class="content-info">
+                                                <div class="ratings content-info-item">
+                                                    <div class="rating-up">
+                                                        <div class="score-up">{{ favItem.idContent.voteUp }}</div>
+                                                    </div>
+                                                    <div class="rating-down">
+                                                        <div class="score-down">{{ favItem.idContent.voteDown }}</div>
+                                                    </div>
+                                                </div>
+                                                <div class="content-info-item">
+                                                    <span class="glyphicon glyphicon-eye-open"></span> <span class="badge">{{ favItem.idContent.hit }}</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    {% else %}
+                                        <h4 style="color: #555;">Nic tu nie ma :(</h4>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

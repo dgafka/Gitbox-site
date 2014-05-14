@@ -7,3 +7,37 @@
     text-align: center;
     text-decoration: none;
 }
+
+.panel-favourites {
+    margin-top: 20px;
+}
+
+.fav-header {
+    background-color: #fcfcfc;
+}
+
+.fav-content {
+    border: 1px solid #dddddd;
+    border-bottom: none;
+}
+
+.fav-last-content {
+    border-bottom: 1px solid #dddddd;
+}
+
+.content-info {
+    float: right;
+}
+
+.content-info-item {
+    float: right;
+}
+
+@media screen and (max-width: 800px) {
+    .content-item {
+        height: 80px;
+    }
+    .content-info {
+        float: left;
+    }
+}

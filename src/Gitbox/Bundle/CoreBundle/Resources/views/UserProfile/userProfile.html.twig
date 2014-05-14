@@ -16,9 +16,10 @@
                 {% if isOwner == true %}
                     <li class="{% if(app.request.attributes.get('_route') == 'user_profile_settings') %} active {% endif %}"><a href="{{ path('user_profile_settings', {'login' : login}) }}"><i class="fa fa-adn"></i> Ustawienia</a></li>
                     {% if isAdmin == true %}
-                        <li class="{% if(app.request.attributes.get('_route') == 'user_profile_search') %} active {% endif %}"><a href="{{ path('admin_panel') }}"><i class="glyphicon glyphicon-eye-open"></i> Panel adminstratora</a></li>
+                        <li class="{% if(app.request.attributes.get('_route') == 'user_profile_search') %} active {% endif %}"><a href="{{ path('admin_panel') }}"><i class="glyphicon glyphicon-eye-open"></i> Panel administratora</a></li>
                     {% endif %}
                 {% endif %}
+                <li class="{% if(app.request.attributes.get('_route') == 'user_profile_favs') %} active {% endif %}"><a href="{{ path('user_profile_favs', {'login' : login}) }}"><i class="fa fa-star"></i> Ulubione</a></li>
             </ul>
         </div>
         <div class="col-md-10">

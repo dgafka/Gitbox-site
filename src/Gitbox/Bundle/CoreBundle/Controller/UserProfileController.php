@@ -85,6 +85,33 @@ class UserProfileController extends Controller
 		}
     }
 
+    /**
+     * @Route("/user/{login}/favourites", name="user_profile_favs")
+     * @Template()
+     */
+    public function favouritesAction($login) {
+        // pobranie użytkownika
+        $user = $this->getUserByLogin($login);
+
+        // pobranie uprawnień
+        $permissionHelper = $this->container->get('permissions_helper');
+        $isOwner = $permissionHelper->checkPermission($login);
+        $isAdmin = $permissionHelper->isAdmin();
+
+        // pobranie instancji helpera
+        $favContentHelper = $this->container->get('fav_content_helper');
+        $favContents = $favContentHelper->findByUserId($user->getId(), true);
+
+        // TODO na nigdy: wyrzucić bara z opcjami, do osobnej akcji i widoku
+        return array(
+            'login' => $login,
+            'email' => $user->getEmail(),
+            'isOwner' => $isOwner,
+            'isAdmin' => $isAdmin,
+            'modules' => $favContents
+        );
+    }
+
 	/**
 	 * @param $login
 	 * @param $request
