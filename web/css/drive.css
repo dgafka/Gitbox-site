@@ -109,3 +109,8 @@ img{
 
 
 }
+
+.btn{
+    max-width: 500;
+    width: 500;
+}

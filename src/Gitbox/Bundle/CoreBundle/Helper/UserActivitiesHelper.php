@@ -2,6 +2,7 @@
 
 namespace Gitbox\Bundle\CoreBundle\Helper;
 
+use Doctrine\ORM\QueryBuilder;
 use Gitbox\Bundle\CoreBundle\Entity\UserFavContent;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Doctrine\ORM\Query\Expr\Join;
@@ -156,6 +157,46 @@ class UserActivitiesHelper extends EntityHelper {
 
         return array('success' => false, 'msg' => 'Wystąpił błąd podczas głosowania! Odśwież stronę i spróbuj ponownie.');
     }
+
+	/** Pobiera ostatnio dodane wpisy
+	 * @param $module
+	 * @param int $limit
+	 * @param string $orderBy
+	 * @return array
+	 */
+	public function getLastCreatedContents($module, $limit = 3, $orderBy = 'date') {
+		/**
+		 * @var $queryBuilder QueryBuilder
+		 */
+		$queryBuilder = $this->instance()->createQueryBuilder();
+		//Pobieranie id modulu z cache-a
+		$moduleId     = $this->instanceCache()->getModuleIdByName($module);
+
+		$queryBuilder = $queryBuilder
+			->select('c.id, c.idUser, c.title, c.description')
+			->from('GitboxCoreBundle:Content', 'c')
+			->innerJoin('GitboxCoreBundle:Menu', 'm', JOIN::WITH, 'm.id = c.idMenu')
+			->where('m.idModule = :module')
+			->setParameter('module', $moduleId)
+			->setMaxResults($limit);
+		if($orderBy == 'rating'){
+
+		}else {
+		$queryBuilder
+			->orderBy('c.createDate', 'DESC');
+		}
+
+		$results = $queryBuilder
+			->getQuery()
+			->execute();
+
+		foreach($results as &$result) {
+			$result['login'] = $this->instanceCache()->getUserLoginById($result['idUser']);
+		}
+
+		return $results;
+	}
+
 
     /**
      * @param $contentId
