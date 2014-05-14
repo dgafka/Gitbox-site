@@ -46,7 +46,7 @@ class TubeContentHelper extends ContentHelper {
         $queryBuilder
             ->select('c')
             ->from('GitboxCoreBundle:Content', 'c')
-            /*->innerJoin('GitboxCoreBundle:Attachment', 'a', 'WITH', 'a.idContent = c.id')*/
+            ->innerJoin('GitboxCoreBundle:Attachment', 'a', 'WITH', 'a.idContent = c.id')
             ->innerJoin('GitboxCoreBundle:Menu', 'm', 'WITH','m.id = c.idMenu')
             ->where('m.idUser = :userId')
             ->andWhere('m.idModule = :moduleId' )->orderby('c.createDate', 'DESC')

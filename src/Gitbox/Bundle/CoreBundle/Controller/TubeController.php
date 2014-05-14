@@ -117,6 +117,11 @@ class TubeController extends Controller
         //$user = $helper->findByLogin($login);
 
 	    $contents = $contentHelper->getContents($login);
+
+      /*  foreach ($contents as $content) {
+            var_dump($content);
+            die();
+        }
 /*        foreach($contents['id'] as $content){
             $attachment = $contentHelper->getOneAttachment($content, $user['login']);
             $contents['dir'] = '../../../../../web/uploads/tube/'.$user->getId().'/'.$attachment[1]['filename'];
@@ -162,6 +167,8 @@ class TubeController extends Controller
 
         // walidacja formularza
         if ($form->isValid()) {
+            $fs = new Filesystem();
+
             $contentHelper = $this->container->get('tube_content_helper');
             $menuHelper = $this->container->get('menu_helper');
             $em = $this->getDoctrine()->getManager();
@@ -184,11 +191,15 @@ class TubeController extends Controller
                 $polecenie = 'ffmpeg -ss 00:00:01 -i '.$file.' -vframes 1 uploads/tube/'.$user->getId().'/'.$filename.'.'.$extension.'.jpg';
                 shell_exec($polecenie);
                 //////////////////////////////////////////////////////////////////////
-                $imageAttachment = new Attachment();
+                if(!($fs->exists($dir.''.$filename.'.'.$extension.'.jpg'))){
+                    $session->getFlashBag()->add('warning', 'Dodanie filmu nie powiodło się - wystąpił błąd podczas tworzenia miniaturki do filmu. Spróbuj ponownie.');
+                }else{
+
+                /*$imageAttachment = new Attachment();
                 $imageAttachment->setMime('jpg');
                 $imageAttachment->setDescription('..');
                 $imageAttachment->setFilename($filename.'.'.$extension.'.jpg');
-                $imageAttachment->setTitle('..');
+                $imageAttachment->setTitle('..');*/
 
                 $file->move($dir, $filename.'.'.$extension);
 
@@ -202,12 +213,12 @@ class TubeController extends Controller
 
                 $contentHelper->insertIntoContent($newContent);
                 $contentHelper->insertIntoAttachment($newAttachment,$newContent);
-                $contentHelper->insertIntoAttachment($imageAttachment,$newContent);
+                //$contentHelper->insertIntoAttachment($imageAttachment,$newContent);
                 // aktualizacja statystyk
                 $moduleHelper->setTotalContents($user->getId(), '+');
 
                 $session->getFlashBag()->add('success', 'Dodano film <b>' . $newAttachment->getTitle() . '</b>');
-
+                }
             }
 
             return $this->redirect(
@@ -270,7 +281,7 @@ class TubeController extends Controller
         //$this->checkAccess($login);
 
         $contentHelper = $this->container->get('tube_content_helper');
-        $content = $contentHelper->findOneContnt($id, $login);
+        $content = $contentHelper->getOneContent($id, $login);
 
         $contentTitle = $content->getTitle();
 
