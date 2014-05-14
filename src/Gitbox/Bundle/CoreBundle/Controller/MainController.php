@@ -15,7 +15,17 @@ class MainController extends Controller
      */
     public function indexAction()
     {
-        return array();
+	    /**
+	     * @var $helper \Gitbox\Bundle\CoreBundle\Helper\PermissionsHelper
+	     */
+	    $helper   = $this->container->get('permissions_helper');
+	    $isLogged = $helper->isLogged();
+	    $login    = '';
+
+	    if($isLogged) {
+		    $login = $this->container->get('session')->get('username');
+	    }
+        return array('isLogged' => $isLogged, 'login' => $login);
     }
 
 	/**
@@ -28,7 +38,7 @@ class MainController extends Controller
 
 	/**
 	 * Zwraca 3 ostatnich wpisów z GitBloga
-	 * @Template()
+	 * @Template("GitboxCoreBundle:Main:article.html.twig")
 	 */
 	public function lastCreatedGitBlogAction() {
 		$helper = $this->getRatingHelper();
@@ -42,14 +52,19 @@ class MainController extends Controller
 
 	/**
 	 * Zwraca najlepiej oceniane wpisy z GitBloga
-	 * @Template()
+	 * @Template("GitboxCoreBundle:Main:article.html.twig")
 	 */
 	public function topGitBlogAction() {
-		return array();
+		$helper = $this->getRatingHelper();
+
+		$results = $helper->getLastCreatedContents('GitBlog', 3, 'rating');
+		$this->cutContent($results);
+
+		return array('results' => $results);
 	}
 
 	/** Zwraca 4 ostatnie dodane filmy do GitTube
-	 * @Template()
+	 * @Template("GitboxCoreBundle:Main:movie.html.twig")
 	 */
 	public function lastCreatedGitTubeAction() {
 		$helper = $this->getRatingHelper();
@@ -61,10 +76,15 @@ class MainController extends Controller
 	}
 
 	/** Zwraca najlepiej ocenianie wpisy z GitTube-a
-	 * @Template()
+	 * @Template("GitboxCoreBundle:Main:movie.html.twig")
 	 */
 	public function topGitTubeAction() {
-		return array();
+		$helper = $this->getRatingHelper();
+
+		$results = $helper->getLastCreatedContents('GitTube', 4, 'rating');
+		$this->cutContent($results);
+
+		return array('results' => $results);
 	}
 
 	/**

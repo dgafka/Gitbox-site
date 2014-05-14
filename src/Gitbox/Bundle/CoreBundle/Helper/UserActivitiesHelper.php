@@ -180,10 +180,11 @@ class UserActivitiesHelper extends EntityHelper {
 			->setParameter('module', $moduleId)
 			->setMaxResults($limit);
 		if($orderBy == 'rating'){
-
+			$queryBuilder
+				->orderBy('c.voteUp - c.voteDown', 'DESC');
 		}else {
-		$queryBuilder
-			->orderBy('c.createDate', 'DESC');
+			$queryBuilder
+				->orderBy('c.createDate', 'DESC');
 		}
 
 		$results = $queryBuilder

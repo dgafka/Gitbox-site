@@ -18,43 +18,37 @@
         </div>
     </div>
 </div>
-{#@TODO dodac sprawdzanie czy zalogowany #}
+
     <div class="container">
 
-        <div class="row">
-            <div class="col-lg-8">
-                {% include 'GitboxCoreBundle:Main:carousel.html.twig' %}
+        {% if isLogged == false %}
+            {% include 'GitboxCoreBundle:Main:about.html.twig' %}
+            <hr>
+        {% else %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="well text-center">
+                        <h1 class="main-header">Podziel się!</h1>
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-4">
-                <h1>GitBox</h1>
-                <p>Przestań, korzystać z tysiąca portali, aby posiadać wszystkie potrzebne Ci narzędzia do kontaktu ze światem! My wiemy, czego potrzebujesz i dostaniesz to od nas.
-                <p>
-                    Chcesz podzielić się informacjami ze światem? Użyj GitBlog-a!<br/>
-                    Chcesz dodawać filmy, bądź samemu je przeglądać? Użyj GitTube-a!<br/>
-                    A może po prostu udostępnić pliki, bądź sciągnąć cos ciekawego? Użyj GitDrive-a!
-                </p>
-                Zostań częścią żyjącej społeczności. Dodawaj, komentuj, ściągaj, oglądaj, polub i wiele, wiele innych :).
-                <p>Od nas dla Ciebie, od Ciebie dla innych!</p>
-                <p><a class="btn btn-primary btn-lg" href="{{ path('user_register_url') }}">Zarejestruj się teraz!</a></p>
-            </div>
-        </div>
-
-        <hr>
+            {% include 'GitboxCoreBundle:Main:moduleManagment.html.twig' %}
+            <hr>
+        {% endif %}
 
         <div class="row">
             <div class="col-lg-12">
                 <div class="well text-center">
-                    <h3>Ostatnio dodane wpisy przez użytkowników GitBox-a</h3>
+                    <h1 class="main-header">Ostatnio dodane</h1>
                 </div>
             </div>
         </div>
 
         <div class="row">
             <div class="col-lg-12">
-                <h3>GitBlog, ostatnio dodane wpisy:</h3>
+                <h3 class="main-header">GitBlog, ostatnio dodane wpisy:</h3>
             </div>
         </div>
-
         {% render controller('GitboxCoreBundle:Main:lastCreatedGitBlog') %}
 
     </div>
@@ -62,19 +56,42 @@
     <hr>
 
     <div class="container">
-
         <div class="row">
             <div class="col-lg-12">
-                <h3>GitTube, ostatnio dodane filmy:</h3>
+                <h3 class="main-header">GitTube, ostatnio dodane filmy:</h3>
             </div>
         </div>
-
         {% render controller('GitboxCoreBundle:Main:lastCreatedGitTube') %}
-
         <hr>
-
     </div>
 
+    {% if isLogged %}
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="well text-center">
+                        <h1 class="main-header">Najpopularniejsze wpisy</h1>
+                    </div>
+                </div>
+            </div>
 
-<hr>
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="main-header">GitBlog, najlepiej oceniane wpisy:</h3>
+                </div>
+            </div>
+            {% render controller('GitboxCoreBundle:Main:topGitBlog') %}
+
+            <hr>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="main-header">GitTube, najlepiej oceniane filmy:</h3>
+                </div>
+            </div>
+            {% render controller('GitboxCoreBundle:Main:topGitTube') %}
+
+            <hr>
+        </div>
+    {% endif %}
 {% endblock %}
