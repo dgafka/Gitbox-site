@@ -98,6 +98,14 @@ class MenuHelper extends EntityHelper implements CRUDHelper {
             $this->instance()->remove($menu);
             $this->instance()->flush();
         } else if (is_int($menu)) {
+
+            $queryBuilder = $this->instance()->createQueryBuilder();
+            $queryBuilder
+                ->delete('GitboxCoreBundle:Content', 'c')
+                ->where('c.idMenu = :id')
+                ->setParameter('id', $menu)
+                ->getQuery()
+                ->execute();
             $queryBuilder = $this->instance()->createQueryBuilder();
             $queryBuilder
                 ->delete('GitboxCoreBundle:Menu', 'c')
