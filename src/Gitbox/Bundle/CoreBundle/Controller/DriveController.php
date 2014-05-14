@@ -240,15 +240,101 @@ class DriveController extends Controller
         $request = $this->get('request');
         $this ->getMenuPageContent($user->getId(), $element, $request);
 
+        $moduleHelper = $this->container->get('module_helper');
+        $moduleHelper->init('GitDrive');
+        $modulee = $moduleHelper -> findModule();
 
 
         $newMenu = new Menu();
-        $newMenu -> setIdUser();
+        $newMenu->setIdUser($user);
+        $newMenu->setParent($element);
+        $newMenu->setIdModule($modulee);
+
         $form = $this->createForm(new DriveContenerType(), $newMenu);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $menuHelper = $this->container->get('menu_helper');
+            $menuHelper -> insert($newMenu);
+            ;
+
+            return $this->redirect($this->generateUrl('drive_show_menu', array(
+                'login'=>$login,
+            'element' => $element),true));
+        }
+
         return array(
             'user' => $user,
             'form' => $form->createView()
+
         );
+
+
+    }
+
+
+    /**
+     * @Route("user/{login}/drive/menu/{element}/edit",name="drive_contener_edit")
+     * @Template("GitboxCoreBundle:Drive:NewDriveContener.html.twig")
+     */
+    public function EditDriveContenerAction($login, $element)
+    {
+        $user = $this -> validateURL($login);
+        $request = $this->get('request');
+        $oldMenu=$this ->getMenuPageContent($user->getId(), $element, $request);
+
+
+        $form = $this->createForm(new DriveContenerType(), $oldMenu);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $menuHelper = $this->container->get('menu_helper');
+            $menuHelper -> update($oldMenu);
+
+
+            return $this->redirect($this->generateUrl('drive_show_menu', array(
+                'login'=>$login,
+                'element' => $element),true));
+        }
+
+        return array(
+            'user' => $user,
+            'form' => $form->createView()
+
+        );
+
+
+    }
+
+    /**
+     * @Route("user/{login}/drive/menu/{element}/remove",name="drive_contener_edit")
+
+     */
+    public function RemoveDriveContenerAction($login, $element)
+    {
+        $user = $this -> validateURL($login);
+        $request = $this->get('request');
+        $oldMenu=$this ->getMenuPageContent($user->getId(), $element, $request);
+        $parent = $oldMenu -> getParent();
+
+
+        if($parent !=null)
+        {
+            $menuHelper = $this->container->get('menu_helper');
+            $menuHelper -> remove($oldMenu->getId());
+
+
+            return $this->redirect($this->generateUrl('drive_show_menu', array(
+                'login'=>$login,
+                'element' => $parent),true));
+        }
+        else
+        {
+            return $this->redirect($this->generateUrl('drive_user_index', array(
+                'login'=>$login),true));
+        }
+
+
     }
 
 

@@ -4,6 +4,7 @@ namespace Gitbox\Bundle\CoreBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class DriveContenerType extends AbstractType {
 
@@ -21,16 +22,10 @@ class DriveContenerType extends AbstractType {
                 'trim' => true
             ))
 
-            ->add('parent', 'hidden', array(
-                'attr' => array (
-                    'class'        => 'post-editor',
-                ),
-                'label' => "Opis",
-                'required' => true
-            ))
+
 
             ->add('save', 'submit', array(
-                'label' => 'Dodaj element',
+                'label' => 'Dodaj kontner',
                 'attr' => array (
                     'class' => 'btn btn-primary btn-stretched'
                 )
@@ -39,6 +34,13 @@ class DriveContenerType extends AbstractType {
 
     public function getName()
     {
-        return 'driveElement';
+        return 'menu';
+    }
+
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'Gitbox\Bundle\CoreBundle\Entity\Menu',
+        ));
     }
 }
