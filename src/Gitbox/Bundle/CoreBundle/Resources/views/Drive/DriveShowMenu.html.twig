@@ -19,17 +19,17 @@
                         <span class="glyphicon glyphicon-folder-close"></span>{{ menu.title }}
                     </a>
                     </td>
-                    <td></td>
-                    <td></td>
+                    <td>.</td>
+                    <td>.</td>
                     {% if logged == true %}
                         <td>
-                            <a type="button" class="btn btn-warning" href="{{ path('drive_contener_new') }}">
-                                <span class="glyphicon glyphicon-trash"></span> edytuj
+                            <a type="button" class="btn btn-warning" href="{{ path('drive_contener_edit', {'login': user.login, 'element': menu.id }) }}">
+                                <span class="glyphicon glyphicon-cog"></span> edytuj
                             </a>
                         </td>
                         <td>
-                            <a type="button" class="btn btn-danger" href="{{ path('drive_contener_new') }}">
-                                <span class="glyphicon glyphicon-cog"></span>usuń
+                            <a type="button" class="btn btn-danger" href="{{ path('drive_contener_remove', {'login': user.login, 'element': menu.id }) }}">
+                                <span class="glyphicon glyphicon-trash"></span>usuń
                             </a>
                         </td>
                     {% else %}
@@ -52,13 +52,13 @@
                     </td>
                     {% if logged == true %}
                         <td>
-                            <a type="button" class="btn btn-warning" href="{{ path('drive_contener_new') }}">
-                                <span class="glyphicon glyphicon-trash"></span> edytuj
+                            <a type="button" class="btn btn-warning" href="{{ path('drive_content_edit', {'login': user.login, 'element': content.id }) }}">
+                                <span class="glyphicon glyphicon-cog"></span> edytuj
                             </a>
                         </td>
                         <td>
-                            <a type="button" class="btn btn-danger" href="{{ path('drive_contener_new') }}">
-                                <span class="glyphicon glyphicon-cog"></span>usuń
+                            <a type="button" class="btn btn-danger" href="{{ path('drive_content_remove', {'login': user.login, 'element': content.id }) }}">
+                                <span class="glyphicon glyphicon-trash"></span>usuń
                             </a>
                         </td>
                     {% else %}
@@ -73,10 +73,10 @@
     {%  block buttpanel %}
     {% if logged == true %}
         <div class="driveButtonPanel">
-            <a type="button" class="btn btn-default" href="{{ path('drive_contener_new') }}">
+            <a type="button" class="btn btn-default" href="{{ path('drive_contener_new', {'login': user.login, 'element': pageContent.id }) }}">
                 Dodaj kontener
             </a>
-            <a type="button" class="btn btn-default" href="{{ path('drive_item_new') }}">
+            <a type="button" class="btn btn-default" href="{{ path('drive_item_new', {'login': user.login, 'element': pageContent.id }) }}">
                 Dodaj element
             </a>
         </div>

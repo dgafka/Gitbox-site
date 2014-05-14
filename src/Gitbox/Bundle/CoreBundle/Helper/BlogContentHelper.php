@@ -5,6 +5,7 @@ namespace Gitbox\Bundle\CoreBundle\Helper;
 use Gitbox\Bundle\CoreBundle\Entity\Content;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query;
+use Gitbox\Bundle\CoreBundle\Entity\UserFavContent;
 use Knp\Component\Pager\Paginator;
 use Symfony\Component\HttpFoundation\Request;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
@@ -74,11 +75,35 @@ class BlogContentHelper extends ContentHelper implements PaginatorAwareInterface
 
         $queryBuilder = $this->instance()->createQueryBuilder();
 
+        // może się kiedyś przyda... :)
+//        /* COUNT */
+//        $queryBuilder
+//            ->select('COUNT(c.id)')
+//            ->from('GitboxCoreBundle:Content', 'c')
+//            ->innerJoin('c.idMenu', 'm') // automaticaly join keys, upon relation
+//            ->where('c.idUser = :user_id AND m.idModule = :module_id');
+//
+//        if (isset($title)) {
+//            $queryBuilder
+//                ->andWhere($queryBuilder->expr()->like('c.title', $queryBuilder->expr()->literal('%' . $title . '%')));
+//        }
+//
+//        $queryBuilder
+//            ->setParameters(array(
+//                'user_id' => $userId,
+//                'module_id' => $moduleId
+//            ));
+//
+//        $count = $queryBuilder->getQuery()->getSingleScalarResult();
+//        /* END OF COUNT */
+//
+//        $queryBuilder->resetDQLParts();
+
         $queryBuilder
-            ->select('c, cat') //array('c', 'IDENTITY(c.idCategory)')
+            ->select('c')
             ->from('GitboxCoreBundle:Content', 'c')
+            ->leftJoin('GitboxCoreBundle:UserFavContent', 'fav', JOIN::WITH, 'fav.idContent = c.id')
             ->innerJoin('c.idMenu', 'm') // automaticaly join keys, upon relation
-            ->leftJoin('c.idCategory', 'cat') // same here
             ->where('c.idUser = :user_id AND m.idModule = :module_id');
 
         if (isset($title)) {
@@ -96,9 +121,14 @@ class BlogContentHelper extends ContentHelper implements PaginatorAwareInterface
         if ($perPage > 0 && $request instanceof Request) {
             $query = $queryBuilder->getQuery();
 
-            $posts = $this->paginator->paginate($query, $request->query->get('page', 1), $perPage);
+            $posts = $this->paginator->paginate($query, $request->query->get('page', 1), $perPage, array('distinct' => false));
 
-            return $posts;
+            $favPosts = $this->getFavContents($posts->getItems());
+
+            return array(
+                'posts' => $posts,
+                'favPosts' => $favPosts
+            );
         } else {
             try {
                 return $queryBuilder->getQuery()->getResult();
@@ -131,13 +161,13 @@ class BlogContentHelper extends ContentHelper implements PaginatorAwareInterface
         $queryBuilder = $this->instance()->createQueryBuilder();
 
         $queryBuilder
-            ->select('c, cat')
+            ->select('c')
             ->from('GitboxCoreBundle:Content', 'c')
             ->innerJoin('c.idMenu', 'm') // automaticaly join keys, upon relation
             ->innerJoin('c.idCategory', 'cc') // same here
-            ->leftJoin('c.idCategory', 'cat') // same here
+            ->leftJoin('GitboxCoreBundle:UserFavContent', 'fav', JOIN::WITH, 'fav.idContent = c.id')
             ->where('c.idUser = :user_id AND m.idModule = :module_id AND cc.id IN(:categories)')
-            ->groupBy('c.id, cat.id')
+            ->groupBy('c.id')
             ->orderBy('c.createDate', 'DESC')
             ->having('COUNT(cc.id) = :categories_count')
             ->setParameters(array(
@@ -150,9 +180,14 @@ class BlogContentHelper extends ContentHelper implements PaginatorAwareInterface
         if ($perPage > 0 && $request instanceof Request) {
             $query = $queryBuilder->getQuery();
 
-            $posts = $this->paginator->paginate($query, $request->query->get('page', 1), $perPage);
+            $posts = $this->paginator->paginate($query, $request->query->get('page', 1), $perPage, array('distinct' => false));
 
-            return $posts;
+            $favPosts = $this->getFavContents($posts->getItems());
+
+            return array(
+                'posts' => $posts,
+                'favPosts' => $favPosts
+            );
         } else {
             try {
                 return $queryBuilder->getQuery()->getResult();
@@ -190,7 +225,6 @@ class BlogContentHelper extends ContentHelper implements PaginatorAwareInterface
             ->select('c')
             ->from('GitboxCoreBundle:Content', 'c')
             ->innerJoin('c.idMenu', 'm') // automaticaly join keys, upon relation
-            ->leftJoin('c.idCategory', 'cc') // automaticaly join keys, upon relation
             ->where('c.id = :id AND c.idUser = :user_id AND m.idModule = :module_id')
             ->setParameters(array(
                 'id' => $id,
@@ -199,5 +233,33 @@ class BlogContentHelper extends ContentHelper implements PaginatorAwareInterface
             ));
 
         return $queryBuilder->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * @param $posts
+     * @return UserFavContent | null
+     */
+    private function getFavContents($posts) {
+        foreach ($posts as $post) {
+            $postIds[] = $post->getId();
+        }
+
+        if (!empty($postIds)) {
+            $queryBuilder = $this->instance()->createQueryBuilder();
+
+            $queryBuilder
+                ->select('fav')
+                ->from('GitboxCoreBundle:UserFavContent', 'fav')
+                ->where('fav.idContent IN(:content_ids)')
+                ->setParameters(array(
+                    'content_ids' => $postIds
+                ));
+
+            $favPosts = $queryBuilder->getQuery()->getResult();
+
+            return $favPosts;
+        }
+
+        return null;
     }
 }

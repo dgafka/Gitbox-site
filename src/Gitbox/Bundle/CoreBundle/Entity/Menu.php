@@ -49,7 +49,6 @@ class Menu
      * @ORM\Column(name="expire", type="date", nullable=true)
      */
     private $expire;
-
     /**
      * @var \Module
      *

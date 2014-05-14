@@ -196,6 +196,27 @@ a.badge-button:focus {
     color: lightcoral;
 }
 
+.fav-star {
+    font-size: 14pt;
+    color: darkgray;
+    margin-left: 10px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.fav-star-active {
+    color: yellow;
+}
+
+.fav-star:hover {
+    color: gold;
+}
+
+.fav-star:active,
+.fav-star:focus {
+    color: goldenrod;
+}
+
 .collapse-slider-switch {
     display: table;
     word-wrap: break-word;

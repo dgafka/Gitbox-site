@@ -129,12 +129,14 @@ class DriveContentHelper extends ContentHelper  {
         $queryBuilder = $this->instance()->createQueryBuilder();
         $moduleId = $this->instanceCache()->getModuleIdByName($this->module);
 
-
+        if (!is_int($menuId)) {
+            return null;
+        }
 
         $queryBuilder
             ->select('c')
             ->from('GitboxCoreBundle:Menu', 'c')
-            ->where(' c.id = :menu_id AND c.idModule = :module AND c.parent IS NOT NULL')
+            ->where(' c.id = :menu_id AND c.idModule = :module')
             ->setParameters(array(
                 'menu_id' => $menuId,
                 'module' => $moduleId,

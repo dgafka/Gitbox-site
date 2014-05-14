@@ -87,7 +87,7 @@ class MainController extends Controller
 	 * @return \Gitbox\Bundle\CoreBundle\Helper\RatingHelper
 	 */
 	private function getRatingHelper() {
-		$helper = $this->container->get('rating_helper');
+		$helper = $this->container->get('user_activities_helper');
 		return $helper;
 	}
 

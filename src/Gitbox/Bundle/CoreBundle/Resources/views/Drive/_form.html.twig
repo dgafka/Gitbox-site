@@ -1,14 +1,12 @@
 {% block newDrive_form %}
     <div class="register-form">
-        <h2 style="margin-bottom: 20px;">Nowy kontener</h2>
+        <h2 style="margin-bottom: 20px;">{{ tytul }}</h2>
         {{ form_start(form) }}
             {{ form_errors(form) }}
             <div class="form-group">
                 {{ form_label(form.title) }}
                 {{ form_widget(form.title) }}
-                {{ form_label(form.description) }}
-                {{ form_widget(form.description) }}
             </div>
-        {{ form_end(form) }} {# TODO: submit button for new/edit actions #}
+        {{ form_end(form) }}
     </div>
 {% endblock %}
