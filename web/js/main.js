@@ -9,13 +9,13 @@ $(document).ready(function(){
 
     // reveal password
     $(".reveal").mousedown(function() {
-        $(".password-input").replaceWith($('.password-input').clone().attr('type', 'text'));
+        $(".password-input").attr('type', 'text');
     })
     .mouseup(function() {
-        $(".password-input").replaceWith($('.password-input').clone().attr('type', 'password'));
+        $(".password-input").attr('type', 'password');
     })
     .mouseout(function() {
-        $(".password-input").replaceWith($('.password-input').clone().attr('type', 'password'));
+        $(".password-input").attr('type', 'password');
     });
 
     // scroll to top
