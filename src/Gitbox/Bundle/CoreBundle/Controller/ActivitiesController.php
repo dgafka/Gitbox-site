@@ -45,9 +45,15 @@ class ActivitiesController extends Controller
 
         // sprawdzenie czy oddano głos na podany content
         if (isset($cookieVote)) {
+            $contentHelper = $this->container->get('blog_content_helper');
+            $postArr = $contentHelper->getOneContent(intval($id), $login);
+            $post = $postArr['post'];
+
             $response->setData(array(
                 'success' => false,
-                'msg' => 'Już wcześniej zagłosowałeś na ten artykuł!'
+                'msg' => 'Już wcześniej zagłosowałeś na ten artykuł!',
+                'votesUp' => $post->getVoteUp(),
+                'votesDown' => $post->getVoteDown()
             ));
 
             return $response;
