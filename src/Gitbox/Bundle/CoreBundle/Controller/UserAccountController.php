@@ -52,7 +52,7 @@ class UserAccountController extends Controller
 			/**
 			 * @param $userGroup \Gitbox\Bundle\CoreBundle\Entity\UserGroup
 			 */
-			$userAccount = $helper->instance()->getRepository('\Gitbox\Bundle\CoreBundle\Entity\UserAccount')->findOneBy(array('email' => $userAccount->getEmail(), 'password' => $userAccount->getPassword(), 'status' => 'A'));
+			$userAccount = $helper->instance()->getRepository('\Gitbox\Bundle\CoreBundle\Entity\UserAccount')->findOneBy(array('email' => $userAccount->getEmail(), 'password' => $userAccount->getPassword()));
 
 			if ($userAccount instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount && $userAccount->getStatus() == 'A') {
 
@@ -79,12 +79,15 @@ class UserAccountController extends Controller
 			} else if (!$userAccount instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount) {
                 $session = $this->container->get('session');
                 $session->getFlashBag()->add('warning', 'Niestety podano błędny login / hasło.');
-            } else if ($userAccount->getStatus() != 'A') {
+            } else if ($userAccount->getStatus() == 'D') {
                 $session = $this->container->get('session');
                 $session->getFlashBag()->add('warning',
                     'Konto nie zostało aktywowane.<br />'.
                     'Aby je aktywować, wejdż na konto e-mail, które podałeś przy rejestracji konta i kliknij w aktywacyjny link.'
                 );
+            } else if ($userAccount->getStatus() == 'B') {
+                $session = $this->container->get('session');
+                $session->getFlashBag()->add('danger', 'Konto użytkownika <b>' . $userAccount->getLogin() . '</b> zostało zbanowane.');
             }
 		}
 
