@@ -283,7 +283,9 @@ class BlogController extends Controller
         $contentHelper = $this->container->get('blog_content_helper');
 
         // pobranie wpisu z bazy
-        $postContent = $contentHelper->getOneContent(intval($id), $login);
+        $postArr = $contentHelper->getOneContent(intval($id), $login);
+
+        $postContent = $postArr['post'];
 
         if (!$postContent) {
             throw $this->createNotFoundException('Niestety, nie znaleziono takiego wpisu.');
