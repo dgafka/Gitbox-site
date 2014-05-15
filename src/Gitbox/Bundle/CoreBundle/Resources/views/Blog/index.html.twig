@@ -136,7 +136,7 @@
                             </a>
                         </div>
                     </h5>
-                    {% if hasAccess == false %}
+                    {% if app.session.get('userId') is not null and hasAccess == false %}
                         {% if app.request.cookies.get('vote_' ~ post.id) is not null %}
                             {% if app.request.cookies.get('vote_' ~ post.id) == 'up' %}
                                 <b class="smiley-see-you fa fa-smile-o"></b>
