@@ -60,7 +60,7 @@ class UserActivitiesHelper extends EntityHelper {
             if (!$result) {
                 return array(
                     'success' => false,
-                    'msg' => 'Wystąpił błąd podczas dodawania ulubionych! Odśwież stronę i spróbuj ponownie.'
+                    'msg' => 'Wystąpił błąd podczas dodawania treści do ulubionych! Odśwież stronę i spróbuj ponownie.'
                 );
             }
 
@@ -82,7 +82,7 @@ class UserActivitiesHelper extends EntityHelper {
             if (!$result) {
                 return array(
                     'success' => false,
-                    'msg' => 'Wystąpił błąd podczas usuwania ulubionych! Odśwież stronę i spróbuj ponownie.'
+                    'msg' => 'Wystąpił błąd podczas usuwania treści z ulubionych! Odśwież stronę i spróbuj ponownie.'
                 );
             }
 

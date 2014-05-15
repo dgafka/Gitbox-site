@@ -102,7 +102,9 @@ class UserProfileController extends Controller
         $favContentHelper = $this->container->get('fav_content_helper');
         $favContents = $favContentHelper->findByUserId($user->getId(), true);
 
-        // TODO na nigdy: wyrzucić bara z opcjami, do osobnej akcji i widoku
+        /* TODO na nigdy: wyrzucić bara z menu profilu do osobnej akcji i widoku,
+         * tak aby nie ładować w każdej akcji tych samych zmiennych
+         */
         return array(
             'login' => $login,
             'email' => $user->getEmail(),
