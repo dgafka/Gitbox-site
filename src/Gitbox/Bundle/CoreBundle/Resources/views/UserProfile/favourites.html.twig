@@ -8,7 +8,7 @@
 {% block profileContent %}
     <div id="accordion" class="panel panel-primary panel-group panel-favourites">
         <div class="panel-heading">
-            <h3 class="panel-title">Ulubione treści</h3>
+            <h3 class="panel-title">Ulubione treści użytkownika</h3>
         </div>
         <div class="panel-body">
             <div class="list-group">
@@ -33,6 +33,7 @@
                                 <div class="list-group">
                                     {% for favItem in module.items %}
                                         <a href="{{ path('user_' ~ module.shortName ~ '_show', {'login': favItem.idContent.idMenu.idUser.login, 'id': favItem.idContent.id}) }}" class="list-group-item content-item">
+                                            <span class="glyphicon glyphicon-share-alt"></span>
                                             <b>{{ favItem.idContent.title }}</b>
                                             <div class="content-info">
                                                 <div class="ratings content-info-item">

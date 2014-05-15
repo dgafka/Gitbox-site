@@ -82,15 +82,15 @@ class MailerController extends Controller
 
 	    if(!($userAccount instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount)) {
             $session = $this->container->get('session');
-            $session->getFlashBag()->add('warning', 'Podany token nie istnieje, czy na pewno nie aktywowałeś konta już wcześniej?');
+            $session->getFlashBag()->add('warning', 'Podany token nie istnieje. Czy na pewno nie aktywowałeś konta już wcześniej?');
 
-            return $this->render('GitboxCoreBundle:Main:index.html.twig');
+            return $this->redirect($this->generateUrl('home_url'));
 	    }
 		if($userAccount->getStatus() != 'D') {
             $session = $this->container->get('session');
             $session->getFlashBag()->add('warning', 'Konto było już wcześniej aktywowane!');
 
-            return $this->redirect('GitboxCoreBundle:Main:index.html.twig');
+            return $this->redirect($this->generateUrl('home_url'));
 		}
 
 	    $userAccount->setStatus('A');
