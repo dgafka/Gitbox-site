@@ -142,7 +142,7 @@ class UserAccountController extends Controller
 				$message .= ' Login powinien posiadać przynajmniej 4 znaki. <br/>';
 			}
 			if(strlen($userAccount->getLogin()) > 10) {
-				$message .= ' Login nie powinien posiadać więcej niż  znaki. <br/>';
+				$message .= ' Login nie powinien posiadać więcej niż 10 znaków. <br/>';
 			}
 			if(!preg_match('/^[a-zA-Z0-9]+$/', $userAccount->getLogin())) {
 				$message .= ' Login nie powinien posiadać polskich znaków.<br/>';
