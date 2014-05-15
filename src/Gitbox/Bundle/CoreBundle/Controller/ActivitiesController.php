@@ -38,6 +38,19 @@ class ActivitiesController extends Controller
         // inicjalizacja odpowiedzi serwera
         $response = new JsonResponse();
 
+        // pobranie id użytkownika z sesji
+        $session = $this->container->get('session');
+        $userId = $session->get('userId');
+
+        if (!isset($userId)) {
+            $response->setData(array(
+                'success' => false,
+                'msg' => 'Zaloguj się, aby oceniać wpisy!'
+            ));
+
+            return $response;
+        }
+
         // pobieranie żądania
         $request = $this->get('request');
         // pobieranie `ciasteczka`
@@ -58,10 +71,6 @@ class ActivitiesController extends Controller
 
             return $response;
         }
-
-        // pobranie id użytkownika z sesji
-        $session = $this->container->get('session');
-        $userId = $session->get('userId');
 
         // inicjalizacja helpera, wywołanie metody pomocniczej oraz przechwycenie zwrotnych danych
         $userActivitiesHelper = $this->container->get('user_activities_helper');
