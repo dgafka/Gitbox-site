@@ -383,7 +383,20 @@ class BlogController extends Controller
 
         $contentHelper = $this->container->get('blog_content_helper');
 
-        $post = $contentHelper->getOneContent(intval($id), $login);
+        $postArr = $contentHelper->getOneContent(intval($id), $login);
+
+        $post = $postArr['post'];
+
+        if (!isset($post)) {
+            $session = $this->container->get('session');
+            $session->getFlashBag()->add('danger', 'Niestety, nie udało się usunąć wpisu. Odśwież stronę i spróbuj ponownie.');
+
+            return $this->redirect(
+                $this->generateUrl('user_blog', array(
+                    'login' => $login
+                ))
+            );
+        }
 
         $postTitle = $post->getTitle();
 
