@@ -12,12 +12,15 @@ class UserHelp extends AbstractType
         $builder
 	        ->add('email', 'email', array(
 		        'required' => true,
-		        'label'    => 'Prawdziwy email:   '
+		        'label'    => 'Prawdziwy email: ',
+                'attr' => array (
+                    'class' => 'form-control',
+                )
 	        ))
 	        ->add('content', 'textarea', array(
 		        'required' => true,
 		        'attr' => array (
-			        'class'        => 'help-email',
+			        'class'        => 'help-email form-control',
 		        ),
 		        'label' => 'Podaj treść maila, który zostanie do nas wysłany: '
 	        ))
@@ -25,7 +28,8 @@ class UserHelp extends AbstractType
             ->add('save', 'submit', array(
                 'label'  => 'Wyślij maila',
                 'attr'=> array (
-                    'class' => 'btn btn-default'
+                    'class' => 'btn btn-default',
+                    'style' => 'margin-top: 10px;'
                 )
             ));
     }
