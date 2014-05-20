@@ -6,30 +6,28 @@
 {# load resources #}
 {% block javascripts %}
     <script type="text/javascript" src="{{ asset('js/jquery/jquery.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/bootstrap.file-input.js') }}"></script>
-    <script>
-        $(document).ready(function(){
-            //$('input[type=file]').bootstrapFileInput(); //zamienia przycisk na ładny
-            //$('.file-inputs').bootstrapFileInput(); not working  grrrrrrrrrr
-        });
-    </script>
+    <script type="text/javascript" src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
+
 {% endblock %}
 {% block title %}{% endblock %}
 
 {% block content_inner %}
 
     <div class="pull-left">
-        <a href="{{ path('tube_index', {'login': user}) }}"><button type="button"  class="btn btn-powrot" ><span class="glyphicon glyphicon-arrow-left"></span>Powrót do listy</button></a>
+        <a href="{{ path('tube_index', {'login': user.login}) }}"><button type="button"  class="btn btn-powrot" ><span class="glyphicon glyphicon-arrow-left"></span>Powrót do listy</button></a>
+
     </div>
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                {#ACCORDION#}
                 <div class="panel-group" id="accordion">
                     <div class="panel panel-default">
+                        {#COLLAPSE 1#}
                         <div class="panel-heading">
                             <h4 class="panel-title">
                                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span class="glyphicon glyphicon-file">
-                            </span>EDYTUJ INFORMACJE O FILMIE</a>
+                            </span>UZUPEŁNIJ OPIS</a>
                             </h4>
                         </div>
                         <div id="collapseOne" class="panel-collapse collapse in">
@@ -38,59 +36,92 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             {{ form_start(form) }}
-
+                                            {{ form_errors(form) }}
                                             {{ form_row(form.title) }}
-
-
                                         </div>
-
                                         <div class="form-group">
                                             {{ form_row(form.description) }}
-                                        </div>
-                                        <div class="form-group">
-                                            {{ form_row(form.filename, {'attr': {'class': 'file-inputs'}}) }}
+
                                         </div>
                                     </div>
                                 </div>
-                                {#PROGRESS BAR#}
-                                {#<div class="progress progress-striped active">
-                                    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
-                                        <span class="sr-only">45% Complete</span>
-                                    </div>
-                                </div>#}
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="category">
-                                                Category</label>
-                                            <select class="form-control" id="category">
-                                                <option>hera</option>
-                                                <option>koka</option>
-                                                <option>hasz</option>
-                                                <option>rom rom rom</option>
-                                            </select>
-                                        </div>
-                                    </div>
 
-                                </div>
-                                <div class="row">
+                            </div>
+                        </div>
+                        {#COLLAPSE 2#}
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                    UZUPEŁNIJ KATEGORIE
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                {#TU#}
+                                <h4>Kategorie</h4>
 
-                                    <div class="col-md-6">
-                                        <div class="well well-sm well-primary">
+                                <table class="table table-hover table-condensed content-categories"> {# table table-hover table-condensed #}
+                                    <tbody>
+                                    {% for category in form.idCategory %}
+                                        {% if loop.index0 % 6 == 0 %}
+                                            {% if not loop.first %}
+                                                </tr>
+                                            {% endif %}
+                                            <tr>
+                                        {% endif %}
 
-                                            {{ form_row(form.save) }}
-                                            {{ form_end(form) }}
+                                        <td class="to-the-left">
+                                            {{ form_widget(category, {'attr': {'class': 'checkbox'}}) }}
+                                            {{ form_label(category, '', {'label_attr': {'class': 'box-pointer'}}) }}
+                                        </td>
+
+                                        {% if loop.last %}
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                {#TU#}
+                            </div>
+                        </div>
+                        {#COLLAPSE 3#}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                        Zapisz zmiany
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseThree" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="form-group">
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div {#class="well well-sm well-primary"#}>
+                                                    {#* @Route("/user/{login}/tube/{id}/generate", name="tube_generate_att")#}
+                                                    <a href="{{ path('tube_generate_att', {'login': user.login, 'id': post.id}) }}"><button type="button"  class="btn btn-success" >{#<span class="glyphicon glyphicon-photo"></span>#}Wygeneruj miniaturkę</button></a>
+                                                    {{ form_row(form.save) }}
+                                                    {{ form_end(form) }}
+
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                     </div>
 
                 </div>
             </div>
+            {#ACCORDION#}
         </div>
+    </div>
+    </div>
     </div>
 
 {% endblock %}
-

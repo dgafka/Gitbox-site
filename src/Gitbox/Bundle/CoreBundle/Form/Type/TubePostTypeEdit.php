@@ -26,7 +26,7 @@ class TubePostTypeEdit extends AbstractType
                           ),
                           'required'     => true,
                           'max_length'   => 50,
-                          'trim'         => true,
+                          'trim'         => true
                       ))
                       ->add('description', 'textarea', array(
                           'label'  => 'Opis',
@@ -38,9 +38,16 @@ class TubePostTypeEdit extends AbstractType
                               'class'     => 'control-label'
                           ),
                           'required'     => true,
-                          'max_length'   => 150,
-                          'trim'         => true,
+                          'max_length'   => 250,
+                          'trim'         => true
                       ))
+            ->add('idCategory', 'entity', array(
+                'class' => 'GitboxCoreBundle:Category',
+                'property' => 'name',
+                'expanded'  => true,
+                'multiple'  => true
+            ))
+
 
                       ->add('save', 'submit', array(
                           'label'  => 'Zapisz',
@@ -58,7 +65,7 @@ class TubePostTypeEdit extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Gitbox\Bundle\CoreBundle\Entity\Attachment'
+            'data_class' => 'Gitbox\Bundle\CoreBundle\Entity\Content'
         ));
     }
 
@@ -67,6 +74,6 @@ class TubePostTypeEdit extends AbstractType
      */
     public function getName()
     {
-        return 'tubePost';
+        return 'tubePostEdit';
     }
 }

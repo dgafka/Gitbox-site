@@ -281,4 +281,16 @@ class TubeContentHelper extends ContentHelper {
             throw new Exception('Niepoprawny typ parametru.');
         }
     }
+    /**
+     * @param $content Attachment
+     * @throws Exception
+     */
+    public function updateAttachment($content) {
+        if ($content instanceof Attachment) {
+            $this->instance()->persist($content);
+            $this->instance()->flush();
+        } else {
+            throw new Exception('Niepoprawny typ parametru.');
+        }
+    }
 }

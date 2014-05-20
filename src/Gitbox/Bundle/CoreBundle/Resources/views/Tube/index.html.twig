@@ -23,24 +23,31 @@
                 <h1 class="text-center">Filmy użytkownika <i><code>{{ user.login }}</code></i></h1><div class="pull-right"><h6>{{ countPosts }} pozycji</h6></div>
                 <div class="list-group">
                     {% for post in posts %}
-                                                <a href="{{ path('user_tube_show', {'login': user.login, 'id': post.id}) }}" class="list-group-item">
-                        <div class="media col-md-3">
-                            <figure class="pull-left bg-primary">
-                                {% for attachment in attachments %}
-                                    {% if attachment.idContent == post %}
-                                        <img class="media-object img-rounded img-responsive" src="../../../../web/uploads/tube/{{ user.id }}/{{ attachment.filename }}.jpg">
+                      <a href="{{ path('user_tube_show', {'login': user.login, 'id': post.id}) }}">{# class="list-group-item"#}
+                            <div class="media col-md-3">
+                                <figure class="pull-left bg-primary">
+                                    {% for attachment in attachments %}
+                                        {% if attachment.idContent == post %}
+                                            <img class="media-object img-rounded img-responsive" src="../../../../web/uploads/tube/{{ user.id }}/{{ attachment.filename }}.jpg">
 
-                                    {% endif %}
+                                        {% endif %}
 
-                                {% endfor %}
+                                    {% endfor %}
 
 
-                            </figure>
-                        </div>
-                        <div class="col-md-6">
-                            <h4 class="list-group-item-heading"> {{ post.title }} </h4>
+                                </figure>
+                            </div>
+                            <div class="col-md-6">
+                                <h4 class="list-group-item-heading"> {{ post.title }} </h4>
+
                             <p class="list-group-item-text"> {{ post.description }} </p>
-                        </div>
+                      </a>
+                    {% if hasAccess == true %}
+                    <a href="{{ path('tube_edit_file', {'login': user.login, 'id': post.id}) }}"><span class="glyphicon glyphicon-pencil"></span> Edytuj</a>
+                    <a href="{{ path('tube_remove_file', {'id': post.id, 'login': user.login}) }}"><span class="glyphicon glyphicon-trash"></span> Usuń</a>
+                    {% endif %}
+                </div>
+
                         <div class="col-md-3 text-center">
                             <p><span class="glyphicon glyphicon-time"></span> <b>Utworzono</b> {{ post.createDate | date("D d/m/Y H:i:s") }}</p>
                             <p><span class="glyphicon glyphicon-time"></span> <b>Ostatnio edytowano</b> {{ post.lastModificationDate | date("D d/m/Y H:i:s") }}</p>
@@ -80,7 +87,7 @@
                             </div>
                             {% endif %}
                         </div>
-                    </a>
+
 
                     {% endfor %}
                 </div>

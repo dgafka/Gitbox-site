@@ -3,7 +3,9 @@
 namespace Gitbox\Bundle\CoreBundle\Controller;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Gitbox\Bundle\CoreBundle\Form\Type\TubePostType;
+use Gitbox\Bundle\CoreBundle\Form\Type\TubeAttachmentType;
+use Gitbox\Bundle\CoreBundle\Form\Type\TubeContentType;
+
 use Gitbox\Bundle\CoreBundle\Form\Type\TubePostTypeEdit;
 use Gitbox\Bundle\CoreBundle\Entity\Attachment;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -104,31 +106,17 @@ class TubeController extends Controller
      */
     public function indexAction($login)
     {
-
         // walidacja dostępu
         $user = $this->validateUser($login);
         $this->validateUserModule($login);
         $hasAccess = $this->getAccess($login);
 
-
         $contentHelper = $this->container->get('tube_content_helper');
-
-        //$helper = $this->container->get('user_helper');
-        //$user = $helper->findByLogin($login);
 
 	    $contents = $contentHelper->getContents($login);
 
-      /*  foreach ($contents as $content) {
-            var_dump($content);
-            die();
-        }
-/*        foreach($contents['id'] as $content){
-            $attachment = $contentHelper->getOneAttachment($content, $user['login']);
-            $contents['dir'] = '../../../../../web/uploads/tube/'.$user->getId().'/'.$attachment[1]['filename'];
-        }
-        $imgDir = '../../../../../web/uploads/tube/'.$user->getId().'/'.$attachment[1]->getFilename().'.jpg';
-        'imgDir' => $imgDir,*/
         $attachmentImages = $contentHelper->getAttachments($login);
+
 
         $countPost = count($contents);
 
@@ -161,20 +149,20 @@ class TubeController extends Controller
         $newContent = new Content();
 
         // formularz nowego wpisu
-        $form = $this->createForm(new TubePostType(), $newAttachment);
+        $form = $this->createForm(new TubeAttachmentType(), $newAttachment);
 
         $form->handleRequest($request);
 
         // walidacja formularza
         if ($form->isValid()) {
             $fs = new Filesystem();
+            $dir =  __DIR__.'/../../../../../web/uploads/tube/'.$user->getId().'/';
 
             $contentHelper = $this->container->get('tube_content_helper');
             $menuHelper = $this->container->get('menu_helper');
             $em = $this->getDoctrine()->getManager();
             // inicjalizacja flash baga
             $session = $this->container->get('session');
-            $dir =  __DIR__.'/../../../../../web/uploads/tube/'.$user->getId().'/';
 
             $file = $form['filename']->getData();
             $extension = $file->guessExtension();
@@ -187,22 +175,11 @@ class TubeController extends Controller
                 $session->getFlashBag()->add('warning', 'Rozmiar pliku musi być mniejszy niż 80Mb.');
             }else{
                 $filename = uniqid();
-                /////////////////generowanie thumbnail'a oO ///////////////////////////
-                $polecenie = 'ffmpeg -ss 00:00:01 -i '.$file.' -vframes 1 uploads/tube/'.$user->getId().'/'.$filename.'.'.$extension.'.jpg';
-                shell_exec($polecenie);
-                //////////////////////////////////////////////////////////////////////
-                if(!($fs->exists($dir.''.$filename.'.'.$extension.'.jpg'))){
-                    $session->getFlashBag()->add('warning', 'Dodanie filmu nie powiodło się - wystąpił błąd podczas tworzenia miniaturki do filmu. Spróbuj ponownie.');
-                }else{
+
+
 /*TODO: jak użytkownik nie ma katoalogu to nie utworzy się miniaturka, a jak najpierw
                     utworzę katalog przenosząc plik, to nie ma dostępu do pliku oO*/
                     $file->move($dir, $filename.'.'.$extension);
-                    /*$imageAttachment = new Attachment();
-                    $imageAttachment->setMime('jpg');
-                    $imageAttachment->setDescription('..');
-                    $imageAttachment->setFilename($filename.'.'.$extension.'.jpg');
-                    $imageAttachment->setTitle('..');*/
-
 
 
                     $newAttachment->setFilename($filename.'.'.$extension);
@@ -221,7 +198,7 @@ class TubeController extends Controller
 
                     $session->getFlashBag()->add('success', 'Dodano film <b>' . $newAttachment->getTitle() . '</b>');
                 }
-            }
+
 
             return $this->redirect(
                 $this->generateUrl('tube_index', array(
@@ -293,18 +270,18 @@ class TubeController extends Controller
 
         //usuniecie attachmentu
         //$contentHelper->removeAttachment($attachment);
-/*
-        $moduleHelper = $this->container->get('module_helper');
-        $moduleHelper->init('GitTube');
-        $userDescHelper = $this->container->get('user_description_helper');
+        /*
+                $moduleHelper = $this->container->get('module_helper');
+                $moduleHelper->init('GitTube');
+                $userDescHelper = $this->container->get('user_description_helper');
 
-        // aktualizacja statystyk
-        $moduleHelper->setTotalContents($login, '-');
-        $userDescHelper->updateUserScore($login, $content->getVoteUp(), $content->getVoteDown());
+                // aktualizacja statystyk
+                $moduleHelper->setTotalContents($login, '-');
+                $userDescHelper->updateUserScore($login, $content->getVoteUp(), $content->getVoteDown());
 
-        // inicjalizacja flash baga
-        $session = $this->container->get('session');
-        $session->getFlashBag()->add('success', 'Usunięto wpis <b>' . $contentTitle . '</b>');*/
+                // inicjalizacja flash baga
+                $session = $this->container->get('session');
+                $session->getFlashBag()->add('success', 'Usunięto wpis <b>' . $contentTitle . '</b>');*/
 
         return $this->redirect(
             $this->generateUrl('tube_index', array(
@@ -315,13 +292,13 @@ class TubeController extends Controller
 
     /**
      * Edytowanie filmu
-     *
+     * przychodzi id content
      * @Route("/user/{login}/tube/{id}/edit", name="tube_edit_file")
      * @Template()
      */
-    public function editAction(Request $request, $id, $login)
+    public function editAction(Request $request, $login, $id)
     {
-    /*    // walidacja dostępu
+        // walidacja dostępu
         $user = $this->validateUser($login);
         $this->validateUserModule($login);
         $this->checkAccess($login);
@@ -329,41 +306,35 @@ class TubeController extends Controller
         $contentHelper = $this->container->get('tube_content_helper');
 
         // pobranie wpisu z bazy
+        $postContent = $contentHelper->getOneContent(intval($id), $login);
+        $editAtt = $contentHelper->getOneAttachment($postContent->getId(), $login)[0];
 
-        $editAttachment = $contentHelper->getOneAttachmentById($login, intval($id));
-
-        if (!$editAttachment) {
+        if (!$postContent) {
             throw $this->createNotFoundException('Niestety, nie znaleziono takiego wpisu.');
         }
 
-        $form = $this->createForm(new TubePostTypeEdit(), $editAttachment);
+        $form = $this->createForm(new TubeContentType(), $postContent);
         $form->handleRequest($request);
 
         // walidacja formularza
         if ($form->isValid()) {
+            $postContent->setLastModificationDate(new \DateTime('now'));
 
-            //$contentHelper->update($editAttachment);
-            $this->instance()->persist($editAttachment);
-            $this->instance()->flush();
+            $contentHelper->update($postContent);
 
-            $contentHelperTheRealOne = $this->container->get('content_helper');
-            $editContent = $contentHelperTheRealOne->getOneContent(intval($editAttachment->getIdContent()));
+            $editAtt->setDescription($postContent->getDescription());
+            $editAtt->setTitle($postContent->getTitle());
 
-            $editContent->setTitle($editAttachment->getTitle());
-            $editContent->setDescription($editAttachment->getDescription());
-            $editContent->setLastModificationDate(new \DateTime('now'));
-
-            $this->instance()->persist($editContent);
-            $this->instance()->flush();
+            $contentHelper->updateAttachment($editAtt);
 
             // inicjalizacja flash baga
             $session = $this->container->get('session');
-            $session->getFlashBag()->add('success', 'Pomyślnie zaktualizowano wpis');
+            $session->getFlashBag()->add('success', 'Pomyślnie zaktualizowano.');
 
             return $this->redirect(
-                $this->generateUrl('tube_index', array(
-                    'id' => $editAttachment->getId()
-                    //'login' => $user->getLogin()
+                $this->generateUrl('user_tube_show', array(
+                    'login' => $user->getLogin(),
+                    'id' => $postContent->getId()
                 ))
             );
         }
@@ -372,7 +343,54 @@ class TubeController extends Controller
             'user' => $user,
             'form' => $form->createView(),
             'btnLabel' => 'Edytuj wpis',
-            'post' => $editAttachment
-        );*/
+            'post' => $postContent,
+            'calledBy' => $request->get('calledBy')
+        );
     }
+
+
+    /**
+     * Generuje thumbnail dla attachmentu
+     * Przychodzi id contentu
+     * @Route("/user/{login}/tube/{id}/generate", name="tube_generate_att")
+     * @Method({"GET"})
+     */
+    public function generateAction($id, $login) {
+        // walidacja dostępu
+        $this->checkAccess($login);
+        $user = $this->validateUser($login);
+
+        $contentHelper = $this->container->get('tube_content_helper');
+        $content = $contentHelper->getOneContent($id, $login);
+
+        $contentTitle = $content->getTitle();
+        $attachment = $contentHelper->getOneAttachment($content->getId(),$login)[0];
+
+        $session = $this->container->get('session');
+        $fs = new Filesystem();
+        $dir =  __DIR__.'/../../../../../web/uploads/tube/'.$user->getId().'/';
+
+        $filename = $attachment->getFilename();
+        $extension = $attachment->getMime();
+        $file = $dir.''.$filename;
+/////////////////generowanie thumbnail'a oO ///////////////////////////
+        $polecenie = 'ffmpeg -ss 00:00:01 -i '.$file.' -vframes 1 uploads/tube/'.$user->getId().'/'.$filename.'.jpg';
+        shell_exec($polecenie);
+        //////////////////////////////////////////////////////////////////////
+        if(!($fs->exists($dir.''.$filename.'.'.$extension.'.jpg'))){
+            $session->getFlashBag()->add('warning', 'Wystąpił błąd podczas tworzenia miniaturki do filmu. Spróbuj ponownie.');
+        }else{
+
+
+            // inicjalizacja flash baga
+
+            $session->getFlashBag()->add('success', 'Utworzono miniaturkę dla <b>' . $contentTitle . '</b>');
+        }
+        return $this->redirect(
+            $this->generateUrl('tube_index', array(
+                'login' => $login
+            ))
+        );
+    }
+
 }

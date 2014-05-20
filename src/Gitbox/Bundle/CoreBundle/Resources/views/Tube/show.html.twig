@@ -21,10 +21,7 @@
         <div class="buttons" style="margin-bottom: 5px">
 
             <a href="{{ path('tube_index', {'login': user.login}) }}"><button type="button"  class="btn btn-powrot" ><span class="glyphicon glyphicon-arrow-left"></span>Powrót do listy</button></a>
-            {#{% if hasAccess == true %}#}
-                <a href="{{ path('tube_edit_file', {'id': idContent, 'login': user.login}) }}"><button type="button"  class="btn btn-warning" ><span class="glyphicon glyphicon-pencil"></span>Edycja</button></a>
-                <a href="{{ path('tube_remove_file', {'id': idContent, 'login': user.login}) }}"><button type="button"  class="btn btn-danger" ><span class="glyphicon glyphicon-remove"></span>Skasuj</button></a>
-            {#{% endif %}#}
+
         </div>
         <table class="table" style="max-width: 50%">
 
@@ -79,14 +76,23 @@
                 </div>
                 <div id="collapseThree" class="panel-collapse collapse">
                     <div class="panel-body">
-                        Plik: <b>536f7f5f367f3</b>
-                            <br />
-                        Typ: <b>mp4</b>
-                            <br />
+                        Autor: <b>{{ user.login }}</b><br />
+
+                        Data dodania: <b> {{ post.createDate | date("D d/m/Y H:i:s") }}</b><br />
+
+                        Typ: <b>{{ post.mime }}</b><br />
+
                         (głosowanie)
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div>
+
+        {# komentarze #}
+        <div id="comments-content">
+            {{ knp_disqus_render('gitbox', {'identifier': 'gitblog/' ~ user.login ~ '/' ~ post.id, 'limit': 10}) }}
         </div>
     </div>
 

@@ -28,7 +28,7 @@ class TubeAttachmentType extends AbstractType
                 'max_length'   => 50,
                 'trim'         => true,
             ))
-            /*->add('description', 'textarea', array(
+            ->add('description', 'textarea', array(
                 'label'  => 'Opis',
                 'attr'=> array (
                     'class'       => 'form-control',
@@ -38,25 +38,24 @@ class TubeAttachmentType extends AbstractType
                     'class'     => 'control-label'
                 ),
                 'required'     => true,
-                'max_length'   => 1150,
+                'max_length'   => 255,
                 'trim'         => true,
-            ))*/
-            //FILE
-            ->add('idContent', new TubeContentType(), array(
-                    'data_class' => 'Gitbox\Bundle\CoreBundle\Entity\Content'
-                )
-            )
+            ))
             ->add('filename', 'file', array(
-
                 'label' => 'Dodaj film',
                 'attr' => array(
                     'id' => 'tubePost_filename',
                     'name' => 'tubePost[filename]',
                     'data-filename-placement'=>'inside'
+                )
 
-                ))
-            )
-
+            ))
+            /*->add('idCategory', 'entity', array(
+                'class' => 'GitboxCoreBundle:Category',
+                'property' => 'name',
+                'expanded'  => true,
+                'multiple'  => true
+            ))*/
             ->add('save', 'submit', array(
                 'label'  => 'Zapisz',
                 'attr'=> array (
@@ -64,7 +63,6 @@ class TubeAttachmentType extends AbstractType
                     'id' => 'tubePost_save',
                     'name' => 'tubePost[save]'
                 )
-
             ));
     }
 
@@ -83,6 +81,6 @@ class TubeAttachmentType extends AbstractType
      */
     public function getName()
     {
-        return 'tubeAttachmentType';
+        return 'tubeAttachment';
     }
 }

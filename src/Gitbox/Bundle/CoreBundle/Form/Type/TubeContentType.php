@@ -15,19 +15,46 @@ class TubeContentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-             ->add('description', 'textarea', array(
-                 'label'  => 'Opis',
-                 'attr'=> array (
-                     'class'       => 'form-control',
-                     'placeholder' => 'Opis...'
-                 ),
-                 'label_attr'    => array(
-                     'class'     => 'control-label'
-                 ),
-                 'required'     => true,
-                 'max_length'   => 1150,
-                 'trim'         => true,
+            ->add('title', 'text', array(
+                'label'  => 'Tytuł',
+                'attr'=> array (
+                    'class'       => 'form-control',
+                    'placeholder' => 'Tytuł...'
+                ),
+                'label_attr'    => array(
+                    'class'     => 'control-label'
+                ),
+                'required'     => true,
+                'max_length'   => 50,
+                'trim'         => true,
+            ))
+            ->add('description', 'textarea', array(
+                'label'  => 'Opis',
+                'attr'=> array (
+                    'class'       => 'form-control',
+                    'placeholder' => 'Opis...'
+                ),
+                'label_attr'    => array(
+                    'class'     => 'control-label'
+                ),
+                'required'     => true,
+                'max_length'   => 255,
+                'trim'         => true,
+            ))
 
+            ->add('idCategory', 'entity', array(
+                'class' => 'GitboxCoreBundle:Category',
+                'property' => 'name',
+                'expanded'  => true,
+                'multiple'  => true
+            ))
+            ->add('save', 'submit', array(
+                'label'  => 'Zapisz',
+                'attr'=> array (
+                    'class' => 'btn btn-success btn-sm',
+                    'id' => 'tubePost_save',
+                    'name' => 'tubePost[save]'
+                )
             ));
     }
 
@@ -46,6 +73,6 @@ class TubeContentType extends AbstractType
      */
     public function getName()
     {
-        return 'tubeContentType';
+        return 'tubeContent';
     }
 }
