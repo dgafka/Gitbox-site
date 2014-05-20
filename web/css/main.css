@@ -399,14 +399,6 @@ div.col-6.col-sm-6.col-lg-4 {
     font-size: 15px;
 }
 
-.main-movie-show {
-    max-height: 70px;
-}
-
-.main-movie-show-link {
-    margin-left: 35px;
-}
-
 .main-link-show {
     float: right;
     font-weight: bold;
@@ -496,4 +488,17 @@ div.col-6.col-sm-6.col-lg-4 {
         overflow: inherit !important;
         overflow-y: auto !important;
     }
+}
+
+.main-site {
+    border: 3px groove;
+    width: 87%;
+}
+
+.main-movie-show {
+    max-height: 35px;
+}
+
+.main-movie-show-link {
+    margin-left: 35px;
 }
