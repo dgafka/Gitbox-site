@@ -270,7 +270,8 @@ class TubeController extends Controller
         $attachment = $contentHelper->getOneAttachment($content->getId(),$login)[0];
 
         $dir = '../../../../../web/uploads/tube/'.$user->getId().'/'.$attachment->getFilename();
-        $fs->remove($dir,$dir.'.jpg');//o tu jest usuwanie plików, but not work even if in array()
+//        $fs->remove($dir,$dir.'.jpg');//o tu jest usuwanie plików, but not work even if in array()
+	    $this->removeFile($user->getId(), $attachment->getFilename());
 
         //usuniecie contentu
         $contentHelper->remove(intval($id));
@@ -399,5 +400,21 @@ class TubeController extends Controller
             ))
         );
     }
+
+	/**
+	 * Zwraca sciezke dostepu do uploadu
+	 */
+	private function getUploadsDir() {
+		return __DIR__ . $this->getDiviner() . '..' . $this->getDiviner() . '..' . $this->getDiviner() . '..' . $this->getDiviner() . '..' . $this->getDiviner() . '..' . $this->getDiviner() . 'web' . $this->getDiviner() . 'uploads' . $this->getDiviner();
+	}
+
+	private function removeFile($userId, $fileName) {
+		$path = $this->getUploadsDir() . 'tube' . $this->getDiviner() . $userId . $this->getDiviner() . $fileName;
+		return @unlink($path);
+	}
+
+	private function getDiviner() {
+		return '/';
+	}
 
 }
