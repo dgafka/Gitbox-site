@@ -272,7 +272,9 @@ class TubeController extends Controller
 
         $dir = '../../../../../web/uploads/tube/'.$user->getId().'/'.$attachment->getFilename();
 //        $fs->remove($dir,$dir.'.jpg');//o tu jest usuwanie plików, but not work even if in array()
-	    $this->removeFile($user->getId(), $attachment->getFilename());
+        $this->removeFile($user->getId(), $attachment->getFilename());
+        $this->removeFile($user->getId(), $attachment->getFilename().'.jpg');
+
 
         //usuniecie contentu
         $contentHelper->remove(intval($id));
@@ -409,7 +411,13 @@ class TubeController extends Controller
 		return __DIR__ . $this->getDiviner() . '..' . $this->getDiviner() . '..' . $this->getDiviner() . '..' . $this->getDiviner() . '..' . $this->getDiviner() . '..' . $this->getDiviner() . 'web' . $this->getDiviner() . 'uploads' . $this->getDiviner();
 	}
 
-	private function removeFile($userId, $fileName) {
+    /**
+     * usuwa plik z folderu /web/tube/{userId}/{filename}
+     * @param $userId
+     * @param $fileName
+     * @return bool
+     */
+    private function removeFile($userId, $fileName) {
 		$path = $this->getUploadsDir() . 'tube' . $this->getDiviner() . $userId . $this->getDiviner() . $fileName;
 		return @unlink($path);
 	}
