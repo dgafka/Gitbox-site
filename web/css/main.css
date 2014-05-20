@@ -406,17 +406,6 @@ div.col-6.col-sm-6.col-lg-4 {
     margin-top: 12px;
 }
 
-.main-header {
-    color: rgb(229, 112, 132);
-    font-weight: bold;
-    text-decoration: underline;
-}
-
-.main-article {
-    border: 2px solid lightblue;
-    text-decoration: underline;
-}
-
 .thumbnail {
     border: 2px solid lightblue;
 }
@@ -502,3 +491,15 @@ div.col-6.col-sm-6.col-lg-4 {
 .main-movie-show-link {
     margin-left: 35px;
 }
+
+.main-header {
+    font-weight: bold;
+    text-decoration: inherit;
+    color: rgb(202, 63, 19);
+}
+
+.main-article {
+    border: 2px solid lightblue;
+    text-decoration: underline;
+}
+
