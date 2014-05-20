@@ -14,6 +14,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Gitbox\Bundle\CoreBundle\Entity\Content;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Cookie;
 use Gitbox\Bundle\CoreBundle\Entity\Menu;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -230,7 +232,7 @@ class TubeController extends Controller
         $contentHelper = $this->container->get('tube_content_helper');
 
         $attachment = $contentHelper->getOneAttachment($id, $login);
-
+        $postContent = $contentHelper->getOneContent(intval($id), $login);
         if (!$attachment) {
             throw $this->createNotFoundException('Niestety nie znaleziono filmu.');
         }
@@ -238,12 +240,36 @@ class TubeController extends Controller
         $dir = '../../../../../web/uploads/tube/'.$user->getId().'/'.$attachment[0]->getFilename();
         $imgDir = '../../../../../web/uploads/tube/'.$user->getId().'/'.$attachment[0]->getFilename().'.jpg';
 
+        // pobieranie żądania
+        $request = $this->get('request');
+        // inicjalizacja odpowiedzi serwera
+        $response = new Response();
+
+        
+
+        if (!$postContent) {
+            throw $this->createNotFoundException('Niestety, nie znaleziono takiego wpisu.');
+        }
+
+        // aktualizacja licznika odwiedzin na podstawie `ciasteczka`
+        $hitCookie = $request->cookies->get('hit_' . $postContent->getId());
+
+        if (!isset($hitCookie)) {
+            $postContent->setHit($postContent->getHit() + 1);
+            $contentHelper->update($postContent);
+
+            $cookie = new Cookie('hit_' . $postContent->getId(), true, time() + 3600 * 3);
+            $response->headers->setCookie($cookie);
+        }
+
         return array(
             'user' => $user,
             'posts' => $attachment,
             'dir'  => $dir,
             'imgDir' => $imgDir,
             'idContent' => $id,
+            'content' => $postContent,
+            'login' => $login
             //'hasAccess' => $hasAccess
         );
     }
