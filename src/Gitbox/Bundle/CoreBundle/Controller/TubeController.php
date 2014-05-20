@@ -117,7 +117,6 @@ class TubeController extends Controller
 
         $attachmentImages = $contentHelper->getAttachments($login);
 
-
         $countPost = count($contents);
 
         return array(
@@ -177,9 +176,8 @@ class TubeController extends Controller
                 $filename = uniqid();
 
 
-/*TODO: jak użytkownik nie ma katoalogu to nie utworzy się miniaturka, a jak najpierw
-                    utworzę katalog przenosząc plik, to nie ma dostępu do pliku oO*/
                     $file->move($dir, $filename.'.'.$extension);
+                $fs->copy('/home/gitbox/www/Projects/Gitbox-site/web/uploads/tube/default_image.jpg',$dir.''.$filename.'.'.$extension.'.jpg');
 
 
                     $newAttachment->setFilename($filename.'.'.$extension);
@@ -256,32 +254,41 @@ class TubeController extends Controller
      * @Method({"GET"})
      */
     public function removeAction($id, $login) {
+        $fs = new Filesystem();
         // walidacja dostępu
-        //$this->checkAccess($login);
+        $this->checkAccess($login);
+        $user = $this->validateUser($login);
+
+        // inicjalizacja flash baga
+        $session = $this->container->get('session');
 
         $contentHelper = $this->container->get('tube_content_helper');
         $content = $contentHelper->getOneContent($id, $login);
 
         $contentTitle = $content->getTitle();
 
-        //$attachment = $contentHelper->getOneAttachment($content->getId(),$login);
+        $attachment = $contentHelper->getOneAttachment($content->getId(),$login)[0];
+
+        $dir = '../../../../../web/uploads/tube/'.$user->getId().'/'.$attachment->getFilename();
+        $fs->remove($dir,$dir.'.jpg');//o tu jest usuwanie plików, but not work even if in array()
+
         //usuniecie contentu
-        //$contentHelper->remove(intval($id));
+        $contentHelper->remove(intval($id));
 
         //usuniecie attachmentu
-        //$contentHelper->removeAttachment($attachment);
-        /*
-                $moduleHelper = $this->container->get('module_helper');
-                $moduleHelper->init('GitTube');
-                $userDescHelper = $this->container->get('user_description_helper');
+        $contentHelper->removeAttachment($attachment);
 
-                // aktualizacja statystyk
-                $moduleHelper->setTotalContents($login, '-');
-                $userDescHelper->updateUserScore($login, $content->getVoteUp(), $content->getVoteDown());
+        $moduleHelper = $this->container->get('module_helper');
+        $moduleHelper->init('GitTube');
+        $userDescHelper = $this->container->get('user_description_helper');
 
-                // inicjalizacja flash baga
-                $session = $this->container->get('session');
-                $session->getFlashBag()->add('success', 'Usunięto wpis <b>' . $contentTitle . '</b>');*/
+        // aktualizacja statystyk
+        $moduleHelper->setTotalContents($login, '-');
+        $userDescHelper->updateUserScore($login, $content->getVoteUp(), $content->getVoteDown());
+
+        $session->getFlashBag()->add('success', 'Usunięto wpis <b>' . $contentTitle . '</b>');
+
+
 
         return $this->redirect(
             $this->generateUrl('tube_index', array(
@@ -373,11 +380,11 @@ class TubeController extends Controller
         $filename = $attachment->getFilename();
         $extension = $attachment->getMime();
         $file = $dir.''.$filename;
-/////////////////generowanie thumbnail'a oO ///////////////////////////
+
         $polecenie = 'ffmpeg -ss 00:00:01 -i '.$file.' -vframes 1 uploads/tube/'.$user->getId().'/'.$filename.'.jpg';
         shell_exec($polecenie);
-        //////////////////////////////////////////////////////////////////////
-        if(!($fs->exists($dir.''.$filename.'.'.$extension.'.jpg'))){
+
+        if(($fs->exists($dir.''.$filename.'.'.$extension.'.jpg'))){
             $session->getFlashBag()->add('warning', 'Wystąpił błąd podczas tworzenia miniaturki do filmu. Spróbuj ponownie.');
         }else{
 

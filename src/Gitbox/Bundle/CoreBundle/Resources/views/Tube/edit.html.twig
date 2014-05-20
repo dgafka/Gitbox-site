@@ -15,6 +15,8 @@
 
     <div class="pull-left">
         <a href="{{ path('tube_index', {'login': user.login}) }}"><button type="button"  class="btn btn-powrot" ><span class="glyphicon glyphicon-arrow-left"></span>Powrót do listy</button></a>
+        {#* @Route("/user/{login}/tube/{id}/generate", name="tube_generate_att")#}
+        <a href="{{ path('tube_generate_att', {'login': user.login, 'id': post.id}) }}"><button type="button"  class="btn btn-success" >{#<span class="glyphicon glyphicon-photo"></span>#}Wygeneruj miniaturkę</button></a>
 
     </div>
     <div class="container">
@@ -101,8 +103,6 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div {#class="well well-sm well-primary"#}>
-                                                    {#* @Route("/user/{login}/tube/{id}/generate", name="tube_generate_att")#}
-                                                    <a href="{{ path('tube_generate_att', {'login': user.login, 'id': post.id}) }}"><button type="button"  class="btn btn-success" >{#<span class="glyphicon glyphicon-photo"></span>#}Wygeneruj miniaturkę</button></a>
                                                     {{ form_row(form.save) }}
                                                     {{ form_end(form) }}
 
