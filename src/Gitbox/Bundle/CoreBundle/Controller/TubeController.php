@@ -161,6 +161,7 @@ class TubeController extends Controller
             $menuHelper = $this->container->get('menu_helper');
             $em = $this->getDoctrine()->getManager();
             // inicjalizacja flash baga
+
             $session = $this->container->get('session');
 
             $file = $form['filename']->getData();

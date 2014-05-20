@@ -23,7 +23,7 @@
                 <h1 class="text-center">Filmy użytkownika <i><code>{{ user.login }}</code></i></h1><div class="pull-right"><h6>{{ countPosts }} pozycji</h6></div>
                 <div class="list-group">
                     {% for post in posts %}
-                      <a href="{{ path('user_tube_show', {'login': user.login, 'id': post.id}) }}" {#class="list-group-item"#}>
+                     <em class="list-group-item"> <a href="{{ path('user_tube_show', {'login': user.login, 'id': post.id}) }}" >
                             <div class="media col-md-3">
                                 <figure class="pull-left bg-primary">
                                     {% for attachment in attachments %}
@@ -39,10 +39,11 @@
                             </div>
                             <div class="col-md-6">
                                 <h4 class="list-group-item-heading"> {{ post.title }} </h4>
-
+                                </a>
                             <p class="list-group-item-text"> {{ post.description }} </p>
-                    </a>
+                         <br />
                     {% if hasAccess == true %}
+
                     <a href="{{ path('tube_edit_file', {'login': user.login, 'id': post.id}) }}"><span class="glyphicon glyphicon-pencil"></span> Edytuj</a>
                     <a href="{{ path('tube_remove_file', {'id': post.id, 'login': user.login}) }}"><span class="glyphicon glyphicon-trash"></span> Usuń</a>
                     {% endif %}
@@ -52,7 +53,7 @@
                     {% for category in post.idCategory %}
                         <span class="label label-default label-border-default">{{ category.name }}</span>
                     {% else %}
-                        <em>brak</em>
+                        brak
                     {% endfor %}
                 </div>
             </div>
@@ -96,11 +97,12 @@
                             {% endif %}
                         </div>
 
-                      </a>
+                      </em>
                     {% endfor %}
                 </div>
             </div>
         </div>
+
 
 {% endblock %}
 
