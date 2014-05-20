@@ -65,8 +65,10 @@ class StaticPageController extends Controller
 
 	    $form->handleRequest($request);
 	    if($form->isValid()) {
-		    $email = $form->getData()['email'];
-		    $content = $form->getData()['content'];
+		    $email = $form->getData();
+		    $email = $email['email'];
+		    $content = $form->getData();
+		    $content = $content['content'];
 
 		    return $this->forward('GitboxCoreBundle:Mailer:helpMail', array('email' => $email, 'content' => $content));
 	    }
