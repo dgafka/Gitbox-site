@@ -156,7 +156,7 @@ class TubeController extends Controller
         if ($form->isValid()) {
             $fs = new Filesystem();
             $dir =  __DIR__.'/../../../../../web/uploads/tube/'.$user->getId().'/';
-
+            $dirToDefaultImage = __DIR__.'/../../../../../web/uploads/tube/default_image.jpg';
             $contentHelper = $this->container->get('tube_content_helper');
             $menuHelper = $this->container->get('menu_helper');
             $em = $this->getDoctrine()->getManager();
@@ -177,7 +177,7 @@ class TubeController extends Controller
 
 
                     $file->move($dir, $filename.'.'.$extension);
-                $fs->copy('/home/gitbox/www/Projects/Gitbox-site/web/uploads/tube/default_image.jpg',$dir.''.$filename.'.'.$extension.'.jpg');
+                $fs->copy($dirToDefaultImage,$dir.''.$filename.'.'.$extension.'.jpg');
 
 
                     $newAttachment->setFilename($filename.'.'.$extension);
