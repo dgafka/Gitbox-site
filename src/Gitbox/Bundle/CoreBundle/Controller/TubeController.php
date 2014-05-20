@@ -245,7 +245,7 @@ class TubeController extends Controller
         // inicjalizacja odpowiedzi serwera
         $response = new Response();
 
-        
+
 
         if (!$postContent) {
             throw $this->createNotFoundException('Niestety, nie znaleziono takiego wpisu.');
