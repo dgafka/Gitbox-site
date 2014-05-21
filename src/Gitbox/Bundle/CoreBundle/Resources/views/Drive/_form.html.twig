@@ -8,5 +8,8 @@
                 {{ form_widget(form.title) }}
             </div>
         {{ form_end(form) }}
+        {{ form_widget(form.save, {
+        'label': btnLabel
+        }) }}
     </div>
 {% endblock %}

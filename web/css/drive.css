@@ -108,9 +108,21 @@ img{
     }
 
 
+
+
 }
 
 .btn{
     max-width: 500;
     width: 500;
+}
+
+
+
+.titlePanel{
+    display: inline;
+}
+
+h2{
+    display: inline;
 }

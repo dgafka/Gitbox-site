@@ -1,3 +1,8 @@
+gitbox_bundle_menu:
+    resource: "@GitboxBundleMenuBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 # Routing priority
 #_1:
 #    resource: "@GitboxCoreBundle/Controller/BlogController.php"

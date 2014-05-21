@@ -1,0 +1,23 @@
+
+        <a href="{{ path('drive_show_menu', {'login': user.login, 'element': menuStructure.id }) }}">
+            <span class="glyphicon glyphicon-folder-close"></span>{{ menuStructure.title }}
+        </a>
+        {%  if menuStructure.menus != null or  menuStructure.contents != null %}
+        <a data-toggle="collapse" data-target="#{{ menuStructure.id | raw }}">
+            <span class="glyphicon glyphicon-chevron-down"></span>
+        </a>
+
+        <ul id="{{ menuStructure.id | raw }}"  class="collapse">
+            {% for menux in menuStructure.menus %}
+                <li> {{  include('GitboxCoreBundle:Drive:menu-sub.html.twig' , {'menuStructure': menux} ) }} </li>
+            {% endfor %}
+            {% for content in menuStructure.contents %}
+                <li>
+                    <a href="{{ path('drive_show_content', {'login': user.login, 'element': content.id }) }}">
+                        <span class="glyphicon glyphicon-hdd"></span>{{ content.title }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+

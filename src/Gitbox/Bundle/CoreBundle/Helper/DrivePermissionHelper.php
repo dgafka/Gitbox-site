@@ -20,8 +20,7 @@ class DrivePermissionHelper   {
     }
 
 public function checkUser() {
-$username = $this->session->get('username');
-
+    $username = $this->session->get('username');
 
 
 if (!isset($username)) {
