@@ -28,9 +28,9 @@ class UserProfileController extends Controller
 		$userDescription = $user->getIdDescription();
 
 		//Dodanie hita do wyświetlania
-		if(!$request->cookies->get('profile_view')) {
+		if(!$request->cookies->get('profile_view' . $user->getId())) {
 			$response = new Response();
-			$response->headers->setCookie(new Cookie('profile_view', 'true', time() + 3600));
+			$response->headers->setCookie(new Cookie('profile_view' . $user->getId(), 'true', time() + 3600));
 			$response->sendHeaders();
 			$userDescription->setHit($userDescription->getHit() + 1);
 			$this->getDoctrine()->getManager()->persist($userDescription);

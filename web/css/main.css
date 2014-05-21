@@ -400,10 +400,8 @@ div.col-6.col-sm-6.col-lg-4 {
 }
 
 .main-link-show {
-    float: right;
     font-weight: bold;
     font-size: 15px;
-    margin-top: 12px;
 }
 
 .thumbnail {
@@ -486,10 +484,6 @@ div.col-6.col-sm-6.col-lg-4 {
 
 .main-movie-show {
     max-height: 35px;
-}
-
-.main-movie-show-link {
-    margin-left: 35px;
 }
 
 .main-header {
