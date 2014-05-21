@@ -294,7 +294,8 @@ class TubeController extends Controller
 
         $contentTitle = $content->getTitle();
 
-        $attachment = $contentHelper->getOneAttachment($content->getId(),$login)[0];
+        $attachment = $contentHelper->getOneAttachment($content->getId(),$login);
+        $attachment = $attachment[0];
 
         $dir = '../../../../../web/uploads/tube/'.$user->getId().'/'.$attachment->getFilename();
 //        $fs->remove($dir,$dir.'.jpg');//o tu jest usuwanie plików, but not work even if in array()
