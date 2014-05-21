@@ -24,11 +24,15 @@ class StaticPageController extends Controller
 	    $isLogged = $permissionHelper->isLogged();
 	    $login    = '';
 
-	    if($isLogged) {
+	    if ($isLogged) {
 		    $login = $this->container->get('session')->get('username');
-	    }else {
+	    } else {
 		    return array();
 	    }
+
+        $permissionHelper = $this->container->get('permissions_helper');
+        $owner = $permissionHelper->checkPermission($login);
+        $admin = $permissionHelper->isAdmin();
 
 
 		/**
@@ -48,7 +52,7 @@ class StaticPageController extends Controller
 			$availableModules[$module->getName()] = $module->getDescription();
 		}
 
-	    return array('login' => $user->getLogin(), 'email' => $user->getEmail(), 'module' => $availableModules);
+	    return array('login' => $user->getLogin(), 'email' => $user->getEmail(), 'module' => $availableModules, 'isOwner' => $owner, 'isAdmin' => $admin);
 
     }
 
