@@ -6,8 +6,16 @@
         <a data-toggle="collapse" data-target="#{{ menuStructure.id | raw }}">
             <span class="glyphicon glyphicon-chevron-down"></span>
         </a>
+            {% set colla = "collapse" %}
 
-        <ul id="{{ menuStructure.id | raw }}"  class="collapse">
+
+            {%  for item in path %}
+                {%  if item.id == menuStructure.id %}
+                    {% set colla = "collapse in" %}
+                {% endif %}
+            {% endfor %}
+
+        <ul id="{{ menuStructure.id | raw }}"  class="{{ colla | raw }}">
             {% for menux in menuStructure.menus %}
                 <li> {{  include('GitboxCoreBundle:Drive:menu-sub.html.twig' , {'menuStructure': menux} ) }} </li>
             {% endfor %}
