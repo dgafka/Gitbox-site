@@ -11,7 +11,7 @@
     <field name="filename" type="string" column="filename" length="100" nullable="false"/>
     <field name="title" type="string" column="title" length="50" nullable="false"/>
     <field name="description" type="string" column="description" length="255" nullable="true"/>
-    <field name="createDate" type="date" column="create_date" nullable="false"/>
+    <field name="createDate" type="datetime" column="create_date" nullable="false"/>
     <field name="mime" type="string" column="mime" length="20" nullable="true"/>
     <many-to-one field="idContent" target-entity="Content">
       <join-columns>

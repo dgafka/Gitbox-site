@@ -46,6 +46,13 @@ class Content
     /**
      * @var string
      *
+     * @ORM\Column(name="header", type="string", length=255, nullable=true)
+     */
+    private $header;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="description", type="text", nullable=false)
      */
     private $description;
@@ -149,7 +156,7 @@ class Content
     /**
      * Get idUser
      *
-     * @return integer
+     * @return integer 
      */
     public function getIdUser()
     {
@@ -200,6 +207,29 @@ class Content
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * Set header
+     *
+     * @param string $header
+     * @return Content
+     */
+    public function setHeader($header)
+    {
+        $this->header = $header;
+
+        return $this;
+    }
+
+    /**
+     * Get header
+     *
+     * @return string 
+     */
+    public function getHeader()
+    {
+        return $this->header;
     }
 
     /**

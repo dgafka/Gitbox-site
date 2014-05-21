@@ -6,5 +6,7 @@
     </id>
     <field name="ip" type="string" column="ip" length="15" nullable="false"/>
     <field name="createDate" type="datetime" column="create_date" nullable="false"/>
+    <field name="expireDate" type="date" column="expire_date" nullable="false"/>
+    <field name="description" type="text" column="description" nullable="false"/>
   </entity>
 </doctrine-mapping>

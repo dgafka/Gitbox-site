@@ -36,6 +36,20 @@ class BannedIp
      */
     private $createDate;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="expire_date", type="date", nullable=false)
+     */
+    private $expireDate;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text", nullable=false)
+     */
+    private $description;
+
 
 
     /**
@@ -82,6 +96,52 @@ class BannedIp
     public function getCreateDate()
     {
         return $this->createDate;
+    }
+
+    /**
+     * Set expireDate
+     *
+     * @param \DateTime $expireDate
+     * @return BannedIp
+     */
+    public function setExpireDate($expireDate)
+    {
+        $this->expireDate = $expireDate;
+
+        return $this;
+    }
+
+    /**
+     * Get expireDate
+     *
+     * @return \DateTime 
+     */
+    public function getExpireDate()
+    {
+        return $this->expireDate;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return BannedIp
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 
     /**

@@ -18,8 +18,9 @@
     {% if hasAccess == true %}
         <a href="{{ path('tube_new_file', {'login': user.login}) }}"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-film"></span>Prześlij</button></a>
     {% endif %}
-        <div class="row">
-            <div class="well">
+
+    <div class="row">
+        <div class="col-lg-8 well">
                 <h1 class="text-center">Filmy użytkownika <i><code>{{ user.login }}</code></i></h1><div class="pull-right"><h6>{{ countPosts }} pozycji</h6></div>
                 <div class="list-group">
                     {% for post in posts %}
@@ -58,7 +59,7 @@
                 </div>
             </div>
                         <div class="col-md-3 text-center">
-                            <p><span class="glyphicon glyphicon-time"></span> <b>Utworzono</b> {{ post.createDate | date("D d/m/Y H:i:s") }}</p>
+                            {#<p><span class="glyphicon glyphicon-time"></span> <b>Utworzono</b> {{ post.createDate | date("D d/m/Y H:i:s") }}</p>#}
                             <p><span class="glyphicon glyphicon-time"></span> <b>Ostatnio edytowano</b> {{ post.lastModificationDate | date("D d/m/Y H:i:s") }}</p>
                             <p><span class="glyphicon glyphicon-eye-open"></span> <b>Wyświetleń</b> <span class="badge">{{ post.hit }}</span></p>
                             {% if hasAccess == true %}
@@ -100,8 +101,17 @@
                       </em>
                     {% endfor %}
                 </div>
-            </div>
+
         </div>
+    <div class="">
+
+    {# USER SIDEBAR #}
+    {% render controller("GitboxCoreBundle:UserSidebar:render", {'user': user, 'actionUrl': 'user_blog'}) %}
+
+</div>
+
+
+
 
 
 {% endblock %}

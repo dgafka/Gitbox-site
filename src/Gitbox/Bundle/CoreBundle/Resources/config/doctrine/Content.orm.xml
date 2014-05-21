@@ -10,6 +10,7 @@
     <field name="idUser" type="integer" column="id_user" nullable="false"/>
     <field name="status" type="string" column="status" length="1" nullable="false"/>
     <field name="title" type="string" column="title" length="255" nullable="false"/>
+    <field name="header" type="string" column="header" length="255" nullable="true"/>
     <field name="description" type="text" column="description" nullable="false"/>
     <field name="createDate" type="datetime" column="create_date" nullable="false"/>
     <field name="hit" type="integer" column="hit" nullable="false"/>

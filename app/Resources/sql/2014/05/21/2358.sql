@@ -1,0 +1,1 @@
+ALTER TABLE public.attachment ALTER COLUMN create_date TYPE TIMESTAMP USING create_date::TIMESTAMP;

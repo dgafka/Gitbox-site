@@ -39,15 +39,13 @@ em.list-group-item.active small {
     color: #fff;
     background-color: #3071a9;
     border-color: #285e8e;
-    width: 120px;
-    margin-left: -15px;
+
 }
 .btn-primary{
     color: #fff;
     background-color: #428bca;
     border-color: #357ebd;
-    width: 120px;
-    margin-left: -15px;
+
 }
 .btn-powrot:hover, .btn-powrot:focus, .btn-powrot:active {
     color: #fff;

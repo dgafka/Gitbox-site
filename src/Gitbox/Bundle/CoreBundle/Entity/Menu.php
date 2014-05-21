@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Menu
  *
- * @ORM\Table(name="menu", indexes={@ORM\Index(name="IDX_7D053A932A1393C5", columns={"id_module"}), @ORM\Index(name="IDX_7D053A936B3CA4B", columns={"id_user"})})
+ * @ORM\Table(name="menu", indexes={@ORM\Index(name="IDX_7D053A932A1393C5", columns={"id_module"})})
  * @ORM\Entity
  */
 class Menu
@@ -49,6 +49,14 @@ class Menu
      * @ORM\Column(name="expire", type="date", nullable=true)
      */
     private $expire;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_user", type="integer", nullable=true)
+     */
+    private $idUser;
+
     /**
      * @var \Module
      *
@@ -58,16 +66,6 @@ class Menu
      * })
      */
     private $idModule;
-
-    /**
-     * @var \UserAccount
-     *
-     * @ORM\ManyToOne(targetEntity="UserAccount")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_user", referencedColumnName="id")
-     * })
-     */
-    private $idUser;
 
 
 
@@ -164,22 +162,12 @@ class Menu
     }
 
     /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
      * Set idUser
      *
-     * @param \Gitbox\Bundle\CoreBundle\Entity\UserAccount $idUser
+     * @param integer $idUser
      * @return Menu
      */
-    public function setIdUser(\Gitbox\Bundle\CoreBundle\Entity\UserAccount $idUser = null)
+    public function setIdUser($idUser)
     {
         $this->idUser = $idUser;
 
@@ -189,11 +177,21 @@ class Menu
     /**
      * Get idUser
      *
-     * @return \Gitbox\Bundle\CoreBundle\Entity\UserAccount 
+     * @return integer 
      */
     public function getIdUser()
     {
         return $this->idUser;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
