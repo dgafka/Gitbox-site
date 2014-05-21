@@ -1,17 +1,21 @@
-<ul>
-{% for menu in menus %}
-    <li>
-        <a href="{{ path('drive_show_menu', {'login': user.login, 'element': menu.id }) }}">
-            <span class="glyphicon glyphicon-folder-close"></span>{{ menu.title }}
-        </a>
-    </li>
 
-{% endfor %}
-{% for content in contents %}
-    <li>
-        <a href="{{ path('drive_show_content', {'login': user.login, 'element': content.id }) }}">
-            <span class="glyphicon glyphicon-hdd"></span>{{ content.title }}
-        </a>
-    </li>
-{% endfor %}
+
+
+
+<ul class="main-menu">
+    {% for menux in menuStructure.menus %}
+       <li >
+           {{  include('GitboxCoreBundle:Drive:menu-sub.html.twig' , {'menuStructure': menux} ) }}
+       </li>
+    {% endfor %}
+    {% for content in contents %}
+        <li>
+            <a href="{{ path('drive_show_content', {'login': user.login, 'element': content.id }) }}">
+                <span class="glyphicon glyphicon-hdd"></span>{{ content.title }}
+            </a>
+        </li>
+    {% endfor %}
+
 </ul>
+
+

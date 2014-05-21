@@ -1,6 +1,7 @@
 <?php
 namespace Gitbox\Bundle\CoreBundle\Helper;
 
+use Gitbox\Bundle\CoreBundle\Entity\Attachment;
 use Gitbox\Bundle\CoreBundle\Entity\Content;
 use Gitbox\Bundle\CoreBundle\Entity\Menu;
 use Doctrine\ORM\Query\Expr\Join;
@@ -8,6 +9,7 @@ use Doctrine\ORM\Query;
 use Knp\Component\Pager\Paginator;
 use Symfony\Component\HttpFoundation\Request;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * Class DriveContentHelper
@@ -70,6 +72,26 @@ class DriveContentHelper extends ContentHelper  {
                 return null;
             }
         }
+    }
+
+    /**
+     * @param $newAttachment \Gitbox\Bundle\CoreBundle\Entity\Attachment
+     * @return null|\Gitbox\Bundle\CoreBundle\Entity\Attachment
+     * @throws \Exception
+     */
+    public function insertIntoAttachment($newAttachment) {
+
+
+        if($newAttachment instanceof \Gitbox\Bundle\CoreBundle\Entity\Attachment) {
+
+            $newAttachment = $this->instance()->persist($newAttachment);
+            $this->instance()->flush();
+        }else {
+            throw new Exception("Błąd podczas dodawania obiektu.");
+        }
+
+
+        return $newAttachment;
     }
 
     /**
@@ -405,6 +427,61 @@ class DriveContentHelper extends ContentHelper  {
             }
         }
 
+    }
+
+    /**
+     * @param mixed $content
+     * @throws Exception
+     */
+    public function attRemove($att) {
+        if ($att instanceof Attachment) {
+            $this->instance()->remove($att);
+            $this->instance()->flush();
+        } else if (is_int($att)) {
+            $queryBuilder = $this->instance()->createQueryBuilder();
+            $queryBuilder
+                ->delete('GitboxCoreBundle:Attachment', 'c')
+                ->where('c.id = :id')
+                ->setParameter('id', $att)
+                ->getQuery()
+                ->execute();
+        } else {
+            throw new Exception('Niepoprawny typ parametru.');
+        }
+    }
+
+
+
+
+
+    /**
+     * Pobranie jednego filmu z bazy - tabela attachment
+     *
+     * @param Content $idContent
+     * @param int $idAttachment
+     *
+     * @return Attachment / null
+     *
+     * @throws Exception
+     */
+    public function getAttachmentById($idContent, $idAttachment) {
+
+
+        $queryBuilder = $this->instance()->createQueryBuilder();
+
+        $queryBuilder
+            ->select('c')
+            ->from('GitboxCoreBundle:Attachment', 'c')
+            ->where('c.id = :idAttachment')
+            ->andWhere('c.idContent = :idContent')
+            ->setParameters(array(
+                'idContent' => $idContent,
+                'idAttachment' => $idAttachment
+            ));
+
+        $results = $queryBuilder->getQuery()->getOneOrNullResult();
+
+        return $results;
     }
 
 }

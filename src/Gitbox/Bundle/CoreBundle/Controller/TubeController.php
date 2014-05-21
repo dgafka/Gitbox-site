@@ -294,7 +294,8 @@ class TubeController extends Controller
 
         $contentTitle = $content->getTitle();
 
-        $attachment = $contentHelper->getOneAttachment($content->getId(),$login)[0];
+        $attachment = $contentHelper->getOneAttachment($content->getId(),$login);
+        $attachment = $attachment[0];
 
         $dir = '../../../../../web/uploads/tube/'.$user->getId().'/'.$attachment->getFilename();
 //        $fs->remove($dir,$dir.'.jpg');//o tu jest usuwanie plików, but not work even if in array()
@@ -344,7 +345,8 @@ class TubeController extends Controller
 
         // pobranie wpisu z bazy
         $postContent = $contentHelper->getOneContent(intval($id), $login);
-        $editAtt = $contentHelper->getOneAttachment($postContent->getId(), $login)[0];
+        $editAtt = $contentHelper->getOneAttachment($postContent->getId(), $login);
+        $editAtt = $editAtt[0];
 
         if (!$postContent) {
             throw $this->createNotFoundException('Niestety, nie znaleziono takiego wpisu.');
@@ -401,7 +403,8 @@ class TubeController extends Controller
         $content = $contentHelper->getOneContent($id, $login);
 
         $contentTitle = $content->getTitle();
-        $attachment = $contentHelper->getOneAttachment($content->getId(),$login)[0];
+        $attachment = $contentHelper->getOneAttachment($content->getId(),$login);
+        $attachment = $attachment[0];
 
         $session = $this->container->get('session');
         $fs = new Filesystem();

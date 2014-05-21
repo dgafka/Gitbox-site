@@ -2,7 +2,9 @@
 
 namespace Gitbox\Bundle\CoreBundle\Controller;
 
+use Gitbox\Bundle\CoreBundle\Form\Type\DriveAttachmentType;
 use Gitbox\Bundle\CoreBundle\Form\Type\DriveContenerType;
+use Proxies\__CG__\Gitbox\Bundle\CoreBundle\Entity\Attachment;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -12,9 +14,34 @@ use Symfony\Component\HttpFoundation\Request;
 use Gitbox\Bundle\CoreBundle\Entity\Content;
 use Gitbox\Bundle\CoreBundle\Entity\Menu;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Gitbox\Bundle\MenuBundle\MenuTree;
 
 class DriveController extends Controller
 {
+    /**
+     * @return mixed
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    private function  validateUser(){
+        $userHelper = $this->container->get('user_helper');
+        $drivePermissionHelper = $this->container->get('dp_helper');
+
+        $moduleHelper = $this->container->get('module_helper');
+        $moduleHelper->init('GitDrive');
+
+        $username = $drivePermissionHelper->checkUser();
+        if(isset($username))
+        {
+            $user = $userHelper->findByLogin($username);
+            if (!$moduleHelper->isModuleActivated($username)) {
+                throw $this->createNotFoundException('Ten moduł nie jest aktywowany !');
+            }
+            return $user;
+        }
+        else return null;
+
+        }
+
 
 
     /**
@@ -93,7 +120,7 @@ class DriveController extends Controller
      */
     private function getPageContent($userid, $element, $request){
         $contentHelper = $this->container->get('drive_content_helper');
-        $pageContent = $contentHelper->getContent($element, $request);
+        $pageContent = $contentHelper->getContent(intval($element), $request);
 
         if (!isset($pageContent)){
             throw $this->createNotFoundException('Nie znaleziono elementu ');
@@ -126,38 +153,147 @@ class DriveController extends Controller
      * @return mixed
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    private function getMenuStructure($menuId, $request){
+    private function getMenuStructure($menuId, $login, $request){
         $contentHelper = $this->container->get('drive_content_helper');
+        $menuhelper = $this -> container->get('menu_helper');
+        $menux= $menuhelper -> find($menuId);
         $menus = $contentHelper->getMenus($menuId, $request);
         $menu_contents = $contentHelper->getMenuContent($menuId, $request);
-        $struktura="<ul>";
+        $menuTree= new MenuTree();
+        $menuTree -> setId($menuId);
+        $menuTree -> setTitle($menux->getTitle());
+        $menuTree ->setUser($login);
+        $menuTreeMenus = array();
         foreach($menus as $menuI)
         {
-            $struktura=$struktura."<li><span class=\"glyphicon glyphicon-folder-close\"></span>".$menuI->getTitle();
-            $struktura=$struktura.$this->getMenuStructure($menuI->getId(), $request)."</li>";
+
+
+            $menuTreeI= $this ->getMenuStructure($menuI->getId(),$login,$request);
+            array_push($menuTreeMenus, $menuTreeI);
+
         }
-        foreach($menu_contents as $menuI)
-        {
-            $struktura=$struktura."<li><a href=\"{{ path('drive_contener_new') }}\"><span class=\"glyphicon glyphicon-hdd\"></span>".$menuI->getTitle()."</a></li>";
-        }
-        $struktura=$struktura."</ul>";
-        return $struktura;
+        $menuTree->setMenus($menuTreeMenus);
+        $menuTree ->setContents($menu_contents);
+        return $menuTree;
     }
 
 
     /**
-     * @Route("/drive")
+     * @return mixed
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    private function getMenuStructureX($login, $request){
+
+        $contentHelper = $this->container->get('drive_content_helper');
+
+        // menu
+        $menuRoot= $contentHelper->getMenuZero($login, $request);
+        if(!isset($menuRoot))
+        {
+            throw $this->createNotFoundException('Bład: Nie znaleziono tresci ');
+        }
+        else
+        {
+            $menuId = $menuRoot->getId();
+            $menuTree = $this -> getMenuStructure($menuId, $login, $request);
+        }
+
+        return $menuTree;
+    }
+
+
+
+    /**
+     * usuwa plik z folderu /web/tdrive/{userId}/{filename}
+     * @param $userId
+     * @param $fileName
+     * @return bool
+     */
+    private function removeFile($userId, $fileName) {
+        $path = $this->getUploadsDir() . 'drive' . $this->getDiviner() . $userId . $this->getDiviner() . $fileName;
+        return @unlink($path);
+    }
+
+    private function getDiviner() {
+        return '/';
+    }
+
+    /**
+     * Zwraca sciezke dostepu do uploadu
+     */
+    private function getUploadsDir() {
+        return __DIR__ . $this->getDiviner() . '..' . $this->getDiviner() . '..' . $this->getDiviner() . '..' . $this->getDiviner() . '..' . $this->getDiviner() . '..' . $this->getDiviner() . 'web' . $this->getDiviner() . 'uploads' . $this->getDiviner();
+    }
+
+
+    /**
+     * @return mixed
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+
+    private function  removeMenuX($oldMenu, $request, $user){
+        $menuHelper = $this->container->get('menu_helper');
+        $contentHelper = $this->container->get('drive_content_helper');
+        $menuCon = $contentHelper ->getMenus($oldMenu->getId(), $request);
+        $conCon = $contentHelper ->getMenuContent($oldMenu->getId(), $request);
+
+        if(isset($menuCon)){
+
+               foreach($menuCon as $menux)
+               {
+                   $this->removeMenuX($menux, $request, $user);
+
+               }
+                foreach($conCon as $contentx)
+                {
+                    $this -> removeContentx($contentx, $request, $user);
+                }
+
+
+        }
+        $menuHelper -> remove($oldMenu->getId());
+    }
+
+    private function removeContentx($element,$request, $user){
+        $contentHelper = $this->container->get('drive_content_helper');
+        $page_attachments = $contentHelper->getAttachments($element, $request);
+        foreach($page_attachments as $att)
+        {
+            removeAttx($user, $att->getId());
+        }
+
+        $contentHelper -> remove($element->getId());
+
+    }
+
+
+    /**
+     * @return mixed
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    private function removeAttx($user, $el2)
+    {
+        $contentHelper = $this->container->get('drive_content_helper');
+        $this->removeFile($user->getId(), $el2->getFilename());
+        $contentHelper -> attRemove(intval($el2->getId()));
+
+    }
+
+
+
+
+    /**
+     * @Route("/drive",name="drive_start")
      * @Template()
      */
     public function DriveStartAction()
     {
+        $user = $this -> validateUser();
 
-        $drivePermissionHelper = $this->container->get('dp_helper');
-        $username = $drivePermissionHelper->checkUser();
-        if(isset($username))
+        if(isset($user))
         {
             $response = $this->forward('GitboxCoreBundle:Drive:DriveIndex', array(
-                'login'  => $username
+                'login'  => $user->getLogin()
             ));
 
 
@@ -177,38 +313,66 @@ class DriveController extends Controller
      */
     public function DriveIndexAction($login)
     {
-        $user = $this -> validateURL($login);
+        $user = $this -> validateUser();
 
-        $contentHelper = $this->container->get('drive_content_helper');
-        $permissionHelper = $this->container->get('permissions_helper');
-        $request = $this->get('request');
-        $menuRoot= $contentHelper->getMenuZero($login, $request);
-        $menuId = $menuRoot->getId();
-        $menus = $contentHelper->getMenus($menuId, $request);
-        $menu_contents = $contentHelper->getMenuContent($menuId, $request);
+        if(isset($user))
+        {
+           if($user-> getLogin() == $login)
+           {
+               $request = $this->get('request');
+
+               //helpery
+
+               $contentHelper = $this->container->get('drive_content_helper');
+               $permissionHelper = $this->container->get('permissions_helper');
+
+               // menu
+               $menuRoot= $contentHelper->getMenuZero($login, $request);
+               $menuId = $menuRoot->getId();
+               $menuTree = $this -> getMenuStructureX($login, $request);
+               $menu_contents = $contentHelper->getMenuContent($menuId, $request);
+
+               //pobranie i sprwdzenie zawartosci menu
+               $pageContent = $menuRoot;
+               $menuCon = $contentHelper ->getMenus($pageContent->getId(), $request);
+               $conCon = $contentHelper ->getMenuContent($pageContent->getId(), $request);
+
+               //zalogowany? (ew. do usuniecia)
+               $logged = $permissionHelper -> checkPermission($login);
 
 
-        $logged = $permissionHelper -> checkPermission($login);
-        $countMenus = $contentHelper -> countMenus($user->getId(),$request);
-        $countMenus--;
-        $countAttachments = $contentHelper -> countAttachments($user->getId(),$request);
+               //zmienne dla paska uzytkownika
+               $countMenus = $contentHelper -> countMenus($user->getId(),$request);
+               $countMenus--;
+               $countAttachments = $contentHelper -> countAttachments($user->getId(),$request);
 
 
-        $pageContent = $menuRoot;
-        $menuCon = $contentHelper ->getMenus($pageContent->getId(), $request);
-        $conCon = $contentHelper ->getMenuContent($pageContent->getId(), $request);
 
-        return array(
-            'user' => $user,
-            'menus' => $menus,
-            'contents' => $menu_contents,
-            'logged' => $logged,
-            'counter' => $countMenus,
-            'countatt' => $countAttachments,
-            'pageContent' => $pageContent,
-            'menuCon' => $menuCon,
-            'conCon' => $conCon
-        );
+
+               return array(
+                   'user' => $user,
+                   'contents' => $menu_contents,
+                   'logged' => $logged,
+                   'counter' => $countMenus,
+                   'countatt' => $countAttachments,
+                   'pageContent' => $pageContent,
+                   'menuCon' => $menuCon,
+                   'conCon' => $conCon,
+                   'menuStructure' =>$menuTree
+               );
+           }
+           else
+            {
+                throw $this->createNotFoundException('Ten dysk nie należy do ciebie ! ');
+            }
+        }
+        else
+        {
+            throw $this->createNotFoundException('Jesteś niezalogowany');
+        }
+
+
+
     }
 
     /**
@@ -217,41 +381,71 @@ class DriveController extends Controller
      */
     public function DriveShowMenuAction($login, $element)
     {
-        $user = $this -> validateURL($login);
+        $user = $this -> validateUser();
 
-        $contentHelper = $this->container->get('drive_content_helper');
-        $permissionHelper = $this->container->get('permissions_helper');
-        $request = $this->get('request');
-        $menuRoot= $contentHelper->getMenuZero($login, $request);
-        $menuId = $menuRoot->getId();
-        $menus = $contentHelper->getMenus($menuId, $request);
-        $menu_contents = $contentHelper->getMenuContent($menuId, $request);
+        if(isset($user))
+        {
+            if($user-> getLogin() == $login)
+            {
+                $request = $this->get('request');
 
-        $logged = $permissionHelper -> checkPermission($login);
-        $countMenus = $contentHelper -> countMenus($user->getId(),$request);
-        $countMenus--;
-        $countAttachments = $contentHelper -> countAttachments($user->getId(),$request);
+                //helpery
+
+                $contentHelper = $this->container->get('drive_content_helper');
+                $permissionHelper = $this->container->get('permissions_helper');
+
+                // menu
+                $menuRoot= $contentHelper->getMenuZero($login, $request);
+                $menuId = $menuRoot->getId();
+                $menuTree = $this -> getMenuStructureX($login, $request);
+                $menu_contents = $contentHelper->getMenuContent($menuId, $request);
+
+                //pobranie i sprwdzenie zawartosci menu
+
+               $pageContent = $this ->getMenuPageContent($user->getId(), $element, $request);
+                if($pageContent -> getParent() == null){
+                    return $this->redirect($this->generateUrl('drive_user_index', array(
+                        'login'=>$login ),true));
+                }
+                $parentMenu = $pageContent->getParent();
+                $menuCon = $contentHelper ->getMenus($pageContent->getId(), $request);
+                $conCon = $contentHelper ->getMenuContent($pageContent->getId(), $request);
+
+                //zalogowany? (ew. do usuniecia)
+                $logged = $permissionHelper -> checkPermission($login);
 
 
-        $pageContent = $this ->getMenuPageContent($user->getId(), $element, $request);
-        if($pageContent -> getParent() == null){
-            return $this->redirect($this->generateUrl('drive_user_index', array(
-                'login'=>$login ),true));
+                //zmienne dla paska uzytkownika
+                $countMenus = $contentHelper -> countMenus($user->getId(),$request);
+                $countMenus--;
+                $countAttachments = $contentHelper -> countAttachments($user->getId(),$request);
+
+
+
+
+                return array(
+                    'user' => $user,
+                    'contents' => $menu_contents,
+                    'logged' => $logged,
+                    'counter' => $countMenus,
+                    'countatt' => $countAttachments,
+                    'pageContent' => $pageContent,
+                    'menuCon' => $menuCon,
+                    'conCon' => $conCon,
+                    'menuStructure' =>$menuTree,
+                    'parentMenu' => $parentMenu
+                );
+            }
+            else
+            {
+                throw $this->createNotFoundException('Ten dysk nie należy do ciebie ! ');
+            }
         }
-        $menuCon = $contentHelper ->getMenus($pageContent->getId(), $request);
-        $conCon = $contentHelper ->getMenuContent($pageContent->getId(), $request);
+        else
+        {
+            throw $this->createNotFoundException('Jesteś niezalogowany');
+        }
 
-        return array(
-            'user' => $user,
-            'menus' => $menus,
-            'contents' => $menu_contents,
-            'logged' => $logged,
-            'counter' => $countMenus,
-            'countatt' => $countAttachments,
-            'pageContent' => $pageContent,
-            'menuCon' => $menuCon,
-            'conCon' => $conCon
-        );
 
     }
 
@@ -261,39 +455,71 @@ class DriveController extends Controller
      */
     public function NewDriveContenerAction($login, $element)
     {
-        $user = $this -> validateURL($login);
-        $request = $this->get('request');
-        $this ->getMenuPageContent($user->getId(), $element, $request);
 
-        $moduleHelper = $this->container->get('module_helper');
-        $moduleHelper->init('GitDrive');
-        $modulee = $moduleHelper -> findModule();
-        $pageContent = $this ->getMenuPageContent($user->getId(), $element, $request);
-        $this->userCheckContent($pageContent);
+        $user = $this -> validateUser();
 
-        $newMenu = new Menu();
-        $newMenu->setIdUser($user);
-        $newMenu->setParent($element);
-        $newMenu->setIdModule($modulee);
+        if(isset($user))
+        {
+            if($user-> getLogin() == $login)
+            {
 
-        $form = $this->createForm(new DriveContenerType(), $newMenu);
-        $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            $menuHelper = $this->container->get('menu_helper');
-            $menuHelper -> insert($newMenu);
-            ;
+                $request = $this->get('request');
 
-            return $this->redirect($this->generateUrl('drive_show_menu', array(
-                'login'=>$login,
-            'element' => $element),true));
+                //helpery
+                $contentHelper = $this->container->get('drive_content_helper');
+                $permissionHelper = $this->container->get('permissions_helper');
+                $moduleHelper = $this->container->get('module_helper');
+                $moduleHelper->init('GitDrive');
+
+
+                //pobieranie danych i sprawdzenia
+                $modulee = $moduleHelper -> findModule();
+                $pageContent = $this ->getMenuPageContent($user->getId(), $element, $request);
+
+                $newMenu = new Menu();
+                $newMenu->setIdUser($user);
+                $newMenu->setParent($element);
+                $newMenu->setIdModule($modulee);
+
+                $form = $this->createForm(new DriveContenerType(), $newMenu);
+                $form->handleRequest($request);
+
+                if ($form->isValid()) {
+                    $menuHelper = $this->container->get('menu_helper');
+                    $menuHelper -> insert($newMenu);
+                    ;
+
+                    return $this->redirect($this->generateUrl('drive_show_menu', array(
+                        'login'=>$login,
+                        'element' => $element),true));
+                }
+
+                return array(
+                    'user' => $user,
+                    'form' => $form->createView(),
+                    'tytul' => "Nowy kontener",
+                    'btnLabel' => 'dodaj',
+                    'parentMenu' => $pageContent
+                );
+
+
+
+            }
+            else
+            {
+                throw $this->createNotFoundException('Ten dysk nie należy do ciebie ! ');
+            }
+        }
+        else
+        {
+            throw $this->createNotFoundException('Jesteś niezalogowany');
         }
 
-        return array(
-            'user' => $user,
-            'form' => $form->createView(),
-            'tytul' => "Nowy kontener"
-        );
+
+
+
+
 
 
     }
@@ -305,32 +531,66 @@ class DriveController extends Controller
      */
     public function EditDriveContenerAction($login, $element)
     {
-        $user = $this -> validateURL($login);
-        $request = $this->get('request');
-        $oldMenu=$this ->getMenuPageContent($user->getId(), $element, $request);
+
+        $user = $this -> validateUser();
+
+        if(isset($user))
+        {
+            if($user-> getLogin() == $login)
+            {
 
 
-        $form = $this->createForm(new DriveContenerType(), $oldMenu);
-        $form->handleRequest($request);
-        $pageContent = $this ->getMenuPageContent($user->getId(), $element, $request);
-        $this->userCheckContent($pageContent);
+                $request = $this->get('request');
 
-        if ($form->isValid()) {
-            $menuHelper = $this->container->get('menu_helper');
-            $menuHelper -> update($oldMenu);
+                //helpery
+                $moduleHelper = $this->container->get('module_helper');
+                $moduleHelper->init('GitDrive');
 
 
-            return $this->redirect($this->generateUrl('drive_show_menu', array(
-                'login'=>$login,
-                'element' => $element),true));
+                //pobieranie danych i sprawdzenia
+                $oldMenu=$this ->getMenuPageContent($user->getId(), $element, $request);
+                $parentMenu = $oldMenu;
+
+                //formularz
+                $form = $this->createForm(new DriveContenerType(), $oldMenu);
+                $form->handleRequest($request);
+
+                if ($form->isValid()) {
+                    $menuHelper = $this->container->get('menu_helper');
+                    $menuHelper -> update($oldMenu);
+
+
+                    return $this->redirect($this->generateUrl('drive_show_menu', array(
+                        'login'=>$login,
+                        'element' => $element),true));
+                }
+
+                return array(
+                    'user' => $user,
+                    'form' => $form->createView(),
+                    'tytul' => "Edytuj kontener",
+                    'btnLabel' => 'edytuj',
+                    'parentMenu' => $parentMenu
+
+                );
+
+
+
+            }
+            else
+            {
+                throw $this->createNotFoundException('Ten dysk nie należy do ciebie ! ');
+            }
+        }
+        else
+        {
+            throw $this->createNotFoundException('Jesteś niezalogowany');
         }
 
-        return array(
-            'user' => $user,
-            'form' => $form->createView(),
-            'tytul' => "Edytuj kontener"
 
-        );
+
+
+
 
 
     }
@@ -341,29 +601,56 @@ class DriveController extends Controller
      */
     public function RemoveDriveContenerAction($login, $element)
     {
-        $user = $this -> validateURL($login);
-        $request = $this->get('request');
-        $oldMenu=$this ->getMenuPageContent($user->getId(), $element, $request);
-        $parent = $oldMenu -> getParent();
-        $pageContent = $this ->getMenuPageContent($user->getId(), $element, $request);
-        $this->userCheckContent($pageContent);
+        $user = $this -> validateUser();
 
-
-        if($parent !=null)
+        if(isset($user))
         {
-            $menuHelper = $this->container->get('menu_helper');
-            $menuHelper -> remove($oldMenu->getId());
+            if($user-> getLogin() == $login)
+            {
 
 
-            return $this->redirect($this->generateUrl('drive_show_menu', array(
-                'login'=>$login,
-                'element' => $parent),true));
+                $request = $this->get('request');
+
+                //helpery
+                $moduleHelper = $this->container->get('module_helper');
+                $moduleHelper->init('GitDrive');
+
+
+                $oldMenu=$this ->getMenuPageContent($user->getId(), $element, $request);
+                $parent = $oldMenu -> getParent();
+
+
+
+                if($parent !=null)
+                {
+                   if($this -> removeMenuX($oldMenu, $request, $user)){
+
+                       return $this->redirect($this->generateUrl('drive_show_menu', array(
+                           'login'=>$login,
+                           'element' => $parent),true));
+
+                   }
+
+                }
+                else
+                {
+                    return $this->redirect($this->generateUrl('drive_user_index', array(
+                        'login'=>$login),true));
+                }
+
+
+
+            }
+            else
+            {
+                throw $this->createNotFoundException('Ten dysk nie należy do ciebie ! ');
+            }
         }
         else
         {
-            return $this->redirect($this->generateUrl('drive_user_index', array(
-                'login'=>$login),true));
+            throw $this->createNotFoundException('Jesteś niezalogowany');
         }
+
 
 
     }
@@ -375,6 +662,117 @@ class DriveController extends Controller
      */
     public function DriveShowAction($login, $element)
     {
+
+        $user = $this -> validateUser();
+
+        if(isset($user))
+        {
+            if($user-> getLogin() == $login)
+            {
+                $request = $this->get('request');
+
+                //helpery
+
+                $contentHelper = $this->container->get('drive_content_helper');
+                $permissionHelper = $this->container->get('permissions_helper');
+
+                // menu boczne
+                $menuRoot= $contentHelper->getMenuZero($login, $request);
+                $menuId = $menuRoot->getId();
+                $menuTree = $this -> getMenuStructureX($login, $request);
+                $menu_contents = $contentHelper->getMenuContent($menuId, $request);
+
+
+                //pobieranie tresci strony
+                $newAttachment = new Attachment();
+
+                $form = $this->createForm(new DriveAttachmentType(), $newAttachment);
+                $form->handleRequest($request);
+
+                $pageContent = $this ->getPageContent($user->getId(), $element, $request);
+                $page_attachments = $contentHelper->getAttachments($element, $request);
+
+
+                //pobieranie pliku
+
+                $dir =  __DIR__.'/../../../../../web/uploads/drive/'.$user->getId().'/';
+
+                if ($form->isValid()) {
+                    $contentHelper = $this->container->get('drive_content_helper');
+                    $em = $this->getDoctrine()->getManager();
+                    // inicjalizacja flash baga
+                    $session = $this->container->get('session');
+
+
+                    $file = $form['filename']->getData();
+                    $extension = $file->guessExtension();
+
+                    if ($file->getClientSize() > 83886080) {
+                        $session->getFlashBag()->add('warning', 'Rozmiar pliku musi być mniejszy niż 80Mb.');
+                    }else{
+                        $filename = uniqid();
+                        $file->move($dir, $filename.'.'.$extension);
+
+                        $newAttachment->setFilename($filename.'.'.$extension);
+                        $newAttachment->setMime($extension);
+                        $newAttachment ->setCreateDate(new \DateTime('now'));
+                        $newAttachment->setIdContent($pageContent);
+                        $contentHelper -> insertIntoAttachment($newAttachment);
+
+                        $session->getFlashBag()->add('success', 'Dodano plik' . $newAttachment->getTitle() . '</b>');
+                        return $this->redirect($this->generateUrl('drive_show_content', array(
+                            'login'=>$login,
+                            'element' => $element),true));
+
+                    }
+
+
+                }
+
+                $dirr = '../../../../../../../../../web/uploads/drive/'.$user->getId().'/';
+
+                $parentMenu = $pageContent->getIdMenu();
+
+
+                //zalogowany? (ew. do usuniecia)
+                $logged = $permissionHelper -> checkPermission($login);
+
+
+                //zmienne dla paska uzytkownika
+                $countMenus = $contentHelper -> countMenus($user->getId(),$request);
+                $countMenus--;
+                $countAttachments = $contentHelper -> countAttachments($user->getId(),$request);
+
+                return array(
+                    'user' => $user,
+                    'contents' => $menu_contents,
+                    'pageContent' => $pageContent,
+                    'pageContentAttachments' => $page_attachments,
+                    'logged' => $logged,
+                    'counter' => $countMenus,
+                    'countatt' => $countAttachments,
+                    'menuStructure' => $menuTree,
+                    'tytul' => '',
+                    'form' => $form->createView(),
+                    'dirr' => $dirr,
+                    'btnLabel' => 'dodaj',
+                    'parentMenu' =>$parentMenu
+                );
+
+
+
+            }
+            else
+            {
+                throw $this->createNotFoundException('Ten dysk nie należy do ciebie ! ');
+            }
+        }
+        else
+        {
+            throw $this->createNotFoundException('Jesteś niezalogowany');
+        }
+
+
         $contentHelper = $this->container->get('drive_content_helper');
         $permissionHelper = $this->container->get('permissions_helper');
         $request = $this->get('request');
@@ -383,31 +781,11 @@ class DriveController extends Controller
         $menus = $contentHelper->getMenus($menuId, $request);
         $menu_contents = $contentHelper->getMenuContent($menuId, $request);
 
-        $userHelper = $this->container->get('user_helper');
-        $user = $userHelper->findByLogin($login);
-        $logged = $permissionHelper -> checkPermission($login);
-        $countMenus = $contentHelper -> countMenus($user->getId(),$request);
-        $countMenus--;
-        $countAttachments = $contentHelper -> countAttachments($user->getId(),$request);
+        $menuTree = $this -> getMenuStructure($menuId, $login, $request);
 
 
-        $pageContent = $this ->getPageContent($user->getId(), $element, $request);
-        $page_attachments = $contentHelper->getAttachments($element, $request);
 
 
-        $structure = $this ->  getMenuStructure($menuRoot, $request);
-
-        return array(
-            'user' => $user,
-            'menus' => $menus,
-            'contents' => $menu_contents,
-            'pageContent' => $pageContent,
-            'pageContentAttachments' => $page_attachments,
-            'logged' => $logged,
-            'abc'=> $structure,
-            'counter' => $countMenus,
-            'countatt' => $countAttachments
-        );
     }
 
 
@@ -417,44 +795,69 @@ class DriveController extends Controller
      */
     public function NewDriveItemAction($login, $element)
     {
-        $user = $this -> validateURL($login);
-        $request = $this->get('request');
+        $user = $this -> validateUser();
+
+        if(isset($user))
+        {
+            if($user-> getLogin() == $login)
+            {
 
 
-        $moduleHelper = $this->container->get('module_helper');
-        $moduleHelper->init('GitDrive');
-        $pageContent = $this ->getMenuPageContent($user->getId(), $element, $request);
-        $this->userCheckContent($pageContent);
+                $request = $this->get('request');
 
-        $newContent = new Content();
+                //helpery
+                $contentHelper = $this->container->get('drive_content_helper');
+                $permissionHelper = $this->container->get('permissions_helper');
+                $moduleHelper = $this->container->get('module_helper');
+                $moduleHelper->init('GitDrive');
 
 
-        $form = $this->createForm(new DriveElementType(), $newContent);
-        $form->handleRequest($request);
+                //pobieranie  i sprawdzanie tresci
+                $pageContent = $this ->getMenuPageContent($user->getId(), $element, $request);
 
-        if ($form->isValid()) {
+                $newContent = new Content();
 
-            $newContent ->setIdUser($user->getId());
-            $newContent->setLastModificationDate(new \DateTime('now'));
-            $newContent -> setIdMenu($pageContent);
-            $newContent->setCreateDate(new \DateTime('now'));
-            $contentHelper = $this->container->get('drive_content_helper');
-            $contentHelper -> insert($newContent);
-            ;
+                $form = $this->createForm(new DriveElementType(), $newContent);
+                $form->handleRequest($request);
 
-            return $this->redirect($this->generateUrl('drive_show_menu', array(
-                'login'=>$login,
-                'element' => $element),true));
+                if ($form->isValid()) {
+
+                    $newContent ->setIdUser($user->getId());
+                    $newContent->setLastModificationDate(new \DateTime('now'));
+                    $newContent -> setIdMenu($pageContent);
+                    $newContent->setCreateDate(new \DateTime('now'));
+                    $contentHelper = $this->container->get('drive_content_helper');
+                    $contentHelper -> insert($newContent);
+
+
+                    return $this->redirect($this->generateUrl('drive_show_menu', array(
+                        'login'=>$login,
+                        'element' => $element),true));
+                    }
+
+
+
+
+                return array(
+                    'user' => $user,
+                    'form' => $form->createView(),
+                    'tytul' => "Nowy element",
+                    'btnLabel' => 'dodaj',
+                    'parentMenu' => $pageContent
+                );
+
+
+
+            }
+            else
+            {
+                throw $this->createNotFoundException('Ten dysk nie należy do ciebie ! ');
+            }
         }
-
-        return array(
-            'user' => $user,
-            'form' => $form->createView(),
-            'tytul' => "Nowy element"
-
-        );
-
-
+        else
+        {
+            throw $this->createNotFoundException('Jesteś niezalogowany');
+        }
     }
 
 
@@ -464,33 +867,68 @@ class DriveController extends Controller
      */
     public function EditDriveItemAction($login, $element)
     {
-        $user = $this -> validateURL($login);
-        $request = $this->get('request');
-        $oldCon=$this ->getPageContent($user->getId(), $element, $request);
+
+        $user = $this -> validateUser();
+
+        if(isset($user))
+        {
+            if($user-> getLogin() == $login)
+            {
 
 
-        $form = $this->createForm(new DriveElementType(), $oldCon);
-        $form->handleRequest($request);
-        $pageContent = $this ->getPageContent($user->getId(), $element, $request);
-        $this->userCheckContentX($pageContent);
+                $request = $this->get('request');
 
-        if ($form->isValid()) {
-            $oldCon->setLastModificationDate(new \DateTime('now'));
-            $dcHelper = $this->container->get('drive_content_helper');
-            $dcHelper -> update($oldCon);
+                //helpery
+                $moduleHelper = $this->container->get('module_helper');
+                $moduleHelper->init('GitDrive');
 
 
-            return $this->redirect($this->generateUrl('drive_show_content', array(
-                'login'=>$login,
-                'element' => $element),true));
+                //pobieranie i sprawdzanie danych
+                $oldCon=$this ->getPageContent($user->getId(), $element, $request);
+                $parentMenu =
+
+                //formularz
+                $form = $this->createForm(new DriveElementType(), $oldCon);
+                $form->handleRequest($request);
+                $pageContent = $this ->getPageContent($user->getId(), $element, $request);
+
+                $pageContent->getIdMenu();
+
+                if ($form->isValid()) {
+                    $oldCon->setLastModificationDate(new \DateTime('now'));
+                    $dcHelper = $this->container->get('drive_content_helper');
+                    $dcHelper -> update($oldCon);
+
+
+                    return $this->redirect($this->generateUrl('drive_show_content', array(
+                        'login'=>$login,
+                        'element' => $element),true));
+                }
+
+
+
+                return array(
+                    'user' => $user,
+                    'form' => $form->createView(),
+                    'tytul' => "Edytuj element",
+                    'btnLabel' => 'edytuj',
+                    'parentMenu' => $parentMenu
+
+                );
+
+
+
+            }
+            else
+            {
+                throw $this->createNotFoundException('Ten dysk nie należy do ciebie ! ');
+            }
+        }
+        else
+        {
+            throw $this->createNotFoundException('Jesteś niezalogowany');
         }
 
-        return array(
-            'user' => $user,
-            'form' => $form->createView(),
-            'tytul' => "Edytuj element"
-
-        );
 
 
     }
@@ -513,11 +951,10 @@ class DriveController extends Controller
         $form->handleRequest($request);
         $pageContent = $this ->getPageContent($user->getId(), $element, $request);
         $this->userCheckContentX($pageContent);
+        $this->removeContentx($oldCon,$request, $user);
 
 
 
-            $contentHelper = $this->container->get('drive_content_helper');
-            $contentHelper -> remove($oldCon->getId());
 
 
             return $this->redirect($this->generateUrl('drive_show_menu', array(
@@ -529,9 +966,105 @@ class DriveController extends Controller
     }
 
 
+    /**
+     * @Route("user/{login}/drive/content/{element}/upload",name="drive_upload")
+     * @Template("GitboxCoreBundle:Drive:NewDriveItem.html.twig")
+     */
+    public function NewDriveAttachmentAction($login, $element)
+    {
+        $user = $this -> validateURL($login);
+        $request = $this->get('request');
+
+
+        $moduleHelper = $this->container->get('module_helper');
+        $moduleHelper->init('GitDrive');
+        $pageContent = $this ->getPageContent($user->getId(), $element, $request);
+        $this->userCheckContentX($pageContent);
+
+        $newAttachment = new Attachment();
+
+
+        $form = $this->createForm(new DriveAttachmentType(), $newAttachment);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+
+            $newContent ->setIdUser($user->getId());
+            $newContent->setLastModificationDate(new \DateTime('now'));
+            $newContent -> setIdMenu($pageContent);
+            $newContent->setCreateDate(new \DateTime('now'));
+            $contentHelper = $this->container->get('drive_content_helper');
+            $contentHelper -> insert($newContent);
+            ;
+
+            return $this->redirect($this->generateUrl('drive_show_menu', array(
+                'login'=>$login,
+                'element' => $element),true));
+        }
+
+        return array(
+            'user' => $user,
+            'form' => $form->createView(),
+            'tytul' => "Dodaj plik"
+
+        );
+    }
+
+    /**
+     * Usuwa content o podanym id
+     *
+     * @Route("/user/{login}/drive/content/{element}/att/{el2}/remove", name="att_remove_file")
+     * @Method({"GET"})
+     */
+    public function removeAttAction($login, $element, $el2) {
+
+
+        $user = $this -> validateUser();
+
+        if(isset($user))
+        {
+            if($user-> getLogin() == $login)
+            {
+
+
+                $request = $this->get('request');
+
+                //helpery
+                $moduleHelper = $this->container->get('module_helper');
+                $contentHelper = $this->container->get('drive_content_helper');
+                $moduleHelper->init('GitDrive');
+
+                //pobieranie i sprawdzenie elementow
+                $oldCon=$this ->getPageContent($user->getId(), $element, $request);
+                $parent= $oldCon->getIdMenu()->getId();
+
+                $page_attachment = $contentHelper->getAttachmentById($oldCon,intval($el2));
+                if($page_attachment != null){
+                    $this -> removeAttx($user, $page_attachment);
+                }
+
+
+
+                return $this->redirect($this->generateUrl('drive_show_content', array(
+                    'login'=>$login,
+                    'element' => $element),true));
 
 
 
 
 
+
+
+            }
+            else
+            {
+                throw $this->createNotFoundException('Ten dysk nie należy do ciebie ! ');
+            }
+        }
+        else
+        {
+            throw $this->createNotFoundException('Jesteś niezalogowany');
+        }
+
+    }
 }

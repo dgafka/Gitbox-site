@@ -1,75 +1,21 @@
 {% extends "GitboxCoreBundle:Drive:DriveShow.html.twig" %}
+{% block titlepanel %}
+    <a href="{{ path('drive_show_menu', {'login': user.login, 'element': parentMenu}) }}">
+        <span class="glyphicon  glyphicon-circle-arrow-left"></span>
+    </a>
+    <h2>
+        {{ pageContent.title }}
+    </h2>
+    <a type="button"  href="{{ path('drive_contener_edit', {'login': user.login, 'element': pageContent.id }) }}">
+        <span class="glyphicon glyphicon-cog"></span>
+    </a>
+
+{% endblock %}
 {% block descpanel %}
 {%  endblock %}
 {% block tabelpanel %}
-    <table class="table table-striped">
-        <tr>
-            <th>nazwa</th>
-            <th>ilość plików</th>
-            <th>data utworzenia</th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-        </tr>
-            {% for menu in menuCon %}
-                <tr>
-                    <td>
-                    <a href="{{ path('drive_show_menu', {'login': user.login, 'element': menu.id }) }}">
-                        <span class="glyphicon glyphicon-folder-close"></span>{{ menu.title }}
-                    </a>
-                    </td>
-                    <td>.</td>
-                    <td>.</td>
-                    {% if logged == true %}
-                        <td>
-                            <a type="button" class="btn btn-warning" href="{{ path('drive_contener_edit', {'login': user.login, 'element': menu.id }) }}">
-                                <span class="glyphicon glyphicon-cog"></span> edytuj
-                            </a>
-                        </td>
-                        <td>
-                            <a type="button" class="btn btn-danger" href="{{ path('drive_contener_remove', {'login': user.login, 'element': menu.id }) }}">
-                                <span class="glyphicon glyphicon-trash"></span>usuń
-                            </a>
-                        </td>
-                    {% else %}
-                        <td></td>
-                        <td></td>
-                    {% endif %}
-                </tr>
-
-            {% endfor %}
-            {% for content in conCon %}
-                <tr>
-                    <td>
-                        <a href="{{ path('drive_show_content', {'login': user.login, 'element': content.id }) }}">
-                        <span class="glyphicon glyphicon-hdd"></span>{{ content.title }}
-                        </a>
-                    </td>
-                    <td></td>
-                    <td>
-                        {{ content.createDate|date('Y-m-d')}}
-                    </td>
-                    {% if logged == true %}
-                        <td>
-                            <a type="button" class="btn btn-warning" href="{{ path('drive_content_edit', {'login': user.login, 'element': content.id }) }}">
-                                <span class="glyphicon glyphicon-cog"></span> edytuj
-                            </a>
-                        </td>
-                        <td>
-                            <a type="button" class="btn btn-danger" href="{{ path('drive_content_remove', {'login': user.login, 'element': content.id }) }}">
-                                <span class="glyphicon glyphicon-trash"></span>usuń
-                            </a>
-                        </td>
-                    {% else %}
-                        <td></td>
-                        <td></td>
-                    {% endif %}
-                </tr>
-            {% endfor %}
-        </ul>
-    </table>
-    {% endblock %}
+    {% include "GitboxCoreBundle:Drive:_menuContent.html.twig" %}
+{% endblock %}
     {%  block buttpanel %}
     {% if logged == true %}
         <div class="driveButtonPanel">

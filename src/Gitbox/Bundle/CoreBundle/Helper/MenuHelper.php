@@ -97,6 +97,7 @@ class MenuHelper extends EntityHelper implements CRUDHelper {
         if ($menu instanceof Menu) {
             $this->instance()->remove($menu);
             $this->instance()->flush();
+            $this->removeC($menu->getId());
         } else if (is_int($menu)) {
 
             $queryBuilder = $this->instance()->createQueryBuilder();
@@ -113,6 +114,28 @@ class MenuHelper extends EntityHelper implements CRUDHelper {
                 ->setParameter('id', $menu)
                 ->getQuery()
                 ->execute();
+            $this->removeC($menu);
+        } else {
+            throw new Exception('Niepoprawny typ parametru.');
+        }
+    }
+
+    /**
+     * @param mixed $menu
+     *
+     * @throws Exception
+     */
+    public function removeC($menu) {
+       if (is_int($menu)) {
+
+            $queryBuilder = $this->instance()->createQueryBuilder();
+            $queryBuilder
+                ->delete('GitboxCoreBundle:Menu', 'c')
+                ->where('c.parent = :id')
+                ->setParameter('id', $menu)
+                ->getQuery()
+                ->execute();
+
         } else {
             throw new Exception('Niepoprawny typ parametru.');
         }

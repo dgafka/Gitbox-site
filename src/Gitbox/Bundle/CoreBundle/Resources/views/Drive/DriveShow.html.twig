@@ -24,11 +24,20 @@
         <div class="col-md-8 col-sm-6 col-xs-6">{% block drive_r_panel %}
 
 
-                        <h2>
+                    <div class="titlePanel">
                             {% block titlepanel %}
-                                {{ pageContent.title }}
+                                <a href="{{ path('drive_show_menu', {'login': user.login, 'element': parentMenu.id}) }}">
+                                    <span class="glyphicon  glyphicon-circle-arrow-left"></span>
+                                </a>
+                                <h2>
+                                    {{ pageContent.title }}
+                                </h2>
+                            <a type="button" class="tbbx" href="{{ path('drive_content_edit', {'login': user.login, 'element': pageContent.id }) }}">
+                                    <span class="glyphicon glyphicon-cog"></span>
+                                </a>
+
                             {% endblock %}
-                        </h2>
+                    </div>
 
                     {% block descpanel %}
                     <div class="drive-show-description">
@@ -46,23 +55,21 @@
                             <th>tytuł</th>
                             <th>opis</th>
                             <th></th>
-                            <th></th>
                         </tr>
 
                             {% for att in pageContentAttachments %}
                         <tr>
-                            <td>{{ att.filename }}</td>
+                            <td>
+                                <a href="{{ path('drive_start')  | raw  }}/../../../web/uploads/drive/{{ user.id }}/{{ att.filename | raw }}">
+                                {{ att.filename }}
+                                    </a>
+
+                            </td>
                             <td>{{ att.title }}</td>
                             <td>{{ att.description }}</td>
                             {% if logged == true %}
                             <td>
-                                <a type="button" class="btn btn-warning" href="">
-                                    <span class="glyphicon glyphicon-cog"></span>
-                                     edytuj
-                                </a>
-                            </td>
-                            <td>
-                                <a type="button" class="btn btn-danger" href="">
+                                <a type="button" class="btn btn-danger" href="{{ path('att_remove_file', {'login': user.login, 'element': pageContent.id , 'el2': att.id}) }}">
                                     <span class="glyphicon glyphicon-trash"></span>usuń
                                 </a>
                             </td>
@@ -78,10 +85,18 @@
                 {% block buttpanel %}
             {% if logged == true %}
                 <div class="driveButtonPanel">
-                    <a type="button" class="btn btn-default" href="">
+                    <a type="button" class="btn btn-default" data-toggle="collapse" data-target="#demo">
                         <span class="glyphicon glyphicon-plus"></span>Dodaj plik
+
                     </a>
+
+                    <div id="demo" class="collapse">
+
+                        {% include "GitboxCoreBundle:Drive:_form.html.twig" %}
+                    </div>
                 </div>
+
+
 
             {%  endif %}
                     {%  endblock %}
