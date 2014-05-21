@@ -201,12 +201,37 @@ class DriveController extends Controller
         return $menuTree;
     }
 
+
+
+    /**
+     * usuwa plik z folderu /web/tdrive/{userId}/{filename}
+     * @param $userId
+     * @param $fileName
+     * @return bool
+     */
+    private function removeFile($userId, $fileName) {
+        $path = $this->getUploadsDir() . 'drive' . $this->getDiviner() . $userId . $this->getDiviner() . $fileName;
+        return @unlink($path);
+    }
+
+    private function getDiviner() {
+        return '/';
+    }
+
+    /**
+     * Zwraca sciezke dostepu do uploadu
+     */
+    private function getUploadsDir() {
+        return __DIR__ . $this->getDiviner() . '..' . $this->getDiviner() . '..' . $this->getDiviner() . '..' . $this->getDiviner() . '..' . $this->getDiviner() . '..' . $this->getDiviner() . 'web' . $this->getDiviner() . 'uploads' . $this->getDiviner();
+    }
+
+
     /**
      * @return mixed
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
 
-    private function  removeMenuX($oldMenu, $request){
+    private function  removeMenuX($oldMenu, $request, $user){
         $menuHelper = $this->container->get('menu_helper');
         $contentHelper = $this->container->get('drive_content_helper');
         $menuCon = $contentHelper ->getMenus($oldMenu->getId(), $request);
@@ -216,14 +241,45 @@ class DriveController extends Controller
 
                foreach($menuCon as $menux)
                {
-                   $this->removeMenuX($menux, $request);
+                   $this->removeMenuX($menux, $request, $user);
+
                }
+                foreach($conCon as $contentx)
+                {
+                    $this -> removeContentx($contentx, $request, $user);
+                }
 
 
         }
         $menuHelper -> remove($oldMenu->getId());
-        return true;
     }
+
+    private function removeContentx($element,$request, $user){
+        $contentHelper = $this->container->get('drive_content_helper');
+        $page_attachments = $contentHelper->getAttachments($element, $request);
+        foreach($page_attachments as $att)
+        {
+            removeAttx($user, $att->getId());
+        }
+
+        $contentHelper -> remove($element->getId());
+
+    }
+
+
+    /**
+     * @return mixed
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    private function removeAttx($user, $el2)
+    {
+        $contentHelper = $this->container->get('drive_content_helper');
+        $this->removeFile($user->getId(), $el2->getFilename());
+        $contentHelper -> attRemove(intval($el2->getId()));
+
+    }
+
+
 
 
     /**
@@ -567,7 +623,7 @@ class DriveController extends Controller
 
                 if($parent !=null)
                 {
-                   if($this -> removeMenuX($oldMenu, $request)){
+                   if($this -> removeMenuX($oldMenu, $request, $user)){
 
                        return $this->redirect($this->generateUrl('drive_show_menu', array(
                            'login'=>$login,
@@ -895,11 +951,10 @@ class DriveController extends Controller
         $form->handleRequest($request);
         $pageContent = $this ->getPageContent($user->getId(), $element, $request);
         $this->userCheckContentX($pageContent);
+        $this->removeContentx($oldCon,$request, $user);
 
 
 
-            $contentHelper = $this->container->get('drive_content_helper');
-            $contentHelper -> remove($oldCon->getId());
 
 
             return $this->redirect($this->generateUrl('drive_show_menu', array(
@@ -962,26 +1017,54 @@ class DriveController extends Controller
      * @Method({"GET"})
      */
     public function removeAttAction($login, $element, $el2) {
-        $user = $this -> validateURL($login);
-        $request = $this->get('request');
-        $oldCon=$this ->getPageContent($user->getId(), $element, $request);
-
-        $parent= $oldCon->getIdMenu()->getId();
-        $form = $this->createForm(new DriveElementType(), $oldCon);
-        $form->handleRequest($request);
-        $pageContent = $this ->getPageContent($user->getId(), $element, $request);
-        $this->userCheckContentX($pageContent);
 
 
+        $user = $this -> validateUser();
 
-        $contentHelper = $this->container->get('drive_content_helper');
-        $contentHelper -> attRemove(intval($el2));
+        if(isset($user))
+        {
+            if($user-> getLogin() == $login)
+            {
 
 
-        return $this->redirect($this->generateUrl('drive_show_content', array(
-            'login'=>$login,
-            'element' => $element),true));
+                $request = $this->get('request');
 
+                //helpery
+                $moduleHelper = $this->container->get('module_helper');
+                $contentHelper = $this->container->get('drive_content_helper');
+                $moduleHelper->init('GitDrive');
+
+                //pobieranie i sprawdzenie elementow
+                $oldCon=$this ->getPageContent($user->getId(), $element, $request);
+                $parent= $oldCon->getIdMenu()->getId();
+
+                $page_attachment = $contentHelper->getAttachmentById($oldCon,intval($el2));
+                if($page_attachment != null){
+                    $this -> removeAttx($user, $page_attachment);
+                }
+
+
+
+                return $this->redirect($this->generateUrl('drive_show_content', array(
+                    'login'=>$login,
+                    'element' => $element),true));
+
+
+
+
+
+
+
+            }
+            else
+            {
+                throw $this->createNotFoundException('Ten dysk nie należy do ciebie ! ');
+            }
+        }
+        else
+        {
+            throw $this->createNotFoundException('Jesteś niezalogowany');
+        }
 
     }
 }

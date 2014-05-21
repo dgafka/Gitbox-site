@@ -450,4 +450,38 @@ class DriveContentHelper extends ContentHelper  {
         }
     }
 
+
+
+
+
+    /**
+     * Pobranie jednego filmu z bazy - tabela attachment
+     *
+     * @param Content $idContent
+     * @param int $idAttachment
+     *
+     * @return Attachment / null
+     *
+     * @throws Exception
+     */
+    public function getAttachmentById($idContent, $idAttachment) {
+
+
+        $queryBuilder = $this->instance()->createQueryBuilder();
+
+        $queryBuilder
+            ->select('c')
+            ->from('GitboxCoreBundle:Attachment', 'c')
+            ->where('c.id = :idAttachment')
+            ->andWhere('c.idContent = :idContent')
+            ->setParameters(array(
+                'idContent' => $idContent,
+                'idAttachment' => $idAttachment
+            ));
+
+        $results = $queryBuilder->getQuery()->getOneOrNullResult();
+
+        return $results;
+    }
+
 }
