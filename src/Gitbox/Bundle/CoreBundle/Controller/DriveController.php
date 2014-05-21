@@ -22,6 +22,39 @@ class DriveController extends Controller
      * @return mixed
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
+    private function menuPath($menux, $request){
+        $path= array();
+        $parent = $menux->getParent();
+        if($parent !=null)
+        {
+            $path=$this-> menuPathX($parent, $path, $request);
+            array_push($path,$menux);
+        }
+        return $path;
+    }
+
+
+    /**
+     * @return mixed
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    private function menuPathX($menuxId, $path, $request){
+        $contentHelper = $this->container->get('drive_content_helper');
+        $menux = $contentHelper->getMenu(intval($menuxId), $request);
+        $parent = $menux->getParent();
+        if($parent  !=null)
+        {
+            $path=$this-> menuPathX($parent, $path, $request);
+            array_push($path,$menux);
+        }
+        return $path;
+    }
+
+
+    /**
+     * @return mixed
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
     private function  validateUser(){
         $userHelper = $this->container->get('user_helper');
         $drivePermissionHelper = $this->container->get('dp_helper');
@@ -65,29 +98,7 @@ class DriveController extends Controller
         return $user;
     }
 
-    /**
-     * @return mixed
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     */
-    private function userCheckContent($menu){
-        $userHelper = $this->container->get('user_helper');
-        $drivePermissionHelper = $this->container->get('dp_helper');
-        $username=$drivePermissionHelper->checkUser();
-        $moduleHelper = $this->container->get('module_helper');
-        $moduleHelper->init('GitDrive');
 
-          if (!isset($username)){
-            throw $this->createNotFoundException('Zaloguj się, aby mieć dostęp do tej aktywności.');
-        }
-        if (!$moduleHelper->isModuleActivated($username)) {
-            throw $this->createNotFoundException('Ten moduł nie jest włączony na twoim koncie');
-        }
-        if($menu->getIdUser()->getLogin()!= $username)
-        {
-            throw $this->createNotFoundException('Nie mozesz edytowac cudzych elementtow');
-        }
-        return $userHelper->findByLogin($username);
-    }
 
     /**
      * @return mixed
@@ -332,10 +343,14 @@ class DriveController extends Controller
                $menuTree = $this -> getMenuStructureX($login, $request);
                $menu_contents = $contentHelper->getMenuContent($menuId, $request);
 
+
                //pobranie i sprwdzenie zawartosci menu
                $pageContent = $menuRoot;
                $menuCon = $contentHelper ->getMenus($pageContent->getId(), $request);
                $conCon = $contentHelper ->getMenuContent($pageContent->getId(), $request);
+
+               $path= array();
+               array_push($path, $pageContent);
 
                //zalogowany? (ew. do usuniecia)
                $logged = $permissionHelper -> checkPermission($login);
@@ -358,7 +373,8 @@ class DriveController extends Controller
                    'pageContent' => $pageContent,
                    'menuCon' => $menuCon,
                    'conCon' => $conCon,
-                   'menuStructure' =>$menuTree
+                   'menuStructure' =>$menuTree,
+                   'path' => $path
                );
            }
            else
@@ -400,6 +416,9 @@ class DriveController extends Controller
                 $menuTree = $this -> getMenuStructureX($login, $request);
                 $menu_contents = $contentHelper->getMenuContent($menuId, $request);
 
+
+
+
                 //pobranie i sprwdzenie zawartosci menu
 
                $pageContent = $this ->getMenuPageContent($user->getId(), $element, $request);
@@ -410,6 +429,10 @@ class DriveController extends Controller
                 $parentMenu = $pageContent->getParent();
                 $menuCon = $contentHelper ->getMenus($pageContent->getId(), $request);
                 $conCon = $contentHelper ->getMenuContent($pageContent->getId(), $request);
+
+                $path = $this ->menuPath($pageContent, $request);
+
+
 
                 //zalogowany? (ew. do usuniecia)
                 $logged = $permissionHelper -> checkPermission($login);
@@ -433,7 +456,8 @@ class DriveController extends Controller
                     'menuCon' => $menuCon,
                     'conCon' => $conCon,
                     'menuStructure' =>$menuTree,
-                    'parentMenu' => $parentMenu
+                    'parentMenu' => $parentMenu,
+                    'path' => $path
                 );
             }
             else
@@ -467,8 +491,7 @@ class DriveController extends Controller
                 $request = $this->get('request');
 
                 //helpery
-                $contentHelper = $this->container->get('drive_content_helper');
-                $permissionHelper = $this->container->get('permissions_helper');
+
                 $moduleHelper = $this->container->get('module_helper');
                 $moduleHelper->init('GitDrive');
 
@@ -482,14 +505,19 @@ class DriveController extends Controller
                 $newMenu->setParent($element);
                 $newMenu->setIdModule($modulee);
 
+                // inicjalizacja flash baga
+                $session = $this->container->get('session');
+
+
                 $form = $this->createForm(new DriveContenerType(), $newMenu);
                 $form->handleRequest($request);
 
                 if ($form->isValid()) {
                     $menuHelper = $this->container->get('menu_helper');
                     $menuHelper -> insert($newMenu);
-                    ;
 
+
+                    $session->getFlashBag()->add('success', 'Dodano kontener: ' . $newMenu->getTitle() );
                     return $this->redirect($this->generateUrl('drive_show_menu', array(
                         'login'=>$login,
                         'element' => $element),true));
@@ -551,6 +579,10 @@ class DriveController extends Controller
                 $oldMenu=$this ->getMenuPageContent($user->getId(), $element, $request);
                 $parentMenu = $oldMenu;
 
+                // inicjalizacja flash baga
+                $session = $this->container->get('session');
+
+
                 //formularz
                 $form = $this->createForm(new DriveContenerType(), $oldMenu);
                 $form->handleRequest($request);
@@ -559,6 +591,7 @@ class DriveController extends Controller
                     $menuHelper = $this->container->get('menu_helper');
                     $menuHelper -> update($oldMenu);
 
+                    $session->getFlashBag()->add('success', 'Zmieniono nazwę na: ' . $oldMenu->getTitle() );
 
                     return $this->redirect($this->generateUrl('drive_show_menu', array(
                         'login'=>$login,
@@ -619,21 +652,25 @@ class DriveController extends Controller
                 $oldMenu=$this ->getMenuPageContent($user->getId(), $element, $request);
                 $parent = $oldMenu -> getParent();
 
+                // inicjalizacja flash baga
+                $session = $this->container->get('session');
 
 
                 if($parent !=null)
                 {
-                   if($this -> removeMenuX($oldMenu, $request, $user)){
+                   $this -> removeMenuX($oldMenu, $request, $user);
 
-                       return $this->redirect($this->generateUrl('drive_show_menu', array(
-                           'login'=>$login,
-                           'element' => $parent),true));
+                    $session->getFlashBag()->add('success', 'Usunięto: ' . $oldMenu->getTitle() );
 
-                   }
+                   return $this->redirect($this->generateUrl('drive_show_menu', array(
+                       'login'=>$login,
+                       'element' => $parent),true));
+
 
                 }
                 else
                 {
+                    $session->getFlashBag()->add('warning', 'Operacja niedozwolona' );
                     return $this->redirect($this->generateUrl('drive_user_index', array(
                         'login'=>$login),true));
                 }
@@ -697,11 +734,14 @@ class DriveController extends Controller
 
                 $dir =  __DIR__.'/../../../../../web/uploads/drive/'.$user->getId().'/';
 
+
+                // inicjalizacja flash baga
+                $session = $this->container->get('session');
+
                 if ($form->isValid()) {
                     $contentHelper = $this->container->get('drive_content_helper');
                     $em = $this->getDoctrine()->getManager();
-                    // inicjalizacja flash baga
-                    $session = $this->container->get('session');
+
 
 
                     $file = $form['filename']->getData();
@@ -719,7 +759,7 @@ class DriveController extends Controller
                         $newAttachment->setIdContent($pageContent);
                         $contentHelper -> insertIntoAttachment($newAttachment);
 
-                        $session->getFlashBag()->add('success', 'Dodano plik' . $newAttachment->getTitle() . '</b>');
+                        $session->getFlashBag()->add('success', 'Dodano plik: ' . $newAttachment->getTitle() );
                         return $this->redirect($this->generateUrl('drive_show_content', array(
                             'login'=>$login,
                             'element' => $element),true));
@@ -729,9 +769,12 @@ class DriveController extends Controller
 
                 }
 
+
                 $dirr = '../../../../../../../../../web/uploads/drive/'.$user->getId().'/';
 
                 $parentMenu = $pageContent->getIdMenu();
+                $path= $this ->menuPath($parentMenu, $request);
+
 
 
                 //zalogowany? (ew. do usuniecia)
@@ -756,7 +799,8 @@ class DriveController extends Controller
                     'form' => $form->createView(),
                     'dirr' => $dirr,
                     'btnLabel' => 'dodaj',
-                    'parentMenu' =>$parentMenu
+                    'parentMenu' =>$parentMenu,
+                    'path' => $path
                 );
 
 
@@ -797,6 +841,10 @@ class DriveController extends Controller
     {
         $user = $this -> validateUser();
 
+
+        // inicjalizacja flash baga
+        $session = $this->container->get('session');
+
         if(isset($user))
         {
             if($user-> getLogin() == $login)
@@ -828,6 +876,8 @@ class DriveController extends Controller
                     $newContent->setCreateDate(new \DateTime('now'));
                     $contentHelper = $this->container->get('drive_content_helper');
                     $contentHelper -> insert($newContent);
+
+                    $session->getFlashBag()->add('success', 'Dodano : '.$newContent->getTitle());
 
 
                     return $this->redirect($this->generateUrl('drive_show_menu', array(
@@ -885,7 +935,10 @@ class DriveController extends Controller
 
                 //pobieranie i sprawdzanie danych
                 $oldCon=$this ->getPageContent($user->getId(), $element, $request);
-                $parentMenu =
+                $parentMenu= null;
+
+                // inicjalizacja flash baga
+                $session = $this->container->get('session');
 
                 //formularz
                 $form = $this->createForm(new DriveElementType(), $oldCon);
@@ -899,6 +952,7 @@ class DriveController extends Controller
                     $dcHelper = $this->container->get('drive_content_helper');
                     $dcHelper -> update($oldCon);
 
+                    $session->getFlashBag()->add('success', 'Zmieniono element: ' . $oldCon->getTitle() );
 
                     return $this->redirect($this->generateUrl('drive_show_content', array(
                         'login'=>$login,
