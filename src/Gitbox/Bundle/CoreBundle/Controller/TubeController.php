@@ -157,8 +157,8 @@ class TubeController extends Controller
         // walidacja formularza
         if ($form->isValid()) {
             $fs = new Filesystem();
-            $dir =  __DIR__.'/../../../../../web/uploads/tube/'.$user->getId().'/';
-            $dirToDefaultImage = __DIR__.'/../../../../../web/uploads/tube/default_image.jpg';
+            $dir =  $this->getUploadsDir() . 'tube/'.$user->getId().'/';
+            $dirToDefaultImage = $this->getUploadsDir() . 'tube/default_image.jpg';
             $contentHelper = $this->container->get('tube_content_helper');
             $menuHelper = $this->container->get('menu_helper');
             $em = $this->getDoctrine()->getManager();
@@ -237,8 +237,8 @@ class TubeController extends Controller
             throw $this->createNotFoundException('Niestety nie znaleziono filmu.');
         }
 
-        $dir = '../../../../../web/uploads/tube/'.$user->getId().'/'.$attachment[0]->getFilename();
-        $imgDir = '../../../../../web/uploads/tube/'.$user->getId().'/'.$attachment[0]->getFilename().'.jpg';
+        $dir = $this->getUploadsDir() . 'tube/'.$user->getId().'/'.$attachment[0]->getFilename();
+        $imgDir = $this->getUploadsDir() . 'tube/'.$user->getId().'/'.$attachment[0]->getFilename().'.jpg';
 
         // pobieranie żądania
         $request = $this->get('request');
