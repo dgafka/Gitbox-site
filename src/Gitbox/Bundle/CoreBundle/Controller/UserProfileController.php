@@ -8,7 +8,8 @@ use Gitbox\Bundle\CoreBundle\Helper\PermissionHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\BrowserKit\Request;
+use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserProfileController extends Controller
 {
@@ -17,16 +18,24 @@ class UserProfileController extends Controller
 	 * @Route("user/{login}", name="user_profile_index")
 	 * @Template()
 	 */
-	public function indexAction($login) {
+	public function indexAction($login, \Symfony\Component\HttpFoundation\Request $request) {
 
 		$user = $this->getUserByLogin($login);
-
         if (!$user) {
             throw $this->createNotFoundException('Nie znaleziono użytkownika o nazwie <b>' . $login . '</b>.');
         }
 
 		$userDescription = $user->getIdDescription();
 
+		//Dodanie hita do wyświetlania
+		if(!$request->cookies->get('profile_view')) {
+			$response = new Response();
+			$response->headers->setCookie(new Cookie('profile_view', 'true', time() + 3600));
+			$response->sendHeaders();
+			$userDescription->setHit($userDescription->getHit() + 1);
+			$this->getDoctrine()->getManager()->persist($userDescription);
+			$this->getDoctrine()->getManager()->flush();
+		}
 		/**
 		 * @var $permissionHelper PermissionHelper
 		 */
