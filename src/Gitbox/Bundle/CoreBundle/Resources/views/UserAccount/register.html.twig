@@ -25,7 +25,25 @@
             </div>
         </div>
 
+        <p><b>Utworzenie konta jest równoważne z akceptacją <a href="#registrationTerms" data-toggle="modal" data-target="">regulaminu</a>.</b></p>
+
     {{ form_end(form) }}
+    </div>
+    <div id="registrationTerms" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="registrationTerms" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Warunki korzystania z aplikacji <b>GitBox</b> - Regulamin</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Tutaj powinien pojawić się regulamin</p>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-default" data-dismiss="modal">Zamknij</a>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
 
