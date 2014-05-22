@@ -20,7 +20,7 @@
     {% endif %}
 
     <div class="row">
-        <div class="col-lg-8 well">
+        <div class="well col-lg-8 main-content">
                 <h1 class="text-center">Filmy użytkownika <i><code>{{ user.login }}</code></i></h1><div class="pull-right"><h6>{{ countPosts }} pozycji</h6></div>
                 <div class="list-group">
                     {% for post in posts %}
@@ -106,13 +106,17 @@
     <div class="">
 
     {# USER SIDEBAR #}
+        <div style="text-align: center;">
     {% render controller("GitboxCoreBundle:UserSidebar:render", {'user': user, 'actionUrl': 'user_blog'}) %}
-
+    </div>
 </div>
+{% endblock %}
 
-
-
-
-
+{% block lazy_javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/ratingSystem.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/favSystem.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/sidebarUpdater.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/slideCollapser.js') }}"></script>
 {% endblock %}
 
