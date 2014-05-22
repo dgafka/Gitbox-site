@@ -27,7 +27,7 @@
                             </a>
                             {% if module.GitBlog is defined %}
                                 <a href="{{ url('user_blog', {'login' : login}) }}" class="list-group-item">
-                                    <h4 class="list-group-item-heading"><i class="fa fa-reply-all"></i> Wejdź na GitBlog użytkownika {{ login }}.</h4>
+                                    <h4 class="list-group-item-heading"><i class="fa fa-reply-all"></i> Wejdź na GitBlog.</h4>
                                 </a>
                                     <a href="{{ url('user_new_post', {'login' : login}) }}" class="list-group-item">
                                         <h4 class="list-group-item-heading"><i class="fa fa-quote-right"></i> Dodaj nowy wpis!</h4>
@@ -73,7 +73,7 @@
                             </a>
                             {% if module.GitTube is defined %}
                                 <a href="{{ url('tube_index', {'login' : login}) }}" class="list-group-item">
-                                    <h4 class="list-group-item-heading"><i class="fa fa-reply-all"></i> Wejdź na GitTube użytkownika {{ login }}.</h4>
+                                    <h4 class="list-group-item-heading"><i class="fa fa-reply-all"></i> Wejdź na GitTube.</h4>
                                 </a>
                                     <a href="{{ url('tube_new_file', {'login' : login}) }}" class="list-group-item">
                                         <h4 class="list-group-item-heading"><i class="fa fa-quote-right"></i> Dodaj nowy film!</h4>
@@ -117,6 +117,9 @@
                                 <h4 class="list-group-item-heading"><i class="fa fa-question-circle"></i> Dowiedz się więcej o GitDrive.</h4>
                             </a>
                             {% if module.GitDrive is defined %}
+                                    <a href="{{ url('drive_user_index', {'login' : login}) }}" class="list-group-item">
+                                        <h4 class="list-group-item-heading"><i class="fa fa-reply-all"></i> Wejdź na GitDrive.</h4>
+                                    </a>
                                     <a href="{{ url('user_profile_module_deactive', {'login' : login, 'module' : 'GitDrive'}) }}" class="list-group-item">
                                         <h4 class="list-group-item-heading"><span class="glyphicon glyphicon glyphicon-off"></span></i> Wyłącz GitDrive.</h4>
                                     </a>

@@ -119,6 +119,9 @@
                                 <h4 class="list-group-item-heading"><i class="fa fa-question-circle"></i> Dowiedz się więcej o GitDrive.</h4>
                             </a>
                         {% if module.GitDrive is defined %}
+                            <a href="{{ url('drive_user_index', {'login' : login}) }}" class="list-group-item">
+                                <h4 class="list-group-item-heading"><i class="fa fa-reply-all"></i> Wejdź na GitDrive użytkownika {{ login }}.</h4>
+                            </a>
                             {% if isOwner %}
                                 <a href="{{ url('user_profile_module_deactive', {'login' : login, 'module' : 'GitDrive'}) }}" class="list-group-item">
                                     <h4 class="list-group-item-heading"><span class="glyphicon glyphicon glyphicon-off"></span></i> Wyłącz GitDrive.</h4>
