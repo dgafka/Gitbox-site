@@ -17,7 +17,7 @@ class Attachment
      *
      * @ORM\Column(name="status", type="string", length=1, nullable=false)
      */
-    private $status;
+    private $status = 'A';
 
     /**
      * @var string

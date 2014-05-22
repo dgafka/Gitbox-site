@@ -130,7 +130,7 @@ class UserAccountController extends Controller
 			 */
 			$helper = $this->container->get('user_helper');
 			$emailUser = $helper->findByEmail($userAccount->getEmail());
-			$loginUser = $helper->findByLogin($userAccount->getLogin());
+			$loginUser = $helper->findByLogin(trim(strtolower($userAccount->getLogin())));
 
 			if($emailUser instanceof \Gitbox\Bundle\CoreBundle\Entity\UserAccount) {
 				$message .= 'Użytkownik o podanym emailu już istnieje. <br/>';
@@ -145,7 +145,7 @@ class UserAccountController extends Controller
 				$message .= ' Login nie powinien posiadać więcej niż 10 znaków. <br/>';
 			}
 			if(!preg_match('/^[a-zA-Z0-9]+$/', $userAccount->getLogin())) {
-				$message .= ' Login nie powinien posiadać polskich znaków.<br/>';
+				$message .= ' Login nie powinien posiadać polskich oraz specjalnych znaków.<br/>';
 			}
 			if(strlen($userAccount->getPassword()) < 6) {
 				$message .= ' Hasło powinno składać się przynajmniej z 6 znaków. <br/>';
@@ -180,6 +180,8 @@ class UserAccountController extends Controller
 			$userDescription->setRegistrationDate($date);
 			$userDescription->setBanDate(null);
 			$userDescription->setToken(md5(uniqid(mt_rand(), true)));
+			$userDescription->setRatingScore(0);
+			$userDescription->setRatingQuantity(0);
 			$userAccount->setStatus('D');
 
 			//adding modules for user
