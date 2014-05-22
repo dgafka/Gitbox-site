@@ -757,6 +757,7 @@ class DriveController extends Controller
                         $newAttachment->setMime($extension);
                         $newAttachment ->setCreateDate(new \DateTime('now'));
                         $newAttachment->setIdContent($pageContent);
+                        $newAttachment->setStatus('1');
                         $contentHelper -> insertIntoAttachment($newAttachment);
 
                         $session->getFlashBag()->add('success', 'Dodano plik: ' . $newAttachment->getTitle() );
@@ -874,6 +875,12 @@ class DriveController extends Controller
                     $newContent->setLastModificationDate(new \DateTime('now'));
                     $newContent -> setIdMenu($pageContent);
                     $newContent->setCreateDate(new \DateTime('now'));
+                    $newContent->setStatus("A");
+                    $newContent->setHit(0);
+                    $newContent->setType('1');
+                    $newContent->setVoteUp(0);
+                    $newContent->setVoteDown(0);
+
                     $contentHelper = $this->container->get('drive_content_helper');
                     $contentHelper -> insert($newContent);
 
@@ -1047,6 +1054,7 @@ class DriveController extends Controller
             $newContent->setLastModificationDate(new \DateTime('now'));
             $newContent -> setIdMenu($pageContent);
             $newContent->setCreateDate(new \DateTime('now'));
+
             $contentHelper = $this->container->get('drive_content_helper');
             $contentHelper -> insert($newContent);
             ;
