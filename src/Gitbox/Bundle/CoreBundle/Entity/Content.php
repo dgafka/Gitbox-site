@@ -24,7 +24,7 @@ class Content
      *
      * @ORM\Column(name="status", type="string", length=1, nullable=false)
      */
-    private $status;
+    private $status = 'A';
 
     /**
      * @var string
@@ -52,7 +52,7 @@ class Content
      *
      * @ORM\Column(name="hit", type="integer", nullable=false)
      */
-    private $hit;
+    private $hit = 0;
 
     /**
      * @var \DateTime
@@ -73,21 +73,21 @@ class Content
      *
      * @ORM\Column(name="type", type="string", length=1, nullable=false)
      */
-    private $type;
+    private $type = '1';
 
     /**
      * @var integer
      *
      * @ORM\Column(name="vote_up", type="integer", nullable=false)
      */
-    private $voteUp;
+    private $voteUp = 0;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="vote_down", type="integer", nullable=false)
      */
-    private $voteDown;
+    private $voteDown = 0;
 
     /**
      * @var integer
