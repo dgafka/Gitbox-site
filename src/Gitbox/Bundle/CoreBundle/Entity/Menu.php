@@ -7,21 +7,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Menu
  *
- * @ORM\Table(name="menu", indexes={@ORM\Index(name="IDX_7D053A932A1393C5", columns={"id_module"})})
+ * @ORM\Table(name="menu", indexes={@ORM\Index(name="IDX_7D053A932A1393C5", columns={"id_module"}), @ORM\Index(name="IDX_7D053A936B3CA4B", columns={"id_user"})})
  * @ORM\Entity
  */
 class Menu
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="menu_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
-
     /**
      * @var integer
      *
@@ -53,14 +43,27 @@ class Menu
     /**
      * @var integer
      *
-     * @ORM\Column(name="id_user", type="integer", nullable=true)
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="menu_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $id;
+
+    /**
+     * @var \Gitbox\Bundle\CoreBundle\Entity\UserAccount
+     *
+     * @ORM\ManyToOne(targetEntity="Gitbox\Bundle\CoreBundle\Entity\UserAccount")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_user", referencedColumnName="id")
+     * })
      */
     private $idUser;
 
     /**
-     * @var \Module
+     * @var \Gitbox\Bundle\CoreBundle\Entity\Module
      *
-     * @ORM\ManyToOne(targetEntity="Module")
+     * @ORM\ManyToOne(targetEntity="Gitbox\Bundle\CoreBundle\Entity\Module")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_module", referencedColumnName="id")
      * })
@@ -162,12 +165,22 @@ class Menu
     }
 
     /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
      * Set idUser
      *
-     * @param integer $idUser
+     * @param \Gitbox\Bundle\CoreBundle\Entity\UserAccount $idUser
      * @return Menu
      */
-    public function setIdUser($idUser)
+    public function setIdUser(\Gitbox\Bundle\CoreBundle\Entity\UserAccount $idUser = null)
     {
         $this->idUser = $idUser;
 
@@ -177,21 +190,11 @@ class Menu
     /**
      * Get idUser
      *
-     * @return integer 
+     * @return \Gitbox\Bundle\CoreBundle\Entity\UserAccount 
      */
     public function getIdUser()
     {
         return $this->idUser;
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**

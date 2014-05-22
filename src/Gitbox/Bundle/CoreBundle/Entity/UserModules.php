@@ -13,9 +13,23 @@ use Doctrine\ORM\Mapping as ORM;
 class UserModules
 {
     /**
+     * @var string
+     *
+     * @ORM\Column(name="status", type="string", length=1, nullable=false)
+     */
+    private $status;
+
+    /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="total_contents", type="integer", nullable=false)
+     */
+    private $totalContents;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="user_modules_id_seq", allocationSize=1, initialValue=1)
@@ -23,38 +37,24 @@ class UserModules
     private $id;
 
     /**
-     * @var string
+     * @var \Gitbox\Bundle\CoreBundle\Entity\Module
      *
-     * @ORM\Column(name="status", type="string", length=1, nullable=false)
-     */
-    private $status = 'D';
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="total_contents", type="integer", nullable=false)
-     */
-    private $totalContents = '0';
-
-    /**
-     * @var \UserAccount
-     *
-     * @ORM\ManyToOne(targetEntity="UserAccount")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_user", referencedColumnName="id")
-     * })
-     */
-    private $idUser;
-
-    /**
-     * @var \Module
-     *
-     * @ORM\ManyToOne(targetEntity="Module")
+     * @ORM\ManyToOne(targetEntity="Gitbox\Bundle\CoreBundle\Entity\Module")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_module", referencedColumnName="id")
      * })
      */
     private $idModule;
+
+    /**
+     * @var \Gitbox\Bundle\CoreBundle\Entity\UserAccount
+     *
+     * @ORM\ManyToOne(targetEntity="Gitbox\Bundle\CoreBundle\Entity\UserAccount")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_user", referencedColumnName="id")
+     * })
+     */
+    private $idUser;
 
 
 
