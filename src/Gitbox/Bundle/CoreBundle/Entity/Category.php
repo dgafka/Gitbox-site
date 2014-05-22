@@ -13,16 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Category
 {
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="category_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=50, nullable=false)
@@ -37,9 +27,19 @@ class Category
     private $description;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="category_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $id;
+
+    /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Content", mappedBy="idCategory")
+     * @ORM\ManyToMany(targetEntity="Gitbox\Bundle\CoreBundle\Entity\Content", mappedBy="idCategory")
      */
     private $idContent;
 

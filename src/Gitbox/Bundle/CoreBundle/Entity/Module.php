@@ -13,16 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Module
 {
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="module_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=50, nullable=false)
@@ -42,6 +32,16 @@ class Module
      * @ORM\Column(name="short_name", type="string", length=25, nullable=true)
      */
     private $shortName;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="module_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $id;
 
 
 

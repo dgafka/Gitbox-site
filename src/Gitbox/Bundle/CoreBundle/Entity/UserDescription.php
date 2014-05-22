@@ -13,21 +13,11 @@ use Doctrine\ORM\Mapping as ORM;
 class UserDescription
 {
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="user_description_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="registration_date", type="datetime", nullable=false)
      */
-    private $registrationDate = '1970-01-01';
+    private $registrationDate;
 
     /**
      * @var \DateTime
@@ -48,14 +38,7 @@ class UserDescription
      *
      * @ORM\Column(name="hit", type="integer", nullable=false)
      */
-    private $hit = '0';
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="content", type="text", nullable=true)
-     */
-    private $content;
+    private $hit;
 
     /**
      * @var string
@@ -65,18 +48,35 @@ class UserDescription
     private $token;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="content", type="text", nullable=true)
+     */
+    private $content;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="rating_score", type="integer", nullable=false)
      */
-    private $ratingScore = '0';
+    private $ratingScore;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="rating_quantity", type="integer", nullable=false)
      */
-    private $ratingQuantity = '0';
+    private $ratingQuantity;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="user_description_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $id;
 
 
 
@@ -173,29 +173,6 @@ class UserDescription
     }
 
     /**
-     * Set content
-     *
-     * @param string $content
-     * @return UserDescription
-     */
-    public function setContent($content)
-    {
-        $this->content = $content;
-
-        return $this;
-    }
-
-    /**
-     * Get content
-     *
-     * @return string 
-     */
-    public function getContent()
-    {
-        return $this->content;
-    }
-
-    /**
      * Set token
      *
      * @param string $token
@@ -216,6 +193,29 @@ class UserDescription
     public function getToken()
     {
         return $this->token;
+    }
+
+    /**
+     * Set content
+     *
+     * @param string $content
+     * @return UserDescription
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * Get content
+     *
+     * @return string 
+     */
+    public function getContent()
+    {
+        return $this->content;
     }
 
     /**

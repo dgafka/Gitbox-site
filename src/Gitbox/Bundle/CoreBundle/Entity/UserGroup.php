@@ -15,16 +15,6 @@ class UserGroup
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="user_group_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $id;
-
-    /**
-     * @var integer
-     *
      * @ORM\Column(name="permissions", type="integer", nullable=false)
      */
     private $permissions;
@@ -35,6 +25,16 @@ class UserGroup
      * @ORM\Column(name="description", type="text", nullable=false)
      */
     private $description;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="user_group_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $id;
 
 
 

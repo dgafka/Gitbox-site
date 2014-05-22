@@ -190,6 +190,12 @@ class TubeController extends Controller
 				$newContent->setIdUser($user->getId());
 				$newContent->setTitle($newAttachment->getTitle());
 				$newContent->setDescription($newAttachment->getDescription());
+				$newContent->setStatus('A');
+				$newContent->setHit(1);
+				$newContent->setType(1);
+				$newContent->setVoteDown(0);
+				$newContent->setVoteUp(0);
+
 
 				$contentHelper->insertIntoContent($newContent);
 				$contentHelper->insertIntoAttachment($newAttachment,$newContent);

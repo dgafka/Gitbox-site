@@ -242,6 +242,11 @@ class BlogController extends Controller
             $postContent->setCreateDate(new \DateTime('now'));
             $postContent->setLastModificationDate(new \DateTime('now'));
             $postContent->setIdMenu($menu);
+	        $postContent->setStatus('A');
+	        $postContent->setHit(1);
+	        $postContent->setType(1);
+	        $postContent->setVoteDown(0);
+	        $postContent->setVoteUp(0);
 
             $contentHelper->insert($postContent);
 
